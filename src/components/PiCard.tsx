@@ -1,229 +1,196 @@
-// src/components/PiCard.tsx
+"use client";
+
 import Link from "next/link";
-import * as piModule from "@/data/pi";
+import { useMemo, useState } from "react";
 import PublicImage from "@/components/PublicImage";
 
-function pickPiObject(mod: any) {
-  return (
-    mod?.default ||
-    mod?.pi ||
-    mod?.PI ||
-    mod?.principalInvestigator ||
-    mod?.principal ||
-    {}
-  );
-}
-
-function pickPhoto(p: any): string {
-  // ✅ 只取数据里真实配置的路径，不要用不存在的 /images/pi-wang-tianzhi.jpg 兜底
-  return (
-    p.photo ||
-    p.avatar ||
-    p.image ||
-    p.img ||
-    p.photoUrl ||
-    p.avatarUrl ||
-    ""
-  );
-}
-
 export default function PiCard() {
-  const pi: any = pickPiObject(piModule);
+  const [open, setOpen] = useState(false);
 
-  // ✅ 字段对齐到 src/data/pi.ts
-  const nameZh = pi.nameZh ?? "王天志";
-  const nameEn = pi.nameEn ?? "Tianzhi Wang";
+  const pi = useMemo(
+    () => ({
+      nameZh: "王天志",
+      nameEn: "Tianzhi Wang",
+      title: "副教授（博导）",
+      org: "天津大学 环境科学与工程学院",
+      addr: "天津市南开区卫津路92号（天津大学），邮编：300072",
+      bio:
+        "聚焦微纳米气泡机理与工程应用，涵盖气泡溃灭与·OH原位形成、协同消毒与饮用水生物稳定性提升、表面清洗与水环境治理装备开发等方向。",
 
-  const titleZh = pi.titleZh ?? "";
-  const titleEn = pi.titleEn ?? "";
+      // ✅ 改为你实际存在的头像（public/people/pi.jpg）
+      // 同时仍兼容你未来如果换回 images 下的文件
+      avatar: "/people/pi.jpg",
 
-  const affiliationZh = pi.affiliationZh ?? pi.orgZh ?? pi.org ?? "";
-  const affiliationEn = pi.affiliationEn ?? "";
+      homepage: "https://faculty.tju.edu.cn/226066/zh_CN/index.htm",
 
-  const email = pi.email ?? "";
-  const websiteZh = pi.websiteZh ?? pi.website ?? "";
-  const addressZh = pi.addressZh ?? "";
+      email: "wangtianzhi@tju.edu.cn",
 
-  const bioZh = pi.bioZh ?? pi.introZh ?? pi.intro ?? "";
-  const tags: string[] = Array.isArray(pi.researchFocusZh)
-    ? pi.researchFocusZh
-    : Array.isArray(pi.tags)
-      ? pi.tags
-      : [];
+      tags: [
+        "微纳米气泡溃灭与·OH原位形成",
+        "协同氯消毒与杀菌机制",
+        "饮用水生物稳定性（AOC/BDOC）",
+        "臭氧/纳米气泡水处理强化",
+        "微纳米气泡装备与在线监测",
+        "表面清洗与农业应用",
+      ],
 
-  const recruitmentZh = pi.recruitmentZh ?? pi.joinZh ?? pi.recruit ?? "";
+      education: [
+        { time: "2009.9 - 2013.6", text: "中国农业大学 - 农业水利工程 - 学士" },
+        { time: "2013.9 - 2018.6", text: "中国农业大学 - 农业水土工程 - 博士" },
+        { time: "2016.11 - 2017.11", text: "美国伊利诺伊香槟分校 - 农业与生物工程学院 - 联合培养博士" },
+        { time: "2017.8 - 2017.10", text: "美国哥伦比亚大学 - Earth Engineering Center - 交流生" },
+        { time: "2018.8 - 2020.9", text: "清华大学 - 环境科学 - 博士后" },
+      ],
+      work: [
+        { time: "2020.9 - 2022.3", text: "环境科学与工程学院 → 天津大学 → 助理研究员" },
+        { time: "2022.3 - 2024.10", text: "环境科学与工程学院 → 天津大学 → 环工支部青年委员 → 副研究员" },
+      ],
+      service: [
+        { time: "2024.3 - 2027.2", text: "《Processes》期刊客座编辑" },
+        { time: "2024.4 - 2029.4", text: "全国研究生教育评估监测专家库专家" },
+        { time: "2025.4 - 2029.3", text: "《净水技术》期刊青年编委" },
+        { time: "2025.2 - 2030.1", text: "天津市宁河区产业高质量发展“领衔专家”" },
+      ],
 
-  const educationZh: string[] = Array.isArray(pi.educationZh) ? pi.educationZh : [];
-  const experienceZh: string[] = Array.isArray(pi.experienceZh) ? pi.experienceZh : [];
-  const appointmentsZh: string[] = Array.isArray(pi.appointmentsZh) ? pi.appointmentsZh : [];
-
-  const photo = pickPhoto(pi);
+      recruit:
+        "团队常年招收硕士研究生3–4名、博士生1–2名及本科生若干，欢迎环境/市政/自动化/农业工程/化工/工业设计等背景同学加入。",
+    }),
+    []
+  );
 
   return (
-    <div className="rounded-2xl border bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border bg-white p-6 md:p-8">
+      {/* 顶部：头像 + 姓名 + 按钮 */}
       <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
         <div className="flex gap-5">
-          {/* Avatar（保留原来的方块头像风格） */}
-          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border bg-gray-50">
-            {photo ? (
-              <PublicImage
-                src={photo}
-                alt={nameEn || nameZh}
-                fill
-                sizes="80px"
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-sm font-medium text-gray-500">
-                {(nameZh || nameEn || "?").slice(0, 1)}
-              </div>
-            )}
+          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-gray-100 md:h-24 md:w-24">
+            {/* ✅ 用 PublicImage：自动加 basePath，GitHub Pages 下不再丢图 */}
+            <PublicImage
+              src={pi.avatar}
+              alt={pi.nameEn}
+              fill
+              sizes="96px"
+              className="object-cover"
+              priority
+            />
           </div>
 
-          {/* Text */}
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-baseline gap-x-2">
-              <div className="text-xl font-semibold">{nameZh}</div>
-              <div className="text-sm text-gray-500">{nameEn}</div>
+          <div className="space-y-1">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <div className="text-xl font-semibold md:text-2xl">{pi.nameZh}</div>
+              <div className="text-sm text-gray-500 md:text-base">{pi.nameEn}</div>
             </div>
 
-            {(titleZh || titleEn) ? (
-              <div className="mt-1 text-sm text-gray-700">
-                {titleZh}
-                {titleEn ? <span className="text-gray-500"> / {titleEn}</span> : null}
-              </div>
-            ) : null}
-
-            {affiliationZh ? (
-              <div className="mt-2 text-sm text-gray-600">
-                {affiliationZh}
-                {affiliationEn ? <span className="text-gray-500"> / {affiliationEn}</span> : null}
-              </div>
-            ) : null}
-
-            {addressZh ? (
-              <div className="mt-1 text-sm text-gray-500">{addressZh}</div>
-            ) : null}
-
-            {bioZh ? (
-              <div
-                className="mt-4 text-sm leading-relaxed text-gray-700"
-                style={{
-                  display: "-webkit-box",
-                  WebkitBoxOrient: "vertical",
-                  WebkitLineClamp: 3,
-                  overflow: "hidden",
-                }}
-              >
-                {bioZh}
-              </div>
-            ) : null}
+            <div className="text-sm text-gray-700 md:text-base">{pi.title}</div>
+            <div className="pt-2 text-sm text-gray-700 md:text-base">{pi.org}</div>
+            <div className="text-sm text-gray-600 md:text-base">{pi.addr}</div>
           </div>
         </div>
 
-        {/* Actions（保持你原来右上角按钮区） */}
         <div className="flex flex-wrap gap-2 md:justify-end">
-          {email ? (
+          {/* ✅ 只显示“Email”，不显示邮箱；hover 提示邮箱，点击 mailto */}
+          {pi.email ? (
             <a
-              href={`mailto:${email}`}
-              className="rounded-full border px-4 py-2 text-sm hover:bg-gray-50 transition"
+              href={`mailto:${pi.email}`}
+              className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-gray-50"
+              title={pi.email}
+              aria-label={`Email: ${pi.email}`}
             >
               Email
             </a>
-          ) : null}
-
-          {websiteZh ? (
-            <a
-              href={websiteZh}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border px-4 py-2 text-sm hover:bg-gray-50 transition"
-            >
-              主页
-            </a>
           ) : (
-            <Link
-              href="/"
-              className="rounded-full border px-4 py-2 text-sm hover:bg-gray-50 transition"
+            <button
+              type="button"
+              className="rounded-full border px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed"
+              title="暂无邮箱信息"
             >
-              主页
-            </Link>
+              Email
+            </button>
           )}
+
+          <a
+            href={pi.homepage}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-gray-50"
+          >
+            主页
+          </a>
 
           <Link
             href="/contact"
-            className="rounded-full bg-black px-4 py-2 text-sm text-white hover:bg-black/90 transition"
+            className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white hover:opacity-90"
           >
             加入我们
           </Link>
         </div>
       </div>
 
-      {/* Tags（研究方向 chips，保留原来的“标签条”观感） */}
-      {tags.length ? (
-        <div className="mt-5 flex flex-wrap gap-2">
-          {tags.map((t: string) => (
-            <span
-              key={t}
-              className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-      ) : null}
+      {/* 简介 */}
+      <div className="mt-5 text-sm leading-relaxed text-gray-700 md:text-base">
+        {pi.bio}
+      </div>
 
-      {/* 更多信息（你原来有“更多信息”这一块，这里用 details 保留同样的交互） */}
-      {(educationZh.length || experienceZh.length || appointmentsZh.length) ? (
-        <details className="mt-5">
-          <summary className="cursor-pointer select-none text-sm text-gray-700">
-            ▶ 更多信息（教育经历 / 工作经历 / 学术兼职）
-          </summary>
+      {/* 研究标签 */}
+      <div className="mt-5 flex flex-wrap gap-2">
+        {pi.tags.map((t) => (
+          <span
+            key={t}
+            className="rounded-full bg-gray-100 px-4 py-2 text-xs text-gray-700 md:text-sm"
+          >
+            {t}
+          </span>
+        ))}
+      </div>
 
-          <div className="mt-4 grid gap-4 md:grid-cols-3 text-sm text-gray-700">
-            {educationZh.length ? (
-              <div>
-                <div className="font-medium mb-2">教育经历</div>
-                <ul className="list-disc pl-5 space-y-1">
-                  {educationZh.map((x: string) => (
-                    <li key={x}>{x}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
+      {/* 更多信息 */}
+      <div className="mt-6">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="text-sm font-medium text-gray-700 underline underline-offset-4 hover:text-black"
+        >
+          ▶ 更多信息（教育经历 / 工作经历 / 学术兼职）
+        </button>
 
-            {experienceZh.length ? (
-              <div>
-                <div className="font-medium mb-2">工作经历</div>
-                <ul className="list-disc pl-5 space-y-1">
-                  {experienceZh.map((x: string) => (
-                    <li key={x}>{x}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-
-            {appointmentsZh.length ? (
-              <div>
-                <div className="font-medium mb-2">学术兼职</div>
-                <ul className="list-disc pl-5 space-y-1">
-                  {appointmentsZh.map((x: string) => (
-                    <li key={x}>{x}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
+        {open ? (
+          <div className="mt-4 grid gap-4 md:grid-cols-3">
+            <InfoBlock title="教育经历" items={pi.education} />
+            <InfoBlock title="工作经历" items={pi.work} />
+            <InfoBlock title="社会兼职" items={pi.service} />
           </div>
-        </details>
-      ) : null}
+        ) : null}
+      </div>
 
-      {/* 招生信息（保留你原来的底部灰底块） */}
-      {recruitmentZh ? (
-        <div className="mt-6 rounded-2xl bg-gray-50 p-5 text-sm text-gray-700">
-          <div className="font-semibold mb-2">招生信息</div>
-          <div className="leading-relaxed">{recruitmentZh}</div>
+      {/* 招生信息 */}
+      <div className="mt-6 rounded-2xl bg-gray-50 p-5 md:p-6">
+        <div className="font-semibold text-gray-800">招生信息</div>
+        <div className="mt-2 text-sm leading-relaxed text-gray-700 md:text-base">
+          {pi.recruit}
         </div>
-      ) : null}
+      </div>
+    </div>
+  );
+}
+
+function InfoBlock({
+  title,
+  items,
+}: {
+  title: string;
+  items: { time: string; text: string }[];
+}) {
+  return (
+    <div className="rounded-2xl border bg-white p-5">
+      <div className="font-semibold text-gray-900">{title}</div>
+      <div className="mt-3 space-y-3">
+        {items.map((it, idx) => (
+          <div key={idx} className="text-sm md:text-base">
+            <div className="text-xs text-gray-500 md:text-sm">{it.time}</div>
+            <div className="mt-1 text-gray-700 leading-relaxed">{it.text}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
