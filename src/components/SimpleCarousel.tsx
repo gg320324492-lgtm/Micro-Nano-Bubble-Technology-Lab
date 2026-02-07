@@ -3,6 +3,7 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { assetPath } from "@/lib/assetPath";
 
 type CarouselImage = {
   src: string;
@@ -52,7 +53,7 @@ export default function SimpleCarousel({
       <div className="relative w-full overflow-hidden rounded-2xl border bg-white shadow-sm">
         <div className="relative aspect-[16/9] w-full">
           <Image
-            src={images[index].src}
+            src={assetPath(images[index].src)}
             alt={images[index].alt ?? `photo-${index + 1}`}
             fill
             className="object-cover"
