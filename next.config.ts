@@ -1,7 +1,9 @@
+// next.config.ts
 import type { NextConfig } from "next";
 
 const repoName = "Micro-Nano-Bubble-Technology-Lab";
-const isGh = process.env.GITHUB_ACTIONS === "true" || process.env.GITHUB_ACTIONS === "1";
+const isGh =
+  process.env.GITHUB_ACTIONS === "true" || process.env.GITHUB_ACTIONS === "1";
 const base = isGh ? `/${repoName}` : "";
 
 const nextConfig: NextConfig = {
@@ -12,7 +14,7 @@ const nextConfig: NextConfig = {
   basePath: base,
   assetPrefix: isGh ? `${base}/` : "",
 
-  // ✅ 关键：让客户端代码也知道 basePath
+  // 关键：把 basePath 注入到浏览器端，后面用来拼图片路径
   env: {
     NEXT_PUBLIC_BASE_PATH: base,
   },
