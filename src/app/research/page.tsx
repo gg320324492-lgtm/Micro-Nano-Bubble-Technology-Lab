@@ -1,7 +1,9 @@
 // src/app/research/page.tsx
+import type React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import researchDirections, { ResearchDirection } from "@/data/research";
+import { assetPath } from "@/lib/assetPath";
 
 function groupDirections(list: ResearchDirection[]) {
   const coreSlugs = new Set([
@@ -43,17 +45,14 @@ function isNoisyTag(raw: string) {
   const s = (raw ?? "").trim();
   if (!s) return true;
 
-  // 过滤技术缩写/符号
   if (/pH/i.test(s)) return true;
   if (/CT/i.test(s)) return true;
   if (/·?\s*OH/i.test(s)) return true;
   if (/O\s*3/i.test(s) || /O₃/i.test(s)) return true;
 
-  // 过滤英文标签（Venturi/Swirl-Venturi 等）
   const hasCJK = /[\u4e00-\u9fff]/.test(s);
   if (!hasCJK) return true;
 
-  // 太短的不要
   const core = s.replace(/[^\p{L}\p{N}]+/gu, "");
   if (core.length <= 2) return true;
 
@@ -80,7 +79,13 @@ function coverFocusYBySlug(slug: string) {
   return map[slug] ?? 45;
 }
 
-function ResearchCard({ d, kind }: { d: ResearchDirection; kind: "core" | "app" }) {
+function ResearchCard({
+  d,
+  kind,
+}: {
+  d: ResearchDirection;
+  kind: "core" | "app";
+}) {
   const href = `/research/${d.slug}`;
   const cover = d.cover ?? "";
   const tags = pickCardTags(d);
@@ -91,13 +96,20 @@ function ResearchCard({ d, kind }: { d: ResearchDirection; kind: "core" | "app" 
       : coverFocusYBySlug(d.slug);
 
   return (
-    <Link href={href} className="group block h-full" aria-label={`查看研究方向：${d.titleZh}`}>
+    <Link
+      href={href}
+      className="group block h-full"
+      aria-label={`查看研究方向：${d.titleZh}`}
+    >
       <div className="flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
         {/* 封面 */}
-        <div className="relative w-full bg-muted" style={{ aspectRatio: "16 / 10" }}>
+        <div
+          className="relative w-full bg-muted"
+          style={{ aspectRatio: "16 / 10" }}
+        >
           {cover ? (
             <Image
-              src={cover}
+              src={assetPath(cover)}
               alt={d.titleZh}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -114,19 +126,24 @@ function ResearchCard({ d, kind }: { d: ResearchDirection; kind: "core" | "app" 
           <div className="min-h-[56px]">
             <div className="text-base font-semibold leading-6">{d.titleZh}</div>
             {d.titleEn ? (
-              <div className="mt-1 text-xs text-muted-foreground">{d.titleEn}</div>
+              <div className="mt-1 text-xs text-muted-foreground">
+                {d.titleEn}
+              </div>
             ) : null}
           </div>
 
           {d.briefZh ? (
-            <p className="mt-2 text-sm leading-6 text-muted-foreground" style={clamp2Style()}>
+            <p
+              className="mt-2 text-sm leading-6 text-muted-foreground"
+              style={clamp2Style()}
+            >
               {d.briefZh}
             </p>
           ) : (
             <div className="mt-2" />
           )}
 
-          {/* 标签（最多2个，且只显示中文长标签） */}
+          {/* 标签 */}
           {tags.length ? (
             <div className="mt-3 flex flex-wrap gap-2">
               {tags.map((t) => (
@@ -142,13 +159,16 @@ function ResearchCard({ d, kind }: { d: ResearchDirection; kind: "core" | "app" 
             <div className="mt-3" />
           )}
 
-          {/* CTA 固定右下角 */}
+          {/* CTA */}
           <div className="mt-auto flex items-center justify-between pt-4">
             <span className="text-xs text-muted-foreground">
               {kind === "core" ? "机理 / 指标 / 装备" : "场景 / 风险边界 / SOP"}
             </span>
             <span className="inline-flex items-center gap-1 rounded-full border bg-white px-3 py-1.5 text-sm font-medium shadow-sm transition-colors group-hover:bg-muted">
-              查看详情 <span className="transition-transform group-hover:translate-x-0.5">→</span>
+              查看详情{" "}
+              <span className="transition-transform group-hover:translate-x-0.5">
+                →
+              </span>
             </span>
           </div>
         </div>
@@ -161,7 +181,6 @@ export default function ResearchPage() {
   const { core, apps } = groupDirections(researchDirections);
 
   return (
-    // ✅ 关键：这里不用你原来的 Container（偏瘦），直接用 max-w-7xl“加宽版”
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="py-10 md:py-12">
         <div className="mb-8">
@@ -173,7 +192,9 @@ export default function ResearchPage() {
 
         <section>
           <div className="mb-4">
-            <div className="text-lg font-semibold">核心研究方向 Core Areas</div>
+            <div className="text-lg font-semibold">
+              核心研究方向 Core Areas
+            </div>
             <div className="mt-1 text-sm text-muted-foreground">
               面向关键机理与工程指标，支撑工艺放大与设备开发。
             </div>
