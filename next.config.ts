@@ -1,22 +1,16 @@
-// next.config.ts
 import type { NextConfig } from "next";
 
-const repoName = "Micro-Nano-Bubble-Technology-Lab"; // ← 改成你的仓库名（大小写要一致）
+const repoName = "Micro-Nano-Bubble-Technology-Lab"; // 仓库名必须完全一致（大小写也一致）
 
 const nextConfig: NextConfig = {
-  // 关键：生成 out/，供 GitHub Pages 部署
+  // 关键：静态导出，GitHub Pages 需要
   output: "export",
-
-  // 建议：让路径更稳定（GitHub Pages 常用）
   trailingSlash: true,
 
-  // GitHub Pages 不支持 Next Image 服务端优化，必须关掉
-  images: {
-    unoptimized: true,
-  },
+  // GitHub Pages 必开（不然 next/image 会出问题）
+  images: { unoptimized: true },
 
-  // 关键：让资源在 /仓库名/ 下正常工作
-  // 本地开发仍然是根路径，不受影响
+  // 让资源路径在 /仓库名/ 下正确工作（仅部署到 Pages 时启用）
   basePath: process.env.GITHUB_ACTIONS ? `/${repoName}` : "",
   assetPrefix: process.env.GITHUB_ACTIONS ? `/${repoName}/` : "",
 };
