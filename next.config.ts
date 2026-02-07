@@ -1,20 +1,9 @@
-import type { NextConfig } from "next";
+const repo = "Micro-Nano-Bubble-Technology-Lab";
+const isProd = process.env.NODE_ENV === "production";
 
-const repoName = "Micro-Nano-Bubble-Technology-Lab";
-const isGh = process.env.GITHUB_ACTIONS === "true" || process.env.GITHUB_ACTIONS === "1";
-const base = isGh ? `/${repoName}` : "";
-
-const nextConfig: NextConfig = {
+module.exports = {
   output: "export",
-  trailingSlash: true,
+  basePath: isProd ? `/${repo}` : "",
+  assetPrefix: isProd ? `/${repo}/` : "",
   images: { unoptimized: true },
-
-  basePath: base,
-  assetPrefix: isGh ? `${base}/` : "",
-
-  env: {
-    NEXT_PUBLIC_BASE_PATH: base,
-  },
 };
-
-export default nextConfig;
