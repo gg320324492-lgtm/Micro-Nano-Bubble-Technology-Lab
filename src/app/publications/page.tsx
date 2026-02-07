@@ -58,12 +58,11 @@ function pickSubtitle(item: any): string {
 }
 
 function pickLink(item: any): string | undefined {
-  if (item?.doi) {
+  if (item?.doi)
     return `https://doi.org/${toStr(item.doi).replace(
       /^https?:\/\/doi\.org\//,
       ""
     )}`;
-  }
   return item?.link ?? item?.url ?? item?.href ?? undefined;
 }
 
@@ -80,44 +79,34 @@ function normalize(s: string) {
   return s.toLowerCase().replace(/\s+/g, " ").trim();
 }
 
-// ✅ 只在浏览器里读 URL 参数（不再用 useSearchParams，静态导出更稳）
-function getTabFromUrl(): TabKey | null {
-  if (typeof window === "undefined") return null;
-  const t = new URLSearchParams(window.location.search).get("tab");
-  if (t === "papers" || t === "patents" || t === "honors") return t;
-  return null;
-}
-
-// ✅ tab 变化时，把 tab 写回 URL（不依赖 next/router）
-function writeTabToUrl(tab: TabKey) {
-  if (typeof window === "undefined") return;
-  const url = new URL(window.location.href);
-  url.searchParams.set("tab", tab);
-  window.history.replaceState({}, "", url.toString());
-}
-
 export default function PublicationsPage() {
   const [tab, setTab] = useState<TabKey>("papers");
   const [q, setQ] = useState("");
   const [year, setYear] = useState<string>("all");
+  const [ready, setReady] = useState(false);
 
   const publications = useMemo(() => pickList(pubsMod) as any[], []);
   const patents = useMemo(() => pickList(patentsMod) as any[], []);
   const honors = useMemo(() => pickList(honorsMod) as any[], []);
 
-  // ✅ 首次进入页面：如果 URL 带了 ?tab=patents / honors，就切过去
+  // ✅ 首次挂载：从 URL 读 tab（不用 useSearchParams，避免构建报错）
   useEffect(() => {
-    const t = getTabFromUrl();
-    if (t && t !== tab) setTab(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const sp = new URLSearchParams(window.location.search);
+    const t = sp.get("tab") as TabKey | null;
+    if (t === "papers" || t === "patents" || t === "honors") setTab(t);
+    setReady(true);
   }, []);
 
-  // ✅ tab 变化：同步 URL + 重置筛选（和你原逻辑一致）
+  // ✅ tab 变化时同步 URL（便于分享 /publications?tab=honors）
   useEffect(() => {
-    writeTabToUrl(tab);
+    if (!ready) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", tab);
+    window.history.replaceState(null, "", url.toString());
+
     setQ("");
     setYear("all");
-  }, [tab]);
+  }, [tab, ready]);
 
   const activeList = useMemo(() => {
     if (tab === "patents") return patents;
@@ -167,9 +156,7 @@ export default function PublicationsPage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-semibold tracking-tight">
           成果{" "}
-          <span className="text-gray-400">
-            Publications & Patents & Honors
-          </span>
+          <span className="text-gray-400">Publications & Patents & Honors</span>
         </h1>
         <p className="text-sm text-gray-500">
           支持搜索、按年份筛选、Featured 置顶，以及 DOI/链接直达。
