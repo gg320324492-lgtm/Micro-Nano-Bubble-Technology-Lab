@@ -8,7 +8,7 @@ import { assetPath } from "@/lib/assetPath";
 // ✅ 静态导出必须：告诉 Next 这类动态路由有哪些 slug
 export const dynamicParams = false;
 export function generateStaticParams() {
-  return industrialBases.map((b) => ({ slug: b.slug }));
+  return industrialBases.map((b) => ({ slug: String(b.slug) }));
 }
 
 function CoverHero({ src, alt }: { src?: string; alt: string }) {
@@ -19,31 +19,42 @@ function CoverHero({ src, alt }: { src?: string; alt: string }) {
   }
   return (
     <div className="relative h-56 w-full overflow-hidden rounded-2xl border bg-gray-50">
-      <Image src={assetPath(src)} alt={alt} fill className="object-cover" />
+      <Image
+        src={assetPath(src)}
+        alt={alt}
+        fill
+        className="object-cover"
+        sizes="100vw"
+      />
     </div>
   );
 }
 
-type RouteParams = { slug: string };
-type Props = { params: RouteParams };
+type Props = { params: any };
 
-export default function IndustrialBaseDetailPage({ params }: Props) {
-  const slug = params?.slug?.toString()?.trim();
-  const base = industrialBases.find((b) => b.slug === slug);
+export default async function IndustrialBaseDetailPage(props: Props) {
+  // ✅ 关键修复：兼容 params 是对象 or Promise（某些版本/导出形态下会出现）
+  const p = await Promise.resolve(props?.params);
+  const slug = String(p?.slug ?? "").trim();
+
+  const base = industrialBases.find((b) => String(b.slug) === slug);
 
   if (!base) {
     return (
       <main className="py-10">
         <h1 className="text-2xl font-semibold">未找到该基地</h1>
-        <p className="mt-2 text-sm text-gray-600">当前 slug：{slug ?? "(空)"}</p>
+        <p className="mt-2 text-sm text-gray-600">当前 slug：{slug || "(空)"}</p>
 
         <div className="mt-6 rounded-2xl border p-5">
           <div className="font-semibold">可用 slug（点击直达）</div>
           <ul className="mt-3 list-disc pl-5 text-sm text-gray-700 space-y-1">
             {industrialBases.map((b) => (
               <li key={b.slug}>
-                <Link className="underline" href={`/industrialization/${b.slug}`}>
-                  {b.slug}
+                <Link
+                  className="underline"
+                  href={`/industrialization/${String(b.slug)}/`}
+                >
+                  {String(b.slug)}
                 </Link>{" "}
                 —— {b.titleZh}
               </li>
@@ -53,7 +64,7 @@ export default function IndustrialBaseDetailPage({ params }: Props) {
 
         <div className="mt-6">
           <Link
-            href="/industrialization"
+            href="/industrialization/"
             className="rounded-xl border px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
           >
             ← 返回产业化列表
@@ -67,7 +78,7 @@ export default function IndustrialBaseDetailPage({ params }: Props) {
     <main className="py-10">
       <div className="flex flex-wrap items-center gap-2">
         <Link
-          href="/industrialization"
+          href="/industrialization/"
           className="rounded-xl border px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
         >
           ← 返回产业化列表
@@ -101,7 +112,9 @@ export default function IndustrialBaseDetailPage({ params }: Props) {
 
         <div className="mt-5">
           <h1 className="text-3xl font-semibold tracking-tight">{base.titleZh}</h1>
-          {base.titleEn ? <div className="mt-1 text-sm text-gray-500">{base.titleEn}</div> : null}
+          {base.titleEn ? (
+            <div className="mt-1 text-sm text-gray-500">{base.titleEn}</div>
+          ) : null}
 
           <p className="mt-3 text-sm leading-relaxed text-gray-700">{base.briefZh}</p>
 
@@ -166,10 +179,13 @@ export default function IndustrialBaseDetailPage({ params }: Props) {
                     alt={img.alt ?? base.titleZh}
                     fill
                     className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 33vw"
                   />
                 </div>
                 {img.captionZh ? (
-                  <figcaption className="mt-2 text-xs text-gray-600">{img.captionZh}</figcaption>
+                  <figcaption className="mt-2 text-xs text-gray-600">
+                    {img.captionZh}
+                  </figcaption>
                 ) : null}
               </figure>
             ))}
