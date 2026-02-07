@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 // ✅ 兼容导入：不要求 data 文件必须 default export
@@ -60,7 +60,11 @@ function pickSubtitle(item: any): string {
 }
 
 function pickLink(item: any): string | undefined {
-  if (item?.doi) return `https://doi.org/${toStr(item.doi).replace(/^https?:\/\/doi\.org\//, "")}`;
+  if (item?.doi)
+    return `https://doi.org/${toStr(item.doi).replace(
+      /^https?:\/\/doi\.org\//,
+      ""
+    )}`;
   return item?.link ?? item?.url ?? item?.href ?? undefined;
 }
 
@@ -77,7 +81,22 @@ function normalize(s: string) {
   return s.toLowerCase().replace(/\s+/g, " ").trim();
 }
 
+/**
+ * ✅ 外层：只负责包 Suspense
+ * 这样 Next.js 静态导出时不会因为 useSearchParams 报错
+ */
 export default function PublicationsPage() {
+  return (
+    <Suspense fallback={<main className="py-10" />}>
+      <PublicationsInner />
+    </Suspense>
+  );
+}
+
+/**
+ * ✅ 你原来的页面逻辑全部放这里（几乎一字不改）
+ */
+function PublicationsInner() {
   const router = useRouter();
   const sp = useSearchParams();
 
@@ -150,7 +169,10 @@ export default function PublicationsPage() {
     <main className="py-10">
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-semibold tracking-tight">
-          成果 <span className="text-gray-400">Publications & Patents & Honors</span>
+          成果{" "}
+          <span className="text-gray-400">
+            Publications & Patents & Honors
+          </span>
         </h1>
         <p className="text-sm text-gray-500">
           支持搜索、按年份筛选、Featured 置顶，以及 DOI/链接直达。
