@@ -12,7 +12,13 @@ function Cover({ src, alt }: { src?: string; alt: string }) {
   }
   return (
     <div className="relative h-56 w-full overflow-hidden rounded-2xl border bg-gray-50">
-      <Image src={assetPath(src)} alt={alt} fill className="object-cover" />
+      <Image
+        src={assetPath(src)}
+        alt={alt}
+        fill
+        className="object-cover"
+        sizes="(max-width: 1024px) 100vw, 50vw"
+      />
     </div>
   );
 }
@@ -33,18 +39,23 @@ export default function IndustrializationPage() {
             <div className="mt-4 flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <div className="text-xl font-semibold">{b.titleZh}</div>
-                {b.titleEn ? <div className="text-sm text-gray-500">{b.titleEn}</div> : null}
+                {b.titleEn ? (
+                  <div className="text-sm text-gray-500">{b.titleEn}</div>
+                ) : null}
               </div>
 
+              {/* ✅ 强制带尾部 /，完全匹配 trailingSlash 导出的目录结构 */}
               <Link
-                href={`/industrialization/${encodeURIComponent(b.slug)}`}
+                href={`/industrialization/${encodeURIComponent(String(b.slug))}/`}
                 className="shrink-0 rounded-full border px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
               >
                 查看详情
               </Link>
             </div>
 
-            <p className="mt-3 text-sm leading-relaxed text-gray-700">{b.briefZh}</p>
+            <p className="mt-3 text-sm leading-relaxed text-gray-700">
+              {b.briefZh}
+            </p>
 
             {b.locationZh ? (
               <div className="mt-3 text-sm text-gray-600">
