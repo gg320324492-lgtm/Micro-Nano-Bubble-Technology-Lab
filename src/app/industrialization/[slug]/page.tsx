@@ -1,7 +1,8 @@
+// src/app/industrialization/[slug]/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 import industrialBases from "@/data/industrialization";
-import { assetPath } from "@/lib/asset";
+import { assetPath } from "@/lib/assetPath";
 
 function CoverHero({ src, alt }: { src?: string; alt: string }) {
   if (!src) {
@@ -11,23 +12,22 @@ function CoverHero({ src, alt }: { src?: string; alt: string }) {
   }
   return (
     <div className="relative h-56 w-full overflow-hidden rounded-2xl border bg-gray-50">
-      <Image src={assetPath(src)!} alt={alt} fill className="object-cover" sizes="100vw" />
+      <Image src={assetPath(src)} alt={alt} fill className="object-cover" />
     </div>
   );
 }
 
-// ✅ 静态导出 + 动态路由必须提供
-export const dynamicParams = false;
-export function generateStaticParams() {
-  return industrialBases.map((b) => ({ slug: b.slug }));
-}
+type RouteParams = { slug?: string | string[] };
+type Props = { params: RouteParams | Promise<RouteParams> };
 
-export default function IndustrialBaseDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const slug = params?.slug?.toString()?.trim();
+export default async function IndustrialBaseDetailPage(props: Props) {
+  const p = await Promise.resolve(props.params);
+
+  const slugRaw = p?.slug;
+  const slug = (
+    Array.isArray(slugRaw) ? slugRaw[0] : slugRaw
+  )?.toString()?.trim();
+
   const base = industrialBases.find((b) => b.slug === slug);
 
   if (!base) {
@@ -100,7 +100,9 @@ export default function IndustrialBaseDetailPage({
 
         <div className="mt-5">
           <h1 className="text-3xl font-semibold tracking-tight">{base.titleZh}</h1>
-          {base.titleEn ? <div className="mt-1 text-sm text-gray-500">{base.titleEn}</div> : null}
+          {base.titleEn ? (
+            <div className="mt-1 text-sm text-gray-500">{base.titleEn}</div>
+          ) : null}
 
           <p className="mt-3 text-sm leading-relaxed text-gray-700">{base.briefZh}</p>
 
@@ -161,15 +163,16 @@ export default function IndustrialBaseDetailPage({
               <figure key={img.src} className="rounded-2xl border p-3">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-50">
                   <Image
-                    src={assetPath(img.src)!}
+                    src={assetPath(img.src)}
                     alt={img.alt ?? base.titleZh}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 33vw"
                   />
                 </div>
                 {img.captionZh ? (
-                  <figcaption className="mt-2 text-xs text-gray-600">{img.captionZh}</figcaption>
+                  <figcaption className="mt-2 text-xs text-gray-600">
+                    {img.captionZh}
+                  </figcaption>
                 ) : null}
               </figure>
             ))}
