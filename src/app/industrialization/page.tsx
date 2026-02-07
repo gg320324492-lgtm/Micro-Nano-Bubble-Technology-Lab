@@ -1,6 +1,8 @@
+// src/app/industrialization/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 import industrialBases from "@/data/industrialization";
+import { assetPath } from "@/lib/assetPath";
 
 function Cover({ src, alt }: { src?: string; alt: string }) {
   if (!src) {
@@ -10,7 +12,7 @@ function Cover({ src, alt }: { src?: string; alt: string }) {
   }
   return (
     <div className="relative h-56 w-full overflow-hidden rounded-2xl border bg-gray-50">
-      <Image src={src} alt={alt} fill className="object-cover" />
+      <Image src={assetPath(src)} alt={alt} fill className="object-cover" />
     </div>
   );
 }
@@ -31,9 +33,7 @@ export default function IndustrializationPage() {
             <div className="mt-4 flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <div className="text-xl font-semibold">{b.titleZh}</div>
-                {b.titleEn ? (
-                  <div className="text-sm text-gray-500">{b.titleEn}</div>
-                ) : null}
+                {b.titleEn ? <div className="text-sm text-gray-500">{b.titleEn}</div> : null}
               </div>
 
               <Link
@@ -46,7 +46,6 @@ export default function IndustrializationPage() {
 
             <p className="mt-3 text-sm leading-relaxed text-gray-700">{b.briefZh}</p>
 
-            {/* ✅ 列表页位置：可点击跳转到高德 */}
             {b.locationZh ? (
               <div className="mt-3 text-sm text-gray-600">
                 <span className="font-medium text-gray-900">位置/说明：</span>
@@ -73,7 +72,6 @@ export default function IndustrializationPage() {
               </ul>
             ) : null}
 
-            {/* ✅ 监测大屏按钮：不动（仍是外链） */}
             {b.monitorUrl ? (
               <div className="mt-5">
                 <a
