@@ -1,8 +1,15 @@
 // src/app/industrialization/[slug]/page.tsx
 import Image from "next/image";
 import Link from "next/link";
+
 import industrialBases from "@/data/industrialization";
 import { assetPath } from "@/lib/assetPath";
+
+// ✅ 静态导出必须：告诉 Next 这类动态路由有哪些 slug
+export const dynamicParams = false;
+export function generateStaticParams() {
+  return industrialBases.map((b) => ({ slug: b.slug }));
+}
 
 function CoverHero({ src, alt }: { src?: string; alt: string }) {
   if (!src) {
@@ -17,17 +24,11 @@ function CoverHero({ src, alt }: { src?: string; alt: string }) {
   );
 }
 
-type RouteParams = { slug?: string | string[] };
-type Props = { params: RouteParams | Promise<RouteParams> };
+type RouteParams = { slug: string };
+type Props = { params: RouteParams };
 
-export default async function IndustrialBaseDetailPage(props: Props) {
-  const p = await Promise.resolve(props.params);
-
-  const slugRaw = p?.slug;
-  const slug = (
-    Array.isArray(slugRaw) ? slugRaw[0] : slugRaw
-  )?.toString()?.trim();
-
+export default function IndustrialBaseDetailPage({ params }: Props) {
+  const slug = params?.slug?.toString()?.trim();
   const base = industrialBases.find((b) => b.slug === slug);
 
   if (!base) {
@@ -100,9 +101,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
 
         <div className="mt-5">
           <h1 className="text-3xl font-semibold tracking-tight">{base.titleZh}</h1>
-          {base.titleEn ? (
-            <div className="mt-1 text-sm text-gray-500">{base.titleEn}</div>
-          ) : null}
+          {base.titleEn ? <div className="mt-1 text-sm text-gray-500">{base.titleEn}</div> : null}
 
           <p className="mt-3 text-sm leading-relaxed text-gray-700">{base.briefZh}</p>
 
@@ -170,9 +169,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                   />
                 </div>
                 {img.captionZh ? (
-                  <figcaption className="mt-2 text-xs text-gray-600">
-                    {img.captionZh}
-                  </figcaption>
+                  <figcaption className="mt-2 text-xs text-gray-600">{img.captionZh}</figcaption>
                 ) : null}
               </figure>
             ))}
