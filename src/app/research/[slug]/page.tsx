@@ -1,10 +1,12 @@
 // src/app/research/[slug]/page.tsx
+import type React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 import Container from "@/components/Container";
 import LightboxGallery, { GalleryItem } from "@/components/LightboxGallery";
 import researchDirections, { ResearchDirection } from "@/data/research";
+import { assetPath } from "@/lib/assetPath";
 
 type PageProps =
   | { params: { slug: string } }
@@ -124,10 +126,7 @@ export default async function ResearchDetailPage(props: PageProps) {
     focusY: typeof (g as any).focusY === "number" ? (g as any).focusY : 40,
   }));
 
-  // ✅ 只保留四个“大卡片”
   const topBullets = bulletsZh.slice(0, 4);
-
-  // ✅ 核心概览：sections 合并成一段
   const coreParagraph = mergeSectionsToParagraph(sections);
 
   return (
@@ -137,7 +136,7 @@ export default async function ResearchDetailPage(props: PageProps) {
         <div className="relative h-[240px] w-full overflow-hidden border-b bg-muted md:h-[300px]">
           {cover ? (
             <Image
-              src={cover}
+              src={assetPath(cover)}
               alt={titleZh}
               fill
               priority
@@ -151,13 +150,11 @@ export default async function ResearchDetailPage(props: PageProps) {
 
         <Container>
           <div className="-mt-14 rounded-3xl border bg-white p-6 shadow-sm md:-mt-16 md:p-7">
-            {/* 顶部：分组徽标 */}
             <div className="flex flex-wrap gap-2">
               {item.group ? <Badge>{item.group}</Badge> : null}
               {item.category ? <Badge>{item.category}</Badge> : null}
             </div>
 
-            {/* ✅ 黑色标题右侧按钮（你红圈位置） */}
             <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
               <div>
                 <h1 className="text-2xl font-semibold md:text-3xl">{titleZh}</h1>
@@ -175,9 +172,6 @@ export default async function ResearchDetailPage(props: PageProps) {
             <div className="mt-4">
               <p className="leading-7 text-muted-foreground">{briefZh}</p>
 
-              {/* ✅ 关键词标签这一行已完全删除（CT值/pH窗口/·OH等都不会出现） */}
-
-              {/* ✅ 只保留四个“大圆角卡片” */}
               {topBullets.length ? (
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   {topBullets.map((b) => (
@@ -188,7 +182,6 @@ export default async function ResearchDetailPage(props: PageProps) {
                 </div>
               ) : null}
 
-              {/* ✅ 四段合并成一段话 */}
               {coreParagraph ? (
                 <div className="mt-6 rounded-2xl border bg-background p-5">
                   <div className="text-base font-semibold">核心概览</div>
@@ -205,6 +198,8 @@ export default async function ResearchDetailPage(props: PageProps) {
         <div className="py-10">
           {gallery.length ? (
             <div className="rounded-3xl border bg-white p-4 shadow-sm md:p-6">
+              {/* ✅ 这里 gallery 的 src 不用提前 assetPath，
+                  因为 LightboxGallery 我也给你做了整文件替换（见下） */}
               <LightboxGallery items={gallery} />
             </div>
           ) : null}
