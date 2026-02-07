@@ -2,8 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 // ✅ 兼容导入：不要求 data 文件必须 default export
 import * as pubsMod from "@/data/publications";
@@ -46,7 +45,6 @@ function pickTitle(item: any): string {
 }
 
 function pickSubtitle(item: any): string {
-  // 论文/专利/荣誉都尽量找一个“第二行信息”
   return (
     toStr(item?.venue) ||
     toStr(item?.journal) ||
@@ -60,11 +58,12 @@ function pickSubtitle(item: any): string {
 }
 
 function pickLink(item: any): string | undefined {
-  if (item?.doi)
+  if (item?.doi) {
     return `https://doi.org/${toStr(item.doi).replace(
       /^https?:\/\/doi\.org\//,
       ""
     )}`;
+  }
   return item?.link ?? item?.url ?? item?.href ?? undefined;
 }
 
@@ -81,30 +80,24 @@ function normalize(s: string) {
   return s.toLowerCase().replace(/\s+/g, " ").trim();
 }
 
-/**
- * ✅ 外层：只负责包 Suspense
- * 这样 Next.js 静态导出时不会因为 useSearchParams 报错
- */
-export default function PublicationsPage() {
-  return (
-    <Suspense fallback={<main className="py-10" />}>
-      <PublicationsInner />
-    </Suspense>
-  );
+// ✅ 只在浏览器里读 URL 参数（不再用 useSearchParams，静态导出更稳）
+function getTabFromUrl(): TabKey | null {
+  if (typeof window === "undefined") return null;
+  const t = new URLSearchParams(window.location.search).get("tab");
+  if (t === "papers" || t === "patents" || t === "honors") return t;
+  return null;
 }
 
-/**
- * ✅ 你原来的页面逻辑全部放这里（几乎一字不改）
- */
-function PublicationsInner() {
-  const router = useRouter();
-  const sp = useSearchParams();
+// ✅ tab 变化时，把 tab 写回 URL（不依赖 next/router）
+function writeTabToUrl(tab: TabKey) {
+  if (typeof window === "undefined") return;
+  const url = new URL(window.location.href);
+  url.searchParams.set("tab", tab);
+  window.history.replaceState({}, "", url.toString());
+}
 
-  const initialTab = (sp.get("tab") as TabKey) || "papers";
-
-  const [tab, setTab] = useState<TabKey>(
-    initialTab === "patents" || initialTab === "honors" ? initialTab : "papers"
-  );
+export default function PublicationsPage() {
+  const [tab, setTab] = useState<TabKey>("papers");
   const [q, setQ] = useState("");
   const [year, setYear] = useState<string>("all");
 
@@ -112,13 +105,18 @@ function PublicationsInner() {
   const patents = useMemo(() => pickList(patentsMod) as any[], []);
   const honors = useMemo(() => pickList(honorsMod) as any[], []);
 
-  // tab 变化时同步 URL（便于从 /honors 重定向过来定位到荣誉）
+  // ✅ 首次进入页面：如果 URL 带了 ?tab=patents / honors，就切过去
   useEffect(() => {
-    const next = `/publications?tab=${tab}`;
-    router.replace(next, { scroll: false });
+    const t = getTabFromUrl();
+    if (t && t !== tab) setTab(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ✅ tab 变化：同步 URL + 重置筛选（和你原逻辑一致）
+  useEffect(() => {
+    writeTabToUrl(tab);
     setQ("");
     setYear("all");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab]);
 
   const activeList = useMemo(() => {
@@ -154,7 +152,6 @@ function PublicationsInner() {
         return hay.includes(nq);
       })
       .sort((a, b) => {
-        // Featured 置顶，其次按年份倒序
         const fa = a?.featured ? 1 : 0;
         const fb = b?.featured ? 1 : 0;
         if (fa !== fb) return fb - fa;
@@ -267,14 +264,12 @@ function PublicationsInner() {
                     <div className="mt-1 text-sm text-gray-600">{subtitle}</div>
                   ) : null}
 
-                  {/* 可选的额外描述 */}
                   {it?.briefZh || it?.note ? (
                     <div className="mt-2 text-sm text-gray-700">
                       {toStr(it?.briefZh || it?.note)}
                     </div>
                   ) : null}
 
-                  {/* badges */}
                   {badges.length ? (
                     <div className="mt-3 flex flex-wrap gap-2">
                       {badges.map((b) => (
@@ -288,7 +283,6 @@ function PublicationsInner() {
                     </div>
                   ) : null}
 
-                  {/* 快捷链接 */}
                   {it?.doi ? (
                     <div className="mt-3 text-sm text-gray-600">
                       DOI：
@@ -307,7 +301,6 @@ function PublicationsInner() {
                   ) : null}
                 </div>
 
-                {/* 右侧小按钮：仅在有 link 时显示 */}
                 {link ? (
                   <a
                     href={link}
@@ -330,7 +323,6 @@ function PublicationsInner() {
         ) : null}
       </div>
 
-      {/* 底部：如果你想放一个“去联系/合作”的引导，看齐你站点风格 */}
       <div className="mt-10 flex gap-2">
         <Link
           href="/contact"
