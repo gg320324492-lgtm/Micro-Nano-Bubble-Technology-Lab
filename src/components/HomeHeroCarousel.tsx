@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { assetPath } from "@/lib/assetPath";
 
 type Slide = {
   src: string;
@@ -63,7 +64,6 @@ export default function HomeHeroCarousel() {
       onMouseLeave={startAuto}
       aria-label="Home hero carousel"
     >
-      {/* Slides */}
       <div className="absolute inset-0">
         {slides.map((s, i) => {
           const active = i === index;
@@ -75,9 +75,8 @@ export default function HomeHeroCarousel() {
                 active ? "opacity-100" : "opacity-0",
               ].join(" ")}
             >
-              {/* ✅ 关键：object-contain，整张图完整显示（不会裁剪） */}
               <Image
-                src={s.src}
+                src={assetPath(s.src)}
                 alt={s.alt}
                 fill
                 priority={i === 0}
@@ -89,7 +88,6 @@ export default function HomeHeroCarousel() {
         })}
       </div>
 
-      {/* Dots */}
       {total > 1 ? (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
           {slides.map((_, i) => (
@@ -107,7 +105,6 @@ export default function HomeHeroCarousel() {
         </div>
       ) : null}
 
-      {/* Prev/Next（可选） */}
       {total > 1 ? (
         <>
           <button
