@@ -1,7 +1,9 @@
+// src/components/LightboxGallery.tsx
 "use client";
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { assetPath } from "@/lib/assetPath";
 
 export type GalleryItem = {
   src: string;
@@ -48,7 +50,6 @@ export default function LightboxGallery({
         <div className="text-sm text-muted-foreground">{safe.length} 张</div>
       </div>
 
-      {/* ✅ 关键：永远最多2列，2张图就铺满整行，不留空列 */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {safe.map((it, i) => (
           <button
@@ -62,7 +63,7 @@ export default function LightboxGallery({
             aria-label={`open-${i}`}
           >
             <Image
-              src={it.src}
+              src={assetPath(it.src)}
               alt={it.alt || `gallery-${i + 1}`}
               fill
               sizes="(max-width: 640px) 100vw, 50vw"
@@ -83,7 +84,7 @@ export default function LightboxGallery({
             <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black shadow-xl">
               <div className="relative aspect-[16/10]">
                 <Image
-                  src={cur.src}
+                  src={assetPath(cur.src)}
                   alt={cur.alt || "preview"}
                   fill
                   sizes="92vw"
