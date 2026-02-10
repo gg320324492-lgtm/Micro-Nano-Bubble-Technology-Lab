@@ -6,8 +6,16 @@ type Props = Omit<ImageProps, "src"> & { src: string };
 
 export default function PublicImage({
   src,
+  alt = "",
   unoptimized = true,
   ...props
 }: Props) {
-  return <Image {...props} src={assetPath(src)} unoptimized={unoptimized} />;
+  return (
+    <Image
+      {...props}
+      src={assetPath(src)}
+      alt={alt ?? ""}
+      unoptimized={unoptimized}
+    />
+  );
 }
