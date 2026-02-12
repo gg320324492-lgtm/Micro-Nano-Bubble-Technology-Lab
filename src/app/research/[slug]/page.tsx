@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import Container from "@/components/Container";
 import LightboxGallery, { GalleryItem } from "@/components/LightboxGallery";
+import Pill from "@/components/ui/Pill";
 import researchDirections, { ResearchDirection } from "@/data/research";
 import { assetPath } from "@/lib/assetPath";
 
@@ -173,11 +174,11 @@ export default async function ResearchDetailPage(props: PageProps) {
               <p className="leading-7 text-muted-foreground">{briefZh}</p>
 
               {topBullets.length ? (
-                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {topBullets.map((b) => (
-                    <div key={b} className="rounded-2xl border bg-muted px-4 py-3 text-sm">
+                    <Pill key={b} className="min-w-0">
                       {stripParen(b)}
-                    </div>
+                    </Pill>
                   ))}
                 </div>
               ) : null}
