@@ -9,9 +9,7 @@ export default function Container({
   className?: string;
 }) {
   return (
-    <div
-      className={`mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-10 ${className}`.trim()}
-    >
+    <div className={`site-container ${className}`.trim()}>
       {children}
     </div>
   );

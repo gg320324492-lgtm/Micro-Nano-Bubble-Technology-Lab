@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN">
-      <body className="min-h-dvh flex flex-col bg-white text-gray-900">
+      <body className="min-h-dvh flex flex-col antialiased">
         <SiteHeader />
 
         {/* ✅ 让所有页面内容也统一居中 + 左右留白 */}
