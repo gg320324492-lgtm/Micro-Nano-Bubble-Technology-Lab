@@ -7,6 +7,7 @@ import Section from "@/components/ui/Section";
 import Heading from "@/components/ui/Heading";
 import ListItem from "@/components/ui/ListItem";
 import { buttonClassName } from "@/components/ui/Button";
+import Reveal from "@/components/motion/Reveal";
 
 // ✅ 兼容导入：不要求 data 文件必须 default export
 import * as pubsMod from "@/data/publications";
@@ -157,7 +158,7 @@ export default function PublicationsPage() {
 
   return (
     <Section container="wide">
-      <div className="flex flex-col gap-2">
+      <Reveal className="flex flex-col gap-2">
         <Heading
           as="h1"
           title={
@@ -167,7 +168,7 @@ export default function PublicationsPage() {
           }
           subtitle="支持搜索、按年份筛选、Featured 置顶，以及 DOI/链接直达。"
         />
-      </div>
+      </Reveal>
 
       {/* Tabs */}
       <div className="mt-6 flex flex-wrap gap-2">
@@ -228,51 +229,52 @@ export default function PublicationsPage() {
           const badges = pickBadges(it);
 
           return (
-            <ListItem
-              key={`${title}-${idx}`}
-              year={y}
-              title={
-                link ? (
-                  <a href={link} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                    {title}
-                  </a>
-                ) : (
-                  title
-                )
-              }
-              subtitle={subtitle}
-              description={
-                <>
-                  {it?.briefZh || it?.note ? <>{toStr(it?.briefZh || it?.note)}</> : null}
-                  {it?.doi ? (
-                    <div className="mt-3 text-sm text-gray-600">
-                      DOI：
-                      <a
-                        className="ml-1 underline underline-offset-2"
-                        href={`https://doi.org/${toStr(it.doi).replace(/^https?:\/\/doi\.org\//, "")}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {toStr(it.doi).replace(/^https?:\/\/doi\.org\//, "")}
-                      </a>
-                    </div>
-                  ) : null}
-                </>
-              }
-              badges={badges}
-              action={
-                link ? (
-                  <a
-                    href={link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={buttonClassName("secondary", "rounded-xl px-3 py-2 text-sm")}
-                  >
-                    打开
-                  </a>
-                ) : null
-              }
-            />
+            <Reveal key={`${title}-${idx}`} delay={Math.min(idx * 0.02, 0.2)}>
+              <ListItem
+                year={y}
+                title={
+                  link ? (
+                    <a href={link} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                      {title}
+                    </a>
+                  ) : (
+                    title
+                  )
+                }
+                subtitle={subtitle}
+                description={
+                  <>
+                    {it?.briefZh || it?.note ? <>{toStr(it?.briefZh || it?.note)}</> : null}
+                    {it?.doi ? (
+                      <div className="mt-3 text-sm text-gray-600">
+                        DOI：
+                        <a
+                          className="ml-1 underline underline-offset-2"
+                          href={`https://doi.org/${toStr(it.doi).replace(/^https?:\/\/doi\.org\//, "")}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {toStr(it.doi).replace(/^https?:\/\/doi\.org\//, "")}
+                        </a>
+                      </div>
+                    ) : null}
+                  </>
+                }
+                badges={badges}
+                action={
+                  link ? (
+                    <a
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={buttonClassName("secondary", "rounded-xl px-3 py-2 text-sm")}
+                    >
+                      打开
+                    </a>
+                  ) : null
+                }
+              />
+            </Reveal>
           );
         })}
 

@@ -9,6 +9,7 @@ import Section from "@/components/ui/Section";
 import Heading from "@/components/ui/Heading";
 import Badge from "@/components/ui/Badge";
 import { buttonClassName } from "@/components/ui/Button";
+import Reveal from "@/components/motion/Reveal";
 
 function pickArray(mod: any, keys: string[]) {
   for (const k of ["default", ...keys]) {
@@ -152,7 +153,7 @@ export default function PeoplePage() {
   return (
     <Section container="wide">
       {/* Header */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <Heading
             as="h1"
@@ -169,7 +170,7 @@ export default function PeoplePage() {
             className="w-full rounded-xl border px-3 py-2 text-sm outline-none"
           />
         </div>
-      </div>
+      </Reveal>
 
       {/* Filters */}
       <div className="mt-5 flex flex-wrap items-center gap-2">
@@ -240,13 +241,14 @@ export default function PeoplePage() {
             </h2>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {items.map((p) => (
-                <PeopleCard
-                  key={p.id}
-                  person={p}
-                  onTagClick={handleTagClick}
-                  activeTag={tagFilter === "ALL" ? undefined : tagFilter}
-                />
+              {items.map((p, index) => (
+                <Reveal key={p.id} delay={index * 0.03}>
+                  <PeopleCard
+                    person={p}
+                    onTagClick={handleTagClick}
+                    activeTag={tagFilter === "ALL" ? undefined : tagFilter}
+                  />
+                </Reveal>
               ))}
             </div>
           </section>

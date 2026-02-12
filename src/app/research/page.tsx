@@ -10,6 +10,8 @@ import Heading from "@/components/ui/Heading";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { buttonClassName } from "@/components/ui/Button";
+import Reveal from "@/components/motion/Reveal";
+import ImageReveal from "@/components/motion/ImageReveal";
 
 function groupDirections(list: ResearchDirection[]) {
   const coreSlugs = new Set([
@@ -93,9 +95,11 @@ function toResearchCardThumb(src: string) {
 function ResearchCard({
   d,
   kind,
+  delay = 0,
 }: {
   d: ResearchDirection;
   kind: "core" | "app";
+  delay?: number;
 }) {
   const href = `/research/${d.slug}`;
   const cover = d.cover ?? "";
@@ -108,12 +112,13 @@ function ResearchCard({
       : coverFocusYBySlug(d.slug);
 
   return (
-    <Link
-      href={href}
-      prefetch={false}
-      className="group block h-full"
-      aria-label={`查看研究方向：${d.titleZh}`}
-    >
+    <Reveal delay={delay} className="h-full">
+      <Link
+        href={href}
+        prefetch={false}
+        className="group block h-full"
+        aria-label={`查看研究方向：${d.titleZh}`}
+      >
       <LazyMount
         rootMargin="200px 0px"
         fallback={
@@ -128,25 +133,27 @@ function ResearchCard({
       >
         <Card className="flex h-full flex-col overflow-hidden">
           {/* 封面 */}
-          <div
-            className="relative w-full bg-muted"
-            style={{ aspectRatio: "16 / 10" }}
-          >
-            {cover ? (
-              <Image
-                src={assetPath(coverThumb)}
-                alt={d.titleZh}
-                fill
-                loading="lazy"
-                decoding="async"
-                fetchPriority="low"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover"
-                style={{ objectPosition: `center ${focusY}%` }}
-              />
-            ) : null}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-          </div>
+          <ImageReveal>
+            <div
+              className="relative w-full bg-muted"
+              style={{ aspectRatio: "16 / 10" }}
+            >
+              {cover ? (
+                <Image
+                  src={assetPath(coverThumb)}
+                  alt={d.titleZh}
+                  fill
+                  loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover"
+                  style={{ objectPosition: `center ${focusY}%` }}
+                />
+              ) : null}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+            </div>
+          </ImageReveal>
 
           {/* 内容 */}
           <div className="flex flex-1 flex-col p-4">
@@ -196,7 +203,8 @@ function ResearchCard({
           </div>
         </Card>
       </LazyMount>
-    </Link>
+      </Link>
+    </Reveal>
   );
 }
 
@@ -206,13 +214,13 @@ export default function ResearchPage() {
   return (
     <Section container="wide">
       <div>
-        <div className="mb-8">
+        <Reveal className="mb-8">
           <Heading
             as="h1"
             title="研究方向"
             subtitle="我们以 O₃-MNBs 为核心平台，围绕“机理—指标—装备—场景”形成从基础到应用的研究矩阵。"
           />
-        </div>
+        </Reveal>
 
         <section>
           <div className="mb-4">
@@ -225,8 +233,8 @@ export default function ResearchPage() {
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {core.map((d) => (
-              <ResearchCard key={d.slug} d={d} kind="core" />
+            {core.map((d, index) => (
+              <ResearchCard key={d.slug} d={d} kind="core" delay={index * 0.05} />
             ))}
           </div>
         </section>
@@ -240,8 +248,8 @@ export default function ResearchPage() {
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {apps.map((d) => (
-              <ResearchCard key={d.slug} d={d} kind="app" />
+            {apps.map((d, index) => (
+              <ResearchCard key={d.slug} d={d} kind="app" delay={index * 0.05} />
             ))}
           </div>
         </section>
