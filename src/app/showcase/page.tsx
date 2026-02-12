@@ -10,6 +10,8 @@ import Reveal from "@/components/motion/Reveal";
 import ImageReveal from "@/components/motion/ImageReveal";
 
 export default function ShowcasePage() {
+  const hasPhotos = showcasePhotos?.length > 0;
+
   return (
     <Section container="wide">
       {/* 标题 */}
@@ -20,7 +22,13 @@ export default function ShowcasePage() {
       {/* 上：照片轮播 */}
       <ImageReveal>
         <section className="mb-12">
-          <SimpleCarousel images={showcasePhotos} autoPlay intervalMs={2000} />
+          {hasPhotos ? (
+            <SimpleCarousel images={showcasePhotos} autoPlay intervalMs={2000} />
+          ) : (
+            <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 to-slate-100 p-8 text-center text-sm text-slate-500">
+              Coming soon
+            </div>
+          )}
         </section>
       </ImageReveal>
 
@@ -117,8 +125,8 @@ export default function ShowcasePage() {
           </div>
 
           {/* 结尾收束 */}
-          <div className="mt-10 rounded-2xl border bg-muted p-6">
-            <p className="text-xl md:text-2xl leading-9 text-gray-900">
+          <div className="mt-10 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50/90 to-white p-6 shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+            <p className="text-xl leading-8 text-slate-800 md:text-2xl md:leading-9">
               我们相信：真正有价值的研究，既能把机理讲清楚，也能把系统做稳定，更能在真实场景里产生可验证的成果。
               <span className="font-semibold"> 期待你的加入。</span>
             </p>
