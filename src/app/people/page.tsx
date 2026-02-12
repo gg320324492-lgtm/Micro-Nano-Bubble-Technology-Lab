@@ -9,6 +9,7 @@ import Section from "@/components/ui/Section";
 import Heading from "@/components/ui/Heading";
 import Badge from "@/components/ui/Badge";
 import { buttonClassName } from "@/components/ui/Button";
+import Chip from "@/components/ui/Chip";
 import Reveal from "@/components/motion/Reveal";
 
 function pickArray(mod: any, keys: string[]) {
@@ -194,22 +195,19 @@ export default function PeoplePage() {
       {directionChips.length ? (
         <div className="mt-3">
           <div className="mb-2 text-xs text-gray-500">方向快捷筛选：</div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
             {directionChips.map(({ tag, count }) => {
               const active = tagFilter === tag;
               return (
-                <button
+                <Chip
                   key={tag}
-                  type="button"
                   onClick={() => handleTagClick(tag)}
-                  className={buttonClassName(active ? "primary" : "secondary", "px-3 py-1.5 text-xs")}
+                  active={active}
+                  count={count}
                   title="点击按方向筛选（再点一次取消）"
                 >
-                  <Badge className="border-0 bg-transparent p-0 text-inherit">
-                    {tag}
-                    <span className="ml-1 text-[11px] opacity-70">({count})</span>
-                  </Badge>
-                </button>
+                  {tag}
+                </Chip>
               );
             })}
           </div>

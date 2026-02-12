@@ -4,7 +4,7 @@
 import type { Person } from "@/data/people";
 import PublicImage from "@/components/PublicImage";
 import Card from "@/components/ui/Card";
-import Badge from "@/components/ui/Badge";
+import Chip from "@/components/ui/Chip";
 
 type Props = {
   person: Person;
@@ -98,20 +98,15 @@ export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
           {tags.map((t) => {
             const active = activeTag === t;
             return (
-              <button
+              <Chip
                 key={t}
-                type="button"
                 onClick={() => onTagClick?.(t)}
-                className={[
-                  "rounded-full border px-2.5 py-1 text-xs transition",
-                  active
-                    ? "bg-black text-white border-black"
-                    : "bg-gray-50 text-gray-700 hover:bg-gray-100",
-                ].join(" ")}
+                active={active}
+                size="sm"
                 title="点击按标签筛选"
               >
-                <Badge className="border-0 bg-transparent p-0 text-inherit">{t}</Badge>
-              </button>
+                {t}
+              </Chip>
             );
           })}
         </div>
