@@ -5,11 +5,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
+import { Ma_Shan_Zheng } from "next/font/google";
 import Container from "@/components/Container";
 import { site, navItems as NAV } from "@/data/site";
 import { assetPath } from "@/lib/assetPath";
 
 type NavItem = { href: string; zh: string; en: string };
+
+const maShanZheng = Ma_Shan_Zheng({
+  weight: "400",
+  display: "swap",
+  preload: false,
+});
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -30,10 +37,12 @@ export default function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-      <div className="mx-auto w-full max-w-screen-2xl px-6">
-        <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center gap-8 h-[96px]">
-          <div className="flex items-center justify-start min-w-0">
-            <div className="flex items-center gap-4 min-w-0">
+      <div className="w-full px-8 2xl:px-12">
+        {/* Desktop: 左品牌贴左 + 导航绝对居中 + CTA 贴右 */}
+        <div className="relative hidden min-h-[96px] items-center py-3 md:flex">
+          {/* Left: Brand */}
+          <div className="flex items-center justify-start">
+            <div className="flex items-center gap-4">
               <a
                 href="https://www.tju.edu.cn/"
                 target="_blank"
@@ -54,7 +63,8 @@ export default function SiteHeader() {
                 </div>
               </a>
 
-              <Link href="/" className="flex items-center gap-4 min-w-0">
+              {/* Lab logo + Title */}
+              <Link href="/" className="flex items-center gap-4">
                 <div className="relative h-12 w-12 shrink-0">
                   <Image
                     src={assetPath("/logos/lab.png")}
@@ -66,17 +76,31 @@ export default function SiteHeader() {
                   />
                 </div>
 
-                <div className="min-w-0 max-w-[520px] leading-tight">
-                  <div className="text-2xl font-extrabold tracking-wide text-gray-900 truncate">
-                    微纳米气泡课题组
+                {/* ✅ Desktop：中文行定宽，英文行按同宽两端对齐 */}
+                <div className="flex max-w-[920px] flex-col justify-center">
+                  <div className="inline-block w-fit min-w-0">
+                    <div className="flex w-max flex-nowrap items-baseline gap-3 leading-[1.05] tracking-tight text-slate-900">
+                      <span
+                        className={`${maShanZheng.className} whitespace-nowrap text-[30px] font-normal tracking-[0.06em] text-slate-900 sm:text-[36px]`}
+                      >
+                        天津大学
+                      </span>
+                      <span className="whitespace-nowrap text-[30px] font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-[38px]">
+                        微纳米气泡课题组
+                      </span>
+                    </div>
+
+                    <div className="mt-1 w-full text-justify text-[13px] font-medium leading-[1.25] text-slate-600 [text-align-last:justify] [text-justify:inter-word] sm:text-[16px] font-serif">
+                      Micro &amp; Nano Bubble Technology Lab, Tianjin University
+                    </div>
                   </div>
-                  <div className="text-base text-gray-500 truncate">{site.nameEn}</div>
                 </div>
               </Link>
             </div>
           </div>
 
-          <nav className="flex items-center justify-center gap-10">
+          {/* Middle: Nav (center) */}
+          <nav className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-10 lg:gap-12">
             {navItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
@@ -89,18 +113,23 @@ export default function SiteHeader() {
                     "py-1",
                     active ? "text-gray-900" : "text-gray-600 hover:text-gray-900",
                     active
-                      ? "after:absolute after:left-0 after:-bottom-2 after:h-[3px] after:w-full after:rounded-full after:bg-gray-900"
-                      : "after:absolute after:left-0 after:-bottom-2 after:h-[3px] after:w-0 after:rounded-full after:bg-gray-900 after:transition-all hover:after:w-full",
+                      ? "after:absolute after:left-0 after:-bottom-3 after:h-[2px] after:w-full after:rounded-full after:bg-gray-900"
+                      : "after:absolute after:left-0 after:-bottom-3 after:h-[2px] after:w-0 after:rounded-full after:bg-gray-900 after:transition-all hover:after:w-full",
                   ].join(" ")}
                 >
-                  <div className="text-base font-semibold leading-[1.1]">{item.zh}</div>
-                  <div className="text-sm text-gray-500 leading-[1.1]">{item.en}</div>
+                  <div className="whitespace-nowrap text-[18px] font-semibold leading-[1.1] tracking-[0.02em]">
+                    {item.zh}
+                  </div>
+                  <div className="hidden lg:block whitespace-nowrap text-[12px] text-gray-400 leading-[1.1]">
+                    {item.en}
+                  </div>
                 </Link>
               );
             })}
           </nav>
 
-          <div className="flex items-center justify-end">
+          {/* Right: CTA */}
+          <div className="ml-auto flex items-center justify-end">
             <Link
               href="/contact"
               className="whitespace-nowrap rounded-full bg-black px-6 py-3 text-base font-medium text-white hover:bg-black/90 transition"
@@ -132,9 +161,20 @@ export default function SiteHeader() {
                 priority
               />
             </div>
-            <div className="min-w-0">
-              <div className="text-base font-semibold text-gray-900 truncate">微纳米气泡课题组</div>
-              <div className="text-xs text-gray-500 truncate">{site.nameEn}</div>
+            <div className="flex min-w-0 flex-col justify-center">
+              <div className="flex min-w-0 flex-wrap items-baseline gap-2 leading-[1.05] tracking-tight text-slate-900">
+                <span
+                  className={`${maShanZheng.className} whitespace-nowrap text-[24px] font-normal tracking-[0.05em] text-slate-900`}
+                >
+                  天津大学
+                </span>
+                <span className="text-[24px] font-extrabold leading-[1.05] tracking-tight text-slate-900">
+                  微纳米气泡课题组
+                </span>
+              </div>
+              <div className="mt-1 truncate text-[12px] font-medium leading-[1.25] text-slate-600 font-serif">
+                Micro &amp; Nano Bubble Technology Lab, Tianjin University
+              </div>
             </div>
           </Link>
 

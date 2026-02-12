@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import researchDirections, { ResearchDirection } from "@/data/research";
 import { assetPath } from "@/lib/assetPath";
+import LazyMount from "@/components/LazyMount";
 
 function groupDirections(list: ResearchDirection[]) {
   const coreSlugs = new Set([
@@ -79,6 +80,11 @@ function coverFocusYBySlug(slug: string) {
   return map[slug] ?? 45;
 }
 
+function toResearchCardThumb(src: string) {
+  if (!src) return src;
+  return src.replace(/\.(jpg|jpeg|png|webp)$/i, ".thumb.webp");
+}
+
 function ResearchCard({
   d,
   kind,
@@ -88,6 +94,7 @@ function ResearchCard({
 }) {
   const href = `/research/${d.slug}`;
   const cover = d.cover ?? "";
+  const coverThumb = toResearchCardThumb(cover);
   const tags = pickCardTags(d);
 
   const focusY =
@@ -98,81 +105,97 @@ function ResearchCard({
   return (
     <Link
       href={href}
+      prefetch={false}
       className="group block h-full"
       aria-label={`查看研究方向：${d.titleZh}`}
     >
-      <div className="flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
-        {/* 封面 */}
-        <div
-          className="relative w-full bg-muted"
-          style={{ aspectRatio: "16 / 10" }}
-        >
-          {cover ? (
-            <Image
-              src={assetPath(cover)}
-              alt={d.titleZh}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover"
-              style={{ objectPosition: `center ${focusY}%` }}
-              priority={kind === "core"}
-            />
-          ) : null}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-        </div>
-
-        {/* 内容 */}
-        <div className="flex flex-1 flex-col p-4">
-          <div className="min-h-[56px]">
+      <LazyMount
+        rootMargin="200px 0px"
+        fallback={
+          <div className="flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-4 shadow-sm">
+            <div className="mb-3 w-full rounded-xl bg-gray-100" style={{ aspectRatio: "16 / 10" }} />
             <div className="text-base font-semibold leading-6">{d.titleZh}</div>
-            {d.titleEn ? (
-              <div className="mt-1 text-xs text-muted-foreground">
-                {d.titleEn}
-              </div>
+            {d.titleEn ? <div className="mt-1 text-xs text-muted-foreground">{d.titleEn}</div> : null}
+            <div className="mt-3 h-4 w-2/3 rounded bg-gray-100" />
+            <div className="mt-2 h-4 w-5/6 rounded bg-gray-100" />
+          </div>
+        }
+      >
+        <div className="flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+          {/* 封面 */}
+          <div
+            className="relative w-full bg-muted"
+            style={{ aspectRatio: "16 / 10" }}
+          >
+            {cover ? (
+              <Image
+                src={assetPath(coverThumb)}
+                alt={d.titleZh}
+                fill
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
+                style={{ objectPosition: `center ${focusY}%` }}
+              />
             ) : null}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
           </div>
 
-          {d.briefZh ? (
-            <p
-              className="mt-2 text-sm leading-6 text-muted-foreground"
-              style={clamp2Style()}
-            >
-              {d.briefZh}
-            </p>
-          ) : (
-            <div className="mt-2" />
-          )}
-
-          {/* 标签 */}
-          {tags.length ? (
-            <div className="mt-3 flex flex-wrap gap-2">
-              {tags.map((t) => (
-                <span
-                  key={t}
-                  className="inline-flex items-center rounded-full border bg-background px-2.5 py-1 text-xs text-muted-foreground"
-                >
-                  {t}
-                </span>
-              ))}
+          {/* 内容 */}
+          <div className="flex flex-1 flex-col p-4">
+            <div className="min-h-[56px]">
+              <div className="text-base font-semibold leading-6">{d.titleZh}</div>
+              {d.titleEn ? (
+                <div className="mt-1 text-xs text-muted-foreground">
+                  {d.titleEn}
+                </div>
+              ) : null}
             </div>
-          ) : (
-            <div className="mt-3" />
-          )}
 
-          {/* CTA */}
-          <div className="mt-auto flex items-center justify-between pt-4">
-            <span className="text-xs text-muted-foreground">
-              {kind === "core" ? "机理 / 指标 / 装备" : "场景 / 风险边界 / SOP"}
-            </span>
-            <span className="inline-flex items-center gap-1 rounded-full border bg-white px-3 py-1.5 text-sm font-medium shadow-sm transition-colors group-hover:bg-muted">
-              查看详情{" "}
-              <span className="transition-transform group-hover:translate-x-0.5">
-                →
+            {d.briefZh ? (
+              <p
+                className="mt-2 text-sm leading-6 text-muted-foreground"
+                style={clamp2Style()}
+              >
+                {d.briefZh}
+              </p>
+            ) : (
+              <div className="mt-2" />
+            )}
+
+            {/* 标签 */}
+            {tags.length ? (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {tags.map((t) => (
+                  <span
+                    key={t}
+                    className="inline-flex items-center rounded-full border bg-background px-2.5 py-1 text-xs text-muted-foreground"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <div className="mt-3" />
+            )}
+
+            {/* CTA */}
+            <div className="mt-auto flex items-center justify-between pt-4">
+              <span className="text-xs text-muted-foreground">
+                {kind === "core" ? "机理 / 指标 / 装备" : "场景 / 风险边界 / SOP"}
               </span>
-            </span>
+              <span className="inline-flex items-center gap-1 rounded-full border bg-white px-3 py-1.5 text-sm font-medium shadow-sm transition-colors group-hover:bg-muted">
+                查看详情{" "}
+                <span className="transition-transform group-hover:translate-x-0.5">
+                  →
+                </span>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      </LazyMount>
     </Link>
   );
 }
