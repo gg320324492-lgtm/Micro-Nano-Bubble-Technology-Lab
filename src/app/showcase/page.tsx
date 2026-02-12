@@ -2,13 +2,17 @@
 import Link from "next/link";
 import SimpleCarousel from "@/components/SimpleCarousel";
 import { showcasePhotos } from "@/data/showcase";
+import Section from "@/components/ui/Section";
+import Heading from "@/components/ui/Heading";
+import Card from "@/components/ui/Card";
+import { buttonClassName } from "@/components/ui/Button";
 
 export default function ShowcasePage() {
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10">
+    <Section container="wide">
       {/* 标题 */}
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold">风采展示</h1>
+        <Heading as="h1" title="风采展示" />
       </div>
 
       {/* 上：照片轮播 */}
@@ -17,7 +21,7 @@ export default function ShowcasePage() {
       </section>
 
       {/* 下：课题组介绍（替代故事卡片） */}
-      <section className="rounded-2xl border bg-white p-6 md:p-10 shadow-sm">
+      <Card as="section" className="p-6 md:p-10">
         <div className="mb-6">
           <h2 className="text-2xl font-semibold">微纳米气泡课题组简介</h2>
           <p className="mt-3 leading-7 text-muted-foreground">
@@ -93,13 +97,13 @@ export default function ShowcasePage() {
             <div className="mt-5 flex flex-wrap gap-3">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white"
+                className={buttonClassName("primary", "px-5 py-2.5 text-sm")}
               >
                 联系我们 / 加入我们
               </Link>
               <Link
                 href="/people"
-                className="inline-flex items-center justify-center rounded-full border px-5 py-2.5 text-sm font-medium"
+                className={buttonClassName("secondary", "px-5 py-2.5 text-sm")}
               >
                 了解成员
               </Link>
@@ -114,7 +118,7 @@ export default function ShowcasePage() {
             <span className="font-semibold"> 期待你的加入。</span>
           </p>
         </div>
-      </section>
-    </main>
+      </Card>
+    </Section>
   );
 }

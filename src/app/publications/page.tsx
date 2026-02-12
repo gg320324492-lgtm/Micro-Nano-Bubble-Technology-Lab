@@ -3,6 +3,10 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import Section from "@/components/ui/Section";
+import Heading from "@/components/ui/Heading";
+import ListItem from "@/components/ui/ListItem";
+import { buttonClassName } from "@/components/ui/Button";
 
 // ✅ 兼容导入：不要求 data 文件必须 default export
 import * as pubsMod from "@/data/publications";
@@ -152,15 +156,17 @@ export default function PublicationsPage() {
   }, [activeList, q, year]);
 
   return (
-    <main className="py-10">
+    <Section container="wide">
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold tracking-tight">
-          成果{" "}
-          <span className="text-gray-400">Publications & Patents & Honors</span>
-        </h1>
-        <p className="text-sm text-gray-500">
-          支持搜索、按年份筛选、Featured 置顶，以及 DOI/链接直达。
-        </p>
+        <Heading
+          as="h1"
+          title={
+            <>
+              成果 <span className="text-gray-400">Publications & Patents & Honors</span>
+            </>
+          }
+          subtitle="支持搜索、按年份筛选、Featured 置顶，以及 DOI/链接直达。"
+        />
       </div>
 
       {/* Tabs */}
@@ -176,12 +182,7 @@ export default function PublicationsPage() {
               key={t.key}
               type="button"
               onClick={() => setTab(t.key as TabKey)}
-              className={[
-                "rounded-full px-5 py-2 text-sm border transition",
-                active
-                  ? "bg-black text-white border-black"
-                  : "bg-white text-gray-700 hover:bg-gray-50",
-              ].join(" ")}
+              className={buttonClassName(active ? "primary" : "secondary", "px-5 py-2 text-sm")}
             >
               {t.label}
             </button>
@@ -227,58 +228,28 @@ export default function PublicationsPage() {
           const badges = pickBadges(it);
 
           return (
-            <article key={`${title}-${idx}`} className="rounded-2xl border p-5">
-              <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0">
-                  {y ? <div className="text-sm text-gray-500">{y}</div> : null}
-
-                  <div className="mt-2 text-lg font-semibold leading-snug">
-                    {link ? (
-                      <a
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                      >
-                        {title}
-                      </a>
-                    ) : (
-                      title
-                    )}
-                  </div>
-
-                  {subtitle ? (
-                    <div className="mt-1 text-sm text-gray-600">{subtitle}</div>
-                  ) : null}
-
-                  {it?.briefZh || it?.note ? (
-                    <div className="mt-2 text-sm text-gray-700">
-                      {toStr(it?.briefZh || it?.note)}
-                    </div>
-                  ) : null}
-
-                  {badges.length ? (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {badges.map((b) => (
-                        <span
-                          key={b}
-                          className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700"
-                        >
-                          {b}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-
+            <ListItem
+              key={`${title}-${idx}`}
+              year={y}
+              title={
+                link ? (
+                  <a href={link} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    {title}
+                  </a>
+                ) : (
+                  title
+                )
+              }
+              subtitle={subtitle}
+              description={
+                <>
+                  {it?.briefZh || it?.note ? <>{toStr(it?.briefZh || it?.note)}</> : null}
                   {it?.doi ? (
                     <div className="mt-3 text-sm text-gray-600">
                       DOI：
                       <a
                         className="ml-1 underline underline-offset-2"
-                        href={`https://doi.org/${toStr(it.doi).replace(
-                          /^https?:\/\/doi\.org\//,
-                          ""
-                        )}`}
+                        href={`https://doi.org/${toStr(it.doi).replace(/^https?:\/\/doi\.org\//, "")}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -286,25 +257,27 @@ export default function PublicationsPage() {
                       </a>
                     </div>
                   ) : null}
-                </div>
-
-                {link ? (
+                </>
+              }
+              badges={badges}
+              action={
+                link ? (
                   <a
                     href={link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="shrink-0 rounded-xl border px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    className={buttonClassName("secondary", "rounded-xl px-3 py-2 text-sm")}
                   >
                     打开
                   </a>
-                ) : null}
-              </div>
-            </article>
+                ) : null
+              }
+            />
           );
         })}
 
         {filtered.length === 0 ? (
-          <div className="rounded-2xl border p-8 text-sm text-gray-600">
+          <div className="rounded-[var(--radius)] border border-[color:var(--border)] bg-[color:var(--surface)] p-8 text-sm text-[color:var(--muted)] shadow-[var(--shadow)]">
             未找到匹配内容。你可以更换关键词或切换年份/类别。
           </div>
         ) : null}
@@ -313,11 +286,11 @@ export default function PublicationsPage() {
       <div className="mt-10 flex gap-2">
         <Link
           href="/contact"
-          className="rounded-xl bg-black px-4 py-2 text-sm font-medium text-white"
+          className={buttonClassName("primary", "rounded-xl px-4 py-2 text-sm")}
         >
           合作 / 加入我们
         </Link>
       </div>
-    </main>
+    </Section>
   );
 }

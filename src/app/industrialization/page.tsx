@@ -3,6 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import industrialBases from "@/data/industrialization";
 import { assetPath } from "@/lib/assetPath";
+import Section from "@/components/ui/Section";
+import Heading from "@/components/ui/Heading";
+import Card from "@/components/ui/Card";
+import { buttonClassName } from "@/components/ui/Button";
 
 function Cover({ src, alt }: { src?: string; alt: string }) {
   if (!src) {
@@ -25,15 +29,16 @@ function Cover({ src, alt }: { src?: string; alt: string }) {
 
 export default function IndustrializationPage() {
   return (
-    <main className="py-10">
-      <h1 className="text-4xl font-semibold tracking-tight">产业化</h1>
-      <p className="mt-3 text-sm text-gray-600">
-        围绕应用验证基地与示范场景，展示监测平台入口与工程化落地内容。
-      </p>
+    <Section container="wide">
+      <Heading
+        as="h1"
+        title="产业化"
+        subtitle="围绕应用验证基地与示范场景，展示监测平台入口与工程化落地内容。"
+      />
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         {industrialBases.map((b) => (
-          <section key={b.slug} className="rounded-3xl border p-5">
+          <Card key={b.slug} as="section" className="rounded-3xl p-5">
             <Cover src={b.cover} alt={b.titleZh} />
 
             <div className="mt-4 flex items-start justify-between gap-3">
@@ -47,7 +52,7 @@ export default function IndustrializationPage() {
               {/* ✅ 强制带尾部 /，完全匹配 trailingSlash 导出的目录结构 */}
               <Link
                 href={`/industrialization/${encodeURIComponent(String(b.slug))}/`}
-                className="shrink-0 rounded-full border px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                className={buttonClassName("secondary", "shrink-0 px-4 py-2 text-sm")}
               >
                 查看详情
               </Link>
@@ -89,15 +94,15 @@ export default function IndustrializationPage() {
                   href={b.monitorUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white hover:opacity-90"
+                  className={buttonClassName("primary", "px-5 py-2.5 text-sm")}
                 >
                   打开监测大屏
                 </a>
               </div>
             ) : null}
-          </section>
+          </Card>
         ))}
       </div>
-    </main>
+    </Section>
   );
 }

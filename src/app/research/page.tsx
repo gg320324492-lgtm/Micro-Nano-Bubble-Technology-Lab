@@ -5,6 +5,11 @@ import Image from "next/image";
 import researchDirections, { ResearchDirection } from "@/data/research";
 import { assetPath } from "@/lib/assetPath";
 import LazyMount from "@/components/LazyMount";
+import Section from "@/components/ui/Section";
+import Heading from "@/components/ui/Heading";
+import Card from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
+import { buttonClassName } from "@/components/ui/Button";
 
 function groupDirections(list: ResearchDirection[]) {
   const coreSlugs = new Set([
@@ -121,7 +126,7 @@ function ResearchCard({
           </div>
         }
       >
-        <div className="flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+        <Card className="flex h-full flex-col overflow-hidden">
           {/* 封面 */}
           <div
             className="relative w-full bg-muted"
@@ -169,12 +174,7 @@ function ResearchCard({
             {tags.length ? (
               <div className="mt-3 flex flex-wrap gap-2">
                 {tags.map((t) => (
-                  <span
-                    key={t}
-                    className="inline-flex items-center rounded-full border bg-background px-2.5 py-1 text-xs text-muted-foreground"
-                  >
-                    {t}
-                  </span>
+                  <Badge key={t}>{t}</Badge>
                 ))}
               </div>
             ) : (
@@ -186,7 +186,7 @@ function ResearchCard({
               <span className="text-xs text-muted-foreground">
                 {kind === "core" ? "机理 / 指标 / 装备" : "场景 / 风险边界 / SOP"}
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full border bg-white px-3 py-1.5 text-sm font-medium shadow-sm transition-colors group-hover:bg-muted">
+              <span className={buttonClassName("secondary", "gap-1 px-3 py-1.5")}>
                 查看详情{" "}
                 <span className="transition-transform group-hover:translate-x-0.5">
                   →
@@ -194,7 +194,7 @@ function ResearchCard({
               </span>
             </div>
           </div>
-        </div>
+        </Card>
       </LazyMount>
     </Link>
   );
@@ -204,13 +204,14 @@ export default function ResearchPage() {
   const { core, apps } = groupDirections(researchDirections);
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="py-10 md:py-12">
+    <Section container="wide">
+      <div>
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold md:text-3xl">研究方向</h1>
-          <p className="mt-2 max-w-4xl text-sm leading-7 text-muted-foreground">
-            我们以 O₃-MNBs 为核心平台，围绕“机理—指标—装备—场景”形成从基础到应用的研究矩阵。
-          </p>
+          <Heading
+            as="h1"
+            title="研究方向"
+            subtitle="我们以 O₃-MNBs 为核心平台，围绕“机理—指标—装备—场景”形成从基础到应用的研究矩阵。"
+          />
         </div>
 
         <section>
@@ -245,6 +246,6 @@ export default function ResearchPage() {
           </div>
         </section>
       </div>
-    </div>
+    </Section>
   );
 }

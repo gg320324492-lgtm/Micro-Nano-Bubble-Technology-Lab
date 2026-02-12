@@ -3,6 +3,8 @@
 
 import type { Person } from "@/data/people";
 import PublicImage from "@/components/PublicImage";
+import Card from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
 
 type Props = {
   person: Person;
@@ -36,7 +38,7 @@ export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
   const tags: string[] = Array.isArray(p.tags) ? p.tags : [];
 
   return (
-    <div className="rounded-2xl border bg-white p-5 shadow-sm transition hover:shadow-md">
+    <Card className="p-5">
       <div className="flex gap-4">
         {/* Avatar */}
         <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border bg-gray-50">
@@ -108,12 +110,12 @@ export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
                 ].join(" ")}
                 title="点击按标签筛选"
               >
-                {t}
+                <Badge className="border-0 bg-transparent p-0 text-inherit">{t}</Badge>
               </button>
             );
           })}
         </div>
       ) : null}
-    </div>
+    </Card>
   );
 }

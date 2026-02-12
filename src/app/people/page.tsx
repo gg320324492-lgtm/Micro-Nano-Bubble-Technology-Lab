@@ -5,6 +5,10 @@ import { useMemo, useState } from "react";
 import * as peopleModule from "@/data/people";
 import type { Person } from "@/data/people";
 import PeopleCard from "@/components/PeopleCard";
+import Section from "@/components/ui/Section";
+import Heading from "@/components/ui/Heading";
+import Badge from "@/components/ui/Badge";
+import { buttonClassName } from "@/components/ui/Button";
 
 function pickArray(mod: any, keys: string[]) {
   for (const k of ["default", ...keys]) {
@@ -146,15 +150,15 @@ export default function PeoplePage() {
   }, [filtered]);
 
   return (
-    <main className="py-10">
+    <Section container="wide">
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">成员 People</h1>
-          <p className="mt-2 text-sm text-gray-500">
-            本页仅展示学生与校友信息（博士/硕士/本科/校友）。导师信息请见首页导师介绍。
-            支持关键词搜索与按角色筛选；点击成员卡片标签或顶部“方向快捷标签”可直接筛选。
-          </p>
+          <Heading
+            as="h1"
+            title="成员 People"
+            subtitle="本页仅展示学生与校友信息（博士/硕士/本科/校友）。导师信息请见首页导师介绍。支持关键词搜索与按角色筛选；点击成员卡片标签或顶部方向快捷标签可直接筛选。"
+          />
         </div>
 
         <div className="w-full md:w-96">
@@ -175,12 +179,7 @@ export default function PeoplePage() {
             <button
               key={r}
               onClick={() => setRoleFilter(r)}
-              className={[
-                "rounded-full border px-3 py-1.5 text-sm transition",
-                active
-                  ? "bg-black text-white border-black"
-                  : "bg-white text-gray-700 hover:bg-gray-50",
-              ].join(" ")}
+              className={buttonClassName(active ? "primary" : "secondary", "px-3 py-1.5 text-sm")}
             >
               {r === "ALL" ? "全部" : roleLabel(r)}
             </button>
@@ -202,16 +201,13 @@ export default function PeoplePage() {
                   key={tag}
                   type="button"
                   onClick={() => handleTagClick(tag)}
-                  className={[
-                    "rounded-full border px-3 py-1.5 text-xs transition",
-                    active
-                      ? "bg-black text-white border-black"
-                      : "bg-white text-gray-700 hover:bg-gray-50",
-                  ].join(" ")}
+                  className={buttonClassName(active ? "primary" : "secondary", "px-3 py-1.5 text-xs")}
                   title="点击按方向筛选（再点一次取消）"
                 >
-                  {tag}
-                  <span className="ml-1 text-[11px] opacity-70">({count})</span>
+                  <Badge className="border-0 bg-transparent p-0 text-inherit">
+                    {tag}
+                    <span className="ml-1 text-[11px] opacity-70">({count})</span>
+                  </Badge>
                 </button>
               );
             })}
@@ -223,9 +219,7 @@ export default function PeoplePage() {
       {tagFilter !== "ALL" ? (
         <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
           <span className="text-gray-500">标签筛选：</span>
-          <span className="rounded-full bg-black px-3 py-1 text-xs text-white">
-            {tagFilter}
-          </span>
+          <Badge className="bg-[color:var(--text)] px-3 py-1 text-xs text-white">{tagFilter}</Badge>
           <button
             type="button"
             onClick={() => setTagFilter("ALL")}
@@ -259,11 +253,11 @@ export default function PeoplePage() {
         ))}
 
         {!filtered.length ? (
-          <div className="rounded-2xl border p-6 text-sm text-gray-600">
+          <div className="rounded-[var(--radius)] border border-[color:var(--border)] bg-[color:var(--surface)] p-6 text-sm text-[color:var(--muted)] shadow-[var(--shadow)]">
             没有匹配的成员信息，请调整关键词/角色筛选/标签筛选。
           </div>
         ) : null}
       </div>
-    </main>
+    </Section>
   );
 }
