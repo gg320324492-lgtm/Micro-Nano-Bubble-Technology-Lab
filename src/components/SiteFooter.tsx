@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Container from "@/components/Container";
 import * as contactModule from "@/data/contact";
+import { navItems } from "@/data/site";
 
 function pickObject(mod: any, keys: string[]) {
   for (const k of ["default", ...keys]) {
@@ -13,6 +14,7 @@ function pickObject(mod: any, keys: string[]) {
 
 export default function SiteFooter() {
   const contact = pickObject(contactModule, ["contact", "contacts"]);
+  const footerNavItems = navItems.filter((item) => item.href !== "/contact");
   const year = new Date().getFullYear();
 
   return (
@@ -36,24 +38,11 @@ export default function SiteFooter() {
           <div>
             <div className="text-sm font-semibold text-gray-900">导航</div>
             <div className="mt-3 grid gap-2 text-sm text-gray-700">
-              <Link className="hover:underline" href="/research">
-                研究 Research
-              </Link>
-              <Link className="hover:underline" href="/publications">
-                成果 Publications
-              </Link>
-              <Link className="hover:underline" href="/honors">
-                荣誉 Honors
-              </Link>
-              <Link className="hover:underline" href="/people">
-                成员 People
-              </Link>
-              <Link className="hover:underline" href="/news">
-                动态 News
-              </Link>
-              <Link className="hover:underline" href="/contact">
-                联系我们 / 加入我们 Contact
-              </Link>
+              {footerNavItems.map((item) => (
+                <Link key={item.href} className="hover:underline" href={item.href}>
+                  {item.zh} {item.en}
+                </Link>
+              ))}
             </div>
           </div>
 
