@@ -48,7 +48,7 @@ function mk(
     PhD: "博士研究生",
     Master: "硕士研究生",
     Undergrad: "本科生",
-    Alumni: "校友",
+    Alumni: "已毕业",
   };
 
   return {
@@ -283,7 +283,7 @@ export const people: Person[] = [
     2023
   ),
 
-  // ✅ 校友（新增：雒培媛）
+  // ✅ 已毕业成员（新增：雒培媛）
   mk(
     "luopeiyuan",
     "Alumni",

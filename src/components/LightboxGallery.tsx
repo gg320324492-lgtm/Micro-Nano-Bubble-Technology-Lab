@@ -15,9 +15,11 @@ export type GalleryItem = {
 export default function LightboxGallery({
   items,
   className = "",
+  tone = "core",
 }: {
   items: GalleryItem[];
   className?: string;
+  tone?: "core" | "applications";
 }) {
   const safe = useMemo(() => (items ?? []).filter(Boolean), [items]);
   const [open, setOpen] = useState(false);
@@ -43,11 +45,28 @@ export default function LightboxGallery({
 
   if (!safe.length) return null;
 
+  const theme =
+    tone === "applications"
+      ? {
+          countText: "text-teal-700",
+          cardBorder: "border-teal-200/80",
+          cardBg: "bg-teal-50/35",
+          hoverOverlay:
+            "bg-gradient-to-t from-teal-900/35 via-teal-700/10 to-transparent",
+        }
+      : {
+          countText: "text-blue-700",
+          cardBorder: "border-blue-200/80",
+          cardBg: "bg-blue-50/35",
+          hoverOverlay:
+            "bg-gradient-to-t from-blue-900/35 via-blue-700/10 to-transparent",
+        };
+
   return (
     <div className={className}>
       <div className="mb-2 flex items-center justify-between">
         <h3 className="text-lg font-semibold">图集</h3>
-        <div className="text-sm text-muted-foreground">{safe.length} 张</div>
+        <div className={["text-sm font-medium", theme.countText].join(" ")}>{safe.length} 张</div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -55,7 +74,11 @@ export default function LightboxGallery({
           <button
             key={`${it.src}-${i}`}
             type="button"
-            className="group relative aspect-[16/10] overflow-hidden rounded-3xl border bg-muted"
+            className={[
+              "group relative aspect-[16/10] overflow-hidden rounded-3xl border",
+              theme.cardBorder,
+              theme.cardBg,
+            ].join(" ")}
             onClick={() => {
               setIdx(i);
               setOpen(true);
@@ -72,7 +95,12 @@ export default function LightboxGallery({
                 objectPosition: `center ${typeof it.focusY === "number" ? it.focusY : 40}%`,
               }}
             />
-            <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+            <div
+              className={[
+                "pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100",
+                theme.hoverOverlay,
+              ].join(" ")}
+            />
           </button>
         ))}
       </div>

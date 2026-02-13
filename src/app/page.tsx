@@ -91,15 +91,15 @@ export default function HomePage() {
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
         <div className="py-12 space-y-16">
           {/* Hero 文案（内容不变，只放大） */}
-          <section className="space-y-4">
+          <section className="space-y-4 rounded-3xl border border-[var(--border)] bg-white p-6 md:p-8 shadow-sm">
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
               Micro & Nano Bubble Technology Lab
             </h1>
 
-            <p className="text-lg md:text-xl leading-relaxed text-gray-900">
+            <p className="text-lg md:text-xl leading-relaxed text-[var(--text-secondary)]">
               聚焦微纳米气泡技术的机理研究、装备开发与多场景应用，面向饮用水安全、环境治理与智能化工程系统。
             </p>
-            <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+            <p className="text-base md:text-lg text-[var(--muted)] leading-relaxed">
               Mechanisms, devices, and applications of micro/nano bubbles for drinking water safety,
               environment remediation, and intelligent engineering systems.
             </p>
@@ -107,23 +107,23 @@ export default function HomePage() {
             <div className="flex flex-wrap gap-4 pt-2">
               <Link
                 href="/contact"
-                className="rounded-2xl bg-black px-6 py-3 text-base font-medium text-white hover:bg-black/90 transition"
+                className="rounded-2xl bg-[var(--accent)] px-6 py-3 text-base font-medium text-white hover:bg-[var(--accent-hover)] transition"
               >
-                联系我们 / 加入我们 <span className="text-gray-200">Contact & Join Us</span>
+                联系我们 / 加入我们 <span className="text-white/80">Contact & Join Us</span>
               </Link>
               <Link
                 href="/research"
-                className="rounded-2xl border px-6 py-3 text-base font-medium hover:bg-gray-50 transition"
+                className="rounded-2xl border border-[var(--border-strong)] px-6 py-3 text-base font-medium text-[var(--accent)] hover:bg-[var(--accent-soft)] transition"
               >
-                研究方向 <span className="text-gray-500">Research</span>
+                研究方向 <span className="text-[var(--text-secondary)]">Research</span>
               </Link>
             </div>
           </section>
 
           {/* PI Intro */}
-          <section className="space-y-6">
+          <section className="space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-6 md:p-8 shadow-sm">
             <h2 className="text-2xl md:text-3xl font-semibold">
-              导师介绍 <span className="text-gray-500">Principal Investigator</span>
+              导师介绍 <span className="text-[var(--accent)]">Principal Investigator</span>
             </h2>
 
             {/* ✅ PiCard 本体不改，但外层给更宽、更舒服的展示 */}
@@ -133,27 +133,27 @@ export default function HomePage() {
           </section>
 
           {/* Research Areas */}
-          <section className="space-y-6">
+          <section className="space-y-6 rounded-3xl border border-[var(--border)] bg-white p-6 md:p-8 shadow-sm">
             <h2 className="text-2xl md:text-3xl font-semibold">
-              研究方向 <span className="text-gray-500">Research Areas</span>
+              研究方向 <span className="text-[var(--accent)]">Research Areas</span>
             </h2>
 
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {researchAreas.map((a: AnyRecord, idx: number) => (
                 <div
                   key={a.id ?? idx}
-                  className="rounded-2xl border p-7 shadow-sm"
+                  className="rounded-2xl border border-[var(--border)] bg-white p-7 shadow-sm transition-colors hover:border-[var(--border-strong)] hover:bg-[var(--accent-soft)]"
                 >
-                  <div className="text-lg font-semibold">
+                  <div className="text-lg font-semibold text-[var(--text)]">
                     {getResearchTitleZh(a)}
                   </div>
                   {getResearchTitleEn(a) ? (
-                    <div className="text-base text-gray-500 mt-1">
+                    <div className="text-base text-[var(--text-secondary)] mt-1">
                       {getResearchTitleEn(a)}
                     </div>
                   ) : null}
                   {getResearchDescZh(a) ? (
-                    <div className="mt-4 text-base leading-relaxed text-gray-700">
+                    <div className="mt-4 text-base leading-relaxed text-[var(--muted)]">
                       {getResearchDescZh(a)}
                     </div>
                   ) : null}
@@ -163,19 +163,19 @@ export default function HomePage() {
           </section>
 
           {/* Featured Publications */}
-          <section className="space-y-6">
+          <section className="space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-6 md:p-8 shadow-sm">
             <h2 className="text-2xl md:text-3xl font-semibold">
-              代表性成果 <span className="text-gray-500">Featured Publications</span>
+              代表性成果 <span className="text-[var(--accent)]">Featured Publications</span>
             </h2>
 
-            <div className="rounded-2xl border p-7 shadow-sm">
+            <div className="rounded-2xl border border-[var(--border)] bg-white p-7 shadow-sm">
               <ol className="space-y-4">
                 {featuredPubs.map((p: AnyRecord, idx: number) => (
                   <li key={p.id ?? idx} className="flex gap-6">
-                    <div className="w-16 shrink-0 text-base text-gray-500">
+                    <div className="w-16 shrink-0 text-base font-semibold text-[var(--accent)]">
                       {getPubYear(p) || ""}
                     </div>
-                    <div className="text-base leading-relaxed text-gray-800">
+                    <div className="text-base leading-relaxed text-[var(--text-secondary)]">
                       {getPubText(p) || (p.citation ?? "")}
                     </div>
                   </li>
@@ -183,28 +183,28 @@ export default function HomePage() {
               </ol>
 
               <div className="mt-6">
-                <Link href="/publications" className="text-base underline">
-                  查看全部成果 / <span className="text-gray-500">View all</span>
+                <Link href="/publications" className="text-base underline text-[var(--accent)] hover:text-[var(--accent-hover)]">
+                  查看全部成果 / <span className="text-[var(--text-secondary)]">View all</span>
                 </Link>
               </div>
             </div>
           </section>
 
           {/* Latest News */}
-          <section className="space-y-6">
+          <section className="space-y-6 rounded-3xl border border-[var(--border)] bg-white p-6 md:p-8 shadow-sm">
             <h2 className="text-2xl md:text-3xl font-semibold">
-              最新动态 <span className="text-gray-500">Latest News</span>
+              最新动态 <span className="text-[var(--accent)]">Latest News</span>
             </h2>
 
             <div className="grid gap-6 lg:grid-cols-3">
               {latestNews.map((n: AnyRecord, idx: number) => (
-                <div key={n.id ?? idx} className="rounded-2xl border p-7 shadow-sm">
-                  <div className="text-sm text-gray-500">{getNewsDate(n)}</div>
-                  <div className="mt-2 text-lg font-semibold">
+                <div key={n.id ?? idx} className="rounded-2xl border border-[var(--border)] bg-white p-7 shadow-sm transition-colors hover:border-[var(--border-strong)] hover:bg-[var(--accent-soft)]">
+                  <div className="text-sm text-[var(--text-secondary)]">{getNewsDate(n)}</div>
+                  <div className="mt-2 text-lg font-semibold text-[var(--text)]">
                     {getNewsTitleZh(n)}
                   </div>
                   {getNewsTitleEn(n) ? (
-                    <div className="mt-1 text-base text-gray-500">
+                    <div className="mt-1 text-base text-[var(--muted)]">
                       {getNewsTitleEn(n)}
                     </div>
                   ) : null}
@@ -212,27 +212,27 @@ export default function HomePage() {
               ))}
 
               <div className="lg:col-span-3">
-                <Link href="/news" className="text-base underline">
-                  查看更多动态 / <span className="text-gray-500">More</span>
+                <Link href="/news" className="text-base underline text-[var(--accent)] hover:text-[var(--accent-hover)]">
+                  查看更多动态 / <span className="text-[var(--text-secondary)]">More</span>
                 </Link>
               </div>
             </div>
           </section>
 
           {/* Contact summary */}
-          <section className="space-y-6">
+          <section className="space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-6 md:p-8 shadow-sm">
             <h2 className="text-2xl md:text-3xl font-semibold">
-              联系我们与加入我们 <span className="text-gray-500">Contact & Join Us</span>
+              联系我们与加入我们 <span className="text-[var(--accent)]">Contact & Join Us</span>
             </h2>
 
-            <div className="rounded-2xl border p-7 text-base text-gray-700 space-y-3 shadow-sm">
+            <div className="rounded-2xl border border-[var(--border)] bg-white p-7 text-base text-[var(--text-secondary)] space-y-3 shadow-sm">
               <div>邮箱 Email: {contact.email ?? ""}</div>
               <div>地址 Address: {contact.addressZh ?? contact.address ?? ""}</div>
               <div>网站 Website: {contact.websiteZh ?? contact.website ?? ""}</div>
               {contact.joinZh ? (
-                <div className="pt-2 text-gray-600">{contact.joinZh}</div>
+                <div className="pt-2 text-[var(--muted)]">{contact.joinZh}</div>
               ) : null}
-              {contact.coopZh ? <div className="text-gray-600">{contact.coopZh}</div> : null}
+              {contact.coopZh ? <div className="text-[var(--muted)]">{contact.coopZh}</div> : null}
             </div>
           </section>
         </div>

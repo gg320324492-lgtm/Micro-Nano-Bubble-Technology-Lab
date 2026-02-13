@@ -59,11 +59,11 @@ export default function PiCard() {
   );
 
   return (
-    <div className="rounded-2xl border bg-white p-6 md:p-8">
+    <div className="rounded-2xl border border-[var(--border)] bg-white p-6 md:p-8 shadow-sm">
       {/* 顶部：头像 + 姓名 + 按钮 */}
       <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
         <div className="flex gap-5">
-          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-gray-100 md:h-24 md:w-24">
+          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-[var(--accent-soft)] md:h-24 md:w-24">
             {/* ✅ 用 PublicImage：自动加 basePath，GitHub Pages 下不再丢图 */}
             <PublicImage
               src={pi.avatar}
@@ -78,12 +78,12 @@ export default function PiCard() {
           <div className="space-y-1">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <div className="text-xl font-semibold md:text-2xl">{pi.nameZh}</div>
-              <div className="text-sm text-gray-500 md:text-base">{pi.nameEn}</div>
+              <div className="text-sm text-[var(--text-secondary)] md:text-base">{pi.nameEn}</div>
             </div>
 
-            <div className="text-sm text-gray-700 md:text-base">{pi.title}</div>
-            <div className="pt-2 text-sm text-gray-700 md:text-base">{pi.org}</div>
-            <div className="text-sm text-gray-600 md:text-base">{pi.addr}</div>
+            <div className="text-sm text-[var(--text-secondary)] md:text-base">{pi.title}</div>
+            <div className="pt-2 text-sm text-[var(--text-secondary)] md:text-base">{pi.org}</div>
+            <div className="text-sm text-[var(--muted)] md:text-base">{pi.addr}</div>
           </div>
         </div>
 
@@ -92,7 +92,7 @@ export default function PiCard() {
           {pi.email ? (
             <a
               href={`mailto:${pi.email}`}
-              className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-gray-50"
+              className="rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm font-medium text-[var(--accent)] hover:bg-[var(--accent-soft)]"
               title={pi.email}
               aria-label={`Email: ${pi.email}`}
             >
@@ -101,7 +101,7 @@ export default function PiCard() {
           ) : (
             <button
               type="button"
-              className="rounded-full border px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed"
+              className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--muted)] cursor-not-allowed"
               title="暂无邮箱信息"
             >
               Email
@@ -112,14 +112,14 @@ export default function PiCard() {
             href={pi.homepage}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-gray-50"
+            className="rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm font-medium text-[var(--accent)] hover:bg-[var(--accent-soft)]"
           >
             主页
           </a>
 
           <Link
             href="/contact"
-            className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+            className="rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--accent-hover)]"
           >
             加入我们
           </Link>
@@ -127,7 +127,7 @@ export default function PiCard() {
       </div>
 
       {/* 简介 */}
-      <div className="mt-5 text-sm leading-relaxed text-gray-700 md:text-base">
+      <div className="mt-5 text-sm leading-relaxed text-[var(--muted)] md:text-base">
         {pi.bio}
       </div>
 
@@ -136,7 +136,7 @@ export default function PiCard() {
         {pi.tags.map((t) => (
           <span
             key={t}
-            className="rounded-full bg-gray-100 px-4 py-2 text-xs text-gray-700 md:text-sm"
+            className="rounded-full border border-[#bfdbfe] bg-[var(--accent-soft)] px-4 py-2 text-xs text-[#1e3a8a] md:text-sm"
           >
             {t}
           </span>
@@ -148,7 +148,7 @@ export default function PiCard() {
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="text-sm font-medium text-gray-700 underline underline-offset-4 hover:text-black"
+          className="text-sm font-medium text-[var(--text-secondary)] underline underline-offset-4 hover:text-[var(--accent)]"
         >
           ▶ 更多信息（教育经历 / 工作经历 / 学术兼职）
         </button>
@@ -163,9 +163,9 @@ export default function PiCard() {
       </div>
 
       {/* 招生信息 */}
-      <div className="mt-6 rounded-2xl bg-gray-50 p-5 md:p-6">
-        <div className="font-semibold text-gray-800">招生信息</div>
-        <div className="mt-2 text-sm leading-relaxed text-gray-700 md:text-base">
+      <div className="mt-6 rounded-2xl bg-[var(--surface-soft)] p-5 md:p-6">
+        <div className="font-semibold text-[var(--text)]">招生信息</div>
+        <div className="mt-2 text-sm leading-relaxed text-[var(--muted)] md:text-base">
           {pi.recruit}
         </div>
       </div>
@@ -181,13 +181,13 @@ function InfoBlock({
   items: { time: string; text: string }[];
 }) {
   return (
-    <div className="rounded-2xl border bg-white p-5">
-      <div className="font-semibold text-gray-900">{title}</div>
+    <div className="rounded-2xl border border-[var(--border)] bg-white p-5">
+      <div className="font-semibold text-[var(--text)]">{title}</div>
       <div className="mt-3 space-y-3">
         {items.map((it, idx) => (
           <div key={idx} className="text-sm md:text-base">
-            <div className="text-xs text-gray-500 md:text-sm">{it.time}</div>
-            <div className="mt-1 text-gray-700 leading-relaxed">{it.text}</div>
+            <div className="text-xs text-[var(--text-secondary)] md:text-sm">{it.time}</div>
+            <div className="mt-1 text-[var(--muted)] leading-relaxed">{it.text}</div>
           </div>
         ))}
       </div>

@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
 import { Ma_Shan_Zheng } from "next/font/google";
 import Container from "@/components/Container";
-import { site, navItems as NAV } from "@/data/site";
+import { navItems as NAV } from "@/data/site";
 import { assetPath } from "@/lib/assetPath";
 
 type NavItem = { href: string; zh: string; en: string };
@@ -36,7 +36,7 @@ export default function SiteHeader() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-white/85 backdrop-blur">
       <div className="w-full px-8 2xl:px-12">
         {/* Desktop: 左品牌贴左 + 导航绝对居中 + CTA 贴右 */}
         <div className="relative hidden min-h-[96px] items-center py-3 md:flex">
@@ -79,18 +79,18 @@ export default function SiteHeader() {
                 {/* ✅ Desktop：中文行定宽，英文行按同宽两端对齐 */}
                 <div className="flex max-w-[920px] flex-col justify-center">
                   <div className="inline-block w-fit min-w-0">
-                    <div className="flex w-max flex-nowrap items-baseline gap-3 leading-[1.05] tracking-tight text-slate-900">
+                    <div className="flex w-max flex-nowrap items-baseline gap-3 leading-[1.05] tracking-tight text-[var(--text)]">
                       <span
-                        className={`${maShanZheng.className} whitespace-nowrap text-[30px] font-normal tracking-[0.06em] text-slate-900 sm:text-[36px]`}
+                        className={`${maShanZheng.className} whitespace-nowrap text-[30px] font-normal tracking-[0.06em] text-[var(--text)] sm:text-[36px]`}
                       >
                         天津大学
                       </span>
-                      <span className="whitespace-nowrap text-[30px] font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-[38px]">
+                      <span className="whitespace-nowrap text-[30px] font-extrabold leading-[1.05] tracking-tight text-[var(--text)] sm:text-[38px]">
                         微纳米气泡课题组
                       </span>
                     </div>
 
-                    <div className="mt-1 w-full text-justify text-[13px] font-medium leading-[1.25] text-slate-600 [text-align-last:justify] [text-justify:inter-word] sm:text-[16px] font-serif">
+                    <div className="mt-1 w-full text-justify text-[13px] font-medium leading-[1.25] text-[var(--text-secondary)] [text-align-last:justify] [text-justify:inter-word] sm:text-[16px] font-serif">
                       Micro &amp; Nano Bubble Technology Lab, Tianjin University
                     </div>
                   </div>
@@ -111,16 +111,16 @@ export default function SiteHeader() {
                     "relative text-center transition",
                     "flex flex-col items-center justify-center",
                     "py-1",
-                    active ? "text-gray-900" : "text-gray-600 hover:text-gray-900",
+                    active ? "text-[var(--text)]" : "text-[var(--text-secondary)] hover:text-[var(--accent)]",
                     active
-                      ? "after:absolute after:left-0 after:-bottom-3 after:h-[2px] after:w-full after:rounded-full after:bg-gray-900"
-                      : "after:absolute after:left-0 after:-bottom-3 after:h-[2px] after:w-0 after:rounded-full after:bg-gray-900 after:transition-all hover:after:w-full",
+                      ? "after:absolute after:left-0 after:-bottom-3 after:h-[2px] after:w-full after:rounded-full after:bg-[var(--accent)]"
+                      : "after:absolute after:left-0 after:-bottom-3 after:h-[2px] after:w-0 after:rounded-full after:bg-[var(--accent)] after:transition-all hover:after:w-full",
                   ].join(" ")}
                 >
                   <div className="whitespace-nowrap text-[18px] font-semibold leading-[1.1] tracking-[0.02em]">
                     {item.zh}
                   </div>
-                  <div className="hidden lg:block whitespace-nowrap text-[12px] text-gray-400 leading-[1.1]">
+                  <div className="hidden lg:block whitespace-nowrap text-[12px] text-[var(--muted)] leading-[1.1]">
                     {item.en}
                   </div>
                 </Link>
@@ -132,7 +132,7 @@ export default function SiteHeader() {
           <div className="ml-auto flex items-center justify-end">
             <Link
               href="/contact"
-              className="whitespace-nowrap rounded-full bg-black px-6 py-3 text-base font-medium text-white hover:bg-black/90 transition"
+              className="whitespace-nowrap rounded-full bg-[var(--accent)] px-6 py-3 text-base font-medium text-white hover:bg-[var(--accent-hover)] transition"
             >
               联系我们 / 加入我们
             </Link>
@@ -162,17 +162,17 @@ export default function SiteHeader() {
               />
             </div>
             <div className="flex min-w-0 flex-col justify-center">
-              <div className="flex min-w-0 flex-wrap items-baseline gap-2 leading-[1.05] tracking-tight text-slate-900">
+              <div className="flex min-w-0 flex-wrap items-baseline gap-2 leading-[1.05] tracking-tight text-[var(--text)]">
                 <span
-                  className={`${maShanZheng.className} whitespace-nowrap text-[24px] font-normal tracking-[0.05em] text-slate-900`}
+                  className={`${maShanZheng.className} whitespace-nowrap text-[24px] font-normal tracking-[0.05em] text-[var(--text)]`}
                 >
                   天津大学
                 </span>
-                <span className="text-[24px] font-extrabold leading-[1.05] tracking-tight text-slate-900">
+                <span className="text-[24px] font-extrabold leading-[1.05] tracking-tight text-[var(--text)]">
                   微纳米气泡课题组
                 </span>
               </div>
-              <div className="mt-1 truncate text-[12px] font-medium leading-[1.25] text-slate-600 font-serif">
+              <div className="mt-1 truncate text-[12px] font-medium leading-[1.25] text-[var(--text-secondary)] font-serif">
                 Micro &amp; Nano Bubble Technology Lab, Tianjin University
               </div>
             </div>
@@ -180,7 +180,7 @@ export default function SiteHeader() {
 
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-xl border px-4 py-2.5 text-sm hover:bg-gray-50 transition"
+            className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--accent-soft)] transition"
             aria-label="Open menu"
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
@@ -191,15 +191,15 @@ export default function SiteHeader() {
       </div>
 
       {open ? (
-        <div className="md:hidden border-t bg-white">
+        <div className="md:hidden border-t border-[var(--border)] bg-white">
           <Container className="py-4 space-y-2">
             <a
               href="https://www.tju.edu.cn/"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-between rounded-xl border px-4 py-3 hover:bg-gray-50 transition"
+              className="flex items-center justify-between rounded-xl border border-[var(--border)] px-4 py-3 hover:bg-[var(--accent-soft)] transition"
             >
-              <span className="text-base text-gray-700">天津大学官网</span>
+              <span className="text-base text-[var(--text-secondary)]">天津大学官网</span>
               <div className="relative h-12 w-12 overflow-hidden rounded-full border bg-white">
                 <Image
                   src={assetPath("/logos/tju.png")}
@@ -221,7 +221,9 @@ export default function SiteHeader() {
                   onClick={() => setOpen(false)}
                   className={[
                     "block rounded-xl px-4 py-3 text-base border transition",
-                    active ? "bg-black text-white border-black" : "bg-white text-gray-700 hover:bg-gray-50",
+                    active
+                      ? "bg-[var(--accent)] text-white border-[var(--accent)]"
+                      : "bg-white text-[var(--text-secondary)] border-[var(--border)] hover:bg-[var(--accent-soft)] hover:border-[var(--border-strong)]",
                   ].join(" ")}
                 >
                   {item.zh} / {item.en}
@@ -232,7 +234,7 @@ export default function SiteHeader() {
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="block rounded-xl bg-black px-4 py-3 text-base font-medium text-white text-center hover:bg-black/90 transition"
+              className="block rounded-xl bg-[var(--accent)] px-4 py-3 text-base font-medium text-white text-center hover:bg-[var(--accent-hover)] transition"
             >
               联系我们 / 加入我们
             </Link>

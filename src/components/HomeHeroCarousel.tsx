@@ -57,7 +57,7 @@ export default function HomeHeroCarousel() {
     <section
       className="
         relative w-screen left-1/2 -translate-x-1/2
-        overflow-hidden bg-white
+        overflow-hidden bg-[var(--surface)]
         h-[calc(100vh-80px)] min-h-[520px]
       "
       onMouseEnter={stopAuto}
@@ -97,8 +97,8 @@ export default function HomeHeroCarousel() {
               aria-label={`Go to slide ${i + 1}`}
               onClick={() => go(i)}
               className={[
-                "h-2.5 w-2.5 rounded-full border border-black/30 transition",
-                i === index ? "bg-black/70" : "bg-black/20 hover:bg-black/40",
+                "h-2.5 w-2.5 rounded-full border border-[var(--accent)]/35 transition",
+                i === index ? "bg-[var(--accent)]/80" : "bg-[var(--accent)]/25 hover:bg-[var(--accent)]/45",
               ].join(" ")}
             />
           ))}
@@ -114,12 +114,12 @@ export default function HomeHeroCarousel() {
             className="
               absolute left-4 top-1/2 -translate-y-1/2
               hidden md:flex items-center justify-center
-              h-10 w-10 rounded-full bg-black/10 hover:bg-black/15
-              border border-black/10 backdrop-blur
+              h-10 w-10 rounded-full bg-[var(--text)]/10 hover:bg-[var(--text)]/18
+              border border-[var(--text)]/12 backdrop-blur
               transition
             "
           >
-            <span className="text-black text-xl leading-none select-none">‹</span>
+            <span className="text-[var(--text)] text-xl leading-none select-none">‹</span>
           </button>
           <button
             type="button"
@@ -128,12 +128,12 @@ export default function HomeHeroCarousel() {
             className="
               absolute right-4 top-1/2 -translate-y-1/2
               hidden md:flex items-center justify-center
-              h-10 w-10 rounded-full bg-black/10 hover:bg-black/15
-              border border-black/10 backdrop-blur
+              h-10 w-10 rounded-full bg-[var(--text)]/10 hover:bg-[var(--text)]/18
+              border border-[var(--text)]/12 backdrop-blur
               transition
             "
           >
-            <span className="text-black text-xl leading-none select-none">›</span>
+            <span className="text-[var(--text)] text-xl leading-none select-none">›</span>
           </button>
         </>
       ) : null}
