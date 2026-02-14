@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -27,6 +28,7 @@ export default function RootLayout({
         </div>
 
         <SiteFooter />
+        <Analytics />
       </body>
     </html>
   );
