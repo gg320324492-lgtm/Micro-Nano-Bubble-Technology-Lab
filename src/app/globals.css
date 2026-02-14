@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f4f7ff;
+  --surface: #ffffff;
+  --surface-soft: #eef4ff;
+  --text: #0f2d5c;
+  --text-secondary: #3e5680;
+  --muted: #5f6f87;
+  --border: #d7e3f4;
+  --border-strong: #afc7ee;
+  --accent: #1d4ed8;
+  --accent-hover: #1e40af;
+  --accent-soft: #eff6ff;
+  --accent-cyan: #06b6d4;
+  --warm: #f59e0b;
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(15, 45, 92, 0.08);
+
+  --pub-paper: #1d4ed8;
+  --pub-patent: #06b6d4;
+  --pub-honor: #f59e0b;
+  --pub-soft: #eff6ff;
+
+  --background: var(--bg);
+  --foreground: var(--text);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-text: var(--text);
+  --color-text-secondary: var(--text-secondary);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-cyan: var(--accent-cyan);
+  --color-warm: var(--warm);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.15;
+  font-weight: 650;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 2.1vw, 2.125rem);
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+p {
+  color: var(--muted);
+}
+
+a,
+button,
+[role="button"],
+input,
+select,
+textarea {
+  transition: all 180ms ease;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 28%, white);
+}
+
+.site-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 72rem;
+  padding-inline: 1rem;
+}
+
+.site-container-wide {
+  max-width: 80rem;
+}
+
+@media (min-width: 640px) {
+  .site-container {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-container {
+    padding-inline: 2rem;
+  }
+}
+
+.section {
+  padding-block: clamp(4rem, 7vw, 6rem);
+}
+
+.section-compact {
+  padding-block: clamp(3rem, 5vw, 4rem);
+}
+
+.section-spacious {
+  padding-block: clamp(5rem, 8vw, 7rem);
+}
+
+html,
+body {
+  min-height: 100%;
+}
