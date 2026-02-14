@@ -5,7 +5,7 @@ const isGh = process.env.GITHUB_ACTIONS === "true" || process.env.GITHUB_ACTIONS
 const base = isGh ? `/${repoName}` : "";
 
 const nextConfig: NextConfig = {
-  // output: "export", // Commented out to enable API routes
+  output: "export",
   trailingSlash: true,
   images: { unoptimized: true },
 

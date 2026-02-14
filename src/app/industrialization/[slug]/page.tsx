@@ -39,25 +39,19 @@ function CoverHero({ src, alt }: { src?: string; alt: string }) {
 
 type Props = {
   params: Promise<{ slug: string }>;
-  searchParams?: Promise<{ view?: string | string[] }>;
 };
 
 export default async function IndustrialBaseDetailPage(props: Props) {
   const { slug } = await props.params;
-  const searchParams = props.searchParams ? await props.searchParams : undefined;
 
   const base = industrialBases.find((b) => String(b.slug) === slug);
   const isAquaculture = slug === "aquaculture";
   const aquacultureData = isAquaculture ? aquaculturePdfFullData : null;
 
-  const viewParam = Array.isArray(searchParams?.view)
-    ? searchParams.view[0]
-    : searchParams?.view;
-  const activeAquacultureView =
-    isAquaculture && viewParam === "results" ? "results" : "intro";
+  const activeAquacultureView: "intro" | "results" = "intro";
 
-  const showIntro = !isAquaculture || activeAquacultureView === "intro";
-  const showResults = isAquaculture && activeAquacultureView === "results";
+  const showIntro = true;
+  const showResults = Boolean(isAquaculture && aquacultureData);
 
   const findKeyNumber = (page: number, name: string) => {
     const pageData = aquacultureData?.pages.find((p) => p.page === page);
@@ -98,12 +92,8 @@ export default async function IndustrialBaseDetailPage(props: Props) {
     ? assetPath(resolveAquacultureAssetPath(aquacultureData.meta.pdfPublicPath))
     : "";
 
-  const introViewHref = `/industrialization/${encodeURIComponent(
-    slug,
-  )}/?view=intro`;
-  const resultsViewHref = `/industrialization/${encodeURIComponent(
-    slug,
-  )}/?view=results`;
+  const introViewHref = "#intro";
+  const resultsViewHref = "#results";
 
   const sectionThemes = [
     {
@@ -246,7 +236,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               href={resultsViewHref}
               className={[
                 "inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium transition",
-                activeAquacultureView === "results"
+                false
                   ? "bg-slate-900 text-white"
                   : "bg-slate-100 text-slate-700 hover:bg-slate-200",
               ].join(" ")}
@@ -258,7 +248,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
       ) : null}
 
       {showIntro ? (
-        <>
+        <div id="intro">
           {base.highlightsZh?.length ? (
             <div className="mt-5 overflow-hidden rounded-2xl border border-cyan-200/80 bg-gradient-to-br from-cyan-50 via-sky-50 to-blue-50 shadow-sm">
               <div className="h-1 w-full bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500" />
@@ -373,11 +363,11 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               </div>
             </div>
           ) : null}
-        </>
+        </div>
       ) : null}
 
       {showResults && aquacultureData ? (
-        <div className="mt-8 space-y-6">
+        <div id="results" className="mt-8 space-y-6">
           <section className="overflow-hidden rounded-2xl border border-indigo-200/80 bg-gradient-to-br from-indigo-50 via-white to-sky-50 shadow-sm">
             <div className="h-1 w-full bg-gradient-to-r from-indigo-500 via-sky-500 to-cyan-500" />
             <div className="p-5 sm:p-6">
