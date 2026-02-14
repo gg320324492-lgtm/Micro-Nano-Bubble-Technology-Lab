@@ -290,8 +290,8 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               {base.sections.map((s, idx) => {
                 const theme = sectionThemes[idx % sectionThemes.length];
                 const lastOddSpan =
-                  base.sections.length % 2 === 1 &&
-                  idx === base.sections.length - 1;
+                  (base.sections?.length ?? 0) % 2 === 1 &&
+                  idx === (base.sections?.length ?? 0) - 1;
 
                 return (
                   <section
