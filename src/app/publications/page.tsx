@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import Section from "@/components/ui/Section";
 import Heading from "@/components/ui/Heading";
 import ListItem from "@/components/ui/ListItem";
@@ -87,6 +87,7 @@ function normalize(s: string) {
 export default function PublicationsPage() {
   const [tab, setTab] = useState<TabKey>("papers");
   const [q, setQ] = useState("");
+  const deferredQ = useDeferredValue(q);
   const [year, setYear] = useState<string>("all");
   const [ready, setReady] = useState(false);
 
@@ -126,7 +127,7 @@ export default function PublicationsPage() {
   }, [activeList]);
 
   const filtered = useMemo(() => {
-    const nq = normalize(q);
+    const nq = normalize(deferredQ);
     return activeList
       .filter((it) => {
         const y = pickYear(it);
@@ -154,7 +155,7 @@ export default function PublicationsPage() {
         if (ya !== yb) return yb - ya;
         return pickTitle(a).localeCompare(pickTitle(b));
       });
-  }, [activeList, q, year]);
+  }, [activeList, deferredQ, year]);
 
   return (
     <Section container="wide">

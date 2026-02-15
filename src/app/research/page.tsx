@@ -115,7 +115,6 @@ function ResearchCard({
     <Reveal delay={delay} className="h-full">
       <Link
         href={href}
-        prefetch={false}
         className="group block h-full"
         aria-label={`查看研究方向：${d.titleZh}`}
       >

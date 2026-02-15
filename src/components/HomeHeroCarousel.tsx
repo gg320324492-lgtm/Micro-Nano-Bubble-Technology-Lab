@@ -28,6 +28,16 @@ export default function HomeHeroCarousel() {
 
   const total = slides.length;
 
+  function circularDistance(a: number, b: number, len: number) {
+    const d = Math.abs(a - b);
+    return Math.min(d, len - d);
+  }
+
+  function shouldRender(i: number) {
+    if (total <= 2) return true;
+    return circularDistance(i, index, total) <= 1;
+  }
+
   function go(next: number) {
     const n = (next + total) % total;
     setIndex(n);
@@ -67,13 +77,14 @@ export default function HomeHeroCarousel() {
     >
       <div className="absolute inset-0">
         {slides.map((s, i) => {
+          if (!shouldRender(i)) return null;
           const active = i === index;
           return (
             <div
               key={s.src}
               className={[
                 "absolute inset-0 transition-opacity duration-700 ease-out",
-                active ? "opacity-100" : "opacity-0",
+                active ? "opacity-100" : "opacity-0 pointer-events-none",
               ].join(" ")}
             >
               <Image
@@ -82,6 +93,7 @@ export default function HomeHeroCarousel() {
                 fill
                 priority={i === 0}
                 loading={i === 0 ? "eager" : "lazy"}
+                decoding="async"
                 fetchPriority={i === 0 ? "high" : "low"}
                 sizes="100vw"
                 className="object-contain"

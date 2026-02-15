@@ -1,7 +1,7 @@
 // src/app/people/page.tsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import * as peopleModule from "@/data/people";
 import type { Person } from "@/data/people";
 import PeopleCard from "@/components/PeopleCard";
@@ -54,6 +54,7 @@ export default function PeoplePage() {
   );
 
   const [query, setQuery] = useState("");
+  const deferredQuery = useDeferredValue(query);
   const [roleFilter, setRoleFilter] = useState<string>("ALL");
   const [tagFilter, setTagFilter] = useState<string>("ALL");
 
@@ -73,7 +74,7 @@ export default function PeoplePage() {
 
   // ✅ 用于“方向快捷标签”的基础集合：只受【搜索 + 角色】影响，不受 tagFilter 影响（便于显示每个方向的人数）
   const baseNoTag = useMemo(() => {
-    const q = normalize(query);
+    const q = normalize(deferredQuery);
 
     return all
       .filter((p) => (roleFilter === "ALL" ? true : String(p.role) === roleFilter))
@@ -92,7 +93,7 @@ export default function PeoplePage() {
         );
         return hay.includes(q);
       });
-  }, [all, query, roleFilter]);
+  }, [all, deferredQuery, roleFilter]);
 
   // ✅ 只显示数据里确实存在的方向标签 + 统计人数
   const directionChips = useMemo(() => {
