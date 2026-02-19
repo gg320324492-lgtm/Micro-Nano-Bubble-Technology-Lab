@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { assetPath } from "@/lib/assetPath";
 import { toImageVariant } from "@/lib/imageVariant";
 
@@ -43,11 +44,14 @@ export default function HomeHeroCarousel() {
     setIndex(n);
   }
 
+  // 自动轮播间隔（毫秒），原来是 5500ms，这里调快一些
+  const AUTO_INTERVAL = 3500;
+
   function startAuto() {
     stopAuto();
     timerRef.current = window.setInterval(() => {
       setIndex((i) => (i + 1) % total);
-    }, 5500);
+    }, AUTO_INTERVAL);
   }
 
   function stopAuto() {
@@ -66,90 +70,98 @@ export default function HomeHeroCarousel() {
 
   return (
     <section
-      className="
-        relative w-screen left-1/2 -translate-x-1/2
-        overflow-hidden bg-[var(--surface)]
-        h-[calc(100vh-80px)] min-h-[520px]
-      "
+      className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden bg-[var(--bg-surface)] h-[calc(100vh-80px)] min-h-[520px]"
       onMouseEnter={stopAuto}
       onMouseLeave={startAuto}
       aria-label="Home hero carousel"
     >
       <div className="absolute inset-0">
-        {slides.map((s, i) => {
-          if (!shouldRender(i)) return null;
-          const active = i === index;
-          return (
-            <div
-              key={s.src}
-              className={[
-                "absolute inset-0 transition-opacity duration-700 ease-out",
-                active ? "opacity-100" : "opacity-0 pointer-events-none",
-              ].join(" ")}
-            >
-              <Image
-                src={assetPath(toImageVariant(s.src, "main"))}
-                alt={s.alt}
-                fill
-                priority={i === 0}
-                loading={i === 0 ? "eager" : "lazy"}
-                decoding="async"
-                fetchPriority={i === 0 ? "high" : "low"}
-                sizes="100vw"
-                className="object-contain"
-              />
-            </div>
-          );
-        })}
+        <AnimatePresence mode="wait">
+          {slides.map((s, i) => {
+            if (!shouldRender(i)) return null;
+            const active = i === index;
+            if (!active) return null;
+            
+            return (
+              <motion.div
+                key={`${s.src}-${i}`}
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={assetPath(toImageVariant(s.src, "main"))}
+                  alt={s.alt}
+                  fill
+                  priority={i === 0}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  fetchPriority={i === 0 ? "high" : "low"}
+                  sizes="100vw"
+                  className="object-contain"
+                />
+                {/* 仅在底部轻微提亮，避免整张图发白 */}
+                <div className="absolute inset-0 bg-gradient-to-t from-white/35 via-white/10 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,transparent_55%,rgba(124,58,237,0.04)_100%)] pointer-events-none" />
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
 
       {total > 1 ? (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
           {slides.map((_, i) => (
-            <button
+            <motion.button
               key={i}
               type="button"
               aria-label={`Go to slide ${i + 1}`}
               onClick={() => go(i)}
-              className={[
-                "h-2.5 w-2.5 rounded-full border border-[var(--accent)]/35 transition",
-                i === index ? "bg-[var(--accent)]/80" : "bg-[var(--accent)]/25 hover:bg-[var(--accent)]/45",
-              ].join(" ")}
-            />
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+              className={`relative h-3 w-3 rounded-full border-2 transition-all ${
+                i === index
+                  ? "border-[var(--accent)] bg-[var(--accent)] shadow-[0_0_20px_rgba(138,43,226,0.6)]"
+                  : "border-[var(--accent)]/40 bg-[var(--accent)]/20 hover:bg-[var(--accent)]/40"
+              }`}
+            >
+              {i === index && (
+                <motion.div
+                  layoutId="activeDot"
+                  className="absolute inset-0 rounded-full bg-[var(--accent)]"
+                  initial={false}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                />
+              )}
+            </motion.button>
           ))}
         </div>
       ) : null}
 
       {total > 1 ? (
         <>
-          <button
+          <motion.button
             type="button"
             aria-label="Previous slide"
             onClick={() => go(index - 1)}
-            className="
-              absolute left-4 top-1/2 -translate-y-1/2
-              hidden md:flex items-center justify-center
-              h-10 w-10 rounded-full bg-[var(--text)]/10 hover:bg-[var(--text)]/18
-              border border-[var(--text)]/12 backdrop-blur
-              transition
-            "
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+              className="absolute left-6 top-1/2 -translate-y-1/2 hidden md:flex items-center justify-center h-12 w-12 rounded-full bg-white/90 backdrop-blur-xl border-2 border-[var(--border)] transition-all hover:bg-[var(--accent-soft)] hover:shadow-lg z-20"
           >
-            <span className="text-[var(--text)] text-xl leading-none select-none">‹</span>
-          </button>
-          <button
+            <span className="text-[var(--text)] text-2xl leading-none select-none">‹</span>
+          </motion.button>
+          <motion.button
             type="button"
             aria-label="Next slide"
             onClick={() => go(index + 1)}
-            className="
-              absolute right-4 top-1/2 -translate-y-1/2
-              hidden md:flex items-center justify-center
-              h-10 w-10 rounded-full bg-[var(--text)]/10 hover:bg-[var(--text)]/18
-              border border-[var(--text)]/12 backdrop-blur
-              transition
-            "
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+              className="absolute right-6 top-1/2 -translate-y-1/2 hidden md:flex items-center justify-center h-12 w-12 rounded-full bg-white/90 backdrop-blur-xl border-2 border-[var(--border)] transition-all hover:bg-[var(--accent-soft)] hover:shadow-lg z-20"
           >
-            <span className="text-[var(--text)] text-xl leading-none select-none">›</span>
-          </button>
+            <span className="text-[var(--text)] text-2xl leading-none select-none">›</span>
+          </motion.button>
         </>
       ) : null}
     </section>

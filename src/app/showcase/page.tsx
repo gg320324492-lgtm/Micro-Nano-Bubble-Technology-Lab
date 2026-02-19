@@ -16,7 +16,13 @@ export default function ShowcasePage() {
     <Section container="wide">
       {/* 标题 */}
       <Reveal className="mb-8">
-        <Heading as="h1" title="风采展示" />
+        <Heading
+          as="h1"
+          title="风采展示 Showcase"
+          className="[&_h1]:text-[var(--text)]"
+          subtitleClassName="text-[var(--text-secondary)]"
+          subtitle="本页汇集课题组活动照片与日常瞬间，展示团队在科研、合作交流与日常生活中的风采。后续内容将持续更新。"
+        />
       </Reveal>
 
       {/* 上：照片轮播 */}
@@ -25,7 +31,7 @@ export default function ShowcasePage() {
           {hasPhotos ? (
             <SimpleCarousel images={showcasePhotos} autoPlay intervalMs={2000} />
           ) : (
-            <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 to-slate-100 p-8 text-center text-sm text-slate-500">
+            <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-8 text-center text-sm text-[var(--muted)]">
               Coming soon
             </div>
           )}
@@ -36,11 +42,11 @@ export default function ShowcasePage() {
       <Reveal>
         <Card as="section" className="p-6 md:p-10">
           <div className="mb-6">
-            <h2 className="text-2xl font-semibold">微纳米气泡课题组简介</h2>
-            <p className="mt-3 leading-7 text-muted-foreground">
+            <h2 className="text-2xl font-semibold text-[var(--text)]">微纳米气泡课题组简介</h2>
+            <p className="mt-3 leading-7 text-[var(--text-secondary)]">
               微纳米气泡（Micro/Nano Bubbles, MNBs）因其超大比表面积、界面活性与更长停留时间，
               在
-              <strong className="font-semibold text-gray-900">
+              <strong className="font-semibold text-[var(--text)]">
                 传质强化、氧化反应增强、增氧与水质改善
               </strong>
               等方向展现出独特优势。我们聚焦“从机理到装备，再到应用落地”的完整链路：既回答为什么有效，也持续把有效做成可复制、可工程化的系统。
@@ -50,16 +56,16 @@ export default function ShowcasePage() {
           <div className="grid gap-8 md:grid-cols-2">
             {/* 左列 */}
             <div>
-              <h3 className="text-lg font-semibold">我们在研究什么</h3>
-              <p className="mt-3 leading-7 text-muted-foreground">
+              <h3 className="text-lg font-semibold text-[var(--text)]">我们在研究什么</h3>
+              <p className="mt-3 leading-7 text-[var(--text-secondary)]">
                 课题组围绕微纳米气泡的
-                <strong className="font-semibold text-gray-900">
+                <strong className="font-semibold text-[var(--text)]">
                   生成、调控与反应强化
                 </strong>
                 展开，关注气泡粒径/浓度/电位等特性如何影响传质与反应动力学，并将其应用于饮用水安全、环境治理与智能化工程系统中。
               </p>
 
-              <div className="mt-4 space-y-2 text-muted-foreground leading-7">
+              <div className="mt-4 space-y-2 text-[var(--text-secondary)] leading-7">
                 <p>• 气泡生成与结构调控：流道结构、喷射/旋流、空化与剪切协同机制</p>
                 <p>• 气泡表征与行为：粒径分布、浓度、ζ 电位、稳定性与溶解行为</p>
                 <p>• 强化氧化与污染控制：臭氧/活性氧物种生成与反应路径、动力学与机理</p>
@@ -69,13 +75,13 @@ export default function ShowcasePage() {
 
             {/* 右列 */}
             <div>
-              <h3 className="text-lg font-semibold">我们如何做研究</h3>
-              <p className="mt-3 leading-7 text-muted-foreground">
+              <h3 className="text-lg font-semibold text-[var(--text)]">我们如何做研究</h3>
+              <p className="mt-3 leading-7 text-[var(--text-secondary)]">
                 我们强调“数据闭环”：从设计—实验—建模—验证—迭代，形成可解释、可复现的研究流程。
                 在这里，你不仅能做实验，更能学会把结果讲清楚、把机理讲扎实、把系统做稳定。
               </p>
 
-              <div className="mt-4 space-y-2 text-muted-foreground leading-7">
+              <div className="mt-4 space-y-2 text-[var(--text-secondary)] leading-7">
                 <p>• 实验：反应器搭建、运行参数设计、对照组与重复性控制</p>
                 <p>• 表征：气泡粒径/浓度、溶解臭氧、自由基指示、理化与微生物指标等</p>
                 <p>• 建模与分析：动力学拟合、结构参数影响分析、机理推断与可视化表达</p>
@@ -84,12 +90,12 @@ export default function ShowcasePage() {
             </div>
           </div>
 
-          <hr className="my-8" />
+          <hr className="my-8 border-[var(--border)]" />
 
           <div className="grid gap-8 md:grid-cols-2">
             <div>
-              <h3 className="text-lg font-semibold">你在这里会收获什么</h3>
-              <div className="mt-4 space-y-2 text-muted-foreground leading-7">
+              <h3 className="text-lg font-semibold text-[var(--text)]">你在这里会收获什么</h3>
+              <div className="mt-4 space-y-2 text-[var(--text-secondary)] leading-7">
                 <p>• 完整的科研训练：问题拆解 → 实验设计 → 数据分析 → 论文表达</p>
                 <p>• 工程能力提升：设备搭建、传感器与控制、系统集成与调参</p>
                 <p>• 团队协作氛围：高频讨论、互相支持、共同打磨结果与表达</p>
@@ -98,10 +104,10 @@ export default function ShowcasePage() {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold">加入我们</h3>
-              <p className="mt-3 leading-7 text-muted-foreground">
+              <h3 className="text-lg font-semibold text-[var(--text)]">加入我们</h3>
+              <p className="mt-3 leading-7 text-[var(--text-secondary)]">
                 如果你对
-                <strong className="font-semibold text-gray-900">
+                <strong className="font-semibold text-[var(--text)]">
                   水环境治理、饮用水安全、微纳米气泡、强化氧化、装置与控制
                 </strong>
                 这些方向感兴趣，欢迎来聊聊你的想法与背景。你可以从一个小任务开始，逐步参与到更完整的课题中，并在团队支持下快速成长。
@@ -125,8 +131,8 @@ export default function ShowcasePage() {
           </div>
 
           {/* 结尾收束 */}
-          <div className="mt-10 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50/90 to-white p-6 shadow-[0_1px_0_rgba(0,0,0,0.03)]">
-            <p className="text-xl leading-8 text-slate-800 md:text-2xl md:leading-9">
+          <div className="mt-10 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--accent-soft)]/20 p-6">
+            <p className="text-xl leading-8 text-[var(--text)] md:text-2xl md:leading-9">
               我们相信：真正有价值的研究，既能把机理讲清楚，也能把系统做稳定，更能在真实场景里产生可验证的成果。
               <span className="font-semibold"> 期待你的加入。</span>
             </p>

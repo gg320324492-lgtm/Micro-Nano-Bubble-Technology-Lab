@@ -1,5 +1,8 @@
 // src/components/SiteFooter.tsx
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 import Container from "@/components/Container";
 import * as contactModule from "@/data/contact";
 import { navItems } from "@/data/site";
@@ -26,74 +29,122 @@ export default function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-12 border-t border-[#1f417a] bg-[#0f2d5c] text-[#dce8ff]">
-      <Container className="py-10">
-        <div className="grid gap-8 md:grid-cols-3">
+    <footer className="relative mt-auto border-t border-[var(--border)] bg-[var(--bg-surface)] backdrop-blur-xl overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--accent)]/5 to-transparent pointer-events-none" />
+      
+      <Container className="relative z-10 py-12 md:py-16">
+        <div className="grid gap-10 md:grid-cols-3">
           {/* Brand */}
-          <div>
-            <div className="text-sm font-semibold text-white">
-              微纳米气泡课题组
-            </div>
-            <div className="mt-1 text-xs text-[#bcd1f7]">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="text-lg font-bold text-[var(--text)] mb-2 gradient-text">微纳米气泡课题组</div>
+            <div className="text-sm text-[var(--text-secondary)] mb-4">
               Micro & Nano Bubble Technology Lab
             </div>
-            <p className="mt-3 text-sm leading-relaxed text-[#dce8ff]">
+            <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
               聚焦微纳米气泡技术的机理研究、装备开发与多场景应用。
             </p>
-          </div>
+          </motion.div>
 
           {/* Nav */}
-          <div>
-            <div className="text-sm font-semibold text-white">导航</div>
-            <div className="mt-3 grid gap-2 text-sm text-[#dce8ff]">
-              {footerNavItems.map((item) => (
-                <Link key={item.href} className="hover:underline hover:text-[#93c5fd]" href={item.href}>
-                  {item.zh} {item.en}
-                </Link>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <div className="text-base font-bold text-[var(--text)] mb-4 gradient-text">导航</div>
+            <div className="grid gap-3 text-sm text-[var(--text-secondary)]">
+              {footerNavItems.map((item, idx) => (
+                <motion.div
+                  key={item.href}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 + idx * 0.05 }}
+                >
+                  <Link
+                    href={item.href}
+                    className="hover:text-[var(--accent)] transition-colors inline-block"
+                  >
+                    {item.zh} / {item.en}
+                  </Link>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Contact */}
-          <div>
-            <div className="text-sm font-semibold text-white">联系</div>
-            <div className="mt-3 space-y-2 text-sm text-[#dce8ff]">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="text-base font-bold text-[var(--text)] mb-4 gradient-text">联系</div>
+            <div className="space-y-3 text-sm text-[var(--text-secondary)]">
               <div>
-                <span className="text-[#bcd1f7]">Email：</span>
-                {contact.email ?? ""}
+                <span className="text-[var(--muted)] block text-xs mb-1 uppercase tracking-wider">Email</span>
+                <a
+                  href={`mailto:${contact.email ?? ""}`}
+                  className="text-[var(--accent)] hover:text-[var(--accent-secondary)] transition-colors font-medium"
+                >
+                  {contact.email ?? ""}
+                </a>
               </div>
               <div>
-                <span className="text-[#bcd1f7]">Address：</span>
+                <span className="text-[var(--muted)] block text-xs mb-1 uppercase tracking-wider">Address</span>
                 {contact.addressZh ?? contact.address ?? ""}
               </div>
               <div>
-                <span className="text-[#bcd1f7]">Website：</span>
-                {contact.websiteZh ?? contact.website ?? ""}
+                <span className="text-[var(--muted)] block text-xs mb-1 uppercase tracking-wider">Website</span>
+                <a
+                  href={contact.websiteZh ?? contact.website ?? "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[var(--accent)] hover:text-[var(--accent-secondary)] transition-colors font-medium"
+                >
+                  教师主页
+                </a>
               </div>
             </div>
-
-            <div className="mt-4">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-6"
+            >
               <Link
                 href="/contact"
-                className="inline-flex rounded-xl border border-[#6f92ca] px-3 py-2 text-sm font-medium text-white hover:bg-[#1a3b73]"
+                  className="inline-flex rounded-[var(--radius-md)] border-2 border-[var(--accent)] px-5 py-2.5 text-sm font-medium text-[var(--accent)] hover:bg-[var(--accent-soft)] transition-all hover:shadow-md"
               >
                 联系我们 / Join Us
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-[#2a4f8d] pt-6 text-xs text-[#bcd1f7] md:flex-row md:items-center md:justify-between">
-          <div>© {year} Micro & Nano Bubble Technology Lab. All rights reserved.</div>
-          <div className="flex gap-4">
-            <Link className="hover:underline hover:text-[#93c5fd]" href="/">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="mt-12 flex flex-col gap-4 border-t border-[var(--border)] pt-8 text-xs text-[var(--muted)] md:flex-row md:items-center md:justify-between"
+        >
+          <div>© {year} Micro & Nano Bubble Technology Lab</div>
+          <div className="flex gap-6">
+            <Link href="/" className="hover:text-[var(--accent)] transition-colors">
               Home
             </Link>
-            <Link className="hover:underline hover:text-[#93c5fd]" href="/publications">
+            <Link href="/publications" className="hover:text-[var(--accent)] transition-colors">
               Publications
             </Link>
           </div>
-        </div>
+        </motion.div>
       </Container>
     </footer>
   );

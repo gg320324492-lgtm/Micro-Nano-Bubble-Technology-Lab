@@ -137,10 +137,10 @@ export default function PeoplePage() {
         .get(r)!
         .slice()
         .sort((a, b) => {
-          // 优先按 cohort(新→旧)，再按姓名
+          // 优先按 cohort(高年级→低年级；入学更早=年级更高)，再按姓名
           const ca = Number(a.cohort ?? 0);
           const cb = Number(b.cohort ?? 0);
-          if (cb !== ca) return cb - ca;
+          if (ca !== cb) return ca - cb;
           return String(a.nameZh).localeCompare(String(b.nameZh), "zh");
         }),
     }));
@@ -154,8 +154,8 @@ export default function PeoplePage() {
           <Heading
             as="h1"
             title="成员 People"
-            className="[&>h1]:text-[color:var(--text)]"
-            subtitleClassName="text-[color:var(--muted)]"
+            className="[&>h1]:text-[var(--text)]"
+            subtitleClassName="text-[var(--text-secondary)]"
             subtitle="本页仅展示学生与已毕业成员信息（博士/硕士/本科/已毕业）。导师信息请见首页导师介绍。支持关键词搜索与按角色筛选；点击成员卡片标签或顶部方向快捷标签可直接筛选。"
           />
         </div>
@@ -165,13 +165,13 @@ export default function PeoplePage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="搜索：姓名 / 方向 / 单位 / 标签…"
-            className="w-full rounded-xl border border-blue-200/80 bg-white/90 px-3 py-2 text-sm text-slate-700 shadow-sm outline-none placeholder:text-slate-400"
+            className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text)] outline-none placeholder:text-[var(--muted)] focus:ring-2 focus:ring-[var(--accent)]/30"
           />
         </div>
       </Reveal>
 
       {/* Filters */}
-      <div className="mt-5 rounded-2xl border border-blue-100/90 bg-gradient-to-r from-blue-50/70 via-white to-cyan-50/70 p-3 backdrop-blur-[1px] md:p-4">
+      <div className="mt-5 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-3 md:p-4">
         <div className="flex flex-wrap items-center gap-2">
           {roleOptions.map((r) => {
             const active = roleFilter === r;
@@ -191,14 +191,14 @@ export default function PeoplePage() {
             );
           })}
 
-          <div className="ml-auto text-xs font-medium text-slate-500">共 {filtered.length} 人</div>
+          <div className="ml-auto text-xs font-medium text-[var(--muted)]">共 {filtered.length} 人</div>
         </div>
       </div>
 
       {/* ✅ 方向快捷标签（五大方向一键筛） */}
       {directionChips.length ? (
         <div className="mt-3">
-          <div className="mb-2 text-xs font-medium text-slate-500">方向快捷筛选：</div>
+          <div className="mb-2 text-xs font-medium text-[var(--muted)]">方向快捷筛选：</div>
           <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
             {directionChips.map(({ tag, count }) => {
               const active = tagFilter === tag;
@@ -223,14 +223,14 @@ export default function PeoplePage() {
       {/* 当前标签筛选提示 */}
       {tagFilter !== "ALL" ? (
         <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-          <span className="text-slate-500">标签筛选：</span>
+          <span className="text-[var(--muted)]">标签筛选：</span>
           <Badge className={`${activeTagTone?.badge ?? ""} px-3 py-1 text-xs font-semibold`}>
             {tagFilter}
           </Badge>
           <button
             type="button"
             onClick={() => setTagFilter("ALL")}
-            className="text-xs font-medium text-blue-700 underline underline-offset-2"
+            className="text-xs font-medium text-[var(--accent)] underline underline-offset-2 hover:text-[var(--accent-hover)]"
           >
             清除标签筛选
           </button>
@@ -244,10 +244,10 @@ export default function PeoplePage() {
             key={role}
             className={`${getRoleTone(role).sectionSurface} ${getRoleTone(role).sectionBorder} space-y-4 rounded-2xl border p-4 md:p-5`}
           >
-            <h2 className="flex items-center text-xl font-semibold text-slate-800">
+            <h2 className="flex items-center text-xl font-semibold text-[var(--text)]">
               <span className={`${getRoleTone(role).sectionDot} mr-2 inline-block h-2.5 w-2.5 rounded-full`} />
               {roleLabel(role)}
-              <span className="ml-2 text-sm text-slate-500">({items.length})</span>
+              <span className="ml-2 text-sm text-[var(--muted)]">({items.length})</span>
             </h2>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -265,7 +265,7 @@ export default function PeoplePage() {
         ))}
 
         {!filtered.length ? (
-          <div className="rounded-[var(--radius)] border border-blue-100 bg-white/90 p-6 text-sm text-[color:var(--muted)] shadow-[var(--shadow)]">
+          <div className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-6 text-sm text-[var(--muted)]">
             没有匹配的成员信息，请调整关键词/角色筛选/标签筛选。
           </div>
         ) : null}

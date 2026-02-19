@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import PublicImage from "@/components/PublicImage";
 
 export default function PiCard() {
@@ -16,15 +17,9 @@ export default function PiCard() {
       addr: "天津市南开区卫津路92号（天津大学），邮编：300072",
       bio:
         "聚焦微纳米气泡机理与工程应用，涵盖气泡溃灭与·OH原位形成、协同消毒与饮用水生物稳定性提升、表面清洗与水环境治理装备开发等方向。",
-
-      // ✅ 改为你实际存在的头像（public/people/pi.jpg）
-      // 同时仍兼容你未来如果换回 images 下的文件
       avatar: "/people/pi.jpg",
-
       homepage: "https://faculty.tju.edu.cn/226066/zh_CN/index.htm",
-
       email: "wangtianzhi@tju.edu.cn",
-
       tags: [
         "微纳米气泡溃灭与·OH原位形成",
         "协同氯消毒与杀菌机制",
@@ -33,7 +28,6 @@ export default function PiCard() {
         "微纳米气泡装备与在线监测",
         "表面清洗与农业应用",
       ],
-
       education: [
         { time: "2009.9 - 2013.6", text: "中国农业大学 - 农业水利工程 - 学士" },
         { time: "2013.9 - 2018.6", text: "中国农业大学 - 农业水土工程 - 博士" },
@@ -49,9 +43,8 @@ export default function PiCard() {
         { time: "2024.3 - 2027.2", text: "《Processes》期刊客座编辑" },
         { time: "2024.4 - 2029.4", text: "全国研究生教育评估监测专家库专家" },
         { time: "2025.4 - 2029.3", text: "《净水技术》期刊青年编委" },
-        { time: "2025.2 - 2030.1", text: "天津市宁河区产业高质量发展“领衔专家”" },
+        { time: "2025.2 - 2030.1", text: "天津市宁河区产业高质量发展「领衔专家」" },
       ],
-
       recruit:
         "团队常年招收硕士研究生3–4名、博士生1–2名及本科生若干，欢迎环境/市政/自动化/农业工程/化工/工业设计等背景同学加入。",
     }),
@@ -59,118 +52,152 @@ export default function PiCard() {
   );
 
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-white p-6 md:p-8 shadow-sm">
-      {/* 顶部：头像 + 姓名 + 按钮 */}
-      <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-        <div className="flex gap-5">
-          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-[var(--accent-soft)] md:h-24 md:w-24">
-            {/* ✅ 用 PublicImage：自动加 basePath，GitHub Pages 下不再丢图 */}
-            <PublicImage
-              src={pi.avatar}
-              variant="thumb"
-              alt={pi.nameEn}
-              fill
-              sizes="96px"
-              className="object-cover"
-              priority
-            />
-          </div>
-
-          <div className="space-y-1">
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <div className="text-xl font-semibold md:text-2xl">{pi.nameZh}</div>
-              <div className="text-sm text-[var(--text-secondary)] md:text-base">{pi.nameEn}</div>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="relative rounded-[var(--radius-xl)] border-2 border-[var(--border)] bg-white p-8 md:p-10 shadow-lg overflow-hidden"
+    >
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/5 via-transparent to-[var(--accent-secondary)]/5 pointer-events-none" />
+      
+      <div className="relative z-10 flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
+        <div className="flex gap-6">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="relative h-24 w-24 shrink-0 overflow-hidden rounded-[var(--radius-lg)] bg-gradient-to-br from-[var(--accent)] to-[var(--accent-secondary)] p-0.5 md:h-28 md:w-28"
+          >
+            <div className="relative h-full w-full rounded-[var(--radius-md)] bg-white overflow-hidden">
+              <PublicImage
+                src={pi.avatar}
+                variant="thumb"
+                alt={pi.nameEn}
+                fill
+                sizes="112px"
+                className="object-cover"
+                priority
+              />
             </div>
-
-            <div className="text-sm text-[var(--text-secondary)] md:text-base">{pi.title}</div>
-            <div className="pt-2 text-sm text-[var(--text-secondary)] md:text-base">{pi.org}</div>
-            <div className="text-sm text-[var(--muted)] md:text-base">{pi.addr}</div>
+          </motion.div>
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              <div className="text-2xl md:text-3xl font-bold text-[var(--text)] gradient-text">{pi.nameZh}</div>
+              <div className="text-base md:text-lg text-[var(--text-secondary)]">{pi.nameEn}</div>
+            </div>
+            <div className="text-base md:text-lg text-[var(--accent)] font-semibold">{pi.title}</div>
+            <div className="pt-2 text-sm md:text-base text-[var(--text-secondary)]">{pi.org}</div>
+            <div className="text-sm md:text-base text-[var(--muted)]">{pi.addr}</div>
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 md:justify-end">
-          {/* ✅ 只显示“Email”，不显示邮箱；hover 提示邮箱，点击 mailto */}
+        <div className="flex flex-wrap gap-3 md:justify-end">
           {pi.email ? (
-            <a
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               href={`mailto:${pi.email}`}
-              className="rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm font-medium text-[var(--accent)] hover:bg-[var(--accent-soft)]"
+              className="rounded-[var(--radius-md)] border border-[var(--border-glow)] px-5 py-2.5 text-sm font-medium text-[var(--accent)] hover:bg-[var(--accent-soft)] transition-all hover:shadow-[0_0_20px_rgba(138,43,226,0.3)]"
               title={pi.email}
               aria-label={`Email: ${pi.email}`}
             >
               Email
-            </a>
+            </motion.a>
           ) : (
             <button
               type="button"
-              className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--muted)] cursor-not-allowed"
+              className="rounded-[var(--radius-md)] border border-[var(--border)] px-5 py-2.5 text-sm font-medium text-[var(--muted)] cursor-not-allowed"
               title="暂无邮箱信息"
             >
               Email
             </button>
           )}
-
-          <a
+          <motion.a
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             href={pi.homepage}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm font-medium text-[var(--accent)] hover:bg-[var(--accent-soft)]"
+            className="rounded-[var(--radius-md)] border border-[var(--border-glow)] px-5 py-2.5 text-sm font-medium text-[var(--accent)] hover:bg-[var(--accent-soft)] transition-all hover:shadow-[0_0_20px_rgba(138,43,226,0.3)]"
           >
             主页
-          </a>
-
-          <Link
-            href="/contact"
-            className="rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--accent-hover)]"
-          >
-            加入我们
-          </Link>
+          </motion.a>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link
+              href="/contact"
+              className="rounded-[var(--radius-md)] bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] px-5 py-2.5 text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl"
+            >
+              加入我们
+            </Link>
+          </motion.div>
         </div>
       </div>
 
-      {/* 简介 */}
-      <div className="mt-5 text-sm leading-relaxed text-[var(--muted)] md:text-base">
+      <div className="relative z-10 mt-6 text-base leading-relaxed text-[var(--text-secondary)] md:text-lg">
         {pi.bio}
       </div>
 
-      {/* 研究标签 */}
-      <div className="mt-5 flex flex-wrap gap-2">
-        {pi.tags.map((t) => (
-          <span
+      <div className="relative z-10 mt-6 flex flex-wrap gap-3">
+        {pi.tags.map((t, idx) => (
+          <motion.span
             key={t}
-            className="rounded-full border border-[#bfdbfe] bg-[var(--accent-soft)] px-4 py-2 text-xs text-[#1e3a8a] md:text-sm"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: idx * 0.05 }}
+            whileHover={{ scale: 1.05 }}
+            className="rounded-full border border-[var(--border-glow)] bg-[var(--accent-soft)] px-4 py-2 text-xs text-[var(--accent)] md:text-sm font-medium backdrop-blur-sm hover:bg-[var(--accent)]/20 transition-colors"
           >
             {t}
-          </span>
+          </motion.span>
         ))}
       </div>
 
-      {/* 更多信息 */}
-      <div className="mt-6">
-        <button
+      <div className="relative z-10 mt-8">
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="text-sm font-medium text-[var(--text-secondary)] underline underline-offset-4 hover:text-[var(--accent)]"
+          className="flex items-center gap-2 text-base font-medium text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors group"
         >
-          ▶ 更多信息（教育经历 / 工作经历 / 学术兼职）
-        </button>
+          <motion.span
+            animate={{ rotate: open ? 90 : 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-[var(--accent)]"
+          >
+            ▶
+          </motion.span>
+          更多信息（教育经历 / 工作经历 / 学术兼职）
+        </motion.button>
 
-        {open ? (
-          <div className="mt-4 grid gap-4 md:grid-cols-3">
-            <InfoBlock title="教育经历" items={pi.education} />
-            <InfoBlock title="工作经历" items={pi.work} />
-            <InfoBlock title="社会兼职" items={pi.service} />
-          </div>
-        ) : null}
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mt-6 grid gap-6 md:grid-cols-3 overflow-hidden"
+            >
+              <InfoBlock title="教育经历" items={pi.education} />
+              <InfoBlock title="工作经历" items={pi.work} />
+              <InfoBlock title="社会兼职" items={pi.service} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* 招生信息 */}
-      <div className="mt-6 rounded-2xl bg-[var(--surface-soft)] p-5 md:p-6">
-        <div className="font-semibold text-[var(--text)]">招生信息</div>
-        <div className="mt-2 text-sm leading-relaxed text-[var(--muted)] md:text-base">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="relative z-10 mt-8 rounded-[var(--radius-lg)] border-2 border-[var(--border)] bg-gradient-to-br from-[var(--accent-soft)] to-[var(--accent-secondary)]/10 p-6 md:p-8"
+      >
+        <div className="font-bold text-lg text-[var(--text)] mb-3 gradient-text">招生信息</div>
+        <div className="text-base leading-relaxed text-[var(--text-secondary)] md:text-lg">
           {pi.recruit}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -182,16 +209,26 @@ function InfoBlock({
   items: { time: string; text: string }[];
 }) {
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-white p-5">
-      <div className="font-semibold text-[var(--text)]">{title}</div>
-      <div className="mt-3 space-y-3">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-6 backdrop-blur-xl"
+    >
+      <div className="font-bold text-base text-[var(--text)] mb-4 gradient-text">{title}</div>
+      <div className="space-y-4">
         {items.map((it, idx) => (
-          <div key={idx} className="text-sm md:text-base">
-            <div className="text-xs text-[var(--text-secondary)] md:text-sm">{it.time}</div>
-            <div className="mt-1 text-[var(--muted)] leading-relaxed">{it.text}</div>
-          </div>
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.05 }}
+            className="text-sm md:text-base"
+          >
+            <div className="text-xs text-[var(--accent)] md:text-sm font-medium mb-1">{it.time}</div>
+            <div className="text-[var(--text-secondary)] leading-relaxed">{it.text}</div>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }

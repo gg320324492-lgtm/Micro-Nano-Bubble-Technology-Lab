@@ -37,7 +37,7 @@ export default function AquacultureTabs({ introPanel, resultsPanel }: Props) {
   return [
     <div
       key="aquaculture-tabs"
-      className="mt-6 rounded-2xl border border-slate-200 bg-white/90 p-2 shadow-sm"
+      className="mt-6 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-2"
     >
       <div className="grid grid-cols-2 gap-2">
         <button
@@ -46,8 +46,8 @@ export default function AquacultureTabs({ introPanel, resultsPanel }: Props) {
           className={[
             "inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium transition",
             activeTab === "intro"
-              ? "bg-slate-900 text-white"
-              : "bg-slate-100 text-slate-700 hover:bg-slate-200",
+              ? "bg-[var(--accent)] text-[var(--bg-deep)]"
+              : "bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
           ].join(" ")}
           aria-pressed={activeTab === "intro"}
         >
@@ -59,8 +59,8 @@ export default function AquacultureTabs({ introPanel, resultsPanel }: Props) {
           className={[
             "inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium transition",
             activeTab === "results"
-              ? "bg-slate-900 text-white"
-              : "bg-slate-100 text-slate-700 hover:bg-slate-200",
+              ? "bg-[var(--accent)] text-[var(--bg-deep)]"
+              : "bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
           ].join(" ")}
           aria-pressed={activeTab === "results"}
         >

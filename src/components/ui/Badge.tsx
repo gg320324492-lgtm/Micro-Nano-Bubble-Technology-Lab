@@ -9,8 +9,8 @@ export default function Badge({ children, className = "" }: BadgeProps) {
   return (
     <span
       className={[
-        "inline-flex items-center rounded-full border border-[color:var(--border)]",
-        "bg-white/80 px-2.5 py-1 text-xs text-[color:var(--muted)]",
+        "inline-flex items-center rounded-[var(--radius-sm)] border border-[var(--border-strong)]",
+        "bg-[var(--accent-soft)] px-2.5 py-1 text-xs text-[var(--accent)]",
         className,
       ].join(" ")}
     >

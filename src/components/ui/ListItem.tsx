@@ -23,21 +23,20 @@ export default function ListItem({
   return (
     <article
       className={[
-        "rounded-[var(--radius)] border border-[color:var(--border)] bg-[color:var(--surface)] p-5",
-        "shadow-[var(--shadow)]",
+        "rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-5",
         className,
       ].join(" ")}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           {year ? (
-            <div className="inline-flex rounded-full bg-[#eaf2ff] px-2.5 py-0.5 text-xs font-semibold text-[#1d4ed8]">
+            <div className="inline-flex rounded-full bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">
               {year}
             </div>
           ) : null}
-          <div className="mt-2 text-lg font-semibold leading-snug text-[color:var(--text)]">{title}</div>
-          {subtitle ? <div className="mt-1 text-sm text-[color:var(--muted)]">{subtitle}</div> : null}
-          {description ? <div className="mt-2 text-sm text-[color:var(--muted)]">{description}</div> : null}
+          <div className="mt-2 text-lg font-semibold leading-snug text-[var(--text)]">{title}</div>
+          {subtitle ? <div className="mt-1 text-sm text-[var(--muted)]">{subtitle}</div> : null}
+          {description ? <div className="mt-2 text-sm text-[var(--text-secondary)]">{description}</div> : null}
 
           {badges?.length ? (
             <div className="mt-3 flex flex-wrap gap-2">

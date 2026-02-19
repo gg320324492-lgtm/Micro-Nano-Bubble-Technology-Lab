@@ -17,10 +17,12 @@ export default function LightboxGallery({
   items,
   className = "",
   tone = "core",
+  layout = "auto",
 }: {
   items: GalleryItem[];
   className?: string;
   tone?: "core" | "applications";
+  layout?: "auto" | "grid-3";
 }) {
   const safe = useMemo(() => (items ?? []).filter(Boolean), [items]);
   const [open, setOpen] = useState(false);
@@ -49,28 +51,33 @@ export default function LightboxGallery({
   const theme =
     tone === "applications"
       ? {
-          countText: "text-teal-700",
-          cardBorder: "border-teal-200/80",
-          cardBg: "bg-teal-50/35",
+          countText: "text-teal-300",
+          cardBorder: "border-teal-500/40",
+          cardBg: "bg-teal-500/10",
           hoverOverlay:
-            "bg-gradient-to-t from-teal-900/35 via-teal-700/10 to-transparent",
+            "bg-gradient-to-t from-teal-900/50 via-transparent to-transparent",
         }
       : {
-          countText: "text-blue-700",
-          cardBorder: "border-blue-200/80",
-          cardBg: "bg-blue-50/35",
+          countText: "text-[var(--accent)]",
+          cardBorder: "border-[var(--border-strong)]",
+          cardBg: "bg-[var(--accent-soft)]/20",
           hoverOverlay:
-            "bg-gradient-to-t from-blue-900/35 via-blue-700/10 to-transparent",
+            "bg-gradient-to-t from-[var(--bg-deep)]/50 via-transparent to-transparent",
         };
+
+  const gridClass =
+    layout === "grid-3"
+      ? "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+      : "grid grid-cols-1 gap-4 sm:grid-cols-2";
 
   return (
     <div className={className}>
       <div className="mb-2 flex items-center justify-between">
-        <h3 className="text-lg font-semibold">图集</h3>
+        <h3 className="text-lg font-semibold text-[var(--text)]">图集</h3>
         <div className={["text-sm font-medium", theme.countText].join(" ")}>{safe.length} 张</div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className={gridClass}>
         {safe.map((it, i) => (
           <button
             key={`${it.src}-${i}`}

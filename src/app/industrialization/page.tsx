@@ -14,11 +14,11 @@ import ImageReveal from "@/components/motion/ImageReveal";
 function Cover({ src, alt }: { src?: string; alt: string }) {
   if (!src) {
     return (
-      <div className="h-56 w-full rounded-2xl border bg-gradient-to-br from-gray-50 to-gray-100" />
+      <div className="h-56 w-full rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-elevated)]" />
     );
   }
   return (
-    <div className="relative h-56 w-full overflow-hidden rounded-2xl border bg-gray-50">
+    <div className="relative h-56 w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-elevated)]">
       <Image
         src={assetPath(toImageVariant(src, "thumb"))}
         alt={alt}
@@ -40,22 +40,24 @@ export default function IndustrializationPage() {
           as="h1"
           title="产业化"
           subtitle="围绕应用验证基地与示范场景，展示监测平台入口与工程化落地内容。"
+          className="[&_h1]:text-[var(--text)]"
+          subtitleClassName="text-[var(--text-secondary)]"
         />
       </Reveal>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+      <div className="mt-8 grid gap-6 lg:grid-cols-2 items-stretch">
         {industrialBases.map((b, index) => (
           <Reveal key={b.slug} delay={index * 0.05}>
-            <Card as="section" className="rounded-3xl p-5">
+            <Card as="section" className="flex h-full flex-col rounded-3xl p-5">
               <ImageReveal>
                 <Cover src={b.cover} alt={b.titleZh} />
               </ImageReveal>
 
               <div className="mt-4 flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="text-xl font-semibold">{b.titleZh}</div>
+                  <div className="text-xl font-semibold text-[var(--text)]">{b.titleZh}</div>
                   {b.titleEn ? (
-                    <div className="text-sm text-gray-500">{b.titleEn}</div>
+                    <div className="text-sm text-[var(--muted)]">{b.titleEn}</div>
                   ) : null}
                 </div>
 
@@ -68,19 +70,19 @@ export default function IndustrializationPage() {
                 </Link>
               </div>
 
-              <p className="mt-3 text-sm leading-relaxed text-gray-700">
+              <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">
                 {b.briefZh}
               </p>
 
               {b.locationZh ? (
-                <div className="mt-3 text-sm text-gray-600">
-                  <span className="font-medium text-gray-900">位置/说明：</span>
+                <div className="mt-3 text-sm text-[var(--text-secondary)]">
+                  <span className="font-medium text-[var(--text)]">位置/说明：</span>
                   {b.locationUrl ? (
                     <a
                       href={b.locationUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline underline-offset-2 hover:text-gray-900"
+                      className="underline underline-offset-2 hover:text-[var(--accent)]"
                     >
                       {b.locationZh}
                     </a>
@@ -91,7 +93,7 @@ export default function IndustrializationPage() {
               ) : null}
 
               {b.highlightsZh?.length ? (
-                <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-gray-700">
+                <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-[var(--text-secondary)]">
                   {b.highlightsZh.map((x) => (
                     <li key={x}>{x}</li>
                   ))}
@@ -99,7 +101,7 @@ export default function IndustrializationPage() {
               ) : null}
 
               {b.monitorUrl ? (
-                <div className="mt-5">
+                <div className="mt-5 mt-auto">
                   <a
                     href={b.monitorUrl}
                     target="_blank"

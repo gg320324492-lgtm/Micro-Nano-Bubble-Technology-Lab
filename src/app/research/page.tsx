@@ -121,12 +121,12 @@ function ResearchCard({
       <LazyMount
         rootMargin="200px 0px"
         fallback={
-          <div className="flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-4 shadow-sm">
-            <div className="mb-3 w-full rounded-xl bg-gray-100" style={{ aspectRatio: "16 / 10" }} />
-            <div className="text-base font-semibold leading-6">{d.titleZh}</div>
-            {d.titleEn ? <div className="mt-1 text-xs text-muted-foreground">{d.titleEn}</div> : null}
-            <div className="mt-3 h-4 w-2/3 rounded bg-gray-100" />
-            <div className="mt-2 h-4 w-5/6 rounded bg-gray-100" />
+          <div className="flex h-full flex-col overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-4">
+            <div className="mb-3 w-full rounded-xl bg-[var(--bg-elevated)]" style={{ aspectRatio: "16 / 10" }} />
+            <div className="text-base font-semibold leading-6 text-[var(--text)]">{d.titleZh}</div>
+            {d.titleEn ? <div className="mt-1 text-xs text-[var(--muted)]">{d.titleEn}</div> : null}
+            <div className="mt-3 h-4 w-2/3 rounded bg-[var(--bg-elevated)]" />
+            <div className="mt-2 h-4 w-5/6 rounded bg-[var(--bg-elevated)]" />
           </div>
         }
       >
@@ -134,7 +134,7 @@ function ResearchCard({
           {/* 封面 */}
           <ImageReveal>
             <div
-              className="relative w-full bg-muted"
+              className="relative w-full bg-[var(--bg-elevated)]"
               style={{ aspectRatio: "16 / 10" }}
             >
               {cover ? (
@@ -157,9 +157,9 @@ function ResearchCard({
           {/* 内容 */}
           <div className="flex flex-1 flex-col p-4">
             <div className="min-h-[56px]">
-              <div className="text-base font-semibold leading-6">{d.titleZh}</div>
+              <div className="text-base font-semibold leading-6 text-[var(--text)]">{d.titleZh}</div>
               {d.titleEn ? (
-                <div className="mt-1 text-xs text-muted-foreground">
+                <div className="mt-1 text-xs text-[var(--muted)]">
                   {d.titleEn}
                 </div>
               ) : null}
@@ -167,7 +167,7 @@ function ResearchCard({
 
             {d.briefZh ? (
               <p
-                className="mt-2 text-sm leading-6 text-muted-foreground"
+                className="mt-2 text-sm leading-6 text-[var(--text-secondary)]"
                 style={clamp2Style()}
               >
                 {d.briefZh}
@@ -189,7 +189,7 @@ function ResearchCard({
 
             {/* CTA */}
             <div className="mt-auto flex items-center justify-between pt-4">
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-[var(--muted)]">
                 {kind === "core" ? "机理 / 指标 / 装备" : "场景 / 风险边界 / SOP"}
               </span>
               <span className={buttonClassName("secondary", "gap-1 px-3 py-1.5")}>
@@ -223,10 +223,10 @@ export default function ResearchPage() {
 
         <section>
           <div className="mb-4">
-            <div className="text-lg font-semibold">
+            <div className="text-lg font-semibold text-[var(--text)]">
               核心研究方向 Core Areas
             </div>
-            <div className="mt-1 text-sm text-muted-foreground">
+            <div className="mt-1 text-sm text-[var(--muted)]">
               面向关键机理与工程指标，支撑工艺放大与设备开发。
             </div>
           </div>
@@ -240,8 +240,8 @@ export default function ResearchPage() {
 
         <section className="mt-12">
           <div className="mb-4">
-            <div className="text-lg font-semibold">应用与拓展 Applications</div>
-            <div className="mt-1 text-sm text-muted-foreground">
+            <div className="text-lg font-semibold text-[var(--text)]">应用与拓展 Applications</div>
+            <div className="mt-1 text-sm text-[var(--muted)]">
               面向具体场景验证效果、风险边界与可复制 SOP。
             </div>
           </div>

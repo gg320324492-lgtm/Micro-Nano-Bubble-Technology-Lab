@@ -38,8 +38,8 @@ export default function CopyButton({
         type="button"
         onClick={onCopy}
         className={[
-          "inline-flex items-center rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs text-slate-700 transition hover:bg-slate-50",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300",
+          "inline-flex items-center rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--bg-card)] px-3 py-1.5 text-xs text-[var(--text-secondary)] transition hover:bg-[var(--accent-soft)]",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/50",
           className,
         ].join(" ")}
         aria-label="Copy"

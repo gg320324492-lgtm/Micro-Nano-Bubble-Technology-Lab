@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "微纳气泡实验室",
+    "slug": "lab-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#1e88e5"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lab.micronanobubble"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1e88e5"
+      },
+      "package": "com.lab.micronanobubble"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}

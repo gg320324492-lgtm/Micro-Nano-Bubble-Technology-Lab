@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>微纳米气泡课题组 · UI 预览</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #0a0e17;
+      --bg-surface: #111827;
+      --bg-elevated: #1a2332;
+      --bg-card: rgba(26, 35, 50, 0.8);
+      --border: rgba(99, 179, 237, 0.15);
+      --accent: #22d3ee;
+      --accent-dim: rgba(34, 211, 238, 0.6);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --font-sans: "Noto Serif SC", "Source Han Serif SC", serif;
+      --font-mono: "JetBrains Mono", monospace;
+      --shadow-glow: 0 0 60px rgba(34, 211, 238, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-deep);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      background: rgba(10, 14, 23, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: inherit;
+    }
+    .header-logo {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--accent) 0%, #06b6d4 100%);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--bg-deep);
+    }
+    .header-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+    .header-subtitle {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+    }
+    .nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .nav a {
+      padding: 0.5rem 1rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      border-radius: var(--radius-sm);
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav a:hover {
+      color: var(--accent);
+      background: rgba(34, 211, 238, 0.08);
+    }
+    .nav-cta {
+      background: var(--accent) !important;
+      color: var(--bg-deep) !important;
+      font-weight: 600;
+    }
+    .nav-cta:hover {
+      background: #06b6d4 !important;
+      color: var(--bg-deep) !important;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 50% at 50% 20%, rgba(34, 211, 238, 0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: linear-gradient(to top, var(--bg-deep), transparent);
+      pointer-events: none;
+    }
+    .hero-content {
+      max-width: 720px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 2rem;
+      letter-spacing: 0.1em;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--text) 0%, var(--text-muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+    }
+    .hero-en {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-bottom: 2.5rem;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 1.8rem;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg-deep);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-glow);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Section */
+    .section {
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-header {
+      margin-bottom: 3rem;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    .section-title span {
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 400;
+      margin-left: 0.5rem;
+    }
+
+    /* PI Card */
+    .pi-card {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      backdrop-filter: blur(8px);
+    }
+    @media (max-width: 768px) {
+      .pi-card { grid-template-columns: 1fr; text-align: center; }
+    }
+    .pi-photo {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-surface) 100%);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      font-size: 3rem;
+    }
+    .pi-name { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .pi-title { color: var(--accent); font-size: 0.9rem; margin-bottom: 1rem; }
+    .pi-affiliation { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    .pi-bio { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; }
+
+    /* Research Grid */
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .research-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .research-card:hover {
+      border-color: rgba(34, 211, 238, 0.4);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-glow);
+    }
+    .research-card .tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent-dim);
+      background: rgba(34, 211, 238, 0.1);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    .research-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .research-card h3 + div {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+    .research-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* Publications */
+    .pub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .pub-item {
+      display: flex;
+      gap: 2rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: border-color 0.2s;
+    }
+    .pub-item:hover {
+      border-color: rgba(34, 211, 238, 0.3);
+    }
+    .pub-year {
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+      width: 3.5rem;
+    }
+    .pub-text {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    /* News */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+    .news-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .news-card:hover {
+      border-color: rgba(34, 211, 238, 0.3);
+    }
+    .news-date {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+    .news-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    /* Contact strip */
+    .contact-strip {
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.08) 0%, rgba(6, 182, 212, 0.04) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .contact-item .label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .contact-item .value {
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .contact-item a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 4rem;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .footer p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* Preview banner */
+    .preview-banner {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      z-index: 99;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+    .preview-banner strong { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="#" class="header-brand">
+      <div class="header-logo">MNB</div>
+      <div>
+        <div class="header-title">微纳米气泡课题组</div>
+        <div class="header-subtitle">Micro & Nano Bubble Technology Lab</div>
+      </div>
+    </a>
+    <nav class="nav">
+      <a href="#research">研究</a>
+      <a href="#industrialization">产业化</a>
+      <a href="#publications">成果</a>
+      <a href="#people">成员</a>
+      <a href="#showcase">风采</a>
+      <a href="#contact" class="nav-cta">联系 / 加入</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <span class="hero-badge">Tianjin University</span>
+        <h1><span>天津大学 · 微纳米气泡课题组</span></h1>
+        <p class="hero-desc">
+          聚焦微纳米气泡技术的机理研究、装备开发与多场景应用，面向饮用水安全、环境治理与智能化工程系统。
+        </p>
+        <p class="hero-en">
+          Mechanisms, devices, and applications of micro/nano bubbles for drinking water safety, environment remediation, and intelligent engineering systems.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">联系我们 / 加入我们</a>
+          <a href="#research" class="btn btn-secondary">研究方向</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pi">
+      <div class="section-header">
+        <div class="section-label">Principal Investigator</div>
+        <h2 class="section-title">导师介绍 <span>Principal Investigator</span></h2>
+      </div>
+      <div class="pi-card">
+        <div class="pi-photo">👤</div>
+        <div>
+          <div class="pi-name">王天志 Tianzhi Wang</div>
+          <div class="pi-title">副教授（博导）Associate Professor</div>
+          <div class="pi-affiliation">天津大学 环境科学与工程学院</div>
+          <p class="pi-bio">
+            长期从事微纳米气泡技术在环境与健康领域的应用基础研究，聚焦臭氧微纳米气泡的传质强化、反应机理与工程化应用。主持/参与多项国家及省部级项目，发表SCI论文多篇。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="research">
+      <div class="section-header">
+        <div class="section-label">Research Areas</div>
+        <h2 class="section-title">研究方向 <span>Research Areas</span></h2>
+      </div>
+      <div class="research-grid">
+        <article class="research-card">
+          <span class="tag">Core</span>
+          <h3>水质提升与安全保障</h3>
+          <div>Water Quality Enhancement & Safety</div>
+          <p>围绕饮用水/再生水的消毒安全与水质提升，聚焦 O₃-MNBs 的高效传质、残余活性与副产物风险边界。</p>
+        </article>
+        <article class="research-card">
+          <span class="tag">Core</span>
+          <h3>气泡溃灭与·OH原位生成</h3>
+          <div>Bubble Collapse & In-situ ·OH Generation</div>
+          <p>聚焦微纳米气泡界面物理化学与扰动条件下的反应活化，解析·OH等活性物种的原位生成证据链。</p>
+        </article>
+        <article class="research-card">
+          <span class="tag">Core</span>
+          <h3>装备开发与工程化</h3>
+          <div>Equipment Development</div>
+          <p>面向臭氧微纳米气泡发生与水质在线监测，开发可工程放大的装备与控制系统。</p>
+        </article>
+        <article class="research-card">
+          <span class="tag">Applications</span>
+          <h3>表面清洗与去除</h3>
+          <div>Surface Cleaning & Removal</div>
+          <p>面向果蔬与材料表面清洗场景，将微纳米气泡的界面效应与臭氧氧化/杀菌能力结合。</p>
+        </article>
+        <article class="research-card">
+          <span class="tag">Applications</span>
+          <h3>环境治理与生态修复</h3>
+          <div>Environmental Remediation</div>
+          <p>探索微纳米气泡在污染水体增氧、底泥修复、藻类控制等场景中的应用潜力。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="publications">
+      <div class="section-header">
+        <div class="section-label">Featured Publications</div>
+        <h2 class="section-title">代表性成果 <span>Featured Publications</span></h2>
+      </div>
+      <div class="pub-list">
+        <div class="pub-item">
+          <span class="pub-year">2024</span>
+          <span class="pub-text">Ozone micro-nanobubble water for disinfection: CT and residual ozone dynamics. Water Research.</span>
+        </div>
+        <div class="pub-item">
+          <span class="pub-year">2024</span>
+          <span class="pub-text">Interfacial ·OH generation from collapsing microbubbles: probe and quenching evidence. Environmental Science & Technology.</span>
+        </div>
+        <div class="pub-item">
+          <span class="pub-year">2023</span>
+          <span class="pub-text">Surface cleaning with ozone MNB water: efficacy and quality retention. Journal of Food Engineering.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="news">
+      <div class="section-header">
+        <div class="section-label">Latest News</div>
+        <h2 class="section-title">最新动态 <span>Latest News</span></h2>
+      </div>
+      <div class="news-grid">
+        <article class="news-card">
+          <div class="news-date">2025-01-15</div>
+          <div class="news-title">课题组参加环境科学与工程学术年会</div>
+        </article>
+        <article class="news-card">
+          <div class="news-date">2024-12-20</div>
+          <div class="news-title">与某企业签署产学研合作协议</div>
+        </article>
+        <article class="news-card">
+          <div class="news-date">2024-11-08</div>
+          <div class="news-title">博士生论文获评优秀毕业论文</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="section-header">
+        <div class="section-label">Contact & Join Us</div>
+        <h2 class="section-title">联系我们与加入我们</h2>
+      </div>
+      <div class="contact-strip">
+        <div class="contact-item">
+          <span class="label">Email</span>
+          <a href="mailto:wangtianzhi@tju.edu.cn" class="value">wangtianzhi@tju.edu.cn</a>
+        </div>
+        <div class="contact-item">
+          <span class="label">Address</span>
+          <span class="value">天津市南开区卫津路92号（天津大学），邮编：300072</span>
+        </div>
+        <div class="contact-item">
+          <span class="label">Website</span>
+          <a href="https://faculty.tju.edu.cn/226066/zh_CN/index.htm" class="value" target="_blank" rel="noopener">教师主页</a>
+        </div>
+      </div>
+      <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+        常年招收硕士生、博士生及本科生科研助理。欢迎环境/化工/材料/机械/计算机等背景同学加入。
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>天津大学 微纳米气泡课题组 · Micro & Nano Bubble Technology Lab</p>
+    <p style="margin-top: 0.5rem;">© 2025</p>
+  </footer>
+
+  <div class="preview-banner">
+    <strong>UI 预览</strong> · 此为独立静态页面，未修改任何源文件
+  </div>
+</body>
+</html>

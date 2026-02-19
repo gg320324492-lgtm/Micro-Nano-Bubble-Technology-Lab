@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import AquacultureTabs from "@/components/AquacultureTabs";
+import AquacultureFigureStrip from "@/components/AquacultureFigureStrip";
+import LightboxGallery, { GalleryItem } from "@/components/LightboxGallery";
+import Container from "@/components/Container";
 import {
   aquaculturePdfFullData,
   resolveAquacultureAssetPath,
@@ -19,11 +22,11 @@ export function generateStaticParams() {
 function CoverHero({ src, alt }: { src?: string; alt: string }) {
   if (!src) {
     return (
-      <div className="h-56 w-full rounded-2xl border bg-gradient-to-br from-gray-50 to-gray-100" />
+      <div className="h-56 w-full rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-elevated)]" />
     );
   }
   return (
-    <div className="relative h-56 w-full overflow-hidden rounded-2xl border bg-gray-50">
+    <div className="relative h-56 w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-elevated)]">
       <Image
         src={assetPath(toImageVariant(src, "main"))}
         alt={alt}
@@ -48,34 +51,38 @@ export default async function IndustrialBaseDetailPage(props: Props) {
   if (!base) {
     return (
       <main className="py-10">
-        <h1 className="text-2xl font-semibold">未找到该基地</h1>
-        <p className="mt-2 text-sm text-gray-600">当前 slug：{slug || "(空)"}</p>
+        <Container>
+          <h1 className="text-2xl font-semibold text-[var(--text)]">未找到该基地</h1>
+          <p className="mt-2 text-sm text-[var(--text-secondary)]">
+            当前 slug：{slug || "(空)"}
+          </p>
 
-        <div className="mt-6 rounded-2xl border p-5">
-          <div className="font-semibold">可用 slug（点击直达）</div>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-gray-700">
-            {industrialBases.map((b) => (
-              <li key={b.slug}>
-                <Link
-                  className="underline"
-                  href={`/industrialization/${String(b.slug)}/`}
-                >
-                  {String(b.slug)}
-                </Link>{" "}
-                —— {b.titleZh}
-              </li>
-            ))}
-          </ul>
-        </div>
+          <div className="mt-6 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-5">
+            <div className="font-semibold text-[var(--text)]">可用 slug（点击直达）</div>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-[var(--text-secondary)]">
+              {industrialBases.map((b) => (
+                <li key={b.slug}>
+                  <Link
+                    className="underline"
+                    href={`/industrialization/${String(b.slug)}/`}
+                  >
+                    {String(b.slug)}
+                  </Link>{" "}
+                  —— {b.titleZh}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="mt-6">
-          <Link
-            href="/industrialization/"
-            className="rounded-xl border px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-          >
-            ← 返回产业化列表
-          </Link>
-        </div>
+          <div className="mt-6">
+            <Link
+              href="/industrialization/"
+              className="rounded-xl border border-[var(--border)] px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]"
+            >
+              ← 返回产业化列表
+            </Link>
+          </div>
+        </Container>
       </main>
     );
   }
@@ -124,46 +131,46 @@ export default async function IndustrialBaseDetailPage(props: Props) {
 
   const sectionThemes = [
     {
-      card: "border-sky-200/80 bg-gradient-to-br from-sky-50 via-white to-blue-50/80",
+      card: "border-sky-500/30 bg-sky-500/10",
       accent: "from-sky-400 to-blue-500",
-      title: "text-sky-950",
-      body: "text-slate-700",
-      bullet: "bg-sky-500",
+      title: "text-sky-200",
+      body: "text-[var(--text-secondary)]",
+      bullet: "bg-sky-400",
     },
     {
-      card: "border-emerald-200/80 bg-gradient-to-br from-emerald-50 via-white to-teal-50/80",
+      card: "border-emerald-500/30 bg-emerald-500/10",
       accent: "from-emerald-400 to-teal-500",
-      title: "text-emerald-950",
-      body: "text-slate-700",
-      bullet: "bg-emerald-500",
+      title: "text-emerald-200",
+      body: "text-[var(--text-secondary)]",
+      bullet: "bg-emerald-400",
     },
     {
-      card: "border-violet-200/80 bg-gradient-to-br from-violet-50 via-white to-indigo-50/80",
+      card: "border-violet-500/30 bg-violet-500/10",
       accent: "from-violet-400 to-indigo-500",
-      title: "text-violet-950",
-      body: "text-slate-700",
-      bullet: "bg-violet-500",
+      title: "text-violet-200",
+      body: "text-[var(--text-secondary)]",
+      bullet: "bg-violet-400",
     },
   ] as const;
 
   const introPanel = (
     <div id="intro">
       {base.highlightsZh?.length ? (
-        <div className="mt-5 overflow-hidden rounded-2xl border border-cyan-200/80 bg-gradient-to-br from-cyan-50 via-sky-50 to-blue-50 shadow-sm">
+        <div className="mt-5 overflow-hidden rounded-[var(--radius-lg)] border border-cyan-500/30 bg-cyan-500/10">
           <div className="h-1 w-full bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500" />
           <div className="p-5 sm:p-6">
             <div className="flex items-center gap-2">
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/85 text-cyan-600 shadow-sm">
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--bg-card)]/90 text-cyan-300 shadow-sm">
                 ✦
               </span>
-              <div className="text-lg font-semibold text-slate-900">基地亮点</div>
+              <div className="text-lg font-semibold text-[var(--text)]">基地亮点</div>
             </div>
 
             <ul className="mt-4 grid gap-2 sm:grid-cols-2">
               {base.highlightsZh.map((x) => (
                 <li
                   key={x}
-                  className="flex items-start gap-2 rounded-xl border border-sky-200/70 bg-white/85 p-3 text-sm text-slate-700 shadow-sm"
+                  className="flex items-start gap-2 rounded-xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-3 text-sm text-[var(--text-secondary)] shadow-sm"
                 >
                   <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600" />
                   <span>{x}</span>
@@ -217,7 +224,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                     {s.bulletsZh.map((b) => (
                       <li
                         key={b}
-                        className="flex items-start gap-2 text-sm text-slate-700"
+                        className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
                       >
                         <span
                           className={[
@@ -238,29 +245,19 @@ export default async function IndustrialBaseDetailPage(props: Props) {
 
       {base.gallery?.length ? (
         <div className="mt-10">
-          <div className="mb-3 text-lg font-semibold">图片 / 图集</div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {base.gallery.map((img) => (
-              <figure key={img.src} className="rounded-2xl border p-3">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-50">
-                  <Image
-                    src={assetPath(toImageVariant(img.src, "thumb"))}
-                    alt={img.alt ?? base.titleZh}
-                    fill
-                    loading="lazy"
-                    fetchPriority="low"
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 33vw"
-                  />
-                </div>
-                {img.captionZh ? (
-                  <figcaption className="mt-2 text-xs text-gray-600">
-                    {img.captionZh}
-                  </figcaption>
-                ) : null}
-              </figure>
-            ))}
-          </div>
+          <LightboxGallery
+            layout="grid-3"
+            items={
+              base.gallery.map(
+                (img) =>
+                  ({
+                    src: img.src,
+                    alt: img.alt ?? base.titleZh,
+                    caption: img.captionZh,
+                  } satisfies GalleryItem),
+              ) ?? []
+            }
+          />
         </div>
       ) : null}
     </div>
@@ -268,17 +265,14 @@ export default async function IndustrialBaseDetailPage(props: Props) {
 
   const resultsPanel = aquacultureData ? (
     <div id="results" className="mt-8 space-y-6">
-      <section className="overflow-hidden rounded-2xl border border-indigo-200/80 bg-gradient-to-br from-indigo-50 via-white to-sky-50 shadow-sm">
+      <section className="overflow-hidden rounded-[var(--radius-lg)] border border-indigo-500/30 bg-indigo-500/10">
         <div className="h-1 w-full bg-gradient-to-r from-indigo-500 via-sky-500 to-cyan-500" />
         <div className="p-5 sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+              <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">
                 成果总览
               </h2>
-              <p className="mt-1 text-sm text-slate-600">
-                结合基地运行与《{aquacultureData.meta.docTitle}》数据，展示“品质提升—增产提质—降本增效”结果。
-              </p>
             </div>
             <span className="rounded-full border border-indigo-200 bg-indigo-100/80 px-3 py-1 text-xs font-medium text-indigo-700">
               数据来源：{aquacultureData.meta.fileName}
@@ -289,13 +283,13 @@ export default async function IndustrialBaseDetailPage(props: Props) {
             {kpiCards.map((kpi) => (
               <article
                 key={kpi.title}
-                className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 shadow-sm"
+                className="rounded-2xl border border-[var(--border)]/80 bg-[var(--bg-card)] p-4 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-[var(--accent)]/60"
               >
-                <p className="text-sm font-medium text-slate-700">{kpi.title}</p>
-                <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+                <p className="text-sm font-medium text-[var(--text-secondary)]">{kpi.title}</p>
+                <p className="mt-2 text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)]">
                   {kpi.value}
                 </p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                <p className="mt-1 text-xs leading-relaxed text-[var(--muted)]">
                   {kpi.detail}
                 </p>
               </article>
@@ -304,106 +298,32 @@ export default async function IndustrialBaseDetailPage(props: Props) {
         </div>
       </section>
 
-      <section className="overflow-hidden rounded-2xl border border-sky-200/80 bg-gradient-to-br from-sky-50 via-white to-cyan-50 shadow-sm">
+      <section className="overflow-hidden rounded-[var(--radius-lg)] border border-sky-500/30 bg-sky-500/10">
         <div className="h-1 w-full bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-500" />
         <div className="p-5 sm:p-6">
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
-            图表与证据
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">
+            数据分析与展示
           </h2>
-          <p className="mt-1 text-sm text-slate-600">
-            将新增三张数据图与现场资料融合展示，支持按来源页定位与交叉核对。
-          </p>
 
-          <div className="mt-5 grid gap-4 lg:grid-cols-3">
-            {aquacultureData.figures.map((fig) => {
-              const relatedCharts = aquacultureData.chartMeta.filter(
-                (chart) => chart.source.page === fig.source.page,
-              );
-              const relatedPage = aquacultureData.pages.find(
-                (p) => p.page === fig.source.page,
-              );
-
-              return (
-                <article
-                  key={fig.id}
-                  className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 shadow-sm"
-                >
-                  <a
-                    href={assetPath(resolveAquacultureAssetPath(fig.src))}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group block"
-                    aria-label={`查看大图-${fig.id}`}
-                  >
-                    <div className="relative aspect-[4/3] overflow-hidden bg-slate-50">
-                      <Image
-                        src={assetPath(resolveAquacultureAssetPath(fig.src))}
-                        alt={fig.caption}
-                        fill
-                        loading="lazy"
-                        fetchPriority="low"
-                        className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                        sizes="(max-width: 1024px) 100vw, 33vw"
-                      />
-                    </div>
-                  </a>
-
-                  <div className="space-y-3 p-4">
-                    <div>
-                      <div className="text-sm font-semibold text-slate-900">
-                        {fig.caption}
-                      </div>
-                      <div className="mt-1 text-xs text-slate-500">
-                        来源：{fig.source.file} 第 {fig.source.page} 页
-                      </div>
-                    </div>
-
-                    {relatedPage?.textBlocks?.length ? (
-                      <ul className="space-y-1 text-xs leading-relaxed text-slate-600">
-                        {relatedPage.textBlocks.slice(0, 2).map((txt) => (
-                          <li key={`${fig.id}-${txt}`} className="flex gap-2">
-                            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-500" />
-                            <span>{txt}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-
-                    {relatedCharts.length ? (
-                      <div className="flex flex-wrap gap-1.5">
-                        {relatedCharts.map((chart) => (
-                          <span
-                            key={chart.id}
-                            className="rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-[11px] text-sky-700"
-                            title={`${chart.title}（${chart.unit}）`}
-                          >
-                            {chart.title}
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+          <AquacultureFigureStrip
+            figures={aquacultureData.figures}
+            chartMeta={aquacultureData.chartMeta}
+            pages={aquacultureData.pages}
+          />
         </div>
       </section>
 
       <section className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
-        <article className="overflow-hidden rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-emerald-50 via-white to-teal-50 shadow-sm">
+        <article className="overflow-hidden rounded-[var(--radius-lg)] border border-emerald-500/30 bg-emerald-500/10">
           <div className="h-1 w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
           <div className="p-5 sm:p-6">
-            <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+            <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">
               成本结构与收益测算
             </h2>
-            <p className="mt-1 text-sm text-slate-600">
-              按 PDF 第3页成本明细逐项拆解并保留原始口径。
-            </p>
 
-            <div className="mt-4 overflow-x-auto rounded-xl border border-emerald-200/70 bg-white">
+            <div className="mt-4 overflow-x-auto rounded-xl border border-emerald-500/30 bg-[var(--bg-card)]">
               <table className="min-w-full text-sm">
-                <thead className="bg-emerald-50 text-slate-700">
+                <thead className="bg-emerald-500/15 text-[var(--text-secondary)]">
                   <tr>
                     <th className="px-3 py-2 text-left font-medium">项目</th>
                     <th className="px-3 py-2 text-left font-medium">用量</th>
@@ -413,25 +333,25 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                 </thead>
                 <tbody>
                   {aquacultureData.costTable.map((row) => (
-                    <tr key={row.item} className="border-t border-slate-100">
-                      <td className="px-3 py-2 text-slate-800">{row.item}</td>
-                      <td className="px-3 py-2 text-slate-600">{row.usage}</td>
-                      <td className="px-3 py-2 text-slate-600">{row.unitPrice}</td>
-                      <td className="px-3 py-2 text-right font-medium text-slate-900">
+                    <tr key={row.item} className="border-t border-[var(--border)]">
+                      <td className="px-3 py-2 text-[var(--text)]">{row.item}</td>
+                      <td className="px-3 py-2 text-[var(--text-secondary)]">{row.usage}</td>
+                      <td className="px-3 py-2 text-[var(--text-secondary)]">{row.unitPrice}</td>
+                      <td className="px-3 py-2 text-right font-medium text-[var(--text)]">
                         {row.costYuan}
                       </td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr className="border-t-2 border-emerald-200 bg-emerald-50/60">
+                  <tr className="border-t-2 border-emerald-500/30 bg-emerald-500/20">
                     <td
-                      className="px-3 py-2 font-semibold text-slate-900"
+                      className="px-3 py-2 font-semibold text-[var(--text)]"
                       colSpan={3}
                     >
                       合计
                     </td>
-                    <td className="px-3 py-2 text-right text-base font-semibold text-emerald-700">
+                    <td className="px-3 py-2 text-right text-base font-semibold text-emerald-300">
                       {totalCostYuan} 元
                     </td>
                   </tr>
@@ -439,18 +359,22 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               </table>
             </div>
 
-            <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50/70 p-3 text-sm text-emerald-800">
-              折算成本：
-              {findKeyNumber(3, "折算成本")?.valueText ?? "5.51元/斤鱼"}；
-              较传统鲈鱼养殖成本（10-12元/斤鱼）降低45%~54%。
+            <div className="mt-3 rounded-xl border border-emerald-500/40 bg-white/90 p-3 text-sm text-[var(--text)] shadow-sm">
+              <span className="font-semibold text-emerald-700">
+                折算成本：
+                {findKeyNumber(3, "折算成本")?.valueText ?? "5.51元/斤鱼"}
+              </span>
+              <span className="ml-1 text-[var(--text-secondary)]">
+                ，较传统鲈鱼养殖成本（10-12元/斤鱼）降低45%~54%。
+              </span>
             </div>
           </div>
         </article>
 
-        <article className="overflow-hidden rounded-2xl border border-violet-200/80 bg-gradient-to-br from-violet-50 via-white to-indigo-50 shadow-sm">
+        <article className="overflow-hidden rounded-[var(--radius-lg)] border border-violet-500/30 bg-violet-500/10">
           <div className="h-1 w-full bg-gradient-to-r from-violet-500 via-indigo-500 to-blue-500" />
           <div className="p-5 sm:p-6">
-            <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+            <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">
               结论与资料下载
             </h2>
 
@@ -458,12 +382,12 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               {aquacultureData.conclusions.map((conclusion) => (
                 <li
                   key={conclusion.text}
-                  className="flex items-start gap-2 text-sm text-slate-700"
+                  className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
                 >
                   <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-violet-500" />
                   <span>
                     {conclusion.text}
-                    <span className="ml-1 text-xs text-slate-500">
+                    <span className="ml-1 text-xs text-[var(--muted)]">
                       （第{conclusion.source.page}页）
                     </span>
                   </span>
@@ -483,7 +407,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               <a
                 href={pdfPath}
                 download={aquacultureData.meta.fileName}
-                className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2.5 text-sm font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)]"
               >
                 下载 PDF 原文
               </a>
@@ -496,73 +420,77 @@ export default async function IndustrialBaseDetailPage(props: Props) {
 
   return (
     <main className="py-10">
-      <div className="flex flex-wrap items-center gap-2">
-        <Link
-          href="/industrialization/"
-          className="rounded-xl border px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-        >
-          ← 返回产业化列表
-        </Link>
-
-        {base.locationUrl ? (
-          <a
-            href={base.locationUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-xl border px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+      <Container>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/industrialization/"
+            className="rounded-xl border px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]"
           >
-            高德地图导航
-          </a>
-        ) : null}
+            ← 返回产业化列表
+          </Link>
 
-        {base.monitorUrl ? (
-          <a
-            href={base.monitorUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-xl bg-black px-4 py-2 text-sm text-white hover:opacity-90"
-          >
-            打开监测大屏
-          </a>
-        ) : null}
-      </div>
-
-      <div className="mt-6">
-        <CoverHero src={base.cover} alt={base.titleZh} />
-
-        <div className="mt-5">
-          <h1 className="text-3xl font-semibold tracking-tight">{base.titleZh}</h1>
-          {base.titleEn ? (
-            <div className="mt-1 text-sm text-gray-500">{base.titleEn}</div>
+          {base.locationUrl ? (
+            <a
+              href={base.locationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl border border-[var(--border)] px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]"
+            >
+              高德地图导航
+            </a>
           ) : null}
 
-          <p className="mt-3 text-sm leading-relaxed text-gray-700">{base.briefZh}</p>
-
-          {base.locationZh ? (
-            <div className="mt-3 text-sm text-gray-600">
-              <span className="font-medium text-gray-900">位置/说明：</span>
-              {base.locationUrl ? (
-                <a
-                  href={base.locationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline underline-offset-2 hover:text-gray-900"
-                >
-                  {base.locationZh}
-                </a>
-              ) : (
-                base.locationZh
-              )}
-            </div>
+          {base.monitorUrl ? (
+            <a
+              href={base.monitorUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl bg-black px-4 py-2 text-sm text-white hover:opacity-90"
+            >
+              打开监测大屏
+            </a>
           ) : null}
         </div>
-      </div>
 
-      {isAquaculture && resultsPanel ? (
-        <AquacultureTabs introPanel={introPanel} resultsPanel={resultsPanel} />
-      ) : (
-        introPanel
-      )}
+        <div className="mt-6">
+          <CoverHero src={base.cover} alt={base.titleZh} />
+
+          <div className="mt-5">
+            <h1 className="text-3xl font-semibold tracking-tight">{base.titleZh}</h1>
+            {base.titleEn ? (
+              <div className="mt-1 text-sm text-[var(--muted)]">{base.titleEn}</div>
+            ) : null}
+
+            <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">
+              {base.briefZh}
+            </p>
+
+            {base.locationZh ? (
+              <div className="mt-3 text-sm text-[var(--text-secondary)]">
+                <span className="font-medium text-[var(--text)]">位置/说明：</span>
+                {base.locationUrl ? (
+                  <a
+                    href={base.locationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:text-[var(--text)]"
+                  >
+                    {base.locationZh}
+                  </a>
+                ) : (
+                  base.locationZh
+                )}
+              </div>
+            ) : null}
+          </div>
+        </div>
+
+        {isAquaculture && resultsPanel ? (
+          <AquacultureTabs introPanel={introPanel} resultsPanel={resultsPanel} />
+        ) : (
+          introPanel
+        )}
+      </Container>
     </main>
   );
 }

@@ -51,7 +51,7 @@ export default function SimpleCarousel({
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="relative w-full overflow-hidden rounded-2xl border bg-white shadow-sm">
+      <div className="relative w-full overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)]">
         <div className="relative aspect-[16/9] w-full">
           <Image
             src={assetPath(toImageVariant(images[index].src, "main"))}
@@ -71,7 +71,7 @@ export default function SimpleCarousel({
               type="button"
               aria-label="Previous"
               onClick={prev}
-              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/85 px-3 py-2 text-sm shadow hover:bg-white"
+              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-[var(--bg-deep)]/60 px-3 py-2 text-sm text-[var(--text)] backdrop-blur hover:bg-[var(--bg-deep)]/80"
             >
               ←
             </button>
@@ -79,7 +79,7 @@ export default function SimpleCarousel({
               type="button"
               aria-label="Next"
               onClick={next}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/85 px-3 py-2 text-sm shadow hover:bg-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-[var(--bg-deep)]/60 px-3 py-2 text-sm text-[var(--text)] backdrop-blur hover:bg-[var(--bg-deep)]/80"
             >
               →
             </button>
@@ -97,7 +97,7 @@ export default function SimpleCarousel({
               onClick={() => go(i)}
               className={[
                 "h-2.5 w-2.5 rounded-full transition",
-                i === index ? "bg-black" : "bg-black/20 hover:bg-black/40",
+                i === index ? "bg-[var(--accent)]" : "bg-[var(--accent)]/30 hover:bg-[var(--accent)]/50",
               ].join(" ")}
             />
           ))}

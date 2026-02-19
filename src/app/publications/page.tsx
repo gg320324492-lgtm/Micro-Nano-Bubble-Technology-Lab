@@ -159,18 +159,20 @@ export default function PublicationsPage() {
 
   return (
     <Section container="wide">
-      <Reveal className="flex flex-col gap-2 rounded-3xl border border-[color:var(--border)] bg-gradient-to-r from-[#eef4ff] via-[#f7faff] to-[#eefbff] p-6 sm:p-8">
+      <Reveal className="flex flex-col gap-2 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-6 sm:p-8">
         <Heading
           as="h1"
           title={
             <>
               成果{" "}
-              <span className="bg-gradient-to-r from-[#1d4ed8] to-[#0ea5e9] bg-clip-text text-transparent">
+              <span className="text-[var(--accent)]">
                 Publications & Patents & Honors
               </span>
             </>
           }
           subtitle="支持搜索、按年份筛选、Featured 置顶，以及 DOI/链接直达。"
+          className="[&_h1]:text-[var(--text)]"
+          subtitleClassName="text-[var(--text-secondary)]"
         />
       </Reveal>
 
@@ -188,10 +190,10 @@ export default function PublicationsPage() {
               type="button"
               onClick={() => setTab(t.key as TabKey)}
               className={[
-                "rounded-full border px-5 py-2 text-sm font-medium transition-all",
+                "rounded-[var(--radius-md)] border px-5 py-2 text-sm font-medium transition-all",
                 active
-                  ? "border-[#0f2d5c] bg-[#0f2d5c] text-white shadow-[0_6px_16px_rgba(15,45,92,0.22)]"
-                  : "border-[#cbd9ee] bg-white text-[#1f3b66] hover:bg-[#eff6ff]",
+                  ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--bg-deep)]"
+                  : "border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
               ].join(" ")}
             >
               {t.label}
@@ -207,16 +209,16 @@ export default function PublicationsPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="搜索标题 / 作者 / 期刊 / 关键词…"
-            className="w-full rounded-xl border border-[#cad9ef] bg-white px-4 py-2 text-sm text-[#1f2f4a] outline-none placeholder:text-[#8aa0bf] focus:ring-2 focus:ring-[#1d4ed8]/25"
+            className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 text-sm text-[var(--text)] outline-none placeholder:text-[var(--muted)] focus:ring-2 focus:ring-[var(--accent)]/30"
           />
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm text-[#516684]">年份</span>
+          <span className="text-sm text-[var(--muted)]">年份</span>
           <select
             value={year}
             onChange={(e) => setYear(e.target.value)}
-            className="rounded-xl border border-[#cad9ef] bg-[#f7faff] px-3 py-2 text-sm text-[#1f3b66]"
+            className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text)]"
           >
             <option value="all">全部</option>
             {yearOptions.map((y) => (
@@ -238,17 +240,17 @@ export default function PublicationsPage() {
           const badges = pickBadges(it);
           const accentClass =
             tab === "papers"
-              ? "before:bg-[#1d4ed8]"
+              ? "before:bg-[var(--accent)]"
               : tab === "patents"
-                ? "before:bg-[#06b6d4]"
-                : "before:bg-[#f59e0b]";
-          const featuredClass = it?.featured ? "bg-gradient-to-r from-[#eff6ff] to-white" : "";
+                ? "before:bg-cyan-500"
+                : "before:bg-amber-500";
+          const featuredClass = it?.featured ? "bg-[var(--accent-soft)]/30" : "";
 
           return (
             <Reveal key={`${title}-${idx}`} delay={Math.min(idx * 0.02, 0.2)}>
               <ListItem
                 className={[
-                  "relative overflow-hidden border-[#dbe7f7] shadow-[0_8px_24px_rgba(15,37,71,0.06)]",
+                  "relative overflow-hidden",
                   "before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:content-['']",
                   accentClass,
                   featuredClass,
@@ -260,7 +262,7 @@ export default function PublicationsPage() {
                       href={link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#0f2d5c] hover:text-[#1d4ed8] hover:underline"
+                      className="text-[var(--text)] hover:text-[var(--accent)] hover:underline"
                     >
                       {title}
                     </a>
@@ -273,10 +275,10 @@ export default function PublicationsPage() {
                   <>
                     {it?.briefZh || it?.note ? <>{toStr(it?.briefZh || it?.note)}</> : null}
                     {it?.doi ? (
-                      <div className="mt-3 text-sm text-[#4f6280]">
+                      <div className="mt-3 text-sm text-[var(--muted)]">
                         DOI：
                         <a
-                          className="ml-1 text-[#1d4ed8] underline underline-offset-2 hover:text-[#0f2d5c]"
+                          className="ml-1 text-[var(--accent)] underline underline-offset-2 hover:text-[var(--accent-hover)]"
                           href={`https://doi.org/${toStr(it.doi).replace(/^https?:\/\/doi\.org\//, "")}`}
                           target="_blank"
                           rel="noopener noreferrer"
@@ -296,7 +298,7 @@ export default function PublicationsPage() {
                       rel="noopener noreferrer"
                       className={buttonClassName(
                         "secondary",
-                        "rounded-xl border-[#c9daf3] bg-[#f3f8ff] px-3 py-2 text-sm text-[#1d4ed8] hover:bg-[#e8f1ff] hover:text-[#0f2d5c]"
+                        "rounded-xl px-3 py-2 text-sm"
                       )}
                     >
                       打开
@@ -309,7 +311,7 @@ export default function PublicationsPage() {
         })}
 
         {filtered.length === 0 ? (
-          <div className="rounded-[var(--radius)] border border-[color:var(--border)] bg-[color:var(--surface)]/95 p-8 text-sm text-[color:var(--muted)] shadow-[var(--shadow)]">
+          <div className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-8 text-sm text-[var(--muted)]">
             未找到匹配内容。你可以更换关键词或切换年份/类别。
           </div>
         ) : null}
@@ -320,7 +322,7 @@ export default function PublicationsPage() {
           href="/contact"
           className={buttonClassName(
             "primary",
-            "rounded-xl border-0 bg-gradient-to-r from-[#0f2d5c] to-[#1d4ed8] px-4 py-2 text-sm text-white hover:opacity-95"
+            "rounded-xl border-0 px-4 py-2 text-sm"
           )}
         >
           合作 / 加入我们

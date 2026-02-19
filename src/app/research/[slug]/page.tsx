@@ -59,20 +59,20 @@ export default async function ResearchDetailPage(props: PageProps) {
     return (
       <Container>
         <div className="py-12">
-          <div className="rounded-2xl border bg-white p-8 shadow-sm">
-            <h1 className="text-2xl font-semibold">未找到该研究方向</h1>
-            <p className="mt-2 text-muted-foreground">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-8">
+            <h1 className="text-2xl font-semibold text-[var(--text)]">未找到该研究方向</h1>
+            <p className="mt-2 text-[var(--text-secondary)]">
               当前 slug：<span className="font-mono">{slug}</span> 未匹配到数据。
             </p>
 
             <div className="mt-6">
-              <div className="mb-2 text-sm font-semibold">可用方向</div>
+              <div className="mb-2 text-sm font-semibold text-[var(--text)]">可用方向</div>
               <div className="flex flex-wrap gap-2">
                 {all.map((d) => (
                   <Link
                     key={d.slug}
                     href={`/research/${d.slug}`}
-                    className="rounded-full border bg-background px-3 py-1 text-sm hover:bg-muted"
+                    className="rounded-full border border-[var(--border)] bg-[var(--bg-card)] px-3 py-1 text-sm hover:bg-[var(--accent-soft)]"
                   >
                     {d.titleZh}
                   </Link>
@@ -83,13 +83,13 @@ export default async function ResearchDetailPage(props: PageProps) {
             <div className="mt-8 flex gap-3">
               <Link
                 href="/research"
-                className="rounded-xl bg-foreground px-4 py-2 text-sm text-background hover:opacity-90"
+                className="rounded-xl bg-[var(--accent)] px-4 py-2 text-sm text-[var(--bg-deep)] hover:bg-[var(--accent-hover)]"
               >
                 返回研究列表
               </Link>
               <Link
                 href="/"
-                className="rounded-xl border bg-background px-4 py-2 text-sm hover:bg-muted"
+                className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 text-sm hover:bg-[var(--accent-soft)]"
               >
                 返回首页
               </Link>
@@ -123,42 +123,42 @@ export default async function ResearchDetailPage(props: PageProps) {
   const theme = isApplications
     ? {
         tone: "applications" as const,
-        coverOverlay: "from-teal-950/70 via-teal-900/35 to-transparent",
-        cardBorder: "border-teal-100",
-        groupBadge: "border-teal-200 bg-teal-50 text-teal-800",
-        categoryBadge: "border-cyan-200 bg-cyan-50 text-cyan-800",
+        coverOverlay: "from-[var(--bg-deep)]/80 via-[var(--bg-deep)]/40 to-transparent",
+        cardBorder: "border-teal-500/30",
+        groupBadge: "border-teal-500/40 bg-teal-500/15 text-teal-300",
+        categoryBadge: "border-cyan-500/40 bg-cyan-500/15 text-cyan-300",
         backBtn:
-          "border-teal-200 bg-white text-teal-900 hover:bg-teal-50/70 hover:border-teal-300",
+          "border-[var(--border)] bg-[var(--bg-card)] text-[var(--text)] hover:bg-[var(--accent-soft)] hover:border-[var(--accent)]/40",
         bulletPill:
-          "border-teal-200/90 bg-teal-50/85 text-teal-900 shadow-[0_1px_0_rgba(13,148,136,0.10)]",
+          "border-[var(--border)] bg-white/90 text-[var(--text)] shadow-sm",
         overviewWrap:
-          "border-teal-200 bg-gradient-to-br from-teal-50/80 via-cyan-50/45 to-white",
+          "border-[var(--border)] bg-teal-500/10",
         overviewBar: "bg-gradient-to-r from-teal-500 to-cyan-500",
-        galleryWrap: "border-teal-100 bg-white/95",
-        footerLink: "hover:text-teal-700",
+        galleryWrap: "border-[var(--border)] bg-[var(--bg-card)]",
+        footerLink: "hover:text-teal-300",
       }
     : {
         tone: "core" as const,
-        coverOverlay: "from-blue-950/70 via-blue-900/35 to-transparent",
-        cardBorder: "border-blue-100",
-        groupBadge: "border-blue-200 bg-blue-50 text-blue-800",
-        categoryBadge: "border-sky-200 bg-sky-50 text-sky-800",
+        coverOverlay: "from-[var(--bg-deep)]/80 via-[var(--bg-deep)]/40 to-transparent",
+        cardBorder: "border-[var(--border)]",
+        groupBadge: "border-blue-500/40 bg-blue-500/15 text-blue-300",
+        categoryBadge: "border-sky-500/40 bg-sky-500/15 text-sky-300",
         backBtn:
-          "border-blue-200 bg-white text-blue-900 hover:bg-blue-50/70 hover:border-blue-300",
+          "border-[var(--border)] bg-[var(--bg-card)] text-[var(--text)] hover:bg-[var(--accent-soft)] hover:border-[var(--accent)]/40",
         bulletPill:
-          "border-blue-200/90 bg-blue-50/85 text-blue-900 shadow-[0_1px_0_rgba(29,78,216,0.10)]",
+          "border-[var(--border)] bg-white/90 text-[var(--text)] shadow-sm",
         overviewWrap:
-          "border-blue-200 bg-gradient-to-br from-blue-50/80 via-indigo-50/45 to-white",
-        overviewBar: "bg-gradient-to-r from-blue-600 to-cyan-500",
-        galleryWrap: "border-blue-100 bg-white/95",
-        footerLink: "hover:text-blue-700",
+          "border-[var(--border)] bg-blue-500/10",
+        overviewBar: "bg-gradient-to-r from-blue-500 to-cyan-500",
+        galleryWrap: "border-[var(--border)] bg-[var(--bg-card)]",
+        footerLink: "hover:text-[var(--accent)]",
       };
 
   return (
-    <div className="bg-[linear-gradient(180deg,#eef4ff_0%,#f7f9ff_45%,#f3f8ff_100%)]">
+    <div className="min-h-screen">
       {/* 顶部封面 */}
       <div className="relative">
-        <div className="relative h-[240px] w-full overflow-hidden border-b bg-muted md:h-[300px]">
+        <div className="relative h-[240px] w-full overflow-hidden border-b border-[var(--border)] bg-[var(--bg-elevated)] md:h-[300px]">
           {cover ? (
             <Image
               src={assetPath(toImageVariant(cover, "main"))}
@@ -178,14 +178,14 @@ export default async function ResearchDetailPage(props: PageProps) {
         <Container>
           <div
             className={[
-              "-mt-14 rounded-3xl border bg-white/95 p-6 shadow-[0_14px_36px_-22px_rgba(15,45,92,0.35)] backdrop-blur-sm md:-mt-16 md:p-7",
+              "-mt-14 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-6 backdrop-blur-sm md:-mt-16 md:p-7",
               theme.cardBorder,
             ].join(" ")}
           >
             <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
               <div>
-                <h1 className="text-2xl font-semibold md:text-3xl">{titleZh}</h1>
-                {titleEn ? <div className="mt-1 text-muted-foreground">{titleEn}</div> : null}
+                <h1 className="text-2xl font-semibold text-[var(--text)] md:text-3xl">{titleZh}</h1>
+                {titleEn ? <div className="mt-1 text-[var(--text-secondary)]">{titleEn}</div> : null}
               </div>
 
               <Link
@@ -200,7 +200,7 @@ export default async function ResearchDetailPage(props: PageProps) {
             </div>
 
             <div className="mt-4">
-              <p className="leading-7 text-muted-foreground">{briefZh}</p>
+              <p className="leading-7 text-[var(--text-secondary)]">{briefZh}</p>
 
               {topBullets.length ? (
                 <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -215,8 +215,8 @@ export default async function ResearchDetailPage(props: PageProps) {
               {coreParagraph ? (
                 <div className={["mt-6 rounded-2xl border p-5", theme.overviewWrap].join(" ")}>
                   <div className={["mb-3 h-1.5 w-14 rounded-full", theme.overviewBar].join(" ")} />
-                  <div className="text-base font-semibold text-foreground">核心概览</div>
-                  <p className="mt-3 text-sm leading-7 text-muted-foreground">{coreParagraph}</p>
+                  <div className="text-base font-semibold text-[var(--text)]">核心概览</div>
+                  <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">{coreParagraph}</p>
                 </div>
               ) : null}
             </div>
@@ -243,13 +243,13 @@ export default async function ResearchDetailPage(props: PageProps) {
           <div className="mt-10 flex items-center justify-between text-sm">
             <Link
               href="/research"
-              className={["text-muted-foreground hover:text-foreground", theme.footerLink].join(" ")}
+              className={["text-[var(--text-secondary)]", theme.footerLink].join(" ")}
             >
               ← 研究
             </Link>
             <Link
               href="/"
-              className={["text-muted-foreground hover:text-foreground", theme.footerLink].join(" ")}
+              className={["text-[var(--text-secondary)]", theme.footerLink].join(" ")}
             >
               首页 →
             </Link>

@@ -13,39 +13,41 @@ type Props = {
   activeTag?: string;
 };
 
-function pickPhoto(p: any): string {
+function pickPhoto(p: Person): string {
+  const x = p as Record<string, unknown>;
   return (
-    p.photo ||
-    p.avatar ||
-    p.image ||
-    p.img ||
-    p.photoUrl ||
-    p.avatarUrl ||
-    p.headshot ||
+    (x.photo as string) ||
+    (x.avatar as string) ||
+    (x.image as string) ||
+    (x.img as string) ||
+    (x.photoUrl as string) ||
+    (x.avatarUrl as string) ||
+    (x.headshot as string) ||
     ""
   );
 }
 
 export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
-  const p: any = person as any;
+  const p = person as Record<string, unknown>;
 
-  const photo = pickPhoto(p);
-  const nameZh = p.nameZh ?? "";
-  const nameEn = p.nameEn ?? "";
+  const photo = pickPhoto(person);
+  const nameZh = (p.nameZh ?? "") as string;
+  const nameEn = (p.nameEn ?? "") as string;
   const cohort = p.cohort ? `${p.cohort}级` : "";
-  const titleZh = p.titleZh ?? "";
-  const orgZh = p.orgZh ?? p.org ?? "";
-  const introZh = p.introZh ?? "";
-  const tags: string[] = Array.isArray(p.tags) ? p.tags : [];
-  const primaryTag = tags[0];
-  const directionTone = getDirectionTone(primaryTag);
+  const titleZh = (p.titleZh ?? "") as string;
+  const orgZhRaw = (p.orgZh ?? p.org ?? "") as string;
+  const orgZh = orgZhRaw === "天津大学" ? "" : orgZhRaw;
+  const introZh = (p.introZh ?? "") as string;
+  const tags: string[] = Array.isArray(p.tags) ? (p.tags as string[]) : [];
+  const directionTone = getDirectionTone();
   const roleTone = getRoleTone(String(p.role ?? "ALL"));
 
   return (
-    <Card className="relative overflow-hidden border-slate-200/90 bg-white/95 p-5 shadow-[0_10px_24px_rgba(15,45,92,0.09)] hover:shadow-[0_14px_32px_rgba(37,99,235,0.18)]">
-      <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${directionTone.bar}`} />
-      <div className="flex gap-4">
-        {/* Avatar */}
+    <Card className="relative flex h-full min-h-[220px] flex-col overflow-hidden p-5">
+      <div
+        className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${directionTone.bar}`}
+      />
+      <div className="flex flex-1 gap-4">
         <div
           className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border ${roleTone.avatarBorder} ${roleTone.avatarBg}`}
         >
@@ -69,63 +71,65 @@ export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
           )}
         </div>
 
-        {/* Text */}
         <div className="min-w-0 flex-1">
-          {/* 第一行：仅姓名 */}
           <div className="flex min-w-0 items-baseline gap-x-2">
-            <div className="truncate text-base font-semibold">
+            <div className="truncate text-base font-semibold text-[var(--text)]">
               {nameZh || nameEn}
             </div>
             {nameZh && nameEn ? (
-              <div className="truncate text-sm text-slate-500">{nameEn}</div>
+              <div className="truncate text-sm text-[var(--muted)]">
+                {nameEn}
+              </div>
             ) : null}
           </div>
 
-          {/* 第二行：年级 + 身份（如：2025级 + 硕士研究生） */}
           {cohort || titleZh ? (
             <div className="mt-1 flex flex-wrap items-center gap-2">
               {cohort ? (
-                <div className={`rounded-full px-2 py-0.5 text-xs font-medium ${roleTone.cohort}`}>
+                <div
+                  className={`rounded-full px-2 py-0.5 text-xs font-medium ${roleTone.cohort}`}
+                >
                   {cohort}
                 </div>
               ) : null}
-              {titleZh ? <div className="text-sm text-slate-700">{titleZh}</div> : null}
+              {titleZh ? (
+                <div className="text-sm text-[var(--text-secondary)]">
+                  {titleZh}
+                </div>
+              ) : null}
             </div>
           ) : null}
 
           {orgZh ? (
-            <div className="mt-0.5 text-sm text-slate-500">{orgZh}</div>
+            <div className="mt-0.5 truncate text-sm text-[var(--muted)]">
+              {orgZh}
+            </div>
           ) : null}
 
           {introZh ? (
             <div
-              className="mt-3 text-sm leading-relaxed text-slate-700"
-              style={{
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 2,
-                overflow: "hidden",
-              }}
+              className="mt-3 line-clamp-2 text-sm leading-relaxed text-[var(--text-secondary)]"
             >
               {introZh}
             </div>
-          ) : null}
+          ) : (
+            <div className="mt-3 min-h-[2.5rem]" />
+          )}
         </div>
       </div>
 
-      {/* Tags */}
       {tags.length ? (
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-4 grid min-h-[28px] grid-cols-2 gap-x-2 gap-y-1.5 content-start">
           {tags.map((t) => {
             const active = activeTag === t;
-            const tone = getDirectionTone(t);
+            const tone = getDirectionTone();
             return (
               <Chip
                 key={t}
                 onClick={() => onTagClick?.(t)}
                 active={active}
                 size="sm"
-                className={active ? tone.chipActive : tone.chip}
+                className={`min-w-0 max-w-full ${active ? tone.chipActive : tone.chip}`}
                 title="点击按标签筛选"
               >
                 {t}
@@ -133,7 +137,9 @@ export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
             );
           })}
         </div>
-      ) : null}
+      ) : (
+        <div className="mt-4 min-h-[28px]" />
+      )}
     </Card>
   );
 }

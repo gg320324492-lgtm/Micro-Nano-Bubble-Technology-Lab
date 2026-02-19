@@ -11,9 +11,9 @@ export default function Card({ children, className = "", as = "article" }: CardP
   return (
     <Tag
       className={[
-        "rounded-[var(--radius)] border border-[color:var(--border)] bg-[color:var(--surface)]",
-        "shadow-[var(--shadow)] transition duration-200",
-        "hover:-translate-y-0.5",
+        "rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)]",
+        "transition duration-200 backdrop-blur-sm",
+        "hover:border-[var(--border-strong)]",
         className,
       ].join(" ")}
     >

@@ -10,15 +10,15 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const variantClass: Record<ButtonVariant, string> = {
   primary:
-    "bg-[color:var(--text)] text-white border-[color:var(--text)] hover:opacity-90",
+    "bg-[var(--accent)] text-[var(--bg-deep)] border-[var(--accent)] hover:bg-[var(--accent-hover)]",
   secondary:
-    "bg-[color:var(--surface)] text-[color:var(--text)] border-[color:var(--border)] hover:bg-white",
+    "bg-transparent text-[var(--text)] border-[var(--border)] hover:bg-[var(--accent-soft)] hover:border-[var(--border-strong)]",
   ghost:
-    "bg-transparent text-[color:var(--text)] border-transparent hover:bg-white/70",
+    "bg-transparent text-[var(--text-secondary)] border-transparent hover:bg-[var(--accent-soft)]",
 };
 
 export const buttonBaseClass =
-  "inline-flex items-center justify-center rounded-full border px-4 py-2.5 text-sm font-medium transition";
+  "inline-flex items-center justify-center rounded-[var(--radius-md)] border px-4 py-2.5 text-sm font-medium transition";
 
 export function buttonClassName(variant: ButtonVariant = "primary", extra = "") {
   return `${buttonBaseClass} ${variantClass[variant]} ${extra}`.trim();

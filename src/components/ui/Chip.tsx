@@ -23,15 +23,15 @@ export default function Chip({
   const toneClass = hasToneOverride
     ? ""
     : active
-      ? "border-slate-900 bg-slate-900 text-white"
-      : "border-slate-200 bg-white text-slate-800 hover:bg-slate-50";
+      ? "border-[var(--accent)] bg-[var(--accent)]/60 text-white"
+      : "border-[var(--border)] bg-[var(--bg-card)] text-[var(--text)] hover:bg-[var(--accent-soft)]";
 
   return (
     <button
       type="button"
       className={[
         "inline-flex items-center rounded-full border font-semibold whitespace-nowrap transition",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-1",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[var(--bg-deep)]",
         sizeClass,
         toneClass,
         className,
