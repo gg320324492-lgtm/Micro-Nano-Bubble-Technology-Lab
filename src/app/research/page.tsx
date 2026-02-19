@@ -216,7 +216,7 @@ export default function ResearchPage() {
         <Reveal className="mb-8">
           <Heading
             as="h1"
-            title="研究方向"
+            title="研究方向 Research Directions"
             subtitle="我们以 O₃-MNBs 为核心平台，围绕“机理—指标—装备—场景”形成从基础到应用的研究矩阵。"
           />
         </Reveal>

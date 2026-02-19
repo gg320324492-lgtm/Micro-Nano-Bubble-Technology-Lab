@@ -38,7 +38,7 @@ export default function IndustrializationPage() {
       <Reveal>
         <Heading
           as="h1"
-          title="产业化"
+          title="产业化 Industrialization"
           subtitle="围绕应用验证基地与示范场景，展示监测平台入口与工程化落地内容。"
           className="[&_h1]:text-[var(--text)]"
           subtitleClassName="text-[var(--text-secondary)]"
