@@ -150,29 +150,7 @@ export default function HomePage() {
         >
           {site.taglineEn}
         </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.2 }}
-          className="flex flex-wrap justify-center gap-4"
-        >
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link
-              href="/contact"
-              className="inline-flex rounded-[var(--radius-lg)] bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] px-10 py-4 text-lg font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:shadow-[var(--accent)]/30"
-            >
-              联系我们 / 加入我们
-            </Link>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link
-              href="/research"
-              className="inline-flex rounded-[var(--radius-lg)] border-2 border-[var(--accent)] px-10 py-4 text-lg font-semibold text-[var(--accent)] hover:bg-[var(--accent-soft)] transition-all bg-white/90 backdrop-blur-xl shadow-lg"
-            >
-              研究方向
-            </Link>
-          </motion.div>
-        </motion.div>
+        
       </motion.div>
 
       {/* Main Content - 全新布局设计 */}

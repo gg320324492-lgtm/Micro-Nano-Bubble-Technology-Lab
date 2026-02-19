@@ -119,16 +119,8 @@ export default function PiCard() {
             rel="noreferrer"
             className="rounded-[var(--radius-md)] border border-[var(--border-glow)] px-5 py-2.5 text-sm font-medium text-[var(--accent)] hover:bg-[var(--accent-soft)] transition-all hover:shadow-[0_0_20px_rgba(138,43,226,0.3)]"
           >
-            主页
+            天大主页
           </motion.a>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link
-              href="/contact"
-              className="rounded-[var(--radius-md)] bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] px-5 py-2.5 text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl"
-            >
-              加入我们
-            </Link>
-          </motion.div>
         </div>
       </div>
 
