@@ -22,7 +22,7 @@ type ChartMeta = {
 
 type PageInfo = {
   page: number;
-  textBlocks?: string[];
+  textBlocks?: readonly string[];
 };
 
 export default function AquacultureFigureStrip({
@@ -32,7 +32,7 @@ export default function AquacultureFigureStrip({
 }: {
   figures: Figure[];
   chartMeta: ChartMeta[];
-  pages: PageInfo[];
+  pages: readonly PageInfo[];
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
