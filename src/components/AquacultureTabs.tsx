@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 type TabKey = "intro" | "results";
 
@@ -46,7 +47,7 @@ export default function AquacultureTabs({ introPanel, resultsPanel }: Props) {
           className={[
             "inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium transition",
             activeTab === "intro"
-              ? "bg-[var(--accent)] text-[var(--bg-deep)]"
+              ? "bg-[var(--accent)] text-[var(--bg-deep)] shadow-md"
               : "bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
           ].join(" ")}
           aria-pressed={activeTab === "intro"}
@@ -59,7 +60,7 @@ export default function AquacultureTabs({ introPanel, resultsPanel }: Props) {
           className={[
             "inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium transition",
             activeTab === "results"
-              ? "bg-[var(--accent)] text-[var(--bg-deep)]"
+              ? "bg-[var(--accent)] text-[var(--bg-deep)] shadow-md"
               : "bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
           ].join(" ")}
           aria-pressed={activeTab === "results"}
@@ -68,8 +69,16 @@ export default function AquacultureTabs({ introPanel, resultsPanel }: Props) {
         </button>
       </div>
     </div>,
-    <div key={`aquaculture-panel-${activeTab}`}>
-      {activeTab === "intro" ? introPanel : resultsPanel}
-    </div>,
+    <AnimatePresence mode="wait" key="aquaculture-panels">
+      <motion.div
+        key={activeTab}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -16 }}
+        transition={{ duration: 0.25 }}
+      >
+        {activeTab === "intro" ? introPanel : resultsPanel}
+      </motion.div>
+    </AnimatePresence>,
   ];
 }
