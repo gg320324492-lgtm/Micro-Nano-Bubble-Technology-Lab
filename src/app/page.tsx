@@ -101,91 +101,74 @@ export default function HomePage() {
 
   return (
     <main ref={containerRef} className="relative">
-      {/* Hero Section with Parallax */}
+      {/* Hero Section with Parallax - z-30 确保轮播圆点不被下方 Main Content 遮挡 */}
       <motion.section
         style={{ y, opacity }}
-        className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden"
+        className="relative z-30 w-screen left-1/2 -translate-x-1/2 overflow-hidden"
       >
         <HomeHeroCarousel />
         {/* 降低白色蒙层强度：仅在底部做轻微过渡 */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/20 pointer-events-none" />
       </motion.section>
 
-      {/* Floating Hero Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        className="absolute top-[35%] left-1/2 -translate-x-1/2 z-10 text-center px-4 w-full max-w-5xl"
-      >
-        <motion.div
-          initial={{ scale: 0.9 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="inline-block mb-6 px-5 py-2 rounded-full bg-white/90 backdrop-blur-xl border border-[var(--border)] text-[var(--accent)] text-sm font-semibold shadow-lg"
-        >
-          Tianjin University
-        </motion.div>
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 gradient-text drop-shadow-lg"
-        >
-          {site.nameZh}
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="text-xl md:text-2xl text-[var(--text-secondary)] mb-4 max-w-3xl mx-auto leading-relaxed font-medium"
-        >
-          {site.taglineZh}
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="text-base md:text-lg text-[var(--muted)] mb-10 max-w-2xl mx-auto"
-        >
-          {site.taglineEn}
-        </motion.p>
-        
-      </motion.div>
-
       {/* Main Content - 全新布局设计 */}
       {/* 去掉纯白背景，改为轻微渐变，避免遮挡顶部背景图 */}
       <div className="relative z-20 mt-[-120px] md:mt-[-180px] bg-gradient-to-b from-white/0 via-white/70 to-white">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="space-y-20 md:space-y-32 pt-32 pb-20">
-            {/* PI 介绍 - 大卡片设计 */}
+          <div className="space-y-20 md:space-y-32 pt-44 md:pt-56 pb-20">
+            {/* 课题组标题 + PI 介绍 - 重设计排版 */}
             <motion.section
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6 }}
-              className="pt-10 md:pt-14 mb-10 md:mb-16"
+              className="pt-6 md:pt-8 mb-10 md:mb-16"
             >
-              <div className="text-center mb-12">
-                <motion.span
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="inline-block text-xs font-bold text-[var(--accent)] tracking-widest uppercase px-4 py-2 rounded-full bg-[var(--accent-soft)] mb-4"
-                >
-                  Principal Investigator
-                </motion.span>
-                <motion.h2
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                  className="text-4xl md:text-5xl font-bold gradient-text"
-                >
-                  导师介绍
-                </motion.h2>
+              {/* 课题组简介 + 导师介绍 - 融合为一块 */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="relative overflow-hidden rounded-[var(--radius-xl)] bg-white/80 p-8 md:p-12 pb-6 backdrop-blur-sm shadow-[var(--shadow-card)]"
+              >
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--accent)] via-[var(--accent-secondary)] to-[var(--accent)]" />
+                <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[var(--accent-soft)] blur-3xl opacity-60" />
+                <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-[var(--accent-secondary)]/20 blur-3xl opacity-50" />
+                <div className="relative">
+                  <motion.h1
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.05 }}
+                    className="text-center text-4xl md:text-5xl lg:text-6xl font-bold gradient-text mb-6 tracking-tight"
+                  >
+                    {site.nameZh}
+                  </motion.h1>
+                  <div className="mx-auto mb-6 h-px w-16 bg-gradient-to-r from-transparent via-[var(--accent)] to-transparent opacity-60" />
+                  <motion.p
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 }}
+                    className="text-center text-base md:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto leading-[1.8]"
+                  >
+                    {site.taglineZh}
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.15 }}
+                    className="mt-4 text-center text-sm md:text-base text-[var(--muted)] max-w-2xl mx-auto leading-relaxed"
+                  >
+                    {site.taglineEn}
+                  </motion.p>
+                </div>
+              </motion.div>
+              <div className="-mt-2">
+                <PiCard />
               </div>
-              <PiCard />
             </motion.section>
 
             {/* 研究方向 - 瀑布流卡片布局 */}
@@ -332,16 +315,31 @@ export default function HomePage() {
                       whileHover={{ x: 8 }}
                     >
                       <Link
-                        href="/news"
-                        className="block rounded-[var(--radius-lg)] border-2 border-[var(--border)] bg-white p-6 hover:border-[var(--accent-secondary)] hover:shadow-lg transition-all group"
+                        href={(n.slug as string) ? `/news/${n.slug}` : "/news"}
+                        className="flex gap-4 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-6 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow-hover)] transition-all group"
                       >
-                        <div className="text-xs font-bold text-[var(--accent-secondary)] mb-3">{getNewsDate(n)}</div>
-                        <h3 className="text-lg font-bold text-[var(--text)] mb-2 group-hover:text-[var(--accent-secondary)] transition-colors">
-                          {getNewsTitleZh(n)}
-                        </h3>
-                        {getNewsTitleEn(n) ? (
-                          <p className="text-sm text-[var(--muted)]">{getNewsTitleEn(n)}</p>
-                        ) : null}
+                        <div className="h-[100px] w-[140px] shrink-0 overflow-hidden rounded-[var(--radius-md)] bg-[var(--bg-elevated)]">
+                          {(n.coverImage as string) ? (
+                            <img
+                              src={n.coverImage as string}
+                              alt=""
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center text-xs text-[var(--muted)]">
+                              暂无图片
+                            </div>
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs font-bold text-[var(--muted)] mb-3">{getNewsDate(n)}</div>
+                          <h3 className="text-lg font-bold text-[var(--text)] mb-2 group-hover:text-[var(--accent)] transition-colors line-clamp-2">
+                            {getNewsTitleZh(n)}
+                          </h3>
+                          {getNewsTitleEn(n) ? (
+                            <p className="text-sm text-[var(--muted)] line-clamp-2">{getNewsTitleEn(n)}</p>
+                          ) : null}
+                        </div>
                       </Link>
                     </motion.div>
                   ))}

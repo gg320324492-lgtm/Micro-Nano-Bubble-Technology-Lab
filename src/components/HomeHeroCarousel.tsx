@@ -71,8 +71,6 @@ export default function HomeHeroCarousel() {
   return (
     <section
       className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden bg-[var(--bg-surface)] h-[calc(100vh-80px)] min-h-[520px]"
-      onMouseEnter={stopAuto}
-      onMouseLeave={startAuto}
       aria-label="Home hero carousel"
     >
       <div className="absolute inset-0">
@@ -118,7 +116,7 @@ export default function HomeHeroCarousel() {
               key={i}
               type="button"
               aria-label={`Go to slide ${i + 1}`}
-              onClick={() => go(i)}
+              onClick={() => { stopAuto(); go(i); }}
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
               className={`relative h-3 w-3 rounded-full border-2 transition-all ${
@@ -145,7 +143,7 @@ export default function HomeHeroCarousel() {
           <motion.button
             type="button"
             aria-label="Previous slide"
-            onClick={() => go(index - 1)}
+            onClick={() => { stopAuto(); go(index - 1); }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
               className="absolute left-6 top-1/2 -translate-y-1/2 hidden md:flex items-center justify-center h-12 w-12 rounded-full bg-white/90 backdrop-blur-xl border-2 border-[var(--border)] transition-all hover:bg-[var(--accent-soft)] hover:shadow-lg z-20"
@@ -155,7 +153,7 @@ export default function HomeHeroCarousel() {
           <motion.button
             type="button"
             aria-label="Next slide"
-            onClick={() => go(index + 1)}
+            onClick={() => { stopAuto(); go(index + 1); }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
               className="absolute right-6 top-1/2 -translate-y-1/2 hidden md:flex items-center justify-center h-12 w-12 rounded-full bg-white/90 backdrop-blur-xl border-2 border-[var(--border)] transition-all hover:bg-[var(--accent-soft)] hover:shadow-lg z-20"

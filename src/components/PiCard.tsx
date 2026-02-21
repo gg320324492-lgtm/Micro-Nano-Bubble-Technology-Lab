@@ -61,6 +61,9 @@ export default function PiCard() {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/5 via-transparent to-[var(--accent-secondary)]/5 pointer-events-none" />
       
+      <div className="relative z-10 mb-6 text-center">
+        <h2 className="text-xl md:text-2xl font-bold gradient-text">导师介绍</h2>
+      </div>
       <div className="relative z-10 flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
         <div className="flex gap-6">
           <motion.div
@@ -178,17 +181,12 @@ export default function PiCard() {
         </AnimatePresence>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="relative z-10 mt-8 rounded-[var(--radius-lg)] border-2 border-[var(--border)] bg-gradient-to-br from-[var(--accent-soft)] to-[var(--accent-secondary)]/10 p-6 md:p-8"
-      >
+      <div className="relative z-10 mt-8 pt-8 border-t border-[var(--border)]">
         <div className="font-bold text-lg text-[var(--text)] mb-3 gradient-text">招生信息</div>
         <div className="text-base leading-relaxed text-[var(--text-secondary)] md:text-lg">
           {pi.recruit}
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
