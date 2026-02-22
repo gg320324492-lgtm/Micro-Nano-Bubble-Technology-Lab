@@ -76,7 +76,7 @@ export default async function NewsDetailPage(props: PageProps) {
           <div className="text-xs md:text-sm font-bold text-[var(--accent-secondary)] mb-3 tracking-wide">
             {item.date}
           </div>
-          <h1 className="text-base md:text-lg lg:text-xl font-bold text-[var(--text)] gradient-text leading-tight">
+          <h1 className="flex flex-wrap w-fit h-fit text-center text-base md:text-lg lg:text-xl font-bold text-[var(--text)] gradient-text leading-tight">
             {item.titleZh}
           </h1>
           {item.titleEn ? (

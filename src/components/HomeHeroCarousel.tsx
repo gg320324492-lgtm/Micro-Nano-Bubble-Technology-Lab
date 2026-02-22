@@ -110,7 +110,7 @@ export default function HomeHeroCarousel() {
       </div>
 
       {total > 1 ? (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
+        <div suppressHydrationWarning className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
           {slides.map((_, i) => (
             <motion.button
               key={i}
