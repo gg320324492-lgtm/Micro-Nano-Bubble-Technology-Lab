@@ -1,11 +1,9 @@
 import type { NextConfig } from "next";
 
-const repoName = "Micro-Nano-Bubble-Technology-Lab";
-const deployTarget = process.env.DEPLOY_TARGET;
-const isPages = deployTarget === "pages";
+const isPages = process.env.DEPLOY_TARGET === "pages";
 
-const basePath = isPages ? `/${repoName}` : "";
-const assetPrefix = isPages ? `${basePath}/` : "";
+const basePath = isPages ? "/Micro-Nano-Bubble-Technology-Lab" : "";
+const assetPrefix = isPages ? "/Micro-Nano-Bubble-Technology-Lab/" : "";
 
 const nextConfig: NextConfig = {
   output: "export",

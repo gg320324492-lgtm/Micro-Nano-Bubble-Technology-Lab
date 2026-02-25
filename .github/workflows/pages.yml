@@ -28,7 +28,7 @@ jobs:
           cache: "npm"
 
       - run: npm ci
-      - run: npm run build
+      - run: DEPLOY_TARGET=pages npm run build
       - run: mkdir -p out && touch out/.nojekyll
       - name: Write deploy info
         run: |
