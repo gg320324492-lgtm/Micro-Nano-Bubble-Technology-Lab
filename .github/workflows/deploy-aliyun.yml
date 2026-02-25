@@ -9,59 +9,45 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    # 把 secrets 注入到 env，后续脚本只用 $SSH_HOST/$SSH_USER/$SSH_PORT
     env:
       SSH_HOST: ${{ secrets.SSH_HOST }}
       SSH_USER: ${{ secrets.SSH_USER }}
-      SSH_PORT: ${{ secrets.SSH_PORT }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ① Debug：验证 secrets->env 生效 + 免密 ssh 可用
       - name: SSH debug (ensure key works)
         shell: bash
         run: |
           set -euo pipefail
 
-          # 防呆：secrets 没注入就直接失败（避免解析成字面量 SSH_HOST）
           if [ -z "${SSH_HOST:-}" ]; then echo "ERROR: SSH_HOST is empty"; exit 1; fi
           if [ -z "${SSH_USER:-}" ]; then echo "ERROR: SSH_USER is empty"; exit 1; fi
-          # 端口为空就默认 22
-          SSH_PORT="${SSH_PORT:-22}"
+
+          SSH_PORT=22
 
           mkdir -p ~/.ssh
-
-          # 写入私钥（去掉 \r，避免 Windows 换行污染）
           printf '%s' "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-
-          # 打印指纹（用于确认就是你那把 zfiZ...）
           ssh-keygen -lf ~/.ssh/id_ed25519
 
-          # 尝试解析（仅用于提示，不影响后续；如果你用的是 IP，这里也会 OK）
-          getent hosts "$SSH_HOST" || true
-
-          # known_hosts（避免 StrictHostKeyChecking 卡住）
           ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts
 
-          # 真正测试：看到 OK 才算 SSH 链路通
           ssh -i ~/.ssh/id_ed25519 \
             -o IdentitiesOnly=yes \
             -o PasswordAuthentication=no \
             -p "$SSH_PORT" \
             "$SSH_USER@$SSH_HOST" "echo OK"
 
-      # ② 真部署：先占位（你后续把 script 改成 rsync / git pull / reload nginx 等）
       - name: Deploy via SSH (appleboy)
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 22
           script: |
             set -e
             echo "Connected as: $(whoami)"
