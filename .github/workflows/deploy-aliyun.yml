@@ -1,4 +1,4 @@
-name: Deploy to Aliyun
+name: Add Aliyun 自动部署工作流程
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 22
           script: |
             /usr/local/bin/deploy-mnb
 
