@@ -8,7 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    env:
+      DEPLOY_TARGET: aliyun
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,6 +28,14 @@ jobs:
           npm run build
           test -d out
           touch out/.nojekyll
+
+      - name: Write deploy info
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "sha=$GITHUB_SHA" > out/deploy.txt
+          echo "time=$(date -u)" >> out/deploy.txt
+          echo "target=$DEPLOY_TARGET" >> out/deploy.txt
 
       - name: Deploy to Aliyun via rsync
         shell: bash

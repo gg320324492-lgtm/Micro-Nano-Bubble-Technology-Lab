@@ -7,7 +7,8 @@
     "images:optimize": "node scripts/optimize-images.mjs",
     "build": "npm run images:optimize && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "print:deploy-target": "node -e \"console.log('DEPLOY_TARGET=' + (process.env.DEPLOY_TARGET || ''))\""
   },
   "dependencies": {
     "framer-motion": "^12.23.12",

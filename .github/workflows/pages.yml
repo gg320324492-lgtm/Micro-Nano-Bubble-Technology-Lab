@@ -17,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_TARGET: pages
     steps:
       - uses: actions/checkout@v4
 
@@ -28,6 +30,11 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: mkdir -p out && touch out/.nojekyll
+      - name: Write deploy info
+        run: |
+          echo "sha=$GITHUB_SHA" > out/deploy.txt
+          echo "time=$(date -u)" >> out/deploy.txt
+          echo "target=$DEPLOY_TARGET" >> out/deploy.txt
 
       - uses: actions/upload-pages-artifact@v3
         with:
