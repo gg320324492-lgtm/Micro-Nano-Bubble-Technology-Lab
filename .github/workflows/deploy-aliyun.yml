@@ -35,7 +35,7 @@ jobs:
           set -euo pipefail
           echo "sha=$GITHUB_SHA" > out/deploy.txt
           echo "time=$(date -u)" >> out/deploy.txt
-          echo "target=$DEPLOY_TARGET" >> out/deploy.txt
+          echo "target=aliyun" >> out/deploy.txt
 
       - name: Deploy to Aliyun via rsync
         shell: bash
