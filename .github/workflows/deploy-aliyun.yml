@@ -1,4 +1,4 @@
-name: Add Aliyun 自动部署工作流程
+name: Aliyun 部署到 www.mnb-lab.cn
 
 on:
   push:
@@ -13,8 +13,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ① Debug：用“已验证可用”的 deploy@60.205.93.8 来确认 Actions 侧也能免密登录
-      - name: SSH debug (fixed host/user)
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Build static site (out/)
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          test -d out
+          touch out/.nojekyll
+
+      - name: Deploy to Aliyun via rsync
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -24,34 +38,25 @@ jobs:
           TARGET_HOST="60.205.93.8"
           TARGET_USER="deploy"
           TARGET_PORT="22"
+          REMOTE_DIR="/var/www/html"
 
           mkdir -p ~/.ssh
           printf '%s' "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-
-          echo "Key fingerprint:"
-          ssh-keygen -lf ~/.ssh/id_ed25519
-
-          # known_hosts（避免首次连接卡住）
           ssh-keyscan -p "$TARGET_PORT" "$TARGET_HOST" >> ~/.ssh/known_hosts
 
-          # 强制只用公钥，不允许回退密码；-vvv 输出最关键诊断信息
-          ssh -vvv -i ~/.ssh/id_ed25519 \
-            -o IdentitiesOnly=yes \
-            -o PreferredAuthentications=publickey \
-            -o PasswordAuthentication=no \
-            -p "$TARGET_PORT" \
-            "$TARGET_USER@$TARGET_HOST" "id && echo OK"
+          # 确保目录存在
+          ssh -p "$TARGET_PORT" "$TARGET_USER@$TARGET_HOST" "mkdir -p '$REMOTE_DIR'"
 
-      # ② 真部署（先占位，你后续把 script 换成真实部署命令）
-      - name: Deploy via SSH (appleboy)
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: 60.205.93.8
-          username: deploy
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            set -e
-            echo "Connected as: $(whoami)"
-            echo "deploy placeholder"
+          # out/ -> /var/www/html
+          rsync -az --delete \
+            -e "ssh -p $TARGET_PORT -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes" \
+            out/ "$TARGET_USER@$TARGET_HOST:$REMOTE_DIR/"
+
+          # reload nginx
+          ssh -p "$TARGET_PORT" "$TARGET_USER@$TARGET_HOST" "sudo nginx -t && sudo systemctl reload nginx"
+
+      - name: Verify (optional)
+        shell: bash
+        run: |
+          echo "Deploy finished"
