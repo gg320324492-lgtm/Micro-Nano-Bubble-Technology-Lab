@@ -13,3 +13,5 @@ dist/
 .cursor/
 github_actions_deploy
 github_actions_deploy.pub
+*.pem
+*.key
