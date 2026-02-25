@@ -13,49 +13,42 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ① Debug：验证 secrets 注入 + 免密 ssh 成功（必须看到 OK）
-      - name: SSH debug (ensure key works)
+      # ① Debug：用“已验证可用”的 deploy@60.205.93.8 来确认 Actions 侧也能免密登录
+      - name: SSH debug (fixed host/user)
         shell: bash
         env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           set -euo pipefail
 
-          # 防呆：host 为空/被填成字面量 SSH_HOST 时，回退到服务器公网 IP
-          if [ -z "${SSH_HOST:-}" ] || [ "${SSH_HOST}" = "SSH_HOST" ]; then
-            SSH_HOST="60.205.93.8"
-          fi
-
-          SSH_PORT=22
-
-          echo "Using SSH_USER=${SSH_USER}"
-          echo "Using SSH_HOST=${SSH_HOST}"
-          echo "Using SSH_PORT=${SSH_PORT}"
+          TARGET_HOST="60.205.93.8"
+          TARGET_USER="deploy"
+          TARGET_PORT="22"
 
           mkdir -p ~/.ssh
-          printf '%s' "${SSH_PRIVATE_KEY}" | tr -d '\r' > ~/.ssh/id_ed25519
+          printf '%s' "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
-          # 打印私钥指纹（确认就是你那把 zfiZ...）
+          echo "Key fingerprint:"
           ssh-keygen -lf ~/.ssh/id_ed25519
 
-          ssh-keyscan -p "${SSH_PORT}" "${SSH_HOST}" >> ~/.ssh/known_hosts
+          # known_hosts（避免首次连接卡住）
+          ssh-keyscan -p "$TARGET_PORT" "$TARGET_HOST" >> ~/.ssh/known_hosts
 
-          ssh -i ~/.ssh/id_ed25519 \
+          # 强制只用公钥，不允许回退密码；-vvv 输出最关键诊断信息
+          ssh -vvv -i ~/.ssh/id_ed25519 \
             -o IdentitiesOnly=yes \
+            -o PreferredAuthentications=publickey \
             -o PasswordAuthentication=no \
-            -p "${SSH_PORT}" \
-            "${SSH_USER}@${SSH_HOST}" "echo OK"
+            -p "$TARGET_PORT" \
+            "$TARGET_USER@$TARGET_HOST" "id && echo OK"
 
-      # ② 部署：先占位，等 debug OK 后你再把 script 换成真实部署命令
+      # ② 真部署（先占位，你后续把 script 换成真实部署命令）
       - name: Deploy via SSH (appleboy)
         uses: appleboy/ssh-action@v1.2.0
         with:
-          # 这里也建议直接用 IP，避免 DNS 抖动/误填
           host: 60.205.93.8
-          username: ${{ secrets.SSH_USER }}
+          username: deploy
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
