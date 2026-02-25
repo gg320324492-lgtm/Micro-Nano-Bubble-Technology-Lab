@@ -8,8 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      DEPLOY_TARGET: aliyun
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,25 +24,19 @@ jobs:
         run: |
           set -euo pipefail
           npm ci
-          DEPLOY_TARGET=aliyun npm run build
+          npm run build
           test -d out
           touch out/.nojekyll
-
-      - name: Write deploy info
-        shell: bash
-        run: |
-          set -euo pipefail
           echo "sha=$GITHUB_SHA" > out/deploy.txt
           echo "time=$(date -u)" >> out/deploy.txt
           echo "target=aliyun" >> out/deploy.txt
 
-      - name: Deploy to Aliyun via rsync
+      - name: Deploy to Aliyun via rsync + reload nginx
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           set -euo pipefail
-
           TARGET_HOST="60.205.93.8"
           TARGET_USER="deploy"
           TARGET_PORT="22"
@@ -54,18 +47,10 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "$TARGET_PORT" "$TARGET_HOST" >> ~/.ssh/known_hosts
 
-          # 确保目录存在
           ssh -p "$TARGET_PORT" "$TARGET_USER@$TARGET_HOST" "mkdir -p '$REMOTE_DIR'"
 
-          # out/ -> /var/www/html
           rsync -az --delete \
             -e "ssh -p $TARGET_PORT -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes" \
             out/ "$TARGET_USER@$TARGET_HOST:$REMOTE_DIR/"
 
-          # reload nginx
           ssh -p "$TARGET_PORT" "$TARGET_USER@$TARGET_HOST" "sudo nginx -t && sudo systemctl reload nginx"
-
-      - name: Verify (optional)
-        shell: bash
-        run: |
-          echo "Deploy finished"
