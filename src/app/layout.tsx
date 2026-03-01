@@ -1,4 +1,4 @@
-// src/app/layout.tsx
+﻿// src/app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
 import { Noto_Serif_SC, JetBrains_Mono } from "next/font/google";
@@ -45,3 +45,4 @@ export default function RootLayout({
     </html>
   );
 }
+
