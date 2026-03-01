@@ -3,6 +3,10 @@
 export const site = {
   nameZh: "微纳米气泡课题组",
   nameEn: "Micro & Nano Bubble Technology Lab",
+  /** 工信部 ICP 备案号 */
+  icpNumber: "冀ICP备2026005479号-1",
+  /** 公安备案号 */
+  policeRecordNumber: "津公网安备12011202001060号",
   taglineZh:
     "聚焦微纳米气泡技术的机理研究、装备开发与多场景应用，面向饮用水安全、环境治理与智能化工程系统。",
   taglineEn:

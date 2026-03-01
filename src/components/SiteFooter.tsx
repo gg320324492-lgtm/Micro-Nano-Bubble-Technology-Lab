@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Container from "@/components/Container";
 import * as contactModule from "@/data/contact";
-import { navItems } from "@/data/site";
+import { navItems, site } from "@/data/site";
 
 type ContactLike = {
   email?: string;
@@ -133,17 +133,44 @@ export default function SiteFooter() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="mt-12 flex flex-col gap-4 border-t border-[var(--border)] pt-8 text-xs text-[var(--muted)] md:flex-row md:items-center md:justify-between"
+          className="mt-12 flex flex-col gap-4 border-t border-[var(--border)] pt-8 text-xs text-[var(--muted)]"
         >
-          <div>© {year} Micro & Nano Bubble Technology Lab</div>
-          <div className="flex gap-6">
-            <Link href="/" className="hover:text-[var(--accent)] transition-colors">
-              Home
-            </Link>
-            <Link href="/publications" className="hover:text-[var(--accent)] transition-colors">
-              Publications
-            </Link>
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>© {year} Micro & Nano Bubble Technology Lab</div>
+            <div className="flex gap-6">
+              <Link href="/" className="hover:text-[var(--accent)] transition-colors">
+                Home
+              </Link>
+              <Link href="/publications" className="hover:text-[var(--accent)] transition-colors">
+                Publications
+              </Link>
+            </div>
           </div>
+          {(site.icpNumber || site.policeRecordNumber) && (
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              {site.icpNumber && (
+                <a
+                  href="https://beian.miit.gov.cn/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[var(--accent)] transition-colors"
+                >
+                  {site.icpNumber}
+                </a>
+              )}
+              {site.icpNumber && site.policeRecordNumber && <span className="text-[var(--muted)]/70">|</span>}
+              {site.policeRecordNumber && (
+                <a
+                  href="http://www.beian.gov.cn/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[var(--accent)] transition-colors"
+                >
+                  {site.policeRecordNumber}
+                </a>
+              )}
+            </div>
+          )}
         </motion.div>
       </Container>
     </footer>
