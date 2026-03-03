@@ -39,7 +39,7 @@ export const pi: PiInfo = {
   affiliationZh: "天津大学 环境科学与工程学院",
   affiliationEn: "School of Environmental Science & Engineering, Tianjin University",
 
-  email: "wangtianzhi@tju.edu.cn",
+  email: "zhaohangjia@tju.edu.cn",
   websiteZh: "https://faculty.tju.edu.cn/226066/zh_CN/index.htm",
 
   // ✅ 头像路径（public/people/pi.jpg）

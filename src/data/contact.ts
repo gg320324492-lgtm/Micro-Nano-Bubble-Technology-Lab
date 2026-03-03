@@ -9,7 +9,7 @@ export type ContactInfo = {
 };
 
 export const contact: ContactInfo = {
-  email: "wangtianzhi@tju.edu.cn",
+  email: "zhaohangjia@tju.edu.cn",
   addressZh: "天津市南开区卫津路92号（天津大学），邮编：300072",
   websiteZh: "https://faculty.tju.edu.cn/226066/zh_CN/index.htm",
   joinZh:

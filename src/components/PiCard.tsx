@@ -19,7 +19,7 @@ export default function PiCard() {
         "聚焦微纳米气泡机理与工程应用，涵盖气泡溃灭与·OH原位形成、协同消毒与饮用水生物稳定性提升、表面清洗与水环境治理装备开发等方向。",
       avatar: "/people/pi.jpg",
       homepage: "https://faculty.tju.edu.cn/226066/zh_CN/index.htm",
-      email: "wangtianzhi@tju.edu.cn",
+      email: "zhaohangjia@tju.edu.cn",
       tags: [
         "微纳米气泡溃灭与·OH原位形成",
         "协同氯消毒与杀菌机制",

@@ -5,7 +5,7 @@ import JoinSteps from "@/components/contact/JoinSteps";
 import FaqSection from "@/components/contact/FaqSection";
 
 export default function ContactPage() {
-  const email = "wangtianzhi@tju.edu.cn";
+  const email = "zhaohangjia@tju.edu.cn";
   const addressLine1 = "天津市南开区卫津路92号（天津大学）";
   const addressLine2 = "邮编：300072";
   const address = `${addressLine1}，${addressLine2}`;
