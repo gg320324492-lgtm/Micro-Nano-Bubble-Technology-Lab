@@ -40,8 +40,8 @@ export const news: NewsItem[] = [
       location: "天津大学北洋园校区环境学院 59楼 A217",
       agenda: [
         { time: "8:30-8:35", content: "开幕式", location: "59楼 A217" },
-        { time: "8:35-12:10", content: "主题报告", location: "59楼 A217" },
-        { time: "12:20-12:30", content: "颁发证书", location: "59楼 A217" },
+        { time: "8:35-12:05", content: "主题报告", location: "59楼 A217" },
+        { time: "12:05-12:20", content: "颁发证书", location: "59楼 A217" },
         { time: "17:30-20:00", content: "晚餐" },
       ],
       reports: [
@@ -62,7 +62,7 @@ export const news: NewsItem[] = [
         { time: "11:45-11:50", speaker: "胡小琪", title: "臭氧微纳米气泡对油泥破乳实验进展和下学期计划" },
         { time: "11:50-11:55", speaker: "宋洋", title: "基于臭氧微纳米气泡对膜污染的控制及饮用水处理的研究" },
         { time: "11:55-12:00", speaker: "耿嘉栋", title: "臭氧发生器应用现状及前景分析" },
-        { time: "12:05-12:10", speaker: "蒋芦迪", title: "磁絮凝在含油废水中的应用进展" },
+        { time: "12:00-12:05", speaker: "蒋芦迪", title: "磁絮凝在含油废水中的应用进展" },
       ],
       attendees: "微纳米气泡课题组全组成员",
       supportOrg: "瑞德智创新技术(天津)有限公司",
