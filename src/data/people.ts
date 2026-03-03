@@ -65,11 +65,11 @@ function mk(
   };
 }
 
-// 五大方向（主方向 tag）
-const TAG_WQ = "水质提升与安全保障";
-const TAG_OH = "气泡溃灭与·OH原位生成";
-const TAG_CLEAN = "表面清洗与去除";
-const TAG_AGRI = "农业高效种养与盐碱土修复";
+// 四个研究方向（主方向 tag）
+const TAG_OH = "气泡成核过程调控与设备研发";
+const TAG_WQ = "饮用水水质提升与安全保障";
+const TAG_CLEAN = "黑臭水体无药剂低能耗治理";
+const TAG_AGRI = "水产高密度无抗养殖与品质改善";
 const TAG_EQUIP = "水环境治理设备开发";
 
 export const people: Person[] = [

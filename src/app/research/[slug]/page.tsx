@@ -119,6 +119,10 @@ export default async function ResearchDetailPage(props: PageProps) {
 
   const topBullets = bulletsZh.slice(0, 4);
   const coreParagraph = mergeSectionsToParagraph(sections);
+  const coreLines = coreParagraph
+    .split(/(?<=。)/)
+    .map((s) => s.trim())
+    .filter(Boolean);
   const isApplications = item.group === "Applications";
   const theme = isApplications
     ? {
@@ -212,11 +216,15 @@ export default async function ResearchDetailPage(props: PageProps) {
                 </div>
               ) : null}
 
-              {coreParagraph ? (
+              {coreLines.length ? (
                 <div className={["mt-6 rounded-2xl border p-5", theme.overviewWrap].join(" ")}>
                   <div className={["mb-3 h-1.5 w-14 rounded-full", theme.overviewBar].join(" ")} />
                   <div className="text-base font-semibold text-[var(--text)]">核心概览</div>
-                  <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">{coreParagraph}</p>
+                  <div className="mt-3 space-y-2 text-sm leading-7 text-[var(--text-secondary)]">
+                    {coreLines.map((line, idx) => (
+                      <p key={idx}>{line}</p>
+                    ))}
+                  </div>
                 </div>
               ) : null}
             </div>

@@ -79,39 +79,49 @@ export default function LightboxGallery({
 
       <div className={gridClass}>
         {safe.map((it, i) => (
-          <button
-            key={`${it.src}-${i}`}
-            type="button"
-            className={[
-              "group relative aspect-[16/10] overflow-hidden rounded-3xl border",
-              theme.cardBorder,
-              theme.cardBg,
-            ].join(" ")}
-            onClick={() => {
-              setIdx(i);
-              setOpen(true);
-            }}
-            aria-label={`open-${i}`}
-          >
-            <Image
-              src={assetPath(toImageVariant(it.src, "thumb"))}
-              alt={it.alt || `gallery-${i + 1}`}
-              fill
-              loading="lazy"
-              fetchPriority="low"
-              sizes="(max-width: 640px) 100vw, 50vw"
-              className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-              style={{
-                objectPosition: `center ${typeof it.focusY === "number" ? it.focusY : 40}%`,
-              }}
-            />
-            <div
+          <div key={`${it.src}-${i}`} className="flex flex-col gap-2">
+            <button
+              type="button"
               className={[
-                "pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100",
-                theme.hoverOverlay,
+                "group relative aspect-[4/3] overflow-hidden rounded-3xl border",
+                theme.cardBorder,
+                theme.cardBg,
               ].join(" ")}
-            />
-          </button>
+              onClick={() => {
+                setIdx(i);
+                setOpen(true);
+              }}
+              aria-label={`open-${i}`}
+            >
+              <Image
+                src={
+                  /\.png$/i.test(it.src)
+                    ? assetPath(it.src)
+                    : assetPath(toImageVariant(it.src, "thumb"))
+                }
+                alt={it.alt || `gallery-${i + 1}`}
+                fill
+                loading="lazy"
+                fetchPriority="low"
+                sizes="(max-width: 640px) 100vw, 50vw"
+                className="object-contain bg-black/5 transition-transform duration-300 group-hover:scale-[1.01]"
+                style={{
+                  objectPosition: `center ${typeof it.focusY === "number" ? it.focusY : 40}%`,
+                }}
+              />
+              <div
+                className={[
+                  "pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100",
+                  theme.hoverOverlay,
+                ].join(" ")}
+              />
+            </button>
+            {it.caption || it.alt ? (
+              <div className="px-1 text-xs leading-relaxed text-[var(--text-secondary)]">
+                {it.caption || it.alt}
+              </div>
+            ) : null}
+          </div>
         ))}
       </div>
 
@@ -122,7 +132,11 @@ export default function LightboxGallery({
             <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black shadow-xl">
               <div className="relative aspect-[16/10]">
                 <Image
-                  src={assetPath(toImageVariant(cur.src, "full"))}
+                  src={
+                    /\.png$/i.test(cur.src)
+                      ? assetPath(cur.src)
+                      : assetPath(toImageVariant(cur.src, "full"))
+                  }
                   alt={cur.alt || "preview"}
                   fill
                   loading="eager"

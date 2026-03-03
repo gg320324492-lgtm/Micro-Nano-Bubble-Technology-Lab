@@ -14,31 +14,6 @@ import { buttonClassName } from "@/components/ui/Button";
 import Reveal from "@/components/motion/Reveal";
 import ImageReveal from "@/components/motion/ImageReveal";
 
-function groupDirections(list: ResearchDirection[]) {
-  const coreSlugs = new Set([
-    "bubble-collapse-oh",
-    "water-quality-safety",
-    "equipment-development",
-  ]);
-
-  const core: ResearchDirection[] = [];
-  const apps: ResearchDirection[] = [];
-
-  for (const d of list) {
-    if (coreSlugs.has(d.slug)) core.push(d);
-    else apps.push(d);
-  }
-
-  const orderCore = [
-    "bubble-collapse-oh",
-    "water-quality-safety",
-    "equipment-development",
-  ];
-  core.sort((a, b) => orderCore.indexOf(a.slug) - orderCore.indexOf(b.slug));
-
-  return { core, apps };
-}
-
 /** 不依赖 line-clamp 插件，简介两行夹断 */
 function clamp2Style(): React.CSSProperties {
   return {
@@ -79,13 +54,26 @@ function pickCardTags(d: ResearchDirection) {
 /** 封面统一取景稍微偏下（尽量避开图片自带标题） */
 function coverFocusYBySlug(slug: string) {
   const map: Record<string, number> = {
-    "bubble-collapse-oh": 38,
-    "water-quality-safety": 45,
-    "equipment-development": 55,
-    "surface-cleaning-removal": 45,
-    "agriculture-salt-alkali": 45,
+    "bubble-nucleation-equipment": 38,
+    "water-quality-safety": 30,
+    "black-odorous-water-remediation": 32,
+    "aquaculture-high-density": 34,
   };
   return map[slug] ?? 45;
+}
+
+const directionOrder: string[] = [
+  "bubble-nucleation-equipment",
+  "water-quality-safety",
+  "black-odorous-water-remediation",
+  "aquaculture-high-density",
+];
+
+function sortDirections(list: ResearchDirection[]): ResearchDirection[] {
+  const bySlug = new Map(list.map((d) => [d.slug, d] as const));
+  return directionOrder
+    .map((slug) => bySlug.get(slug))
+    .filter((d): d is ResearchDirection => Boolean(d));
 }
 
 function toResearchCardThumb(src: string) {
@@ -94,11 +82,9 @@ function toResearchCardThumb(src: string) {
 
 function ResearchCard({
   d,
-  kind,
   delay = 0,
 }: {
   d: ResearchDirection;
-  kind: "core" | "app";
   delay?: number;
 }) {
   const href = `/research/${d.slug}`;
@@ -121,7 +107,7 @@ function ResearchCard({
       <LazyMount
         rootMargin="200px 0px"
         fallback={
-          <div className="flex h-full flex-col overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-4">
+          <div className="flex h-full flex-col overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-4 shadow-sm">
             <div className="mb-3 w-full rounded-xl bg-[var(--bg-elevated)]" style={{ aspectRatio: "16 / 10" }} />
             <div className="text-base font-semibold leading-6 text-[var(--text)]">{d.titleZh}</div>
             {d.titleEn ? <div className="mt-1 text-xs text-[var(--muted)]">{d.titleEn}</div> : null}
@@ -130,8 +116,8 @@ function ResearchCard({
           </div>
         }
       >
-        <Card className="flex h-full flex-col overflow-hidden">
-          {/* 封面 */}
+        <Card className="flex h-full min-h-[260px] flex-col overflow-hidden border-[var(--border)] bg-[var(--bg-card)] shadow-sm transition-shadow group-hover:shadow-md">
+          {/* 封面 + 分组徽标 */}
           <ImageReveal>
             <div
               className="relative w-full bg-[var(--bg-elevated)]"
@@ -150,7 +136,14 @@ function ResearchCard({
                   style={{ objectPosition: `center ${focusY}%` }}
                 />
               ) : null}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/24 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+              {d.category ? (
+                <div className="pointer-events-none absolute inset-x-3 top-3 flex justify-end text-[10px] font-medium text-white">
+                  <span className="inline-flex items-center rounded-full bg-black/35 px-2 py-0.5 backdrop-blur">
+                    {d.category}
+                  </span>
+                </div>
+              ) : null}
             </div>
           </ImageReveal>
 
@@ -188,10 +181,7 @@ function ResearchCard({
             )}
 
             {/* CTA */}
-            <div className="mt-auto flex items-center justify-between pt-4">
-              <span className="text-xs text-[var(--muted)]">
-                {kind === "core" ? "机理 / 指标 / 装备" : "场景 / 风险边界 / SOP"}
-              </span>
+            <div className="mt-auto flex items-center justify-end pt-4">
               <span className={buttonClassName("secondary", "gap-1 px-3 py-1.5")}>
                 查看详情{" "}
                 <span className="transition-transform group-hover:translate-x-0.5">
@@ -208,50 +198,24 @@ function ResearchCard({
 }
 
 export default function ResearchPage() {
-  const { core, apps } = groupDirections(researchDirections);
+  const list = sortDirections(researchDirections);
 
   return (
     <Section container="wide">
-      <div>
-        <Reveal className="mb-8">
+      <div className="space-y-8">
+        <Reveal className="max-w-3xl">
           <Heading
             as="h1"
             title="研究方向 Research Directions"
-            subtitle="我们以 O₃-MNBs 为核心平台，围绕“机理—指标—装备—场景”形成从基础到应用的研究矩阵。"
+            subtitle="我们以 O₃-MNBs 为核心平台，围绕“气泡成核与设备研发、饮用水水质提升与安全保障、黑臭水体无药剂低能耗治理、水产高密度无抗养殖与品质改善”四个方向，构建从机理到应用的一体化研究矩阵。"
           />
         </Reveal>
 
-        <section>
-          <div className="mb-4">
-            <div className="text-lg font-semibold text-[var(--text)]">
-              核心研究方向 Core Areas
-            </div>
-            <div className="mt-1 text-sm text-[var(--muted)]">
-              面向关键机理与工程指标，支撑工艺放大与设备开发。
-            </div>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {core.map((d, index) => (
-              <ResearchCard key={d.slug} d={d} kind="core" delay={index * 0.05} />
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-12">
-          <div className="mb-4">
-            <div className="text-lg font-semibold text-[var(--text)]">应用与拓展 Applications</div>
-            <div className="mt-1 text-sm text-[var(--muted)]">
-              面向具体场景验证效果、风险边界与可复制 SOP。
-            </div>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {apps.map((d, index) => (
-              <ResearchCard key={d.slug} d={d} kind="app" delay={index * 0.05} />
-            ))}
-          </div>
-        </section>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-7 xl:grid-cols-4 xl:gap-8">
+          {list.map((d, index) => (
+            <ResearchCard key={d.slug} d={d} delay={index * 0.05} />
+          ))}
+        </div>
       </div>
     </Section>
   );

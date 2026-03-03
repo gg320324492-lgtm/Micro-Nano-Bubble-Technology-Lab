@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.mnb-lab.cn
+
+# Sitemaps
+Sitemap: https://www.mnb-lab.cn/sitemap.xml

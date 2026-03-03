@@ -51,11 +51,11 @@ export default function SiteHeader() {
     >
       <div className="w-full px-4 sm:px-6 lg:px-8">
         {/* Desktop */}
-        <div className="relative hidden min-h-[88px] items-center py-3 md:flex">
+        <div className="hidden w-full min-h-[88px] items-center py-3 md:flex">
           {/* Left: Brand with university + lab */}
           <motion.div
             whileHover={{ scale: 1.03 }}
-            className="flex items-center gap-4"
+            className="flex items-center gap-4 max-w-[48%]"
           >
             <Link href="/" className="flex items-center gap-3 min-w-0 group">
               {/* 左侧：双徽标（更接近示例图的留白与比例） */}
@@ -95,7 +95,7 @@ export default function SiteHeader() {
                     微纳米气泡课题组
                   </span>
                 </div>
-                <div className="mt-1 inline-block text-sm md:text-base text-[var(--text-secondary)] tracking-[0.02em] leading-tight whitespace-nowrap">
+                <div className="mt-1 hidden text-sm md:text-base text-[var(--text-secondary)] tracking-[0.02em] leading-tight whitespace-nowrap lg:inline-block">
                   Micro &amp; Nano Bubble Technology Lab, Tianjin University
                 </div>
               </div>
@@ -103,7 +103,7 @@ export default function SiteHeader() {
           </motion.div>
 
           {/* Middle: centered nav */}
-          <nav className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-6">
+          <nav className="flex-1 flex items-center justify-center gap-3 lg:gap-6 px-4">
             {navItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
@@ -114,7 +114,7 @@ export default function SiteHeader() {
                   >
                     <div className="flex flex-col items-center leading-tight">
                       <span
-                        className={`text-base md:text-[1.05rem] font-semibold transition-colors ${
+                        className={`text-sm md:text-base lg:text-[1.05rem] font-semibold transition-colors whitespace-nowrap ${
                           active
                             ? "text-[var(--accent)]"
                             : "text-[var(--text-secondary)] hover:text-[var(--accent)]"
@@ -122,7 +122,7 @@ export default function SiteHeader() {
                       >
                         {item.zh}
                       </span>
-                      <span className="mt-0.5 text-[11px] text-[var(--text-secondary)] tracking-wide">
+                      <span className="mt-0.5 hidden text-[11px] text-[var(--text-secondary)] tracking-wide lg:block whitespace-nowrap">
                         {item.en}
                       </span>
                     </div>
@@ -145,7 +145,7 @@ export default function SiteHeader() {
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/contact"
-                className="relative inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#2563eb] via-[#4f46e5] to-[#7c3aed] px-7 py-2.5 text-sm md:text-base font-semibold text-white shadow-md hover:shadow-lg transition-all"
+                className="relative inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#2563eb] via-[#4f46e5] to-[#7c3aed] px-5 md:px-6 lg:px-7 py-2 text-xs md:text-sm lg:text-base font-semibold text-white shadow-md hover:shadow-lg transition-all"
               >
                 <span className="relative z-10 whitespace-nowrap">
                   联系我们 / 加入我们
@@ -156,7 +156,7 @@ export default function SiteHeader() {
         </div>
 
         {/* Mobile */}
-        <div className="flex md:hidden items-center justify-between gap-3 py-4">
+        <div className="flex lg:hidden items-center justify-between gap-3 py-4">
           <Link href="/" className="flex items-center gap-2 min-w-0">
             <div className="flex items-center gap-2">
               <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-white ring-1 ring-[var(--border)]">
@@ -233,7 +233,7 @@ export default function SiteHeader() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden border-t border-[var(--border)] bg-white/95 backdrop-blur-xl overflow-hidden"
+            className="lg:hidden border-t border-[var(--border)] bg-white/95 backdrop-blur-xl overflow-hidden"
           >
             <Container className="py-6 space-y-2">
               <motion.a
