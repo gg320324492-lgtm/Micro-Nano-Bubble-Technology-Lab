@@ -106,7 +106,7 @@ export default function HomePage() {
       {/* Hero Section with Parallax - z-30 确保轮播圆点不被下方 Main Content 遮挡 */}
       <motion.section
         style={{ y, opacity }}
-        className="relative z-30 w-screen left-1/2 -translate-x-1/2 overflow-hidden -mt-[80px]"
+        className="relative z-30 w-screen left-1/2 -translate-x-1/2 overflow-hidden -mt-[80px] md:mt-0"
       >
         <HomeHeroCarousel />
         {/* 降低白色蒙层强度：仅在底部做轻微过渡 */}
