@@ -9,9 +9,11 @@ import * as publicationsModule from "@/data/publications";
 import * as researchModule from "@/data/research";
 import * as newsModule from "@/data/news";
 import * as contactModule from "@/data/contact";
+import { externalLinks } from "@/data/externalLinks";
 
 import PiCard from "@/components/PiCard";
 import HomeHeroCarousel from "@/components/HomeHeroCarousel";
+import ExternalLinksSection from "@/components/ExternalLinksSection";
 import { site } from "@/data/site";
 
 type AnyRecord = Record<string, unknown>;
@@ -245,6 +247,16 @@ export default function HomePage() {
                   </motion.div>
                 ))}
               </div>
+            </motion.section>
+
+            {/* 外部链接导航区 - 媒体报道等 */}
+            <motion.section
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+            >
+              <ExternalLinksSection links={externalLinks} />
             </motion.section>
 
             {/* 成果展示 - 左右分栏设计 */}
