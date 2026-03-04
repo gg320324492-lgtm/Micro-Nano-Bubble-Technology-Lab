@@ -70,7 +70,7 @@ export default function HomeHeroCarousel() {
 
   return (
     <section
-      className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden bg-[var(--bg-surface)] h-[calc(100vh-80px)] min-h-[520px]"
+      className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden bg-[var(--bg-surface)] h-[60vh] min-h-[380px] md:h-[calc(100vh-80px)]"
       aria-label="Home hero carousel"
     >
       <div className="absolute inset-0">
@@ -98,10 +98,10 @@ export default function HomeHeroCarousel() {
                   decoding="async"
                   fetchPriority={i === 0 ? "high" : "low"}
                   sizes="100vw"
-                  className="object-contain"
+                  className="object-contain md:object-cover"
                 />
-                {/* 仅在底部轻微提亮，避免整张图发白 */}
-                <div className="absolute inset-0 bg-gradient-to-t from-white/35 via-white/10 to-transparent pointer-events-none" />
+                {/* 仅在底部轻微提亮，避免整张图发白（降低强度，减少视觉空白感） */}
+                <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-white/5 to-transparent pointer-events-none" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,transparent_55%,rgba(124,58,237,0.04)_100%)] pointer-events-none" />
               </motion.div>
             );
