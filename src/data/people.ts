@@ -92,7 +92,8 @@ export const people: Person[] = [
     "Tonghe Du",
     "围绕污染控制与水质提升，开展微纳米气泡强化工艺研究与数据分析。",
     [TAG_WQ, "水质提升", "微纳米气泡"],
-    2025
+    2025,
+    "png"
   ),
   mk(
     "chentianxiang",
@@ -119,7 +120,8 @@ export const people: Person[] = [
     "Jiadong Geng",
     "面向工程化落地，参与发生器结构优化与系统集成验证。",
     [TAG_EQUIP, "装备开发", "系统集成"],
-    2025
+    2025,
+    "png"
   ),
 
   // 硕士生（2024级）
