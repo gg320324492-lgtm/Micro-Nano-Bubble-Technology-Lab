@@ -109,6 +109,7 @@ export default async function ResearchDetailPage(props: PageProps) {
   const cover = item.cover ?? "";
   const coverFocusY =
     typeof (item as any).coverFocusY === "number" ? (item as any).coverFocusY : 35;
+  const video = item.video;
 
   const gallery: GalleryItem[] = (item.gallery ?? []).map((g) => ({
     src: g.src,
@@ -224,6 +225,37 @@ export default async function ResearchDetailPage(props: PageProps) {
                     {coreLines.map((line, idx) => (
                       <p key={idx}>{line}</p>
                     ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {/* 视频展示（可选）：放在核心概览之后 */}
+              {video?.src ? (
+                <div className="mt-6 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]">
+                  <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] px-5 py-4">
+                    <div className="text-base font-semibold text-[var(--text)]">
+                      {video.titleZh || "视频"}
+                    </div>
+                  </div>
+
+                  <div className="p-5">
+                    <div className="relative overflow-hidden rounded-2xl border border-[var(--border)] bg-black/5">
+                      <video
+                        controls
+                        playsInline
+                        preload="metadata"
+                        poster={video.poster ? assetPath(video.poster) : undefined}
+                        className="h-auto w-full"
+                      >
+                        <source src={assetPath(video.src)} type="video/mp4" />
+                      </video>
+                    </div>
+
+                    {video.captionZh ? (
+                      <div className="mt-2 text-xs leading-relaxed text-[var(--text-secondary)]">
+                        {video.captionZh}
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               ) : null}

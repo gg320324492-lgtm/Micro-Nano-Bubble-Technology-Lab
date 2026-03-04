@@ -13,6 +13,13 @@ export type ResearchSection = {
   bulletsZh?: string[];
 };
 
+export type ResearchVideo = {
+  src: string; // 建议：/research/<slug>/xxx.mp4 或 .webm
+  poster?: string; // 可选封面图
+  titleZh?: string;
+  captionZh?: string;
+};
+
 export type ResearchDirection = {
   slug: string; // 路由用：/research/[slug]
   titleZh: string; // 方向中文名
@@ -24,6 +31,7 @@ export type ResearchDirection = {
   coverFocusY?: number; // 0-100：封面裁切取景偏移（可选）
   gallery?: ResearchImage[]; // 图集（可选）
   sections?: ResearchSection[]; // 详情页分段（可选）
+  video?: ResearchVideo; // 视频展示（可选）
 
   // ✅ 官网展示增强字段（可选，不填也不影响）
   group?: string; // Core / Applications
@@ -62,6 +70,13 @@ export const researchDirections: ResearchDirection[] = [
       "该方向是课题组“机理-装备一体化主线”：以气泡成核与界面过程为起点，把微纳米气泡的物理化学特性固化为可设计的设备参数和运行窗口，使‘溃灭/界面效应’不止停留在示意图，而是可以通过结构与工况精细调控并在工程中复现。",
     cover: "/research/equipment-development/cover.jpg",
     coverFocusY: 28,
+    video: {
+      // 注意：浏览器通常不支持 avi。请将视频转为 mp4/webm 后放到 public 对应路径。
+      src: "/research/bubble-nucleation-equipment/t2-0.5.mp4",
+      poster: "/research/equipment-development/cover.jpg",
+      titleZh: "实验视频展示",
+      captionZh: "微纳米气泡成核/生长过程视频（点击播放，可全屏）。",
+    },
     gallery: [
       {
         src: "/research/bubble-nucleation-equipment/mnbs-generation.png",
