@@ -77,7 +77,8 @@ function sortDirections(list: ResearchDirection[]): ResearchDirection[] {
 }
 
 function toResearchCardThumb(src: string) {
-  return toImageVariant(src, "thumb");
+  // 首页研究方向卡片使用原始图片路径，避免依赖预生成的 thumb.webp 变体
+  return src;
 }
 
 function ResearchCard({
