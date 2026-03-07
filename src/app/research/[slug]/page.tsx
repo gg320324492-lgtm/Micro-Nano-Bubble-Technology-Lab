@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import Container from "@/components/Container";
 import LightboxGallery, { GalleryItem } from "@/components/LightboxGallery";
+import RevealCard from "@/components/motion/RevealCard";
 import Pill from "@/components/ui/Pill";
 import Chip from "@/components/ui/Chip";
 import LightboxViewer from "@/components/LightboxViewer";
@@ -389,8 +390,9 @@ export default async function ResearchDetailPage(props: PageProps) {
 
             <div className="space-y-12 md:space-y-16">
               {/* Section 1：饮用水生物稳定性提升 */}
-              <section
+              <RevealCard
                 id="section-bio"
+                delay={0}
                 className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.5)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.75)]"
               >
                 <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
@@ -438,11 +440,12 @@ export default async function ResearchDetailPage(props: PageProps) {
                     ) : null}
                   </div>
                 </div>
-              </section>
+              </RevealCard>
 
               {/* Section 2：不同气源条件下的强化消毒表现 */}
-              <section
+              <RevealCard
                 id="section-disinfection"
+                delay={0.05}
                 className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/94 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.45)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.75)]"
               >
                 <div className="space-y-6">
@@ -479,11 +482,12 @@ export default async function ResearchDetailPage(props: PageProps) {
                     图 2 侧重于宏观水质指标与杀菌性能，图 3 则通过 SEM / TEM 观察呈现细胞拉伸、皱缩与破裂等微观损伤特征，构成“性能结果 + 微观证据”的完整证据链。
                   </p>
                 </div>
-              </section>
+              </RevealCard>
 
               {/* Section 3：微纳米气泡的细胞损伤与灭菌机制 */}
-              <section
+              <RevealCard
                 id="section-mechanism"
+                delay={0.1}
                 className="scroll-mt-32 md:scroll-mt-40 rounded-[30px] border border-[var(--border-strong)] bg-gradient-to-b from-[var(--bg-elevated)]/80 via-[var(--bg-card)] to-[var(--bg-card)] px-5 py-9 shadow-[0_22px_60px_-34px_rgba(15,23,42,0.8)] transition-shadow md:px-9 md:py-11 md:hover:shadow-[0_26px_70px_-36px_rgba(15,23,42,0.9)]"
               >
                 <div className="space-y-7">
@@ -523,11 +527,12 @@ export default async function ResearchDetailPage(props: PageProps) {
                     研究表明，MNBs 通过界面自由基与物理冲击的协同作用，使细胞膜发生不可逆拉伸与破裂，并诱导 DNA 解旋和蛋白质二级结构改变；在离子泄漏与代谢失衡的共同作用下，细胞逐步失去修复能力，形成稳定而高效的灭菌路径。
                   </p>
                 </div>
-              </section>
+              </RevealCard>
 
               {/* Section 4：微纳米气泡/紫外协同消毒关键预实验 */}
-              <section
+              <RevealCard
                 id="section-synergy"
+                delay={0.15}
                 className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.5)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.78)]"
               >
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1.1fr)]">
@@ -597,11 +602,12 @@ export default async function ResearchDetailPage(props: PageProps) {
                     ) : null}
                   </div>
                 </div>
-              </section>
+              </RevealCard>
 
               {/* Section 5：协同作用下的细胞结构损伤证据 */}
-              <section
+              <RevealCard
                 id="section-evidence"
+                delay={0.2}
                 className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.45)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.78)]"
               >
                 <div className="space-y-6">
@@ -635,11 +641,12 @@ export default async function ResearchDetailPage(props: PageProps) {
                     ) : null}
                   </div>
                 </div>
-              </section>
+              </RevealCard>
 
               {/* 底部 CTA */}
-              <section
+              <RevealCard
                 id="section-cta"
+                delay={0.25}
                 className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-elevated)]/85 px-5 py-9 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.6)] transition-shadow md:px-9 md:py-10 md:hover:shadow-[0_22px_60px_-34px_rgba(15,23,42,0.85)]"
               >
                 <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -669,7 +676,7 @@ export default async function ResearchDetailPage(props: PageProps) {
                     </Link>
                   </div>
                 </div>
-              </section>
+              </RevealCard>
 
               {/* 页面底部简洁导航 */}
               <div className="flex items-center justify-between pt-2 text-[13px] text-[var(--text-secondary)] md:text-sm">
