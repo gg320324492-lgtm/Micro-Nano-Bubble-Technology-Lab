@@ -158,7 +158,7 @@ function ResearchHero({
                   <Chip
                     key={kw}
                     size="sm"
-                    className="bg-white/92 text-[13px] !border-[var(--border)] !text-[var(--text)] shadow-sm"
+                    className="bg-white/92 text-[13px] !border-[var(--border)] !text-[var(--text)] shadow-sm transition-all duration-200 hover:bg-[var(--accent-soft)]/90 hover:!text-[var(--accent)] hover:-translate-y-0.5 hover:shadow-md"
                   >
                     {kw}
                   </Chip>
@@ -182,10 +182,10 @@ function ResearchHero({
                   {metrics.map((m) => (
                     <div
                       key={m.label}
-                      className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/96 px-3.5 py-3 text-[12px] leading-snug shadow-sm"
+                      className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/96 px-3.5 py-3 text-[12px] leading-snug shadow-sm transition-all duration-200 hover:border-[var(--accent-soft)] hover:bg-[var(--accent-soft)]/10 hover:-translate-y-0.5 hover:shadow-md"
                     >
                       <div className="text-[11px] text-[var(--muted)]">{m.label}</div>
-                      <div className="mt-1 text-[18px] font-semibold tracking-tight text-[var(--accent)]">
+                      <div className="mt-1 text-[18px] font-semibold tracking-tight text-[var(--accent)] transition-transform duration-200">
                         {m.value}
                       </div>
                     </div>
@@ -391,7 +391,7 @@ export default async function ResearchDetailPage(props: PageProps) {
               {/* Section 1：饮用水生物稳定性提升 */}
               <section
                 id="section-bio"
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.65)] md:px-8 md:py-10"
+                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.5)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.75)]"
               >
                 <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
                   <div className="space-y-5">
@@ -412,7 +412,7 @@ export default async function ResearchDetailPage(props: PageProps) {
                         <Pill
                           key={tag}
                           className={[
-                            "min-w-0 items-center text-left text-[13px]",
+                            "min-w-0 items-center text-left text-[13px] transition-all duration-200 hover:bg-[var(--accent-soft)]/85 hover:text-[var(--accent)] hover:-translate-y-0.5",
                             theme.bulletPill,
                           ].join(" ")}
                         >
@@ -443,7 +443,7 @@ export default async function ResearchDetailPage(props: PageProps) {
               {/* Section 2：不同气源条件下的强化消毒表现 */}
               <section
                 id="section-disinfection"
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/94 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.55)] md:px-8 md:py-10"
+                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/94 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.45)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.75)]"
               >
                 <div className="space-y-6">
                   <SectionHeader
@@ -484,7 +484,7 @@ export default async function ResearchDetailPage(props: PageProps) {
               {/* Section 3：微纳米气泡的细胞损伤与灭菌机制 */}
               <section
                 id="section-mechanism"
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[30px] border border-[var(--border-strong)] bg-gradient-to-b from-[var(--bg-elevated)]/80 via-[var(--bg-card)] to-[var(--bg-card)] px-5 py-9 shadow-[0_22px_60px_-34px_rgba(15,23,42,0.9)] md:px-9 md:py-11"
+                className="scroll-mt-32 md:scroll-mt-40 rounded-[30px] border border-[var(--border-strong)] bg-gradient-to-b from-[var(--bg-elevated)]/80 via-[var(--bg-card)] to-[var(--bg-card)] px-5 py-9 shadow-[0_22px_60px_-34px_rgba(15,23,42,0.8)] transition-shadow md:px-9 md:py-11 md:hover:shadow-[0_26px_70px_-36px_rgba(15,23,42,0.9)]"
               >
                 <div className="space-y-7">
                   <SectionHeader
@@ -528,7 +528,7 @@ export default async function ResearchDetailPage(props: PageProps) {
               {/* Section 4：微纳米气泡/紫外协同消毒关键预实验 */}
               <section
                 id="section-synergy"
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.6)] md:px-8 md:py-10"
+                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.5)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.78)]"
               >
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1.1fr)]">
                   <div className="space-y-5">
@@ -537,7 +537,7 @@ export default async function ResearchDetailPage(props: PageProps) {
                       titleZh="微纳米气泡 / 紫外协同消毒关键预实验"
                       summary={`${WATER_COPY.module4} ${WATER_COPY.module5}`}
                     />
-                    <div className="mt-2 rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)]/80 p-4 text-[13px] leading-relaxed text-[var(--text-secondary)] md:text-sm">
+                    <div className="mt-2 rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)]/80 p-4 text-[13px] leading-relaxed text-[var(--text-secondary)] shadow-sm transition-all duration-200 hover:border-[var(--accent-soft)] hover:bg-[var(--bg-card)]/100 hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.7)] md:text-sm">
                       <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
                         关键参数摘要（参数 — 性能）
                       </div>
@@ -602,7 +602,7 @@ export default async function ResearchDetailPage(props: PageProps) {
               {/* Section 5：协同作用下的细胞结构损伤证据 */}
               <section
                 id="section-evidence"
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.55)] md:px-8 md:py-10"
+                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.45)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.78)]"
               >
                 <div className="space-y-6">
                   <SectionHeader
@@ -640,7 +640,7 @@ export default async function ResearchDetailPage(props: PageProps) {
               {/* 底部 CTA */}
               <section
                 id="section-cta"
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-elevated)]/85 px-5 py-9 md:px-9 md:py-10"
+                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-elevated)]/85 px-5 py-9 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.6)] transition-shadow md:px-9 md:py-10 md:hover:shadow-[0_22px_60px_-34px_rgba(15,23,42,0.85)]"
               >
                 <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                   <div className="space-y-3">
