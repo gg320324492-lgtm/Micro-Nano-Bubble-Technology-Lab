@@ -106,7 +106,6 @@ function ResearchCard({
         aria-label={`查看研究方向：${d.titleZh}`}
       >
       <LazyMount
-        rootMargin="200px 0px"
         fallback={
           <div className="flex h-full flex-col overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-4 shadow-sm">
             <div className="mb-3 w-full rounded-xl bg-[var(--bg-elevated)]" style={{ aspectRatio: "16 / 10" }} />

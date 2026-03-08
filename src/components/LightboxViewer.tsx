@@ -92,6 +92,7 @@ export default function LightboxViewer({
             fill
             priority={priority}
             loading={priority ? "eager" : "lazy"}
+            decoding={priority ? "sync" : "async"}
             sizes={sizes}
             className="object-contain bg-black/5 transition-transform duration-300 group-hover:scale-[1.01]"
             style={{
