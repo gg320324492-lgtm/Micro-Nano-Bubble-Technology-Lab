@@ -12,7 +12,6 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { buttonClassName } from "@/components/ui/Button";
 import Reveal from "@/components/motion/Reveal";
-import ImageReveal from "@/components/motion/ImageReveal";
 
 /** 不依赖 line-clamp 插件，简介两行夹断 */
 function clamp2Style(): React.CSSProperties {
@@ -77,8 +76,8 @@ function sortDirections(list: ResearchDirection[]): ResearchDirection[] {
 }
 
 function toResearchCardThumb(src: string) {
-  // 首页研究方向卡片使用原始图片路径，避免依赖预生成的 thumb.webp 变体
-  return src;
+  if (!src) return src;
+  return toImageVariant(src, "thumb");
 }
 
 function ResearchCard({
@@ -118,34 +117,32 @@ function ResearchCard({
       >
         <Card className="flex h-full min-h-[260px] flex-col overflow-hidden border-[var(--border)] bg-[var(--bg-card)] shadow-sm transition-shadow group-hover:shadow-md">
           {/* 封面 + 分组徽标 */}
-          <ImageReveal>
-            <div
-              className="relative w-full bg-[var(--bg-elevated)]"
-              style={{ aspectRatio: "16 / 10" }}
-            >
-              {cover ? (
-                <Image
-                  src={assetPath(coverThumb)}
-                  alt={d.titleZh}
-                  fill
-                  loading="lazy"
-                  decoding="async"
-                  fetchPriority="low"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover"
-                  style={{ objectPosition: `center ${focusY}%` }}
-                />
-              ) : null}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/24 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-              {d.category ? (
-                <div className="pointer-events-none absolute inset-x-3 top-3 flex justify-end text-[10px] font-medium text-white">
-                  <span className="inline-flex items-center rounded-full bg-black/35 px-2 py-0.5 backdrop-blur">
-                    {d.category}
-                  </span>
-                </div>
-              ) : null}
-            </div>
-          </ImageReveal>
+          <div
+            className="relative w-full bg-[var(--bg-elevated)]"
+            style={{ aspectRatio: "16 / 10" }}
+          >
+            {cover ? (
+              <Image
+                src={assetPath(coverThumb)}
+                alt={d.titleZh}
+                fill
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
+                style={{ objectPosition: `center ${focusY}%` }}
+              />
+            ) : null}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/24 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+            {d.category ? (
+              <div className="pointer-events-none absolute inset-x-3 top-3 flex justify-end text-[10px] font-medium text-white">
+                <span className="inline-flex items-center rounded-full bg-black/35 px-2 py-0.5 backdrop-blur">
+                  {d.category}
+                </span>
+              </div>
+            ) : null}
+          </div>
 
           {/* 内容 */}
           <div className="flex flex-1 flex-col p-4">

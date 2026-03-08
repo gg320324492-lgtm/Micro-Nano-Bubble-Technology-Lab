@@ -9,7 +9,7 @@ type LazyMountProps = {
 };
 
 const DEFAULT_ROOT_MARGIN_DESKTOP = "200px 0px";
-const DEFAULT_ROOT_MARGIN_MOBILE = "100px 0px";
+const DEFAULT_ROOT_MARGIN_MOBILE = "50px 0px";
 
 function useRootMargin(propMargin?: string) {
   const [margin, setMargin] = useState(DEFAULT_ROOT_MARGIN_DESKTOP);

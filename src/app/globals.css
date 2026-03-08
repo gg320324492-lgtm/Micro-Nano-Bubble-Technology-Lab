@@ -122,8 +122,15 @@ body::before {
   opacity: 0.4;
 }
 
-/* 移动端及 prefers-reduced-motion 时关闭粒子动画，降低内存与 GPU 压力 */
-@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+/* 移动端完全移除 body::before 装饰层，降低内存与合成层压力 */
+@media (max-width: 768px) {
+  body::before {
+    display: none;
+  }
+}
+
+/* prefers-reduced-motion 时关闭粒子动画 */
+@media (prefers-reduced-motion: reduce) {
   body::before {
     animation: none;
   }
