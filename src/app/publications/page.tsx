@@ -186,7 +186,7 @@ export default function PublicationsPage() {
 
   return (
     <Section container="wide">
-      <Reveal className="flex flex-col gap-2 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-6 sm:p-8">
+      <Reveal className="flex flex-col gap-2">
         <Heading
           as="h1"
           title={
