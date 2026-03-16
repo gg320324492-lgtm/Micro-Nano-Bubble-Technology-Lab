@@ -1,7 +1,6 @@
 // src/app/publications/page.tsx
 "use client";
 
-import Link from "next/link";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import Section from "@/components/ui/Section";
 import Heading from "@/components/ui/Heading";
@@ -13,8 +12,9 @@ import Reveal from "@/components/motion/Reveal";
 import * as pubsMod from "@/data/publications";
 import * as patentsMod from "@/data/patents";
 import * as honorsMod from "@/data/honors";
+import * as projectsMod from "@/data/projects";
 
-type TabKey = "papers" | "patents" | "honors";
+type TabKey = "papers" | "patents" | "honors" | "projects";
 
 function pickList(mod: any) {
   return (
@@ -84,6 +84,26 @@ function normalize(s: string) {
   return s.toLowerCase().replace(/\s+/g, " ").trim();
 }
 
+type ProjectItem = { name: string; start?: string; end?: string };
+type ProjectSection = { title: string; items: ProjectItem[] };
+
+function pickProjectSections(mod: any): ProjectSection[] {
+  const v =
+    mod?.projectSections ??
+    mod?.sections ??
+    mod?.projects ??
+    mod?.items ??
+    mod?.default ??
+    [];
+  return Array.isArray(v) ? (v as ProjectSection[]) : [];
+}
+
+function formatPeriod(p: { start?: string; end?: string }) {
+  if (!p.start && !p.end) return "无";
+  if (p.start && p.end) return `${p.start} 至 ${p.end}`;
+  return p.start ? `${p.start} 至` : `至 ${p.end}`;
+}
+
 export default function PublicationsPage() {
   const [tab, setTab] = useState<TabKey>("papers");
   const [q, setQ] = useState("");
@@ -94,12 +114,17 @@ export default function PublicationsPage() {
   const publications = useMemo(() => pickList(pubsMod) as any[], []);
   const patents = useMemo(() => pickList(patentsMod) as any[], []);
   const honors = useMemo(() => pickList(honorsMod) as any[], []);
+  const projectSections = useMemo(
+    () => pickProjectSections(projectsMod),
+    []
+  );
 
   // ✅ 首次挂载：从 URL 读 tab（不用 useSearchParams，避免构建报错）
   useEffect(() => {
     const sp = new URLSearchParams(window.location.search);
     const t = sp.get("tab") as TabKey | null;
-    if (t === "papers" || t === "patents" || t === "honors") setTab(t);
+    if (t === "papers" || t === "patents" || t === "honors" || t === "projects")
+      setTab(t);
     setReady(true);
   }, []);
 
@@ -115,6 +140,7 @@ export default function PublicationsPage() {
   }, [tab, ready]);
 
   const activeList = useMemo(() => {
+    if (tab === "projects") return [];
     if (tab === "patents") return patents;
     if (tab === "honors") return honors;
     return publications;
@@ -127,6 +153,7 @@ export default function PublicationsPage() {
   }, [activeList]);
 
   const filtered = useMemo(() => {
+    if (tab === "projects") return [];
     const nq = normalize(deferredQ);
     return activeList
       .filter((it) => {
@@ -166,7 +193,7 @@ export default function PublicationsPage() {
             <>
               成果{" "}
               <span className="text-[var(--accent)]">
-                Publications & Patents & Honors
+                Publications & Patents & Honors & Projects
               </span>
             </>
           }
@@ -182,6 +209,7 @@ export default function PublicationsPage() {
           { key: "papers", label: "论文 Papers" },
           { key: "patents", label: "专利 Patents" },
           { key: "honors", label: "荣誉 Honors" },
+          { key: "projects", label: "项目 Projects" },
         ].map((t) => {
           const active = tab === (t.key as TabKey);
           return (
@@ -208,30 +236,104 @@ export default function PublicationsPage() {
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="搜索标题 / 作者 / 期刊 / 关键词…"
+            placeholder={
+              tab === "projects"
+                ? "搜索项目名称…"
+                : "搜索标题 / 作者 / 期刊 / 关键词…"
+            }
             className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 text-sm text-[var(--text)] outline-none placeholder:text-[var(--muted)] focus:ring-2 focus:ring-[var(--accent)]/30"
           />
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-[var(--muted)]">年份</span>
-          <select
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text)]"
-          >
-            <option value="all">全部</option>
-            {yearOptions.map((y) => (
-              <option key={y} value={y}>
-                {y}
-              </option>
-            ))}
-          </select>
-        </div>
+        {tab === "projects" ? null : (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-[var(--muted)]">年份</span>
+            <select
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text)]"
+            >
+              <option value="all">全部</option>
+              {yearOptions.map((y) => (
+                <option key={y} value={y}>
+                  {y}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       {/* List */}
       <div className="mt-8 space-y-4">
+        {tab === "projects" ? (
+          <Reveal className="space-y-8">
+            {projectSections.map((sec, sIdx) => {
+              const nq = normalize(deferredQ);
+              const items = (sec.items ?? []).filter((it) =>
+                nq ? normalize(it.name).includes(nq) : true
+              );
+
+              if (nq && items.length === 0) return null;
+
+              const accentClass = sIdx % 2 === 0 ? "before:bg-emerald-500" : "before:bg-violet-500";
+
+              return (
+                <div key={sec.title} className="space-y-4">
+                  <div className="flex items-end justify-between gap-3">
+                    <div className="text-base font-semibold text-[var(--text)]">
+                      {sec.title}
+                    </div>
+                    <div className="text-sm text-[var(--muted)]">
+                      共 {items.length} 项
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {items.map((it, i) => {
+                      const period = formatPeriod({ start: it.start, end: it.end });
+                      const y = (it.start ?? it.end ?? "").match(/\b(19|20)\d{2}\b/)?.[0] ?? "";
+
+                      return (
+                        <ListItem
+                          key={`${sec.title}-${i}`}
+                          className={[
+                            "relative overflow-hidden",
+                            "before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:content-['']",
+                            accentClass,
+                          ].join(" ")}
+                          year={y}
+                          title={it.name}
+                          subtitle={period === "无" ? "" : period}
+                          description={
+                            period === "无" ? (
+                              <span className="text-sm text-[var(--muted)]">时间：无</span>
+                            ) : null
+                          }
+                          badges={[]}
+                          action={null}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+
+            {normalize(deferredQ) &&
+            projectSections.every(
+              (sec) =>
+                (sec.items ?? []).filter((it) =>
+                  normalize(it.name).includes(normalize(deferredQ))
+                ).length === 0
+            ) ? (
+              <div className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-8 text-sm text-[var(--muted)]">
+                未找到匹配项目。你可以更换关键词。
+              </div>
+            ) : null}
+          </Reveal>
+        ) : null}
+
         {filtered.map((it, idx) => {
           const y = pickYear(it);
           const title = pickTitle(it);
@@ -310,24 +412,13 @@ export default function PublicationsPage() {
           );
         })}
 
-        {filtered.length === 0 ? (
+        {tab !== "projects" && filtered.length === 0 ? (
           <div className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-8 text-sm text-[var(--muted)]">
             未找到匹配内容。你可以更换关键词或切换年份/类别。
           </div>
         ) : null}
       </div>
 
-      <div className="mt-10 flex gap-2">
-        <Link
-          href="/contact"
-          className={buttonClassName(
-            "primary",
-            "rounded-xl border-0 px-4 py-2 text-sm"
-          )}
-        >
-          合作 / 加入我们
-        </Link>
-      </div>
     </Section>
   );
 }

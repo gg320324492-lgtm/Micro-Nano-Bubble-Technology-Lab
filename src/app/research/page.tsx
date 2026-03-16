@@ -1,5 +1,6 @@
 // src/app/research/page.tsx
 import type React from "react";
+import { memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import researchDirections, { ResearchDirection } from "@/data/research";
@@ -75,12 +76,14 @@ function sortDirections(list: ResearchDirection[]): ResearchDirection[] {
     .filter((d): d is ResearchDirection => Boolean(d));
 }
 
+const sortedDirections = sortDirections(researchDirections);
+
 function toResearchCardThumb(src: string) {
   if (!src) return src;
   return toImageVariant(src, "thumb");
 }
 
-function ResearchCard({
+const ResearchCard = memo(function ResearchCard({
   d,
   delay = 0,
 }: {
@@ -104,112 +107,126 @@ function ResearchCard({
         className="group block h-full"
         aria-label={`查看研究方向：${d.titleZh}`}
       >
-      <LazyMount
-        fallback={
-          <div className="flex h-full flex-col overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-4 shadow-sm">
-            <div className="mb-3 w-full rounded-xl bg-[var(--bg-elevated)]" style={{ aspectRatio: "16 / 10" }} />
-            <div className="text-base font-semibold leading-6 text-[var(--text)]">{d.titleZh}</div>
-            {d.titleEn ? <div className="mt-1 text-xs text-[var(--muted)]">{d.titleEn}</div> : null}
-            <div className="mt-3 h-4 w-2/3 rounded bg-[var(--bg-elevated)]" />
-            <div className="mt-2 h-4 w-5/6 rounded bg-[var(--bg-elevated)]" />
-          </div>
-        }
-      >
-        <Card className="flex h-full min-h-[260px] flex-col overflow-hidden border-[var(--border)] bg-[var(--bg-card)] shadow-sm transition-shadow group-hover:shadow-md">
-          {/* 封面 + 分组徽标 */}
-          <div
-            className="relative w-full bg-[var(--bg-elevated)]"
-            style={{ aspectRatio: "16 / 10" }}
-          >
-            {cover ? (
-              <Image
-                src={assetPath(coverThumb)}
-                alt={d.titleZh}
-                fill
-                loading="lazy"
-                decoding="async"
-                fetchPriority="low"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover"
-                style={{ objectPosition: `center ${focusY}%` }}
+        <LazyMount
+          fallback={
+            <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-sm">
+              <div
+                className="mb-4 h-56 w-full rounded-[var(--radius-md)] bg-[var(--bg-elevated)]"
               />
-            ) : null}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/24 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-            {d.category ? (
-              <div className="pointer-events-none absolute inset-x-3 top-3 flex justify-end text-[10px] font-medium text-white">
-                <span className="inline-flex items-center rounded-full bg-black/35 px-2 py-0.5 backdrop-blur">
-                  {d.category}
-                </span>
+              <div className="text-lg font-semibold leading-7 text-[var(--text)]">
+                {d.titleZh}
               </div>
-            ) : null}
-          </div>
-
-          {/* 内容 */}
-          <div className="flex flex-1 flex-col p-4">
-            <div className="min-h-[56px]">
-              <div className="text-base font-semibold leading-6 text-[var(--text)]">{d.titleZh}</div>
               {d.titleEn ? (
-                <div className="mt-1 text-xs text-[var(--muted)]">
-                  {d.titleEn}
+                <div className="mt-1 text-sm text-[var(--muted)]">{d.titleEn}</div>
+              ) : null}
+              <div className="mt-4 h-4 w-2/3 rounded bg-[var(--bg-elevated)]" />
+              <div className="mt-2 h-4 w-5/6 rounded bg-[var(--bg-elevated)]" />
+              <div className="mt-auto pt-5">
+                <div className="h-9 w-24 rounded-xl bg-[var(--bg-elevated)]" />
+              </div>
+            </div>
+          }
+        >
+          <Card className="flex h-full flex-col rounded-3xl border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-sm transition-shadow group-hover:shadow-md">
+            {/* 封面 + 分组徽标：与产业化卡片高度一致 */}
+            <div className="relative mb-4 h-56 w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--bg-elevated)]">
+              {cover ? (
+                <Image
+                  src={assetPath(coverThumb)}
+                  alt={d.titleZh}
+                  fill
+                  loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+                  className="object-cover"
+                  style={{ objectPosition: `center ${focusY}%` }}
+                />
+              ) : null}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/22 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+              {d.category ? (
+                <div className="pointer-events-none absolute inset-x-4 top-4 flex justify-end text-[11px] font-medium text-white">
+                  <span className="inline-flex items-center rounded-full bg-black/35 px-2.5 py-1 backdrop-blur">
+                    {d.category}
+                  </span>
                 </div>
               ) : null}
             </div>
 
-            {d.briefZh ? (
-              <p
-                className="mt-2 text-sm leading-6 text-[var(--text-secondary)]"
-                style={clamp2Style()}
-              >
-                {d.briefZh}
-              </p>
-            ) : (
-              <div className="mt-2" />
-            )}
-
-            {/* 标签 */}
-            {tags.length ? (
-              <div className="mt-3 flex flex-wrap gap-2">
-                {tags.map((t) => (
-                  <Badge key={t}>{t}</Badge>
-                ))}
+            {/* 内容 */}
+            <div className="flex flex-1 flex-col pt-1">
+              <div className="min-h-[64px]">
+                <div className="text-lg font-semibold leading-7 text-[var(--text)]">
+                  {d.titleZh}
+                </div>
+                {d.titleEn ? (
+                  <div className="mt-1 text-sm leading-6 text-[var(--muted)]">
+                    {d.titleEn}
+                  </div>
+                ) : null}
               </div>
-            ) : (
-              <div className="mt-3" />
-            )}
 
-            {/* CTA */}
-            <div className="mt-auto flex items-center justify-end pt-4">
-              <span className={buttonClassName("secondary", "gap-1 px-3 py-1.5")}>
-                查看详情{" "}
-                <span className="transition-transform group-hover:translate-x-0.5">
-                  →
+              {d.briefZh ? (
+                <p
+                  className="mt-3 text-sm leading-7 text-[var(--text-secondary)]"
+                  style={clamp2Style()}
+                >
+                  {d.briefZh}
+                </p>
+              ) : (
+                <div className="mt-3" />
+              )}
+
+              {/* 标签 */}
+              {tags.length ? (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {tags.map((t) => (
+                    <Badge key={t}>{t}</Badge>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-4" />
+              )}
+
+              {/* CTA */}
+              <div className="mt-auto flex items-center justify-end pt-5">
+                <span className={buttonClassName("secondary", "gap-1 px-4 py-2")}>
+                  查看详情{" "}
+                  <span className="transition-transform group-hover:translate-x-0.5">→</span>
                 </span>
-              </span>
+              </div>
             </div>
-          </div>
-        </Card>
-      </LazyMount>
+          </Card>
+        </LazyMount>
       </Link>
     </Reveal>
   );
-}
+});
 
 export default function ResearchPage() {
-  const list = sortDirections(researchDirections);
-
   return (
-    <Section container="wide">
-      <div className="space-y-8">
-        <Reveal className="max-w-3xl">
+    <Section container="wide" spacing="compact">
+      <div className="space-y-6 lg:space-y-8">
+        <Reveal className="mx-auto max-w-6xl">
           <Heading
             as="h1"
-            title="研究方向 Research Directions"
-            subtitle="我们以 O₃-MNBs 为核心平台，围绕“气泡成核与设备研发、饮用水水质提升与安全保障、黑臭水体无药剂低能耗治理、水产高密度无抗养殖与品质改善”四个方向，构建从机理到应用的一体化研究矩阵。"
+            title="研究 Research"
+            subtitle={
+              <>
+                <span className="block text-sm text-[var(--muted)] mb-1">
+                  Research Directions
+                </span>
+                <span>
+                  我们以 O₃-MNBs 为核心平台，围绕“气泡成核与设备研发、饮用水水质提升与安全保障、黑臭水体无药剂低能耗治理、水产高密度无抗养殖与品质改善”四个方向，构建从机理到应用的一体化研究矩阵。
+                </span>
+              </>
+            }
+            className="[&_h1]:text-[var(--text)]"
+            subtitleClassName="text-[var(--text-secondary)]"
           />
         </Reveal>
-
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-7 xl:grid-cols-4 xl:gap-8">
-          {list.map((d, index) => (
+        <div className="mx-auto max-w-6xl mt-8 grid gap-6 sm:grid-cols-2 items-stretch">
+          {sortedDirections.map((d, index) => (
             <ResearchCard key={d.slug} d={d} delay={index * 0.05} />
           ))}
         </div>

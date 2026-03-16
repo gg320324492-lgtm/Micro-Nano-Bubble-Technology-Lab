@@ -7,7 +7,6 @@ import { useRef } from "react";
 
 import * as publicationsModule from "@/data/publications";
 import * as researchModule from "@/data/research";
-import * as newsModule from "@/data/news";
 import * as contactModule from "@/data/contact";
 import { externalLinks } from "@/data/externalLinks";
 
@@ -51,16 +50,6 @@ function getResearchDescZh(a: AnyRecord) {
   return (a.descZh ?? a.descriptionZh ?? a.desc ?? a.description ?? "") as string;
 }
 
-function getNewsDate(n: AnyRecord) {
-  return (n.date ?? n.time ?? n.createdAt ?? "") as string;
-}
-function getNewsTitleZh(n: AnyRecord) {
-  return (n.titleZh ?? n.title ?? n.name ?? "") as string;
-}
-function getNewsTitleEn(n: AnyRecord) {
-  return (n.titleEn ?? n.en ?? "") as string;
-}
-
 function getPubYear(p: AnyRecord) {
   return Number(p.year ?? p.date ?? 0) || 0;
 }
@@ -75,7 +64,6 @@ function getPubText(p: AnyRecord) {
 export default function HomePage() {
   const researchAreas = pickArray(researchModule, ["researchDirections", "researchAreas", "research"]);
   const publications = pickArray(publicationsModule, ["publications"]);
-  const news = pickArray(newsModule, ["news"]);
   const contact = pickObject(contactModule, ["contact", "contacts"]) as {
     email?: string;
     addressZh?: string;
@@ -89,8 +77,6 @@ export default function HomePage() {
   const featuredPubs = [...(publications as AnyRecord[])]
     .sort((a, b) => getPubYear(b) - getPubYear(a))
     .slice(0, 3);
-
-  const latestNews = (news as AnyRecord[]).slice(0, 3);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -249,25 +235,13 @@ export default function HomePage() {
               </div>
             </motion.section>
 
-            {/* 外部链接导航区 - 媒体报道等 */}
+            {/* 成果展示 */}
             <motion.section
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6 }}
             >
-              <ExternalLinksSection links={externalLinks} />
-            </motion.section>
-
-            {/* 成果展示 - 左右分栏设计 */}
-            <motion.section
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-              className="grid md:grid-cols-2 gap-8 items-start"
-            >
-              {/* 左侧：最新成果 */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -301,66 +275,6 @@ export default function HomePage() {
                   className="inline-flex items-center gap-2 text-[var(--accent)] font-semibold hover:gap-4 transition-all group"
                 >
                   查看全部成果
-                  <span className="group-hover:translate-x-2 transition-transform">→</span>
-                </Link>
-              </motion.div>
-
-              {/* 右侧：最新动态 */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="space-y-6"
-              >
-                <div>
-                  <span className="text-xs font-bold text-[var(--accent-secondary)] tracking-widest uppercase">Latest News</span>
-                  <h2 className="text-3xl md:text-4xl font-bold gradient-text mt-2 mb-6">最新动态</h2>
-                </div>
-                <div className="space-y-4">
-                  {latestNews.map((n, idx) => (
-                    <motion.div
-                      key={(n.id as string) ?? idx}
-                      initial={{ opacity: 0, x: 30 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: idx * 0.1 }}
-                      whileHover={{ x: 8 }}
-                    >
-                      <Link
-                        href={(n.slug as string) ? `/news/${n.slug}` : "/news"}
-                        className="flex gap-4 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-6 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow-hover)] transition-all group"
-                      >
-                        <div className="h-[100px] w-[140px] shrink-0 overflow-hidden rounded-[var(--radius-md)] bg-[var(--bg-elevated)]">
-                          {(n.coverImage as string) ? (
-                            <img
-                              src={n.coverImage as string}
-                              alt=""
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center text-xs text-[var(--muted)]">
-                              暂无图片
-                            </div>
-                          )}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs font-bold text-[var(--muted)] mb-3">{getNewsDate(n)}</div>
-                          <h3 className="text-lg font-bold text-[var(--text)] mb-2 group-hover:text-[var(--accent)] transition-colors line-clamp-2">
-                            {getNewsTitleZh(n)}
-                          </h3>
-                          {getNewsTitleEn(n) ? (
-                            <p className="text-sm text-[var(--muted)] line-clamp-2">{getNewsTitleEn(n)}</p>
-                          ) : null}
-                        </div>
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
-                <Link
-                  href="/news"
-                  className="inline-flex items-center gap-2 text-[var(--accent-secondary)] font-semibold hover:gap-4 transition-all group"
-                >
-                  查看更多动态
                   <span className="group-hover:translate-x-2 transition-transform">→</span>
                 </Link>
               </motion.div>

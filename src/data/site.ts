@@ -20,8 +20,7 @@ export const navItems = [
   { href: "/publications", zh: "成果", en: "Publications" }, // ✅ 成果入口保留
   { href: "/people", zh: "成员", en: "People" },
 
-  // ✅ 原“动态 / News” -> 改为 “风采展示 / Showcase”
-  { href: "/showcase", zh: "风采展示", en: "Showcase" },
+  { href: "/news", zh: "媒体与风采", en: "Media & Showcase" },
 
   { href: "/contact", zh: "联系/加入", en: "Contact & Join Us" },
 ] as const;

@@ -10,6 +10,71 @@ type Props = {
   links: ExternalLink[];
 };
 
+export function ExternalLinksGrid({ links }: Props) {
+  if (!links?.length) return null;
+
+  return (
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {links.map((item, idx) => (
+        <motion.div
+          key={item.id}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: idx * 0.05 }}
+          whileHover={{ y: -6 }}
+          className="group h-full"
+        >
+          <Link
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-full flex-col overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] transition-all hover:border-[var(--accent)] hover:shadow-[var(--shadow-hover)]"
+          >
+            <div className="relative h-32 w-full overflow-hidden bg-[var(--bg-elevated)]">
+              {item.thumbnail ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={item.thumbnail}
+                  alt={item.title}
+                  className={`h-full w-full ${
+                    item.thumbnailFit === "contain" ? "object-contain" : "object-cover"
+                  } transition-transform duration-300 group-hover:scale-105`}
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-xs text-[var(--muted)]">
+                  外部链接
+                </div>
+              )}
+              {item.tag ? (
+                <span className="absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+                  {item.tag}
+                </span>
+              ) : null}
+            </div>
+
+            <div className="flex flex-1 flex-col space-y-2 px-4 py-4">
+              <h3 className="line-clamp-2 text-sm md:text-base font-semibold text-[var(--text)] group-hover:text-[var(--accent)]">
+                {item.title}
+              </h3>
+              {item.description ? (
+                <p className="line-clamp-3 text-xs md:text-sm text-[var(--muted)]">
+                  {item.description}
+                </p>
+              ) : null}
+              {item.source ? (
+                <p className="mt-auto text-[11px] uppercase tracking-wide text-[var(--muted)]">
+                  {item.source}
+                </p>
+              ) : null}
+            </div>
+          </Link>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 export default function ExternalLinksSection({ links }: Props) {
   if (!links?.length) return null;
 
@@ -35,64 +100,7 @@ export default function ExternalLinksSection({ links }: Props) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {links.map((item, idx) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.05 }}
-              whileHover={{ y: -6 }}
-              className="group h-full"
-            >
-              <Link
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-full flex-col overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] transition-all hover:border-[var(--accent)] hover:shadow-[var(--shadow-hover)]"
-              >
-                <div className="relative h-32 w-full overflow-hidden bg-[var(--bg-elevated)]">
-                  {item.thumbnail ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={item.thumbnail}
-                      alt={item.title}
-                      className={`h-full w-full ${
-                        item.thumbnailFit === "contain" ? "object-contain" : "object-cover"
-                      } transition-transform duration-300 group-hover:scale-105`}
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-xs text-[var(--muted)]">
-                      外部链接
-                    </div>
-                  )}
-                  {item.tag ? (
-                    <span className="absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
-                      {item.tag}
-                    </span>
-                  ) : null}
-                </div>
-
-                <div className="flex flex-1 flex-col space-y-2 px-4 py-4">
-                  <h3 className="line-clamp-2 text-sm md:text-base font-semibold text-[var(--text)] group-hover:text-[var(--accent)]">
-                    {item.title}
-                  </h3>
-                  {item.description ? (
-                    <p className="line-clamp-3 text-xs md:text-sm text-[var(--muted)]">
-                      {item.description}
-                    </p>
-                  ) : null}
-                  {item.source ? (
-                    <p className="mt-auto text-[11px] uppercase tracking-wide text-[var(--muted)]">
-                      {item.source}
-                    </p>
-                  ) : null}
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
+        <ExternalLinksGrid links={links} />
       </div>
     </section>
   );
