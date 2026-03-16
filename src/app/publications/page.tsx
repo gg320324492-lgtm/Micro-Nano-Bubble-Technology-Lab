@@ -7,6 +7,8 @@ import Heading from "@/components/ui/Heading";
 import ListItem from "@/components/ui/ListItem";
 import { buttonClassName } from "@/components/ui/Button";
 import Reveal from "@/components/motion/Reveal";
+import PublicImage from "@/components/PublicImage";
+import assetPath from "@/lib/assetPath";
 
 // ✅ 兼容导入：不要求 data 文件必须 default export
 import * as pubsMod from "@/data/publications";
@@ -376,6 +378,28 @@ export default function PublicationsPage() {
                 description={
                   <>
                     {it?.briefZh || it?.note ? <>{toStr(it?.briefZh || it?.note)}</> : null}
+                    {tab === "honors" && it?.imageSrc ? (
+                      <a
+                        href={assetPath(toStr(it.imageSrc))}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 block"
+                        aria-label="打开证书原图"
+                      >
+                        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-deep)]">
+                          <PublicImage
+                            src={toStr(it.imageSrc)}
+                            alt={toStr(it.imageAlt) || title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 800px"
+                            style={{ objectFit: "contain" }}
+                          />
+                        </div>
+                        <div className="mt-2 text-xs text-[var(--muted)]">
+                          点击查看大图
+                        </div>
+                      </a>
+                    ) : null}
                     {it?.doi ? (
                       <div className="mt-3 text-sm text-[var(--muted)]">
                         DOI：
