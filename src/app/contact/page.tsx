@@ -1,5 +1,4 @@
 import Link from "next/link";
-import JoinSection from "@/components/contact/JoinSection";
 import ContactMethods from "@/components/contact/ContactMethods";
 import JoinSteps from "@/components/contact/JoinSteps";
 import FaqSection from "@/components/contact/FaqSection";
@@ -31,13 +30,6 @@ export default function ContactPage() {
       </header>
 
       <div className="space-y-10 md:space-y-12">
-        <JoinSection
-          email={email}
-          joinMailSubject={joinMailSubject}
-          coopMailSubject={coopMailSubject}
-          amapLink={amapLink}
-        />
-
         <ContactMethods
           email={email}
           amapLink={amapLink}
