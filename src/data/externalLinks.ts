@@ -14,6 +14,40 @@ export type ExternalLink = {
 
 export const externalLinks: ExternalLink[] = [
   {
+    id: "tianjin-daily-epaper-concept-verification-fund-20260318",
+    title: "打造“利铲子” 挖出“金种子”",
+    description:
+      "天津日报数字报（2026-03-18｜要闻）。我市设立两只概念验证基金，探索超早期科创投资“天津模式”，聚焦破解科技成果转化“最初一公里”融资难题。",
+    url: "https://epaper.tianjinwe.com/tjrb/html/2026-03/18/content_143078_3234592.htm",
+    source: "天津日报数字报",
+    tag: "媒体报道",
+    thumbnail: "/images/media/tianjin-daily-logo.png",
+    thumbnailFit: "contain",
+  },
+  {
+    id: "tju-env-wangtianzi-concept-verification-fund-wechat",
+    title:
+      "环境学院王天志副教授谈科技成果转化：概念验证基金为科研成果从“0”到“1”铺路",
+    description:
+      "围绕天津市首批概念验证基金设立，解读成果转化早期的“试错成本”和“放大成本”痛点，并结合微纳米气泡技术的产业化前景阐述基金如何助力从“0”到“1”。",
+    url: "https://mp.weixin.qq.com/s/2D2PWm3ynUrafGwpczNc5w",
+    source: "微信公众平台（环境学院）",
+    tag: "媒体报道",
+    thumbnail: "/images/media/tju-env-wangtianzi-concept-verification-fund-wechat.png",
+    thumbnailFit: "cover",
+  },
+  {
+    id: "tjyun-concept-verification-fund-20260314",
+    title: "概念验证基金成立 加快“金种子”长成“好苗子”",
+    description:
+      "2026-03-14 18:39｜天津广播电视台。天津设立首批概念验证基金，金融助力加快高校成果从概念验证阶段走向转化应用。",
+    url: "https://www.app2020.tjyun.com/jyapp/system/2026/03/14/059224428.shtml",
+    source: "津云APP / 天津广播电视台",
+    tag: "媒体报道",
+    thumbnail: "/images/media/tjyun-concept-verification-fund.png",
+    thumbnailFit: "cover",
+  },
+  {
     id: "haitang-gold-seed-wechat",
     title: "当微纳米气泡遇上海棠「金种子」",
     description:

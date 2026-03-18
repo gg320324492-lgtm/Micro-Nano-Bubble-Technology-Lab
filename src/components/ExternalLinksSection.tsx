@@ -46,7 +46,7 @@ export function ExternalLinksGrid({ links }: Props) {
                   外部链接
                 </div>
               )}
-              {item.tag ? (
+              {item.tag && item.tag !== "媒体报道" ? (
                 <span className="absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
                   {item.tag}
                 </span>
