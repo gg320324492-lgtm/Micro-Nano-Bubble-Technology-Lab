@@ -144,13 +144,6 @@ const ResearchCard = memo(function ResearchCard({
                 />
               ) : null}
               <div className="absolute inset-0 bg-gradient-to-t from-black/22 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-              {d.category ? (
-                <div className="pointer-events-none absolute inset-x-4 top-4 flex justify-end text-[11px] font-medium text-white">
-                  <span className="inline-flex items-center rounded-full bg-black/35 px-2.5 py-1 backdrop-blur">
-                    {d.category}
-                  </span>
-                </div>
-              ) : null}
             </div>
 
             {/* 内容 */}
