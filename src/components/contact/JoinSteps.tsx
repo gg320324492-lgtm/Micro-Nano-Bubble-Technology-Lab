@@ -1,4 +1,5 @@
 import Card from "@/components/ui/Card";
+import RevealCard from "@/components/motion/RevealCard";
 
 const steps = [
   {
@@ -42,35 +43,40 @@ export default function JoinSteps() {
         <p className="mt-1 text-sm text-[var(--muted)]">3 steps</p>
 
         <div className="mt-5 space-y-3 text-sm">
-          {steps.map((step) => (
-            <div
+          {steps.map((step, idx) => (
+            <RevealCard
               key={step.title}
-              className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4"
+              delay={idx * 0.05}
+              className=""
             >
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="font-semibold text-[var(--text)]">
-                  {step.title}
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="font-semibold text-[var(--text)]">
+                    {step.title}
+                  </div>
+                  <span className="rounded-[var(--radius-md)] bg-[var(--accent-soft)] px-2.5 py-1 text-xs text-[var(--accent)]">
+                    {step.badge}
+                  </span>
                 </div>
-                <span className="rounded-[var(--radius-md)] bg-[var(--accent-soft)] px-2.5 py-1 text-xs text-[var(--accent)]">
-                  {step.badge}
-                </span>
+                <p className="mt-2 text-[var(--text-secondary)]">
+                  {step.description}
+                </p>
               </div>
-              <p className="mt-2 text-[var(--text-secondary)]">
-                {step.description}
-              </p>
-            </div>
+            </RevealCard>
           ))}
 
-          <div className="mt-5 rounded-2xl bg-[var(--bg-elevated)] p-4">
-            <h3 className="text-sm font-medium text-[var(--text)]">
-              准备材料（申请邮件清单）
-            </h3>
-            <ul className="mt-2 space-y-1.5 text-sm text-[var(--text-secondary)]">
-              {checklist.map((item) => (
-                <li key={item}>• {item}</li>
-              ))}
-            </ul>
-          </div>
+          <RevealCard delay={0.18} className="">
+            <div className="mt-5 rounded-2xl bg-[var(--bg-elevated)] p-4">
+              <h3 className="text-sm font-medium text-[var(--text)]">
+                准备材料（申请邮件清单）
+              </h3>
+              <ul className="mt-2 space-y-1.5 text-sm text-[var(--text-secondary)]">
+                {checklist.map((item) => (
+                  <li key={item}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+          </RevealCard>
         </div>
       </Card>
     </section>

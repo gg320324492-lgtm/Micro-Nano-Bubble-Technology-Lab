@@ -1,5 +1,6 @@
 import CopyButton from "@/components/CopyButton";
 import Card from "@/components/ui/Card";
+import RevealCard from "@/components/motion/RevealCard";
 
 type ContactMethodsProps = {
   email: string;
@@ -37,7 +38,7 @@ export default function ContactMethods({
         </div>
 
         <div className="space-y-3 text-sm">
-          <ContactRow label="邮箱 Email">
+          <ContactRow label="邮箱 Email" delay={0}>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <a
                 className="break-all font-medium text-[var(--text)]"
@@ -49,7 +50,7 @@ export default function ContactMethods({
             </div>
           </ContactRow>
 
-          <ContactRow label="地址 Address">
+          <ContactRow label="地址 Address" delay={0.05}>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0 text-[var(--text-secondary)]">
                 <div className="font-medium text-[var(--text)]">
@@ -70,7 +71,7 @@ export default function ContactMethods({
             </div>
           </ContactRow>
 
-          <ContactRow label="主页 Website">
+          <ContactRow label="主页 Website" delay={0.1}>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <a
                 className="font-medium text-[var(--text)] underline"
@@ -99,16 +100,20 @@ export default function ContactMethods({
 type ContactRowProps = {
   label: string;
   children: React.ReactNode;
+  delay?: number;
 };
 
-function ContactRow({ label, children }: ContactRowProps) {
+function ContactRow({ label, children, delay = 0 }: ContactRowProps) {
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4">
+    <RevealCard
+      className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4"
+      delay={delay}
+    >
       <div className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
         {label}
       </div>
       <div className="mt-2">{children}</div>
-    </div>
+    </RevealCard>
   );
 }
 

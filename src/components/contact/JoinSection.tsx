@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Card from "@/components/ui/Card";
+import RevealCard from "@/components/motion/RevealCard";
 
 type JoinSectionProps = {
   email: string;
@@ -77,31 +78,42 @@ export default function JoinSection({
           </p>
 
           <div className="mt-4 space-y-3 text-sm">
-            <QuickLink
-              label="发送邮件申请加入"
-              description="附上自我介绍与研究兴趣，通常 1 天内回复。"
-              href={`mailto:${email}?subject=${encodeURIComponent(
-                joinMailSubject,
-              )}`}
-            />
-            <QuickLink
-              label="科研合作联系"
-              description="围绕成果转化、示范应用或联合项目开展合作。"
-              href={`mailto:${email}?subject=${encodeURIComponent(
-                coopMailSubject,
-              )}`}
-            />
-            <QuickLink
-              label="查看产业化案例"
-              description="了解已有工程化落地与合作场景。"
-              href="/industrialization"
-              isInternal
-            />
-            <QuickLink
-              label="查看实验室位置（地图）"
-              description="快速定位到天津大学校区与学院位置。"
-              href={amapLink}
-            />
+            <RevealCard delay={0} className="">
+              <QuickLink
+                label="发送邮件申请加入"
+                description="附上自我介绍与研究兴趣，通常 1 天内回复。"
+                href={`mailto:${email}?subject=${encodeURIComponent(
+                  joinMailSubject,
+                )}`}
+              />
+            </RevealCard>
+
+            <RevealCard delay={0.05} className="">
+              <QuickLink
+                label="科研合作联系"
+                description="围绕成果转化、示范应用或联合项目开展合作。"
+                href={`mailto:${email}?subject=${encodeURIComponent(
+                  coopMailSubject,
+                )}`}
+              />
+            </RevealCard>
+
+            <RevealCard delay={0.1} className="">
+              <QuickLink
+                label="查看产业化案例"
+                description="了解已有工程化落地与合作场景。"
+                href="/industrialization"
+                isInternal
+              />
+            </RevealCard>
+
+            <RevealCard delay={0.15} className="">
+              <QuickLink
+                label="查看实验室位置（地图）"
+                description="快速定位到天津大学校区与学院位置。"
+                href={amapLink}
+              />
+            </RevealCard>
           </div>
         </Card>
       </div>

@@ -1,4 +1,10 @@
+// FAQ 需要根据 <details> 展开/收起状态做高度动画
+"use client";
+
 import Card from "@/components/ui/Card";
+import RevealCard from "@/components/motion/RevealCard";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 
 const faqs = [
   {
@@ -31,22 +37,46 @@ export default function FaqSection() {
         <p className="mt-1 text-sm text-[var(--muted)]">FAQ</p>
 
         <div className="mt-5 space-y-3 text-sm">
-          {faqs.map((item) => (
-            <details
-              key={item.q}
-              className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition hover:bg-[var(--accent-soft)]/50"
-            >
-              <summary className="cursor-pointer font-medium text-[var(--text)]">
-                {item.q}
-              </summary>
-              <div className="mt-2 leading-7 text-[var(--text-secondary)]">
-                {item.a}
-              </div>
-            </details>
+          {faqs.map((item, idx) => (
+            <FaqItem key={item.q} q={item.q} a={item.a} delay={idx * 0.05} />
           ))}
         </div>
       </Card>
     </section>
+  );
+}
+
+function FaqItem({ q, a, delay }: { q: string; a: string; delay: number }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <RevealCard key={q} delay={delay} className="">
+      <details
+        open={open}
+        onToggle={(e) => setOpen((e.currentTarget as HTMLDetailsElement).open)}
+        className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition hover:bg-[var(--accent-soft)]/50"
+      >
+        <summary className="cursor-pointer font-medium text-[var(--text)]">
+          {q}
+        </summary>
+
+        <AnimatePresence initial={false}>
+          {open ? (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="pt-2 leading-7 text-[var(--text-secondary)]">
+                {a}
+              </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </details>
+    </RevealCard>
   );
 }
 
