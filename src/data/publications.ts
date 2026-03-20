@@ -9,9 +9,53 @@ export type Publication = {
   venue?: string; // 期刊/卷期页等
   doi?: string;
   url?: string; // doi 或期刊链接
+  note?: string; // 备注（例如“待补充 DOI / 期刊信息”）
 };
 
 export const publications: Publication[] = [
+  {
+    id: "pub-2026-01",
+    year: 2026,
+    title:
+      "Inhibition mechanism of micro-nano bubbles on green algae in bloom water: A case of Chlorella pyrenoidosa",
+    titleEn:
+      "Inhibition mechanism of micro-nano bubbles on green algae in bloom water: A case of Chlorella pyrenoidosa",
+    venue: "Journal of Water Process Engineering, 2026, 83, 109637",
+    doi: "10.1016/j.jwpe.2026.109637",
+    url: "https://www.sciencedirect.com/science/article/pii/S2214714426001959?via%3Dihub",
+  },
+  {
+    id: "pub-2026-02",
+    year: 2026,
+    title:
+      "Hydrogen micro-nano bubbles mitigate polystyrene microplastics-induced toxicity through gut microbiota composition and metabolic functions",
+    titleEn:
+      "Hydrogen micro-nano bubbles mitigate polystyrene microplastics-induced toxicity through gut microbiota composition and metabolic functions",
+    url: "https://www.sciencedirect.com/science/article/pii/S2214714426004551?via%3Dihub",
+    note: "Please open this ScienceDirect page and fill journalLine + doi from the article page before publishing.",
+  },
+  {
+    id: "pub-2026-03",
+    year: 2026,
+    title:
+      "Demulsification of Oily Sludge Using Ozone Micro–Nanobubbles in Aqueous Media",
+    titleEn:
+      "Demulsification of Oily Sludge Using Ozone Micro–Nanobubbles in Aqueous Media",
+    venue: "Recycling, 2026, 11(2), 24",
+    doi: "10.3390/recycling11020024",
+    url: "https://www.mdpi.com/2313-4321/11/2/24",
+  },
+  {
+    id: "pub-2026-04",
+    year: 2026,
+    title:
+      "Study on the Mechanism and Circular Agriculture Potential of Micro-Nano Bubbles in the Resourceful Utilization of Saline–Alkali Soils",
+    titleEn:
+      "Study on the Mechanism and Circular Agriculture Potential of Micro-Nano Bubbles in the Resourceful Utilization of Saline–Alkali Soils",
+    venue: "Sustainability, 2026, 18(6), 2855",
+    doi: "10.3390/su18062855",
+    url: "https://www.mdpi.com/2071-1050/18/6/2855",
+  },
   {
     id: "pub-2025-01",
     year: 2025,
@@ -49,12 +93,12 @@ export const publications: Publication[] = [
     id: "pub-2025-04",
     year: 2025,
     title:
-      "Effect mechanism of micro-nano bubbles on biofilm in drinking water distribution systems",
+      "Mechanism by which micro-nano bubbles impact biofilm growth in drinking water distribution systems",
     titleEn:
-      "Effect mechanism of micro-nano bubbles on biofilm in drinking water distribution systems",
-    venue: "Environmental Science: Water Research & Technology, 2025, 11, 754–767",
+      "Mechanism by which micro-nano bubbles impact biofilm growth in drinking water distribution systems",
+    venue: "Environmental Science: Water Research & Technology, 2025, 11, 754-767",
     doi: "10.1039/D4EW00704B",
-    url: "https://doi.org/10.1039/D4EW00704B",
+    url: "https://pubs.rsc.org/en/content/articlelanding/2025/ew/d4ew00704b",
   },
 
   {
