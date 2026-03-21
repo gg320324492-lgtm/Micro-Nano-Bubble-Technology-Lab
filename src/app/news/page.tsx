@@ -8,7 +8,7 @@ import Section from "@/components/ui/Section";
 import { buttonClassName } from "@/components/ui/Button";
 import Reveal from "@/components/motion/Reveal";
 
-import { externalLinks } from "@/data/externalLinks";
+import { externalLinks, sortExternalLinksByDate } from "@/data/externalLinks";
 import { showcasePhotos, showcaseStories } from "@/data/showcase";
 
 type NewsSectionHeaderProps = {
@@ -53,6 +53,7 @@ function NewsSectionContainer({ children }: { children: React.ReactNode }) {
 export default function NewsPage() {
   const hasPhotos = showcasePhotos?.length > 0;
   const hasStories = showcaseStories?.length > 0;
+  const sortedExternalLinks = sortExternalLinksByDate(externalLinks);
 
   return (
     <Section container="wide">
@@ -75,7 +76,7 @@ export default function NewsPage() {
             titleEn="Media Coverage"
             description="了解我们在外部平台上的更多故事、报道与合作机会。"
           />
-          <ExternalLinksGrid links={externalLinks} />
+          <ExternalLinksGrid links={sortedExternalLinks} initialVisibleCount={6} />
         </NewsSectionContainer>
       </section>
 

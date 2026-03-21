@@ -9,7 +9,7 @@ import { useRef, useState } from "react";
 import * as publicationsModule from "@/data/publications";
 import * as researchModule from "@/data/research";
 import * as contactModule from "@/data/contact";
-import { externalLinks } from "@/data/externalLinks";
+import { externalLinks, sortExternalLinksByDate } from "@/data/externalLinks";
 import industrialBases from "@/data/industrialization";
 import people from "@/data/people";
 import honors from "@/data/honors";
@@ -149,7 +149,13 @@ export default function HomePage() {
     return { counts, featured, topTags };
   })();
 
-  const mediaDigest = externalLinks.slice(0, 4);
+  const mediaDigest = sortExternalLinksByDate(externalLinks).slice(0, 4);
+  const getMediaDate = (description?: string, date?: string) => {
+    if (date) return date;
+    if (!description) return null;
+    const match = description.match(/\b\d{4}-\d{2}-\d{2}\b/);
+    return match ? match[0] : null;
+  };
 
   const honorsDigest = honors
     .slice()
@@ -897,6 +903,11 @@ export default function HomePage() {
                           ) : null}
                         </div>
                         <div className="min-w-0">
+                          {getMediaDate(x.description, x.date) ? (
+                            <div className="text-[11px] font-semibold text-[var(--accent)]">
+                              {getMediaDate(x.description, x.date)}
+                            </div>
+                          ) : null}
                           <div className="text-sm font-semibold text-[var(--text)] line-clamp-2 group-hover:text-[var(--accent)] transition-colors">
                             {x.title}
                           </div>

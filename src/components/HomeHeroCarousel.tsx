@@ -20,6 +20,8 @@ export default function HomeHeroCarousel() {
       { src: "/home/slide-3.png", alt: "Slide 3" },
       { src: "/home/slide-4.png", alt: "Slide 4" },
       { src: "/home/slide-5.png", alt: "Slide 5" },
+      { src: "/home/slide-6.png", alt: "Slide 6" },
+      { src: "/home/slide-7.png", alt: "Slide 7" },
     ],
     []
   );

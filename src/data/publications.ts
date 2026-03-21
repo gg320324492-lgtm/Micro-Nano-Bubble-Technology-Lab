@@ -57,6 +57,17 @@ export const publications: Publication[] = [
     url: "https://www.mdpi.com/2071-1050/18/6/2855",
   },
   {
+    id: "pub-2026-05",
+    year: 2026,
+    title:
+      "Enhancement mechanism of micro-nano bubbles on chlorination disinfection in drinking water: A case study of Escherichia coli",
+    titleEn:
+      "Enhancement mechanism of micro-nano bubbles on chlorination disinfection in drinking water: A case study of Escherichia coli",
+    venue: "Chemical Engineering Journal, 2026, 530, 173425",
+    doi: "10.1016/j.cej.2026.173425",
+    url: "https://www.sciencedirect.com/science/article/pii/S1385894726008843",
+  },
+  {
     id: "pub-2025-01",
     year: 2025,
     title:
@@ -377,15 +388,6 @@ export const publications: Publication[] = [
     year: 2019,
     title:
       "Wang Tianzhi, Wang Weijie, Hu Hongying. Assessing bio-treatability of textile printing and dyeing wastewater. IWA International Conference. 2019",
-    titleEn:
-      "Assessing bio-treatability of textile printing and dyeing wastewater. IWA International Conference. 2019",
-    venue: "IWA International Conference, 2019",
-  },
-  {
-    id: "pub-2019-conf-02",
-    year: 2019,
-    title:
-      "Hu Hongying, Wang Tianzhi, Wang Weijie. Assessing bio-treatability of textile printing and dyeing wastewater. IWA International Conference. 2019",
     titleEn:
       "Assessing bio-treatability of textile printing and dyeing wastewater. IWA International Conference. 2019",
     venue: "IWA International Conference, 2019",

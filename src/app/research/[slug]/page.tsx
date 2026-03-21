@@ -4,11 +4,9 @@ import Link from "next/link";
 
 import Container from "@/components/Container";
 import LightboxGallery, { GalleryItem } from "@/components/LightboxGallery";
-import RevealCard from "@/components/motion/RevealCard";
 import Pill from "@/components/ui/Pill";
 import Chip from "@/components/ui/Chip";
-import LightboxViewer from "@/components/LightboxViewer";
-import SectionScrollNav from "@/components/SectionScrollNav";
+import ResearchModuleSwitcher from "@/components/research/ResearchModuleSwitcher";
 import researchDirections, { ResearchDirection } from "@/data/research";
 import { assetPath } from "@/lib/assetPath";
 import { toImageVariant } from "@/lib/imageVariant";
@@ -108,7 +106,7 @@ function ResearchHero({
   coverFocusY: number;
 }) {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-x-clip overflow-y-visible">
       {/* 背景机制图 + 轻遮罩与模糊 */}
       <div className="pointer-events-none absolute inset-0">
         {cover ? (
@@ -130,24 +128,36 @@ function ResearchHero({
       </div>
 
       <Container>
-        <div className="relative mx-auto flex min-h-[70vh] max-w-[1280px] flex-col justify-start gap-10 pt-20 pb-16 md:pt-24 md:pb-18">
-          <div className="grid gap-10 md:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] md:items-start">
-            {/* 左侧：标题与简介 */}
-            <div className="space-y-5">
+        <div className="relative mx-auto flex min-h-[70vh] max-w-[1280px] flex-col justify-start gap-8 pt-20 pb-16 md:gap-10 md:pt-24 md:pb-18">
+          {/* 主标题独占整行宽度，便于中文标题单行水平展开，避免被右栏挤压换行 */}
+          <div className="min-w-0 space-y-5">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/6 px-3 py-1 text-[11px] font-medium text-[var(--accent)] ring-1 ring-[var(--accent-soft)]/60 backdrop-blur">
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
                 <span className="tracking-[0.24em] uppercase text-[var(--accent)]">
                   Core Research Direction
                 </span>
               </div>
-              <div className="space-y-3">
-                <h1 className="text-[26px] font-semibold leading-tight text-[var(--text-on-strong)] md:text-[30px]">
-                  {titleZh}
-                </h1>
-                <div className="text-[11px] font-medium uppercase tracking-[0.26em] text-[var(--accent-soft)] md:text-xs">
-                  {titleEn}
-                </div>
+              <Link
+                href="/research"
+                className="ml-auto inline-flex w-fit shrink-0 items-center rounded-full border border-[var(--border)] bg-[var(--bg-card)]/90 px-4 py-2 text-xs font-semibold text-[var(--text)] shadow-sm backdrop-blur hover:bg-[var(--accent-soft)] md:text-sm"
+              >
+                ← 返回研究方向列表
+              </Link>
+            </div>
+            <div className="space-y-3">
+              <h1 className="max-w-full text-[26px] font-semibold leading-tight text-[var(--text-on-strong)] md:text-[28px] md:whitespace-nowrap lg:text-[30px]">
+                {titleZh}
+              </h1>
+              <div className="text-[11px] font-medium uppercase tracking-[0.26em] text-[var(--accent-soft)] md:text-xs">
+                {titleEn}
               </div>
+            </div>
+          </div>
+
+          <div className="grid gap-10 md:grid-cols-[minmax(0,1.6fr)_minmax(0,0.95fr)] md:items-stretch">
+            {/* 左侧：简介与关键词 */}
+            <div className="min-w-0 space-y-5">
               <div className="space-y-2 text-sm leading-7 text-[var(--text-secondary)] md:text-[15px] md:max-w-[42rem]">
                 <p>{introPrimary}</p>
                 <p className="text-[13px] leading-6 text-[var(--text-secondary)] md:text-sm">
@@ -167,15 +177,9 @@ function ResearchHero({
               </div>
             </div>
 
-            {/* 右侧：关键指标卡片 */}
-            <div className="flex flex-col gap-4 md:items-end">
-              <Link
-                href="/research"
-                className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--bg-card)]/90 px-4 py-2 text-xs font-semibold text-[var(--text)] shadow-sm backdrop-blur hover:bg-[var(--accent-soft)] md:text-sm"
-              >
-                ← 返回研究方向列表
-              </Link>
-              <div className="w-full rounded-3xl bg-[var(--bg-elevated)]/80 p-4 shadow-[0_18px_40px_-28px_rgba(15,45,92,0.9)] md:w-full md:max-w-sm">
+            {/* 右侧：关键指标卡片顶部与左侧简介首行平齐 */}
+            <div className="flex min-w-0 flex-col md:h-full md:justify-start md:items-end">
+              <div className="w-full shrink-0 rounded-3xl bg-[var(--bg-elevated)]/80 p-4 shadow-[0_18px_40px_-28px_rgba(15,45,92,0.9)] md:w-full md:max-w-sm">
                 <div className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--muted)]">
                   Key Performance Metrics
                 </div>
@@ -198,32 +202,6 @@ function ResearchHero({
         </div>
       </Container>
     </section>
-  );
-}
-
-function SectionHeader({
-  eyebrowEn,
-  titleZh,
-  summary,
-}: {
-  eyebrowEn: string;
-  titleZh: string;
-  summary?: string;
-}) {
-  return (
-    <header className="space-y-2.5">
-      <div className="text-[10px] font-medium uppercase tracking-[0.26em] text-[var(--accent)] md:text-[11px]">
-        {eyebrowEn}
-      </div>
-      <h2 className="text-xl font-semibold text-[var(--text)] md:text-[22px]">
-        {titleZh}
-      </h2>
-      {summary ? (
-        <p className="max-w-3xl text-sm leading-7 text-[var(--text-secondary)] md:text-[15px]">
-          {summary}
-        </p>
-      ) : null}
-    </header>
   );
 }
 
@@ -340,37 +318,17 @@ export default async function ResearchDetailPage(props: PageProps) {
 
   // ✅ 饮用水方向：使用科研叙事化布局与证据链结构
   if (item.slug === "water-quality-safety") {
-    const fig1 = images[0];
-    const fig2 = images[1];
-    const fig3 = images[2];
-    const fig4 = images[3];
-    const fig5 = images[4];
-    const fig6 = images[5];
-    const fig7 = images[6];
-    const fig8 = images[7];
-
-    const sectionNavItems = [
-      { id: "section-bio", label: "生物稳定性提升" },
-      { id: "section-disinfection", label: "不同气源强化消毒" },
-      { id: "section-mechanism", label: "微纳米气泡灭菌机制" },
-      { id: "section-synergy", label: "MNBs/UV 协同预实验" },
-      { id: "section-evidence", label: "细胞结构损伤证据" },
-      { id: "section-cta", label: "总结与联系" },
-    ] as const;
-
     const metrics: MetricItem[] = [
-      { label: "总菌平均去除率", value: "66.53%" },
-      { label: "BDOC 降低", value: "32%" },
-      { label: "AOC 降低", value: "28%" },
-      { label: "O3-MNBs 10 min 灭菌率", value: "> 90%" },
+      { label: "研究板块", value: "5 个" },
+      { label: "现有 Session", value: `${sections.length} 个` },
+      { label: "图文证据", value: `${images.length} 张` },
+      { label: "方向类型", value: "饮用水安全" },
     ];
 
     return (
       <div className="min-h-screen bg-[var(--bg-default)]">
-        {/* 轻度分层背景（更克制的冷色渐变） */}
         <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(129,140,248,0.10),transparent_60%),radial-gradient(circle_at_bottom,rgba(15,23,42,0.45),transparent_65%)]" />
 
-        {/* Hero 首屏 */}
         <ResearchHero
           titleZh={titleZh}
           titleEn={WATER_EN_SUBTITLE}
@@ -382,319 +340,314 @@ export default async function ResearchDetailPage(props: PageProps) {
           coverFocusY={coverFocusY}
         />
 
-        {/* 正文区域 */}
         <Container>
           <div className="mx-auto max-w-[1280px] px-0 py-10 md:py-16">
-            {/* 章节导视：移动端顶部导航 + 桌面端右侧悬浮导航（滚动联动高亮） */}
-            <SectionScrollNav items={sectionNavItems} />
-
-            <div className="space-y-12 md:space-y-16">
-              {/* Section 1：饮用水生物稳定性提升 */}
-              <RevealCard
-                id="section-bio"
-                delay={0}
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.5)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.75)]"
-              >
-                <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
-                  <div className="space-y-5">
-                    <SectionHeader
-                      eyebrowEn="Biostability of Drinking Water"
-                      titleZh="饮用水生物稳定性提升"
-                      summary={WATER_COPY.module1}
-                    />
-                    <p className="text-sm leading-7 text-[var(--text-secondary)] md:text-[15px]">
-                      {briefZh}
-                    </p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {[
-                        "总菌平均去除率达到 66.53%",
-                        "BDOC 降低 32%，AOC 降低 28%",
-                        "削弱管网与二次供水再生长潜力",
-                      ].map((tag) => (
-                        <Pill
-                          key={tag}
-                          className={[
-                            "min-w-0 items-center text-left text-[13px] transition-all duration-200 hover:bg-[var(--accent-soft)]/85 hover:text-[var(--accent)] hover:-translate-y-0.5",
-                            theme.bulletPill,
-                          ].join(" ")}
-                        >
-                          {tag}
-                        </Pill>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    {fig1 ? (
-                      <LightboxViewer
-                        item={{
-                          src: fig1.src,
-                          alt: fig1.alt,
-                          caption: fig1.captionZh,
-                          focusY: typeof fig1.focusY === "number" ? fig1.focusY : 50,
-                        }}
-                        aspect="4/3"
-                        priority
-                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 45vw, 600px"
-                      />
-                    ) : null}
-                  </div>
-                </div>
-              </RevealCard>
-
-              {/* Section 2：不同气源条件下的强化消毒表现 */}
-              <RevealCard
-                id="section-disinfection"
-                delay={0.05}
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/94 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.45)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.75)]"
-              >
-                <div className="space-y-6">
-                  <SectionHeader
-                    eyebrowEn="Disinfection Performance under Different Gas Sources"
-                    titleZh="不同气源条件下的强化消毒表现"
-                    summary={`${WATER_COPY.module2} ${WATER_COPY.module3}`}
-                  />
-                  <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                    {fig2 ? (
-                      <LightboxViewer
-                        item={{
-                          src: fig2.src,
-                          alt: fig2.alt,
-                          caption: fig2.captionZh,
-                          focusY: typeof fig2.focusY === "number" ? fig2.focusY : 50,
-                        }}
-                        aspect="4/3"
-                      />
-                    ) : null}
-                    {fig3 ? (
-                      <LightboxViewer
-                        item={{
-                          src: fig3.src,
-                          alt: fig3.alt,
-                          caption: fig3.captionZh,
-                          focusY: typeof fig3.focusY === "number" ? fig3.focusY : 40,
-                        }}
-                        aspect="4/3"
-                      />
-                    ) : null}
-                  </div>
-                  <p className="text-[13px] leading-relaxed text-[var(--text-secondary)] md:text-sm">
-                    图 2 侧重于宏观水质指标与杀菌性能，图 3 则通过 SEM / TEM 观察呈现细胞拉伸、皱缩与破裂等微观损伤特征，构成“性能结果 + 微观证据”的完整证据链。
-                  </p>
-                </div>
-              </RevealCard>
-
-              {/* Section 3：微纳米气泡的细胞损伤与灭菌机制 */}
-              <RevealCard
-                id="section-mechanism"
-                delay={0.1}
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[30px] border border-[var(--border-strong)] bg-gradient-to-b from-[var(--bg-elevated)]/80 via-[var(--bg-card)] to-[var(--bg-card)] px-5 py-9 shadow-[0_22px_60px_-34px_rgba(15,23,42,0.8)] transition-shadow md:px-9 md:py-11 md:hover:shadow-[0_26px_70px_-36px_rgba(15,23,42,0.9)]"
-              >
-                <div className="space-y-7">
-                  <SectionHeader
-                    eyebrowEn="Mechanistic Insights of Micro–Nano Bubbles"
-                    titleZh="微纳米气泡的细胞损伤与灭菌机制"
-                  />
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      "界面自由基生成",
-                      "细胞膜破裂与拉伸变形",
-                      "DNA / 蛋白质损伤及胞内物质泄漏",
-                    ].map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center rounded-full bg-[var(--accent-soft)]/70 px-3 py-1 text-xs font-medium text-[var(--accent)] md:text-[13px]"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="mt-4">
-                    {fig4 ? (
-                      <LightboxViewer
-                        item={{
-                          src: fig4.src,
-                          alt: fig4.alt,
-                          caption: fig4.captionZh,
-                          focusY: typeof fig4.focusY === "number" ? fig4.focusY : 40,
-                        }}
-                        aspect="16/9"
-                        sizes="(max-width: 768px) 100vw, 1100px"
-                      />
-                    ) : null}
-                  </div>
-                  <p className="text-sm leading-7 text-[var(--text-secondary)] md:text-[15px]">
-                    研究表明，MNBs 通过界面自由基与物理冲击的协同作用，使细胞膜发生不可逆拉伸与破裂，并诱导 DNA 解旋和蛋白质二级结构改变；在离子泄漏与代谢失衡的共同作用下，细胞逐步失去修复能力，形成稳定而高效的灭菌路径。
-                  </p>
-                </div>
-              </RevealCard>
-
-              {/* Section 4：微纳米气泡/紫外协同消毒关键预实验 */}
-              <RevealCard
-                id="section-synergy"
-                delay={0.15}
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.5)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.78)]"
-              >
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1.1fr)]">
-                  <div className="space-y-5">
-                    <SectionHeader
-                      eyebrowEn="Key Pre-experiments of MNBs/UV Synergistic Disinfection"
-                      titleZh="微纳米气泡 / 紫外协同消毒关键预实验"
-                      summary={`${WATER_COPY.module4} ${WATER_COPY.module5}`}
-                    />
-                    <div className="mt-2 rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)]/80 p-4 text-[13px] leading-relaxed text-[var(--text-secondary)] shadow-sm transition-all duration-200 hover:border-[var(--accent-soft)] hover:bg-[var(--bg-card)]/100 hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.7)] md:text-sm">
-                      <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
-                        关键参数摘要（参数 — 性能）
-                      </div>
-                      <dl className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                        <div>
-                          <dt className="text-[var(--muted)]">气泡浓度</dt>
-                          <dd className="text-[var(--text)]">
-                            2.67×10^6 bubbles/mL
-                          </dd>
-                        </div>
-                        <div>
-                          <dt className="text-[var(--muted)]">平均粒径</dt>
-                          <dd className="text-[var(--text)]">397 nm</dd>
-                        </div>
-                        <div>
-                          <dt className="text-[var(--muted)]">Zeta 电位</dt>
-                          <dd className="text-[var(--text)]">-10.26 mV</dd>
-                        </div>
-                        <div>
-                          <dt className="text-[var(--muted)]">·OH 提升</dt>
-                          <dd className="text-[var(--text)]">19.44%</dd>
-                        </div>
-                        <div>
-                          <dt className="text-[var(--muted)]">反应速率常数提升</dt>
-                          <dd className="text-[var(--text)]">28.48%</dd>
-                        </div>
-                      </dl>
-                    </div>
-                  </div>
-
-                  <div className="space-y-5">
-                    {fig5 ? (
-                      <LightboxViewer
-                        item={{
-                          src: fig5.src,
-                          alt: fig5.alt,
-                          caption: fig5.captionZh,
-                          focusY: typeof fig5.focusY === "number" ? fig5.focusY : 50,
-                        }}
-                        aspect="4/3"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 420px, 480px"
-                      />
-                    ) : null}
-                    {fig6 ? (
-                      <div className="lg:pl-8">
-                        <LightboxViewer
-                          item={{
-                            src: fig6.src,
-                            alt: fig6.alt,
-                            caption: fig6.captionZh,
-                            focusY: typeof fig6.focusY === "number" ? fig6.focusY : 50,
-                          }}
-                          aspect="4/3"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 360px, 420px"
-                        />
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-              </RevealCard>
-
-              {/* Section 5：协同作用下的细胞结构损伤证据 */}
-              <RevealCard
-                id="section-evidence"
-                delay={0.2}
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-card)]/96 px-5 py-8 shadow-[0_14px_32px_-24px_rgba(15,45,92,0.45)] transition-shadow md:px-8 md:py-10 md:hover:shadow-[0_18px_46px_-30px_rgba(15,23,42,0.78)]"
-              >
-                <div className="space-y-6">
-                  <SectionHeader
-                    eyebrowEn="Evidence of Cellular Structural Damage under Synergistic Action"
-                    titleZh="协同作用下的细胞结构损伤证据"
-                    summary={WATER_COPY.module6}
-                  />
-                  <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                    {fig7 ? (
-                      <LightboxViewer
-                        item={{
-                          src: fig7.src,
-                          alt: fig7.alt,
-                          caption: fig7.captionZh,
-                          focusY: typeof fig7.focusY === "number" ? fig7.focusY : 40,
-                        }}
-                        aspect="4/3"
-                      />
-                    ) : null}
-                    {fig8 ? (
-                      <LightboxViewer
-                        item={{
-                          src: fig8.src,
-                          alt: fig8.alt,
-                          caption: fig8.captionZh,
-                          focusY: typeof fig8.focusY === "number" ? fig8.focusY : 45,
-                        }}
-                        aspect="4/3"
-                      />
-                    ) : null}
-                  </div>
-                </div>
-              </RevealCard>
-
-              {/* 底部 CTA */}
-              <RevealCard
-                id="section-cta"
-                delay={0.25}
-                className="scroll-mt-32 md:scroll-mt-40 rounded-[24px] border border-[var(--border)] bg-[var(--bg-elevated)]/85 px-5 py-9 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.6)] transition-shadow md:px-9 md:py-10 md:hover:shadow-[0_22px_60px_-34px_rgba(15,23,42,0.85)]"
-              >
-                <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                  <div className="space-y-3">
-                    <div className="text-[11px] font-medium uppercase tracking-[0.26em] text-[var(--accent)] md:text-xs">
-                      Summary / 研究总结
-                    </div>
-                    <p className="max-w-3xl text-base leading-8 text-[var(--text)] md:text-xl md:leading-9">
-                      微纳米气泡及其协同紫外体系在提升饮用水生物稳定性、强化耐受菌灭活与强化消毒效率等方面形成了从性能结果到显微形貌与机制示意的完整证据链，
-                      <span className="font-semibold">
-                        为饮用水厂提标改造、管网运行安全和再生水深度处理提供了可对接工程参数窗口的技术基础。
-                      </span>
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-3">
-                    <Link
-                      href="/research"
-                      className="inline-flex items-center justify-center rounded-[var(--radius-md)] border border-[var(--accent)] bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-[var(--bg-deep)] shadow-sm hover:bg-[var(--accent-hover)]"
-                    >
-                      返回研究方向列表
-                    </Link>
-                    <Link
-                      href="/contact"
-                      className="inline-flex items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] px-5 py-2.5 text-sm font-medium text-[var(--text)] hover:bg-[var(--accent-soft)]"
-                    >
-                      联系我们 / 查看相关成果
-                    </Link>
-                  </div>
-                </div>
-              </RevealCard>
-
-              {/* 页面底部简洁导航 */}
-              <div className="flex items-center justify-between pt-2 text-[13px] text-[var(--text-secondary)] md:text-sm">
-                <Link
-                  href="/research"
-                  className={["hover:text-[var(--accent)]", theme.footerLink].join(" ")}
-                >
-                  ← 返回研究
-                </Link>
-                <Link
-                  href="/"
-                  className={["hover:text-[var(--accent)]", theme.footerLink].join(" ")}
-                >
-                  回到首页 →
-                </Link>
-              </div>
-            </div>
+            <ResearchModuleSwitcher
+              modules={[
+                {
+                  moduleId: "water-module-1",
+                  moduleTitle: "二次供水系统中微纳米气泡对水质生物稳定性的影响机制",
+                  summary: "",
+                  sections: [],
+                  contentStacks: [
+                    {
+                      id: "water-module-1-stack-1",
+                      cardTitle: "不同气源微纳米气泡对二次供水水箱生物稳定性的提升",
+                      sections: [
+                        {
+                          id: "water-module-1-section-1",
+                          label: "处理效果与关键指标",
+                          content:
+                            "研究表明，不同气源（氮气、空气、氧气、臭氧）微纳米气泡通过抑制水中关键细菌的生长，降解水中有机质提升饮用水水质的生物稳定性，对水中BDOC、AOC和总菌的平均降解率分别达42.74%、49.49%和51.32%，空气气源条件下水中BDOC、AOC降解率和杀菌效率最高。水箱中总菌数变化比营养物质浓度变化滞后三周；此外，微纳米气泡处理可降低水中浊度、TDS，增加DO值。",
+                        },
+                        {
+                          id: "water-module-1-section-2",
+                          label: "微生物群落机制解析",
+                          content:
+                            "通过微生物群落测试，探讨了微纳米气泡对饮用水水质生物稳定性的提升机制，发现微纳米气泡不仅可以抑制水中关键细菌的生长，还对水中有机质具有较好的降解作用。其一，水中微纳米气泡对变形菌门（Proteobacteria）和浮霉菌门（Planctomycetota）的消杀效果较好，尤其是对变形菌门中的不动杆菌属（Acinetobacter）的消杀率可达到100%，经微纳米气泡处理可增加对微生物的氧化胁迫（Oxidative Stress），氧气MNBs对微生物的氧化胁迫程度最高，微生物在高浓度·OH下对活性氧耐受程度降低，有利于·OH对生物分子（脂质、蛋白质和核酸）的氧化损伤，抑制氨基酸运输和代谢功能、脂质转运和代谢功能、蛋白质转录功能以及蛋白质翻译后修饰功能，破坏细胞新陈代谢，从而杀灭微生物。其二，微纳米气泡溃灭后产生·OH可直接降解水体中的有机质，减少微生物的营养来源，从而抑制微生物的新陈代谢和活性。",
+                        },
+                      ],
+                      images: [
+                        {
+                          src: "/research/water-quality-safety/module1-card-1.png",
+                          alt: "微纳米气泡作用机制示意图",
+                          caption: "不同气源微纳米气泡抑菌与有机物降解机制示意",
+                          focusY: 50,
+                        },
+                        {
+                          src: "/research/water-quality-safety/module1-card-2.png",
+                          alt: "微生物群落与共现网络分析图",
+                          caption: "微生物群落结构变化与共现网络特征",
+                          focusY: 50,
+                        },
+                        {
+                          src: "/research/water-quality-safety/module1-card-3.png",
+                          alt: "BDOC、AOC与总菌变化及动力学分析图",
+                          caption: "BDOC、AOC与总菌变化及降解动力学",
+                          focusY: 50,
+                        },
+                      ],
+                    },
+                    {
+                      id: "water-module-1-stack-2",
+                      cardTitle: "不同气源微纳米气泡对饮用水中大肠杆菌入侵风险控制机制",
+                      sections: [
+                        {
+                          id: "water-module-1-card2-section-1",
+                          label: "入侵对水质与微生物群落的影响",
+                          content:
+                            "研究表明，大肠杆菌的入侵造成饮用水水质下降，水中增加浊度5.19%、DO降低2.66%，水中细菌总数增加6.25%，对水中微生物群落造成消极影响，从而影响水中生物稳定性。大肠杆菌入侵使优势菌纲从α-变形菌纲（Alphaproteobacteria）变为γ变形菌纲（Gammaproteobacteria），微纳米气泡可促进·OH对微生物的氧化胁迫，抑制微生物的蛋白质转录（相对丰度降低7.89%）和能量产生与转换（降低6.68%），破坏其负责修复机制的DNA片段，抑制γ-变形菌纲（Gammaproteobacteria）及热水虫纲（Caldisericia）等的生存活动，导致前者相对丰度减小47.6%，后者完全消失。",
+                        },
+                        {
+                          id: "water-module-1-card2-section-2",
+                          label: "微纳米气泡处理下的水质恢复与灭活效应",
+                          content:
+                            "在大肠杆菌入侵事件发生后，微纳米气泡处理显著提升饮用水水质，水中浊度和TDS分别降低53.95%、8.46%，水中DO增加11.12%。其中，臭氧MNBs对浊度恢复效果最好（0.42NTU），氧气MNBs对DO提升效果最好（11.84mg/L）。MNBs处理对水中细菌具有较强的灭活作用，水中细菌总数降低66.53%；在大肠杆菌入侵事件发生后，微纳米气泡可通过降低微生物群落丰富度，平衡微生物群落多样性，抑制大肠杆菌成为优势菌。",
+                        },
+                      ],
+                      images: [
+                        {
+                          src: "/research/water-quality-safety/module1-card2-bacteria-ecoli.png",
+                          alt: "大肠杆菌入侵后细菌数量、降解率及回归分析",
+                          caption: "入侵后细菌总量、大肠杆菌变化及降解动力学（阴影区为入侵后实验阶段）",
+                          focusY: 50,
+                        },
+                        {
+                          src: "/research/water-quality-safety/module1-card2-mnb-mechanism.png",
+                          alt: "微纳米气泡对大肠杆菌入侵的调控机制示意",
+                          caption: "氧化胁迫、胞内分子损伤与 BDOC/AOC、浊度及 DO 等水质响应",
+                          focusY: 48,
+                        },
+                        {
+                          src: "/research/water-quality-safety/module1-card2-cog-abundance.png",
+                          alt: "微生物群落功能基因相对丰度",
+                          caption: "不同样品间 COG 功能类别相对丰度对比",
+                          focusY: 50,
+                        },
+                      ],
+                    },
+                    {
+                      id: "water-module-1-stack-3",
+                      cardTitle: "微纳米气泡处理下生物膜生长对二次供水管道水质的影响机制",
+                      sections: [
+                        {
+                          id: "water-module-1-card3-section-1",
+                          label: "实验体系与生物膜生长三阶段调控",
+                          content:
+                            "研究模拟了饮用水输配系统末端管道的水力条件，以探索不同气源微纳米气泡影响下的生物膜形成。为了进一步了解水质的变化，本研究评估了不同实验阶段生物膜的形态、组成、微生物群落和水质。因此，我们将生物膜形成分为三个阶段：缓慢生长阶段（0-27天）（SP）、快速生长阶段（27-42天）（RP）和动态稳定阶段（42-66天）（DP）。在缓慢生长和快速生长阶段，生物膜形成受到显著抑制，尤其是在将MNBs与氧气结合后，导致生物膜干重减少77.87%。MNBs调节生物膜生长的机制在每个阶段都不同。在SP阶段，发生物理阻隔和化学氧化，在RP阶段进行氧化失活，而在DP阶段吸附和冲刷占主导地位。",
+                        },
+                        {
+                          id: "water-module-1-card3-section-2",
+                          label: "物理—化学协同机制与水质效应",
+                          content:
+                            "MNBs主要通过物理冲击与化学氧化来调控生物膜的生长，MNBs处理可减少生物膜的胞外聚合物含量，改变生物膜的形貌结构以及生物膜中微生物群落的主要结构，使得优势菌群发生变化，其中关键菌浮霉菌门（Planctomycetes）的灭活率达到54.22%-61.66%。MNBs与氧气结合使用时，可在生物膜生长的早期和中期阶段显著抑制生物膜的形成。生物膜的形成明显减少，生物膜干重最多可减少77.87%。MNBs溃灭后产生·OH，故该处理可降低饮用水浊度，降低率为24.53%，同时还可提高饮用水中溶解氧18.8%，降低水中TOC浓度，降解率为87.93%。微生物会利用水中溶解氧和营养物质通过物理作用和化学作用在管壁附着生长，并产生EPS，生物膜生长过程中受到外界扰动时，会部分脱落，增加水中浊度水平。MNBs处理后水中浊度降低，·OH会降解水中营养物质，限制微生物营养来源，减缓生物膜的生长过程及其不可逆粘附过程。这些结果表明，MNBs在处理饮用水管网系统中的生物膜和改善饮用水质量方面具有巨大潜力。",
+                        },
+                      ],
+                      images: [
+                        {
+                          src: "/research/water-quality-safety/module1-card3-biofilm-mechanism.png",
+                          alt: "生物膜生长三阶段与微纳米气泡作用机制示意",
+                          caption: "载体表面生物膜 SP/RP/DP 阶段及物理阻隔、·OH 氧化与冲刷等机制",
+                          focusY: 45,
+                        },
+                        {
+                          src: "/research/water-quality-safety/module1-card3-water-quality-lines.png",
+                          alt: "羟基自由基、粒径、Zeta 电位、浊度与 TOC 随时间变化",
+                          caption: "不同气源 MNBs 下 ·OH、气泡特性及浊度、TOC 等水质指标（66 天）",
+                          focusY: 50,
+                        },
+                        {
+                          src: "/research/water-quality-safety/module1-card3-microbiome-panels.png",
+                          alt: "生物膜微生物群落组成与多样性分析",
+                          caption: "门水平组成、PCoA、关键类群及不同阶段的 Alpha 多样性",
+                          focusY: 50,
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  moduleId: "water-module-2",
+                  moduleTitle: "微纳米气泡协同紫外对蜡样芽孢杆菌的消杀机制",
+                  summary: "该板块内容占位中，后续补充。",
+                  sections: [],
+                },
+                {
+                  moduleId: "water-module-3",
+                  moduleTitle: "微纳气泡对饮用水氯化消毒的增强机制：以大肠杆菌为例",
+                  summary:
+                    "以大肠杆菌为代表对象，解析微纳气泡与氯化消毒耦合过程中对灭活动力学、药剂利用效率与过程安全性的增强机制，形成可工程对接的参数窗口。",
+                  sections: [],
+                },
+                {
+                  moduleId: "water-module-4",
+                  moduleTitle: "氢微纳米气泡对聚苯乙烯微塑料毒性的减轻机制",
+                  summary:
+                    "聚焦氢微纳米气泡对聚苯乙烯微塑料相关毒性效应的缓解路径，重点关注氧化应激、细胞损伤与环境行为变化，服务饮用水健康风险控制研究。",
+                  sections: [],
+                },
+                {
+                  moduleId: "water-module-5",
+                  moduleTitle: "臭氧微纳米气泡穿透效应的饮用水膜过滤工艺优化",
+                  summary:
+                    "围绕臭氧微纳米气泡在膜过滤过程中的界面穿透与污染层调控作用，优化饮用水膜工艺的抗污染性能、运行稳定性与处理效率。",
+                  sections: [],
+                },
+              ]}
+            />
           </div>
+        </Container>
+      </div>
+    );
+  }
+
+  const redesignedSlugs = new Set([
+    "bubble-nucleation-equipment",
+    "black-odorous-water-remediation",
+    "aquaculture-high-density",
+  ]);
+
+  if (redesignedSlugs.has(item.slug)) {
+    /** 板块级内容覆盖：按模块标题匹配，提供自定义 summary、sections、image */
+    const moduleContentOverrides: Record<string, { summary: string; sections: { id: string; label: string }[]; image?: { src: string; alt?: string; caption?: string; focusY?: number } }> = {
+      "气液混合流道结构对水中微纳米气泡的形成与粒径分布特性影响": {
+        summary:
+          "针对微纳米气泡生成过程中气液混合流道结构影响机制不清、导致粒径调控能耗高且连续性差的难题，本研究构建了 CFD‑VOF 与 Euler‑Euler 群体平衡模型耦合的多相流方法，实现了混合流道结构、流场特征与气泡粒径分布的协同表征与精准优化。研究揭示了气相高效剪切破碎在收缩段下游的窄带区域内集中发生，并明确了关键结构参数对切向速度与湍流耗散的主导作用，据此筛选出剪切强度、能量累积与高耗散区域匹配最优的流道构型。在此基础上，进一步建立了初始压力与粒径分布的响应关系，发现提升初始压力可有效增加水中气泡浓度，并显著驱动微米气泡向纳米尺度转化。研究成果为微纳米气泡发生器低能耗、高连续性的原位调控与工程化结构设计提供了系统的理论支撑。",
+        sections: [],
+        image: { src: "/research/bubble-nucleation-equipment/flow-channel-infographic.png", alt: "气液混合流道结构及气泡形成机理示意", caption: "流道结构主导调控，操作压力辅助调控", focusY: 45 },
+      },
+      "纳米气泡稳定性机制研究": {
+        summary:
+          "水中纳米气泡气-液界面处在表面张力与微观电荷约束力共同作用下形成了指向气泡内部的不对称力场，驱动水分子定向排列并形成致密的氢键网络，其对应的 U-T 耦合能峰值构成抑制气体扩散的“动态能垒”，可阻滞气泡内部压力驱动气体向外扩散过程。这种气体扩散与界面阻滞作用的博弈成为气泡稳定的关键。",
+        sections: [],
+        image: {
+          src: "/research/bubble-nucleation-equipment/nanobubble-stability-mechanism.png",
+          alt: "纳米气泡稳定性机制示意图",
+          caption: "界面不对称力场驱动下的氢键网络与动态能垒机制",
+          focusY: 50,
+        },
+      },
+      "氧气/臭氧微纳米气泡一体机远程控制系统设计": {
+        summary:
+          "围绕氧气/臭氧微纳米气泡一体机的工程运行需求，系统设计“远程/自动启停 + 多档位流量控制”双核心控制策略。其一，通过远程控制或依据水中溶解氧（DO）浓度自动启停，实现设备从人工值守向无人值守、按需供氧转变，降低人工巡检负担与误操作风险，并在保障供氧效果的同时提升运行效率；面向工业级高功耗场景，按需运行通常可实现 30% 以上电费节省。其二，构建强/中/弱等多档位流量控制能力，以适配浅水池塘与深水河道等差异化工况，避免浅水区底泥扰动与深水区供氧不足，提升系统在不同工艺条件下的稳定性、可控性与产品化竞争力。",
+        sections: [],
+      },
+      "新型高效臭氧发生器研发与优化": {
+        summary:
+          "臭氧作为高效绿色氧化剂，在水处理、烟气治理、食品加工、半导体制造等领域应用广泛。随着我国生态环保标准持续提升与“双碳”战略推进，高效、低能耗、高浓度臭氧制备技术已成为环境工程与等离子体应用领域的研究重点。目前工业臭氧制备以介质阻挡放电（DBD）技术为主，但传统臭氧发生器存在能效偏低、热损耗大、放电稳定性不足、材料与电源匹配性差等问题，制约了装备性能提升。近年来，国内外围绕高频脉冲电源、新型介电材料、高效热管理结构及放电工况优化等方向取得重要进展，相关研究为臭氧发生器性能提升提供了理论依据。然而，现有装备仍难以实现高浓度、高能效与长寿命的协同优化，国产设备与国际先进水平存在差距。因此，开展新型高效臭氧发生器的结构设计、电源优化与系统参数调控研究，对突破关键技术瓶颈、提升臭氧装备国产化水平、满足高端工业与环保治理需求具有重要意义。",
+        sections: [],
+      },
+    };
+
+    const moduleMap: Record<string, string[]> = {
+      "bubble-nucleation-equipment": [
+        "气液混合流道结构对水中微纳米气泡的形成与粒径分布特性影响",
+        "纳米气泡稳定性机制研究",
+        "氧气/臭氧微纳米气泡一体机远程控制系统设计",
+        "新型高效臭氧发生器研发与优化",
+      ],
+      "black-odorous-water-remediation": [
+        "不同气源微纳米气泡对水中小球藻的抑制效果及作用机理",
+        "水介质中臭氧微纳米气泡对含油污泥的破乳作用",
+        "微纳米气泡灌溉促进盐碱土壤种植肥力提升机制研究",
+        "微纳米气泡活化氧化剂促进VOCs高效治理",
+      ],
+      "aquaculture-high-density": [
+        "循环水养殖系统水质净化与脱氮效果提升",
+        "微纳米气泡对鲈鱼循环养殖系统水质稳定与鱼类生长性能的提升",
+        "臭氧微纳米气泡对水中四环素的高效降解",
+        "微纳米气泡灌溉对设施番茄种植的影响机制",
+        "微纳米气泡在芯片清洗领域的应用",
+      ],
+    };
+
+    const modules = moduleMap[item.slug] ?? [];
+    const moduleSectionMap = modules.map((moduleTitle, idx) => ({
+      moduleTitle,
+      moduleId: `module-${idx + 1}`,
+      sections: (idx === 2 ? ["小章节1", "小章节2", "小章节3"] : ["小章节1", "小章节2", "小章节3", "小章节4"]).map((name, sIdx) => ({
+        id: `module-${idx + 1}-section-${sIdx + 1}`,
+        label: `${name}（待补充）`,
+      })),
+    }));
+
+    const sectionNavItems = modules.map((_, idx) => ({
+      id: `module-${idx + 1}`,
+      label: `板块${idx + 1}`,
+    }));
+
+    const galleryCount = images.length;
+    const hasVideo = Boolean(item.video?.src);
+    const metrics: MetricItem[] =
+      item.slug === "bubble-nucleation-equipment"
+        ? [
+            { label: "研究模块", value: "4 个" },
+            {
+              label: "实验平台",
+              value: "Venturi 系",
+            },
+            {
+              label: "多媒体证据",
+              value: hasVideo ? `${galleryCount} 图 · 1 视频` : `${galleryCount} 图`,
+            },
+            {
+              label: "体系主线",
+              value: "机理—装备",
+            },
+          ]
+        : [
+            { label: "研究模块", value: `${Math.max(sections.length, 1)} 个` },
+            { label: "图文证据", value: `${images.length} 张` },
+            { label: "关键词", value: `${(item.keywords ?? []).length} 项` },
+            { label: "应用导向", value: item.group === "Applications" ? "应用" : "机理" },
+          ];
+
+    const introSecondary =
+      item.positioningZh ||
+      coreLines.slice(0, 2).join(" ").trim() ||
+      "围绕机理与工程化应用，持续推进微纳米气泡技术在真实场景中的验证与转化。";
+
+    return (
+      <div className="min-h-screen bg-[var(--bg-default)]">
+        <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(129,140,248,0.10),transparent_60%),radial-gradient(circle_at_bottom,rgba(15,23,42,0.45),transparent_65%)]" />
+
+        <ResearchHero
+          titleZh={titleZh}
+          titleEn={titleEn}
+          introPrimary={briefZh}
+          introSecondary={introSecondary}
+          keywords={(item.keywords ?? []).slice(0, 6)}
+          metrics={metrics}
+          cover={cover}
+          coverFocusY={coverFocusY}
+        />
+
+        <Container>
+          <div className="mx-auto max-w-[1280px] px-0 py-10 md:py-16">
+            <ResearchModuleSwitcher
+              modules={modules.map((moduleTitle, idx) => {
+                const moduleMeta = moduleSectionMap[idx];
+                const override = moduleContentOverrides[moduleTitle];
+                const fig = images[idx];
+                return {
+                  moduleId: moduleMeta.moduleId,
+                  moduleTitle,
+                  summary: override?.summary ?? "该板块已完成一级划分。你后续提供章节内容后，我会在该板块下补齐二级章节导航与对应图文。",
+                  sections: override?.sections ?? moduleMeta.sections,
+                  image:
+                    override?.image ??
+                    (fig
+                      ? {
+                          src: fig.src,
+                          alt: fig.alt,
+                          caption: fig.captionZh,
+                          focusY: typeof fig.focusY === "number" ? fig.focusY : 45,
+                        }
+                      : undefined),
+                };
+              })}
+            />
+            </div>
         </Container>
       </div>
     );
