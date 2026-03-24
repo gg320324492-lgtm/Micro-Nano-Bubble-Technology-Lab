@@ -4,15 +4,15 @@ import Link from "next/link";
 
 import AquacultureTabs from "@/components/AquacultureTabs";
 import AquacultureFigureStrip from "@/components/AquacultureFigureStrip";
+import IndustrialSectionTabs from "@/components/industrialization/IndustrialSectionTabs";
 import LightboxGallery, { GalleryItem } from "@/components/LightboxGallery";
 import Container from "@/components/Container";
+import { buttonClassName } from "@/components/ui/Button";
 import {
   aquaculturePdfFullData,
-  resolveAquacultureAssetPath,
 } from "@/content/aquaculturePdfFullData";
 import industrialBases from "@/data/industrialization";
 import { assetPath } from "@/lib/assetPath";
-import { toImageVariant } from "@/lib/imageVariant";
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -28,7 +28,7 @@ function CoverHero({ src, alt }: { src?: string; alt: string }) {
   return (
     <div className="relative h-56 w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-elevated)]">
       <Image
-        src={assetPath(toImageVariant(src, "main"))}
+        src={assetPath(src)}
         alt={alt}
         fill
         loading="eager"
@@ -88,6 +88,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
   }
 
   const isAquaculture = slug === "aquaculture";
+  const isBlackOdorous = slug === "black-odorous-water";
   const aquacultureData = isAquaculture ? aquaculturePdfFullData : null;
 
   const findKeyNumber = (page: number, name: string) => {
@@ -121,14 +122,6 @@ export default async function IndustrialBaseDetailPage(props: Props) {
       ]
     : [];
 
-  const totalCostYuan = aquacultureData
-    ? aquacultureData.costTable.reduce((acc, row) => acc + row.costYuan, 0)
-    : 0;
-
-  const pdfPath = aquacultureData
-    ? assetPath(resolveAquacultureAssetPath(aquacultureData.meta.pdfPublicPath))
-    : "";
-
   const sectionThemes = [
     {
       card: "border-sky-500/30 bg-sky-500/10",
@@ -155,7 +148,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
 
   const introPanel = (
     <div id="intro">
-      {base.highlightsZh?.length ? (
+      {!isBlackOdorous && base.highlightsZh?.length ? (
         <div className="mt-5 overflow-hidden rounded-[var(--radius-lg)] border border-cyan-500/30 bg-cyan-500/10">
           <div className="h-1 w-full bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500" />
           <div className="p-5 sm:p-6">
@@ -182,65 +175,69 @@ export default async function IndustrialBaseDetailPage(props: Props) {
       ) : null}
 
       {base.sections?.length ? (
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {base.sections.map((s, idx) => {
-            const theme = sectionThemes[idx % sectionThemes.length];
-            const lastOddSpan =
-              base.sections && base.sections.length % 2 === 1
-                ? idx === base.sections.length - 1
-                : false;
+        isBlackOdorous ? (
+          <IndustrialSectionTabs sections={base.sections} />
+        ) : (
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            {base.sections.map((s, idx) => {
+              const theme = sectionThemes[idx % sectionThemes.length];
+              const lastOddSpan =
+                base.sections && base.sections.length % 2 === 1
+                  ? idx === base.sections.length - 1
+                  : false;
 
-            return (
-              <section
-                key={s.titleZh}
-                className={[
-                  "group relative overflow-hidden rounded-2xl border p-6 shadow-sm transition duration-300",
-                  "hover:-translate-y-1 hover:shadow-lg",
-                  theme.card,
-                  lastOddSpan ? "md:col-span-2" : "",
-                ].join(" ")}
-              >
-                <div
+              return (
+                <section
+                  key={s.titleZh}
                   className={[
-                    "absolute inset-x-0 top-0 h-1 bg-gradient-to-r",
-                    theme.accent,
-                  ].join(" ")}
-                />
-
-                <h2
-                  className={[
-                    "text-2xl font-semibold tracking-tight",
-                    theme.title,
+                    "group relative overflow-hidden rounded-2xl border p-6 shadow-sm transition duration-300",
+                    "hover:-translate-y-1 hover:shadow-lg",
+                    theme.card,
+                    lastOddSpan ? "md:col-span-2" : "",
                   ].join(" ")}
                 >
-                  {s.titleZh}
-                </h2>
-                <p className={["mt-2 text-sm leading-relaxed", theme.body].join(" ")}>
-                  {s.bodyZh}
-                </p>
+                  <div
+                    className={[
+                      "absolute inset-x-0 top-0 h-1 bg-gradient-to-r",
+                      theme.accent,
+                    ].join(" ")}
+                  />
 
-                {s.bulletsZh?.length ? (
-                  <ul className="mt-4 space-y-2">
-                    {s.bulletsZh.map((b) => (
-                      <li
-                        key={b}
-                        className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
-                      >
-                        <span
-                          className={[
-                            "mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full",
-                            theme.bullet,
-                          ].join(" ")}
-                        />
-                        <span>{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </section>
-            );
-          })}
-        </div>
+                  <h2
+                    className={[
+                      "text-2xl font-semibold tracking-tight",
+                      theme.title,
+                    ].join(" ")}
+                  >
+                    {s.titleZh}
+                  </h2>
+                  <p className={["mt-2 text-sm leading-relaxed", theme.body].join(" ")}>
+                    {s.bodyZh}
+                  </p>
+
+                  {s.bulletsZh?.length ? (
+                    <ul className="mt-4 space-y-2">
+                      {s.bulletsZh.map((b) => (
+                        <li
+                          key={b}
+                          className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
+                        >
+                          <span
+                            className={[
+                              "mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full",
+                              theme.bullet,
+                            ].join(" ")}
+                          />
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </section>
+              );
+            })}
+          </div>
+        )
       ) : null}
 
       {base.gallery?.length ? (
@@ -274,9 +271,6 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                 成果总览
               </h2>
             </div>
-            <span className="rounded-full border border-indigo-200 bg-indigo-100/80 px-3 py-1 text-xs font-medium text-indigo-700">
-              数据来源：{aquacultureData.meta.fileName}
-            </span>
           </div>
 
           <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -313,108 +307,6 @@ export default async function IndustrialBaseDetailPage(props: Props) {
         </div>
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
-        <article className="overflow-hidden rounded-[var(--radius-lg)] border border-emerald-500/30 bg-emerald-500/10">
-          <div className="h-1 w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
-          <div className="p-5 sm:p-6">
-            <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">
-              成本结构与收益测算
-            </h2>
-
-            <div className="mt-4 overflow-x-auto rounded-xl border border-emerald-500/30 bg-[var(--bg-card)]">
-              <table className="min-w-full text-sm">
-                <thead className="bg-emerald-500/15 text-[var(--text-secondary)]">
-                  <tr>
-                    <th className="px-3 py-2 text-left font-medium">项目</th>
-                    <th className="px-3 py-2 text-left font-medium">用量</th>
-                    <th className="px-3 py-2 text-left font-medium">单价</th>
-                    <th className="px-3 py-2 text-right font-medium">成本（元）</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {aquacultureData.costTable.map((row) => (
-                    <tr key={row.item} className="border-t border-[var(--border)]">
-                      <td className="px-3 py-2 text-[var(--text)]">{row.item}</td>
-                      <td className="px-3 py-2 text-[var(--text-secondary)]">{row.usage}</td>
-                      <td className="px-3 py-2 text-[var(--text-secondary)]">{row.unitPrice}</td>
-                      <td className="px-3 py-2 text-right font-medium text-[var(--text)]">
-                        {row.costYuan}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr className="border-t-2 border-emerald-500/30 bg-emerald-500/20">
-                    <td
-                      className="px-3 py-2 font-semibold text-[var(--text)]"
-                      colSpan={3}
-                    >
-                      合计
-                    </td>
-                    <td className="px-3 py-2 text-right text-base font-semibold text-emerald-300">
-                      {totalCostYuan} 元
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-
-            <div className="mt-3 rounded-xl border border-emerald-500/40 bg-white/90 p-3 text-sm text-[var(--text)] shadow-sm">
-              <span className="font-semibold text-emerald-700">
-                折算成本：
-                {findKeyNumber(3, "折算成本")?.valueText ?? "5.51元/斤鱼"}
-              </span>
-              <span className="ml-1 text-[var(--text-secondary)]">
-                ，较传统鲈鱼养殖成本（10-12元/斤鱼）降低45%~54%。
-              </span>
-            </div>
-          </div>
-        </article>
-
-        <article className="overflow-hidden rounded-[var(--radius-lg)] border border-violet-500/30 bg-violet-500/10">
-          <div className="h-1 w-full bg-gradient-to-r from-violet-500 via-indigo-500 to-blue-500" />
-          <div className="p-5 sm:p-6">
-            <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">
-              结论与资料下载
-            </h2>
-
-            <ul className="mt-4 space-y-2">
-              {aquacultureData.conclusions.map((conclusion) => (
-                <li
-                  key={conclusion.text}
-                  className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
-                >
-                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-violet-500" />
-                  <span>
-                    {conclusion.text}
-                    <span className="ml-1 text-xs text-[var(--muted)]">
-                      （第{conclusion.source.page}页）
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
-              <a
-                href={pdfPath}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white hover:opacity-90"
-              >
-                在线查看 PDF
-              </a>
-              <a
-                href={pdfPath}
-                download={aquacultureData.meta.fileName}
-                className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2.5 text-sm font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)]"
-              >
-                下载 PDF 原文
-              </a>
-            </div>
-          </div>
-        </article>
-      </section>
     </div>
   ) : null;
 
@@ -424,7 +316,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
         <div className="flex flex-wrap items-center gap-2">
           <Link
             href="/industrialization/"
-            className="rounded-xl border px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]"
+            className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
           >
             ← 返回产业化列表
           </Link>
@@ -434,7 +326,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               href={base.locationUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-xl border border-[var(--border)] px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]"
+              className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
             >
               高德地图导航
             </a>
@@ -445,7 +337,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               href={base.monitorUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-xl bg-black px-4 py-2 text-sm text-white hover:opacity-90"
+              className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
             >
               打开监测大屏
             </a>

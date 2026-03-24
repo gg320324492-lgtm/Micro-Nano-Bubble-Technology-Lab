@@ -27,6 +27,15 @@ export type Person = {
   // ✅ 新增：入学年级（显示为 “2025级”）
   cohort?: number;
 
+  // ✅ 可选：兴趣爱好/个人标签
+  hobbyZh?: string;
+  bioZh?: string;
+  genderZh?: string;
+  gradeZh?: string;
+  birthZh?: string;
+  nativePlaceZh?: string;
+  undergradSchoolZh?: string;
+
   email?: string;
   homepage?: string;
 };
@@ -74,15 +83,19 @@ const TAG_EQUIP = "水环境治理设备开发";
 
 export const people: Person[] = [
   // 博士生（2025级）
-  mk(
-    "zhaohangjia",
-    "PhD",
-    "赵航佳",
-    "Hangjia Zhao",
-    "面向饮用水安全，研究微纳米气泡协同消毒与生物稳定性提升机制。",
-    [TAG_WQ, "饮用水安全", "生物稳定性"],
-    2025
-  ),
+  {
+    ...mk(
+      "zhaohangjia",
+      "PhD",
+      "赵航佳",
+      "Hangjia Zhao",
+      "围绕微纳米气泡在黑臭水体治理中的应用开展研究，重点关注微纳米气泡与底泥-水界面污染物之间的相互作用机制。现阶段主要围绕臭氧微纳米气泡在黑臭水体底泥及上覆水中污染物去除、底泥污染物释放抑制、界面氧化转化机制及多物理场耦合模拟等方面开展研究。",
+      [TAG_CLEAN, "臭氧微纳米气泡", "底泥-水界面"],
+      2025
+    ),
+    hobbyZh: "阅读，旅游，美食",
+    email: "zhaohangjia@tju.edu.cn",
+  },
 
   // 硕士生（2025级）
   mk(
@@ -143,33 +156,45 @@ export const people: Person[] = [
     [TAG_AGRI, "农业应用", "水-土环境"],
     2024
   ),
-  mk(
-    "guanxiaowei",
-    "Master",
-    "关小未",
-    "Xiaowei Guan",
-    "关注盐碱土改良与高效种养场景中的微纳米气泡应用路径。",
-    [TAG_AGRI, "盐碱土修复", "种养系统"],
-    2024
-  ),
+  {
+    ...mk(
+      "guanxiaowei",
+      "Master",
+      "关小未",
+      "Xiaowei Guan",
+      "关注盐碱土改良与高效种养场景中的微纳米气泡应用路径。",
+      [TAG_AGRI, "盐碱土修复", "种养系统"],
+      2024
+    ),
+    birthZh: "2002年3月",
+    nativePlaceZh: "福建省厦门市",
+    undergradSchoolZh: "天津大学",
+    hobbyZh: "阅读，游泳，看影视剧，喜欢尝试新事物",
+  },
   mk(
     "huxiaoqi",
     "Master",
     "胡小琪",
     "Xiaoqi Hu",
-    "研究微纳米气泡协同消毒及其对耐受菌控制的效果与机理。",
+    "臭氧微纳米气泡对黑臭水体泥/水界面微生境修复机理研究。",
     [TAG_WQ, "消毒/抑菌", "微生物控制"],
     2024
   ),
-  mk(
-    "lishengjing",
-    "Master",
-    "李胜景",
-    "Shengjing Li",
-    "聚焦灌溉系统生物堵塞机理与微纳米气泡缓堵策略评估。",
-    [TAG_AGRI, "生物堵塞", "灌溉系统"],
-    2024
-  ),
+  {
+    ...mk(
+      "lishengjing",
+      "Master",
+      "李胜景",
+      "Shengjing Li",
+      "微纳米气泡应用于高密度无抗鱼养殖。",
+      [TAG_AGRI, "高密度养殖", "无抗鱼养殖"],
+      2024
+    ),
+    genderZh: "女",
+    nativePlaceZh: "安徽省广德市",
+    birthZh: "2002年8月29日",
+    gradeZh: "硕士研究生二年级",
+  },
   mk(
     "liuziyi",
     "Master",
@@ -179,15 +204,18 @@ export const people: Person[] = [
     [TAG_WQ, "过程评价", "数据分析"],
     2024
   ),
-  mk(
-    "songyang",
-    "Master",
-    "宋洋",
-    "Yang Song",
-    "研究微纳米气泡对管网生物膜及水质稳定性的影响与控制策略。",
-    [TAG_WQ, "生物稳定性", "管网生物膜"],
-    2024
-  ),
+  {
+    ...mk(
+      "songyang",
+      "Master",
+      "宋洋",
+      "Yang Song",
+      "微纳米气泡饮用水处理组，研究气泡与膜的耦合应用。",
+      [TAG_WQ, "生物稳定性", "管网生物膜"],
+      2024
+    ),
+    hobbyZh: "羽毛球",
+  },
   mk(
     "wangshuxin",
     "Master",
@@ -197,15 +225,20 @@ export const people: Person[] = [
     [TAG_AGRI, "农业应用", "土壤修复"],
     2024
   ),
-  mk(
-    "wumengquan",
-    "Master",
-    "吴孟铨",
-    "Mengquan Wu",
-    "研究溃灭诱导自由基生成与传质强化的关键影响因素。",
-    [TAG_OH, "气泡溃灭", "传质强化"],
-    2024
-  ),
+  {
+    ...mk(
+      "wumengquan",
+      "Master",
+      "吴孟铨",
+      "Mengquan Wu",
+      "研究溃灭诱导自由基生成与传质强化的关键影响因素。",
+      [TAG_OH, "气泡溃灭", "传质强化"],
+      2024
+    ),
+    hobbyZh: "睡觉、刷视频、打球",
+    bioZh:
+      "通过LAMMPS软件研究氧气纳米气泡的稳定特征和机理，揭示纳米气泡在微观下的神奇一面，欢迎做分子动力学的同学一起探讨方法。",
+  },
 
   // 硕士生（2023级）
   mk(
@@ -226,24 +259,31 @@ export const people: Person[] = [
     [TAG_WQ, "生物膜控制", "管网系统"],
     2023
   ),
-  mk(
-    "yangci",
-    "Master",
-    "杨慈",
-    "Ci Yang",
-    "评估微纳米气泡对水质指标与微生物风险因子的调控效果。",
-    [TAG_WQ, "水质保障", "风险因子"],
-    2023
-  ),
-  mk(
-    "yuxinrui",
-    "Master",
-    "余歆睿",
-    "Xinrui Yu",
-    "围绕饮用水生物稳定性评价与控制策略开展实验与分析。",
-    [TAG_WQ, "AOC/BDOC", "生物稳定性"],
-    2023
-  ),
+  {
+    ...mk(
+      "yangci",
+      "Master",
+      "杨慈",
+      "Ci Yang",
+      "探索微纳米气泡在饮用水安全保障领域的应用，目前已开展不同气源微纳米气泡对蜡样芽孢杆菌消杀机制研究以及微纳米气泡协同紫外对蜡样芽孢杆菌消杀机制研究。",
+      [TAG_WQ, "饮用水安全", "蜡样芽孢杆菌"],
+      2023
+    ),
+    hobbyZh: "阅读，跑步，游泳",
+    email: "yc3259672120@163.com",
+  },
+  {
+    ...mk(
+      "yuxinrui",
+      "Master",
+      "余歆睿",
+      "Xinrui Yu",
+      "探索微纳米气泡技术在藻华控制与水质净化领域的应用，目前已开展不同气源微纳米气泡对水中小球藻的抑制效果及机理研究、微纳米气泡与硫酸铜协同体系的除藻效果及机理研究。",
+      [TAG_WQ, "藻华控制", "水质净化"],
+      2023
+    ),
+    hobbyZh: "阅读、足球、徒步等",
+  },
   mk(
     "zhanghongkui",
     "Master",

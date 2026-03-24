@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import industrialBases from "@/data/industrialization";
 import { assetPath } from "@/lib/assetPath";
-import { toImageVariant } from "@/lib/imageVariant";
 import Section from "@/components/ui/Section";
 import Heading from "@/components/ui/Heading";
 import Card from "@/components/ui/Card";
@@ -20,7 +19,7 @@ function Cover({ src, alt }: { src?: string; alt: string }) {
   return (
     <div className="relative h-56 w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-elevated)]">
       <Image
-        src={assetPath(toImageVariant(src, "thumb"))}
+        src={assetPath(src)}
         alt={alt}
         fill
         loading="lazy"
@@ -61,13 +60,29 @@ export default function IndustrializationPage() {
                   ) : null}
                 </div>
 
-                {/* ✅ 强制带尾部 /，完全匹配 trailingSlash 导出的目录结构 */}
-                <Link
-                  href={`/industrialization/${encodeURIComponent(String(b.slug))}/`}
-                  className={buttonClassName("secondary", "shrink-0 px-4 py-2 text-sm")}
-                >
-                  查看详情
-                </Link>
+                <div className="flex shrink-0 items-center gap-2">
+                  {b.monitorUrl ? (
+                    <a
+                      href={b.monitorUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={buttonClassName("primary", "px-4 py-2 text-sm")}
+                    >
+                      打开监测大屏
+                    </a>
+                  ) : null}
+
+                  {/* ✅ 强制带尾部 /，完全匹配 trailingSlash 导出的目录结构 */}
+                  <Link
+                    href={`/industrialization/${encodeURIComponent(String(b.slug))}/`}
+                    className={buttonClassName(
+                      "primary",
+                      "px-4 py-2 text-sm shadow-sm hover:shadow-md",
+                    )}
+                  >
+                    查看详情
+                  </Link>
+                </div>
               </div>
 
               <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">
@@ -100,18 +115,7 @@ export default function IndustrializationPage() {
                 </ul>
               ) : null}
 
-              {b.monitorUrl ? (
-                <div className="mt-5 mt-auto">
-                  <a
-                    href={b.monitorUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={buttonClassName("primary", "px-5 py-2.5 text-sm")}
-                  >
-                    打开监测大屏
-                  </a>
-                </div>
-              ) : null}
+              <div className="mt-auto" />
             </Card>
           </Reveal>
         ))}
