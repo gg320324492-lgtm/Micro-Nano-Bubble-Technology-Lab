@@ -36,6 +36,30 @@ export default function AquacultureFigureStrip({
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+  const stripListPrefix = (text: string) =>
+    text.replace(/^\s*[（(]\d+[）)]\s*/, "");
+
+  const highlightKeyData = (text: string) => {
+    const normalized = stripListPrefix(text);
+    const parts = normalized.split(
+      /(\d+(?:\.\d+)?%|\d+(?:\.\d+)?\s*(?:mg\/L|kg\/m³|kg\/m3|元\/斤鱼|元))/g,
+    );
+
+    return parts.map((part, idx) => {
+      const isMetric =
+        /^(\d+(?:\.\d+)?%|\d+(?:\.\d+)?\s*(?:mg\/L|kg\/m³|kg\/m3|元\/斤鱼|元))$/.test(
+          part,
+        );
+      return isMetric ? (
+        <strong key={`${part}-${idx}`} className="text-amber-600">
+          {part}
+        </strong>
+      ) : (
+        <span key={`${part}-${idx}`}>{part}</span>
+      );
+    });
+  };
+
   const total = figures.length;
   const current =
     openIndex === null || openIndex < 0 || openIndex >= total
@@ -50,18 +74,40 @@ export default function AquacultureFigureStrip({
 
   return (
     <>
-      <div className="mt-5 grid gap-4 lg:grid-cols-3">
+      <div className="mt-2 grid gap-4 sm:grid-cols-2">
         {figures.map((fig) => {
-          const relatedCharts = chartMeta.filter(
-            (chart) => chart.source.page === fig.source.page,
-          );
           const relatedPage = pages.find((p) => p.page === fig.source.page);
+          const displayTitle =
+            fig.source.page === 1
+              ? "鲈鱼品质提升"
+              : fig.source.page === 2
+                ? "农作物增产提质"
+                : "成本计算";
+          const introLine = relatedPage?.textBlocks?.find(
+            (txt) => txt && !txt.includes("："),
+          );
+          const metricLine = relatedPage?.textBlocks?.find((txt) =>
+            txt.includes("提升"),
+          );
 
           return (
             <article
               key={fig.id}
-              className="overflow-hidden rounded-2xl border border-[var(--border)]/80 bg-[var(--bg-card)] shadow-sm"
+              className="group flex h-full flex-col gap-3 rounded-xl border border-amber-300/40 bg-[var(--bg-card)] p-3 shadow-sm"
             >
+              <div className="flex items-center gap-2">
+                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 text-amber-600">
+                  {fig.source.page + 2}
+                </span>
+                <h3 className="text-base font-semibold text-[var(--text)]">{displayTitle}</h3>
+              </div>
+
+              <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+                {highlightKeyData(
+                  introLine ?? metricLine ?? "点击查看完整图示与详细数据。",
+                )}
+              </p>
+
               <button
                 type="button"
                 className="group block w-full"
@@ -77,42 +123,11 @@ export default function AquacultureFigureStrip({
                     fill
                     loading="lazy"
                     fetchPriority="low"
-                    className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                    className="object-contain transition-transform duration-300 group-hover:scale-[1.01]"
                     sizes="(max-width: 1024px) 100vw, 33vw"
                   />
                 </div>
               </button>
-
-              <div className="space-y-3 p-4">
-                <div className="text-sm font-semibold text-[var(--text)]">
-                  {fig.caption}
-                </div>
-
-                {relatedPage?.textBlocks?.length ? (
-                  <ul className="space-y-1 text-xs leading-relaxed text-[var(--text-secondary)]">
-                    {relatedPage.textBlocks.slice(0, 2).map((txt) => (
-                      <li key={`${fig.id}-${txt}`} className="flex gap-2">
-                        <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-500" />
-                        <span>{txt}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-
-                {relatedCharts.length ? (
-                  <div className="flex flex-wrap gap-1.5">
-                    {relatedCharts.map((chart) => (
-                      <span
-                        key={chart.id}
-                        className="rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-[11px] text-sky-700"
-                        title={`${chart.title}（${chart.unit}）`}
-                      >
-                        {chart.title}
-                      </span>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
             </article>
           );
         })}

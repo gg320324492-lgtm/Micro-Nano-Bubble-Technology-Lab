@@ -131,6 +131,25 @@ export const industrialBases: IndustrialBase[] = [
   { src: "/industrialization/reid-device-tianjin/g04.jpg", captionZh: "臭氧/纯氧微纳米气泡一体机（外观与面板）" },
   { src: "/industrialization/reid-device-tianjin/g05.jpg", captionZh: "关键部件细节（控制/气路/水路）" },
   { src: "/industrialization/reid-device-tianjin/g06.jpg", captionZh: "整机测试与调试（出厂前验证）" },
+
+  // 代表性产品（含销售额）
+  { src: "/industrialization/reid-device-tianjin/g07.png", captionZh: "实验室微纳米气泡发生器（销售额：15万）" },
+  { src: "/industrialization/reid-device-tianjin/g08.png", captionZh: "工业微纳米气泡发生器（销售额：35万）" },
+  { src: "/industrialization/reid-device-tianjin/g09.png", captionZh: "臭氧微纳米气泡一体机（销售额：80万）" },
+  { src: "/industrialization/reid-device-tianjin/g10.png", captionZh: "长距离低能耗曝气机（销售额：60万）" },
+
+  // 产品现场使用
+  { src: "/industrialization/reid-device-tianjin/g12.png", captionZh: "治理项目应用点位" },
+  { src: "/industrialization/reid-device-tianjin/g13.png", captionZh: "项目现场合影与交付" },
+  { src: "/industrialization/reid-device-tianjin/g14.png", captionZh: "水体治理运行状态" },
+  { src: "/industrialization/reid-device-tianjin/g15.png", captionZh: "设备应用示范" },
+  { src: "/industrialization/reid-device-tianjin/g16.png", captionZh: "工况演示与讲解" },
+  { src: "/industrialization/reid-device-tianjin/g17.png", captionZh: "温室场景应用" },
+  { src: "/industrialization/reid-device-tianjin/g18.png", captionZh: "设施农业点位" },
+  { src: "/industrialization/reid-device-tianjin/g19.png", captionZh: "装备运行实拍" },
+  { src: "/industrialization/reid-device-tianjin/g20.png", captionZh: "多功能一体式微纳米气泡发生器性能测试结果" },
+  { src: "/industrialization/reid-device-tianjin/g21.png", captionZh: "产业化证明材料（一）" },
+  { src: "/industrialization/reid-device-tianjin/g22.png", captionZh: "产业化证明材料（二）" },
 ],
 
   },

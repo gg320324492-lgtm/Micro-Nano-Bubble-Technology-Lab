@@ -19,6 +19,7 @@ import { showcasePhotos } from "@/data/showcase";
 
 import PiCard from "@/components/PiCard";
 import HomeHeroCarousel from "@/components/HomeHeroCarousel";
+import PublicImage from "@/components/PublicImage";
 import { site } from "@/data/site";
 import { assetPath } from "@/lib/assetPath";
 import { toImageVariant } from "@/lib/imageVariant";
@@ -67,6 +68,25 @@ function getPubText(p: AnyRecord) {
   const citation = (p.citation ?? "").toString().trim();
   if (citation) return extractTitleFromCitation(citation);
   return "";
+}
+
+function pickPersonPhoto(p: Record<string, unknown>) {
+  return (
+    (p.photo as string) ||
+    (p.avatar as string) ||
+    (p.image as string) ||
+    (p.img as string) ||
+    (p.photoUrl as string) ||
+    (p.avatarUrl as string) ||
+    (p.headshot as string) ||
+    ""
+  );
+}
+
+function getHomeAvatarVariant(personId: string) {
+  // 赵航佳：首页固定显示证件照（原图）
+  if (personId === "zhaohangjia") return undefined;
+  return "thumb" as const;
 }
 
 export default function HomePage() {
@@ -251,6 +271,7 @@ export default function HomePage() {
 
   type OutputTab = "papers" | "patents" | "honors" | "projects";
   const [activeOutputTab, setActiveOutputTab] = useState<OutputTab>("papers");
+  const [avatarLoadFailed, setAvatarLoadFailed] = useState<Record<string, boolean>>({});
 
   const currentOutputs: OutputCard[] = (() => {
     switch (activeOutputTab) {
@@ -769,47 +790,59 @@ export default function HomePage() {
                   </div>
 
                   <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {peopleDigest.featured.map((p, idx) => (
-                      <motion.div
-                        key={p.id}
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: Math.min(idx * 0.08, 0.24) }}
-                      >
-                        <Link
-                          href="/people"
-                          className="group flex items-center gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-white px-3.5 py-3 hover:bg-[var(--accent-soft)]/20 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01]"
+                    {peopleDigest.featured.map((p, idx) => {
+                      const avatarSrc = pickPersonPhoto(p as unknown as Record<string, unknown>);
+
+                      return (
+                        <motion.div
+                          key={p.id}
+                          initial={{ opacity: 0, y: 50 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: Math.min(idx * 0.08, 0.24) }}
                         >
-                          <div className="relative h-12 w-12 overflow-hidden rounded-full bg-[var(--bg-elevated)] ring-1 ring-[var(--border)]">
-                            {p.avatar ? (
-                              <Image
-                                src={assetPath(p.avatar)}
-                                alt={p.nameZh}
-                                fill
-                                sizes="48px"
-                                className="object-cover"
-                              />
-                            ) : null}
-                          </div>
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <div className="font-semibold text-[var(--text)] truncate">
-                                {p.nameZh}
+                          <Link
+                            href="/people"
+                            className="group flex items-center gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-white px-3.5 py-3 hover:bg-[var(--accent-soft)]/20 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01]"
+                          >
+                            {avatarSrc && !avatarLoadFailed[p.id] ? (
+                              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[var(--bg-elevated)] ring-1 ring-[var(--border)]">
+                                <PublicImage
+                                  src={avatarSrc}
+                                  variant={getHomeAvatarVariant(String(p.id))}
+                                  alt={p.nameZh || p.nameEn || "person"}
+                                  fill
+                                  sizes="48px"
+                                  className="object-cover"
+                                  onError={() =>
+                                    setAvatarLoadFailed((prev) => ({ ...prev, [p.id]: true }))
+                                  }
+                                />
                               </div>
-                              {p.cohort ? (
-                                <span className="text-[11px] font-semibold text-[var(--muted)]">
-                                  {p.cohort}级
-                                </span>
-                              ) : null}
+                            ) : (
+                              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--bg-elevated)] text-sm font-semibold text-[var(--muted)] ring-1 ring-[var(--border)]">
+                                {(p.nameZh || p.nameEn || "?").slice(0, 1)}
+                              </div>
+                            )}
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2">
+                                <div className="font-semibold text-[var(--text)] truncate">
+                                  {p.nameZh}
+                                </div>
+                                {p.cohort ? (
+                                  <span className="text-[11px] font-semibold text-[var(--muted)]">
+                                    {p.cohort}级
+                                  </span>
+                                ) : null}
+                              </div>
+                              <div className="text-xs text-[var(--text-secondary)] truncate">
+                                {p.introZh}
+                              </div>
                             </div>
-                            <div className="text-xs text-[var(--text-secondary)] truncate">
-                              {p.introZh}
-                            </div>
-                          </div>
-                        </Link>
-                      </motion.div>
-                    ))}
+                          </Link>
+                        </motion.div>
+                      );
+                    })}
                   </div>
 
                   {peopleDigest.topTags.length ? (

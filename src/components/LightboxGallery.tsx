@@ -18,11 +18,13 @@ export default function LightboxGallery({
   className = "",
   tone = "core",
   layout = "auto",
+  showHeader = true,
 }: {
   items: GalleryItem[];
   className?: string;
   tone?: "core" | "applications";
   layout?: "auto" | "grid-3";
+  showHeader?: boolean;
 }) {
   const safe = useMemo(() => (items ?? []).filter(Boolean), [items]);
   const [open, setOpen] = useState(false);
@@ -72,10 +74,12 @@ export default function LightboxGallery({
 
   return (
     <div className={className}>
-      <div className="mb-2 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-[var(--text)]">图集</h3>
-        <div className={["text-sm font-medium", theme.countText].join(" ")}>{safe.length} 张</div>
-      </div>
+      {showHeader ? (
+        <div className="mb-2 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-[var(--text)]">图集</h3>
+          <div className={["text-sm font-medium", theme.countText].join(" ")}>{safe.length} 张</div>
+        </div>
+      ) : null}
 
       <div className={gridClass}>
         {safe.map((it, i) => (

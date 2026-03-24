@@ -30,6 +30,12 @@ function pickPhoto(p: Person): string {
   );
 }
 
+function getCardAvatarVariant(personId: string) {
+  // 赵航佳：成员列表卡片使用证件照原图
+  if (personId === "zhaohangjia") return undefined;
+  return "thumb" as const;
+}
+
 export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
   const p = person as Record<string, unknown>;
 
@@ -81,7 +87,7 @@ export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
           {photo ? (
             <PublicImage
               src={photo}
-              variant="thumb"
+              variant={getCardAvatarVariant(person.id)}
               alt={nameZh || nameEn || "person"}
               fill
               sizes="56px"

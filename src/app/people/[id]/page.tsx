@@ -36,6 +36,7 @@ export default async function PeopleDetailPage(props: PageProps) {
 
   const displayName = person.nameZh || person.nameEn;
   const photo = person.avatar ?? "";
+  const detailVariant = person.id === "zhaohangjia" ? "thumb" : undefined;
   const gradeLine = [person.cohort ? `${person.cohort}级` : "", roleLabel(person.role)]
     .filter(Boolean)
     .join("");
@@ -65,6 +66,7 @@ export default async function PeopleDetailPage(props: PageProps) {
             <div className="relative min-h-[460px] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)]">
               <PublicImage
                 src={photo}
+                variant={detailVariant}
                 alt={`${displayName} 照片`}
                 fill
                 sizes="(max-width: 1024px) 100vw, 320px"

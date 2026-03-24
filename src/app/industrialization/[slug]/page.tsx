@@ -5,6 +5,7 @@ import Link from "next/link";
 import AquacultureTabs from "@/components/AquacultureTabs";
 import AquacultureFigureStrip from "@/components/AquacultureFigureStrip";
 import IndustrialSectionTabs from "@/components/industrialization/IndustrialSectionTabs";
+import ReidDeviceShowcase from "@/components/industrialization/ReidDeviceShowcase";
 import LightboxGallery, { GalleryItem } from "@/components/LightboxGallery";
 import Container from "@/components/Container";
 import { buttonClassName } from "@/components/ui/Button";
@@ -89,7 +90,36 @@ export default async function IndustrialBaseDetailPage(props: Props) {
 
   const isAquaculture = slug === "aquaculture";
   const isBlackOdorous = slug === "black-odorous-water";
+  const isReidDevice = slug === "reid-device-tianjin";
   const aquacultureData = isAquaculture ? aquaculturePdfFullData : null;
+
+  if (isReidDevice) {
+    return (
+      <main className="py-10">
+        <Container>
+          <div className="mb-6 flex flex-wrap items-center gap-2">
+            <Link
+              href="/industrialization/"
+              className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
+            >
+              ← 返回产业化列表
+            </Link>
+            {base.locationUrl ? (
+              <a
+                href={base.locationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
+              >
+                高德地图导航
+              </a>
+            ) : null}
+          </div>
+          <ReidDeviceShowcase base={base} />
+        </Container>
+      </main>
+    );
+  }
 
   const findKeyNumber = (page: number, name: string) => {
     const pageData = aquacultureData?.pages.find((p) => p.page === page);
@@ -124,48 +154,48 @@ export default async function IndustrialBaseDetailPage(props: Props) {
 
   const sectionThemes = [
     {
-      card: "border-sky-500/30 bg-sky-500/10",
-      accent: "from-sky-400 to-blue-500",
-      title: "text-sky-200",
+      card: "border-sky-400/35 bg-[var(--bg-card)]/95",
+      accent: "from-sky-500 to-blue-500",
+      title: "text-[var(--text)]",
       body: "text-[var(--text-secondary)]",
-      bullet: "bg-sky-400",
+      bullet: "bg-sky-500",
     },
     {
-      card: "border-emerald-500/30 bg-emerald-500/10",
-      accent: "from-emerald-400 to-teal-500",
-      title: "text-emerald-200",
+      card: "border-emerald-400/35 bg-[var(--bg-card)]/95",
+      accent: "from-emerald-500 to-teal-500",
+      title: "text-[var(--text)]",
       body: "text-[var(--text-secondary)]",
-      bullet: "bg-emerald-400",
+      bullet: "bg-emerald-500",
     },
     {
-      card: "border-violet-500/30 bg-violet-500/10",
-      accent: "from-violet-400 to-indigo-500",
-      title: "text-violet-200",
+      card: "border-violet-400/35 bg-[var(--bg-card)]/95",
+      accent: "from-violet-500 to-indigo-500",
+      title: "text-[var(--text)]",
       body: "text-[var(--text-secondary)]",
-      bullet: "bg-violet-400",
+      bullet: "bg-violet-500",
     },
   ] as const;
 
   const introPanel = (
     <div id="intro">
       {!isBlackOdorous && base.highlightsZh?.length ? (
-        <div className="mt-5 overflow-hidden rounded-[var(--radius-lg)] border border-cyan-500/30 bg-cyan-500/10">
+        <div className="mt-5 overflow-hidden rounded-[var(--radius-lg)] border border-cyan-400/30 bg-[var(--bg-card)]/95 shadow-sm">
           <div className="h-1 w-full bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500" />
           <div className="p-5 sm:p-6">
             <div className="flex items-center gap-2">
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--bg-card)]/90 text-cyan-300 shadow-sm">
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-600 shadow-sm">
                 ✦
               </span>
               <div className="text-lg font-semibold text-[var(--text)]">基地亮点</div>
             </div>
 
-            <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+            <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
               {base.highlightsZh.map((x) => (
                 <li
                   key={x}
-                  className="flex items-start gap-2 rounded-xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-3 text-sm text-[var(--text-secondary)] shadow-sm"
+                  className="flex items-start gap-2 rounded-xl border border-cyan-200/60 bg-[var(--bg-elevated)] p-3 text-sm text-[var(--text-secondary)] shadow-sm"
                 >
-                  <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600" />
+                  <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-cyan-500" />
                   <span>{x}</span>
                 </li>
               ))}
@@ -178,7 +208,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
         isBlackOdorous ? (
           <IndustrialSectionTabs sections={base.sections} />
         ) : (
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
+          <div className="mt-7 grid gap-4 md:grid-cols-2">
             {base.sections.map((s, idx) => {
               const theme = sectionThemes[idx % sectionThemes.length];
               const lastOddSpan =
@@ -190,8 +220,8 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                 <section
                   key={s.titleZh}
                   className={[
-                    "group relative overflow-hidden rounded-2xl border p-6 shadow-sm transition duration-300",
-                    "hover:-translate-y-1 hover:shadow-lg",
+                    "group relative overflow-hidden rounded-2xl border p-5 sm:p-6 shadow-sm transition duration-300",
+                    "hover:-translate-y-0.5 hover:shadow-md",
                     theme.card,
                     lastOddSpan ? "md:col-span-2" : "",
                   ].join(" ")}
@@ -205,7 +235,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
 
                   <h2
                     className={[
-                      "text-2xl font-semibold tracking-tight",
+                      "text-[32px] font-semibold tracking-tight leading-[1.1]",
                       theme.title,
                     ].join(" ")}
                   >
@@ -241,7 +271,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
       ) : null}
 
       {base.gallery?.length ? (
-        <div className="mt-10">
+        <div className="mt-9">
           <LightboxGallery
             layout="grid-3"
             items={
@@ -292,18 +322,93 @@ export default async function IndustrialBaseDetailPage(props: Props) {
         </div>
       </section>
 
-      <section className="overflow-hidden rounded-[var(--radius-lg)] border border-sky-500/30 bg-sky-500/10">
-        <div className="h-1 w-full bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-500" />
+      <section className="overflow-hidden rounded-[var(--radius-lg)] border border-amber-500/30 bg-amber-500/10">
+        <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500" />
         <div className="p-5 sm:p-6">
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">
-            数据分析与展示
+            技术成果展示
           </h2>
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">
+            天津大学微纳米气泡技术在水产养殖场景的验证成果
+          </p>
 
-          <AquacultureFigureStrip
-            figures={aquacultureData.figures}
-            chartMeta={aquacultureData.chartMeta}
-            pages={aquacultureData.pages}
-          />
+          <div className="mt-5 grid gap-4 rounded-2xl border border-amber-400/40 bg-[var(--bg-card)]/80 p-4 shadow-sm sm:grid-cols-2">
+            <div className="group flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 text-amber-600">
+                  ①
+                </span>
+                <h3 className="text-base font-semibold text-[var(--text)]">
+                  纯氧纳米气泡 · 高密度养殖
+                </h3>
+              </div>
+              <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+                鲈鱼高密度养殖 <strong className="text-amber-600">150 kg/m³</strong>，比现有工厂化养殖提高{' '}
+                <strong className="text-amber-600">50%</strong>；基地外观、养殖池、智能平台一体化验证。
+              </p>
+              <a
+                href={assetPath("/industrialization/aquaculture/slide-high-density-nanobubble.png")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative mt-auto block aspect-video overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] transition-opacity hover:opacity-90"
+              >
+                <Image
+                  src={assetPath("/industrialization/aquaculture/slide-high-density-nanobubble.png")}
+                  alt="纯氧纳米气泡技术用于高密度水产养殖"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  className="object-contain"
+                />
+              </a>
+            </div>
+
+            <div className="group flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 text-amber-600">
+                  ②
+                </span>
+                <h3 className="text-base font-semibold text-[var(--text)]">
+                  微纳米气泡发生器 · 水质与品质
+                </h3>
+              </div>
+              <ul className="space-y-1.5 text-sm text-[var(--text-secondary)]">
+                <li className="flex gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
+                  <span>水质稳定：DO ~10 mg/L，氨氮 &lt;4 mg/L</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
+                  <span>免疫与抗氧化：溶菌酶 +30.3%，T-SOD +41.0%</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
+                  <span>营养与鲜味：蛋白质 +17.3%，谷氨酸 +74.5%</span>
+                </li>
+              </ul>
+              <a
+                href={assetPath("/industrialization/aquaculture/slide-water-quality-fish-quality.png")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative mt-auto block aspect-video overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] transition-opacity hover:opacity-90"
+              >
+                <Image
+                  src={assetPath("/industrialization/aquaculture/slide-water-quality-fish-quality.png")}
+                  alt="微纳米气泡发生器：养殖水质稳定与水产品品质提升"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  className="object-contain"
+                />
+              </a>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <AquacultureFigureStrip
+              figures={aquacultureData.figures}
+              chartMeta={aquacultureData.chartMeta}
+              pages={aquacultureData.pages}
+            />
+          </div>
         </div>
       </section>
 
