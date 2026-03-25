@@ -216,6 +216,7 @@ export const people: Person[] = [
       [TAG_WQ, "生物稳定性", "管网生物膜"],
       2024
     ),
+    detailPhoto: "/people/songyang-detail.jpg",
     hobbyZh: "羽毛球",
   },
   mk(

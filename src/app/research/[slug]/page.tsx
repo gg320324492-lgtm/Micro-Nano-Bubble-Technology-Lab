@@ -377,7 +377,7 @@ export default async function ResearchDetailPage(props: PageProps) {
                         {
                           src: "/research/water-quality-safety/module1-card-2.png",
                           alt: "微生物群落与共现网络分析图",
-                          caption: "图2 微生物的相对丰度和样品间物种分布的差异。（a）水中微生物群落的主成分分析;（b）不同样本的群落组成直方图（门级）;（c）不同样本间物种分布差异",
+                          caption: "图2 微生物群落结构差异分析：（a）PCA；（b）门水平组成；（c）样本间物种分布差异。",
                           focusY: 50,
                         },
                         {
@@ -428,7 +428,7 @@ export default async function ResearchDetailPage(props: PageProps) {
                     },
                     {
                       id: "water-module-1-stack-3",
-                      cardTitle: "微纳米气泡处理下生物膜生长对二次供水管道水质的影响机制",
+                      cardTitle: "微纳米气泡对二次供水管道生物膜与水质的影响机制",
                       sections: [
                         {
                           id: "water-module-1-card3-section-1",
@@ -455,7 +455,7 @@ export default async function ResearchDetailPage(props: PageProps) {
                           src: "/research/water-quality-safety/module1-card3-microbiome-panels.png",
                           alt: "生物膜微生物群落组成与多样性分析",
                           caption:
-                            "图2 不同气源MNBs处理过程中生物膜中微生物群落多样性的分析:（a）门级细菌组成;（b）生物膜微生物群落的主成分分析;（c）不同气源条件下结果的统计分析;（d）微生物群落多样性指数",
+                            "图2 不同气源 MNBs 条件下生物膜微生物群落分析：（a）门水平组成；（b）PCA；（c）统计比较；（d）多样性指数。",
                           focusY: 50,
                         },
                         {
@@ -864,7 +864,7 @@ export default async function ResearchDetailPage(props: PageProps) {
             src: "/research/black-odorous-water-remediation/module2-fig1.png",
             alt: "破乳后油分布特征与水质指标变化",
             caption:
-              "图1 微纳米气泡对破乳后油分布特征和水质的影响：（a）除油率；（b）油分配；（c）COD浓度；（d）总有机碳浓度；（e）ORP；（f）pH",
+              "图1 微纳米气泡破乳后油分布与水质指标变化：（a）除油率；（b）油分配；（c）COD；（d）TOC；（e）ORP；（f）pH。",
             focusY: 50,
           },
           {
@@ -877,7 +877,7 @@ export default async function ResearchDetailPage(props: PageProps) {
             src: "/research/black-odorous-water-remediation/module2-fig3.png",
             alt: "固相组成与热分析谱图",
             caption:
-              "图3 不同气源微纳米气泡对含油污泥固相组成的影响：（a）XRD光谱（b）傅里叶变换红外光谱；（c）原始样本、（d）CK组、（e）O3 MNBs处理组和（f）N2 MNBs处理组的TG和DTG谱",
+              "图3 不同气源微纳米气泡处理后含油污泥固相表征：（a）XRD；（b）FTIR；（c）原始样本；（d）CK；（e）O3-MNBs；（f）N2-MNBs 的 TG/DTG。",
             focusY: 50,
           },
           {

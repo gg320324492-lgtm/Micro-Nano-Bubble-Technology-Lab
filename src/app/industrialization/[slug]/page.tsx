@@ -1,17 +1,20 @@
 // src/app/industrialization/[slug]/page.tsx
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 
-import AquacultureTabs from "@/components/AquacultureTabs";
-import AquacultureFigureStrip from "@/components/AquacultureFigureStrip";
-import IndustrialSectionTabs from "@/components/industrialization/IndustrialSectionTabs";
-import ReidDeviceShowcase from "@/components/industrialization/ReidDeviceShowcase";
-import LightboxGallery, { GalleryItem } from "@/components/LightboxGallery";
+const AquacultureTabs = dynamic(() => import("@/components/AquacultureTabs"));
+const AquacultureFigureStrip = dynamic(() => import("@/components/AquacultureFigureStrip"));
+const IndustrialSectionTabs = dynamic(() => import("@/components/industrialization/IndustrialSectionTabs"));
+const ReidDeviceShowcase = dynamic(() => import("@/components/industrialization/ReidDeviceShowcase"));
+const LightboxGallery = dynamic(() => import("@/components/LightboxGallery"));
+
+import type { GalleryItem } from "@/components/LightboxGallery";
 import Container from "@/components/Container";
 import { buttonClassName } from "@/components/ui/Button";
-import { aquaculturePdfFullData } from "@/content/aquaculturePdfFullData";
 import industrialBases, { IndustrialBase } from "@/data/industrialization";
 import { assetPath } from "@/lib/assetPath";
+import { industrialSectionThemes } from "@/lib/themePresets";
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -22,15 +25,16 @@ export function generateStaticParams() {
 function BlackOdorousHero({ base }: { base: IndustrialBase }) {
   const stats = [
     { label: "COD 削减", value: "21–28%", color: "from-cyan-400 to-sky-500" },
-    { label: "氨氮削减", value: "≤93%",  color: "from-emerald-400 to-teal-500" },
+    { label: "氨氮削减", value: "≤93%", color: "from-emerald-400 to-teal-500" },
     { label: "叶绿素去除", value: "71.5%", color: "from-violet-400 to-purple-500" },
     { label: "处理时长", value: "10 min", color: "from-amber-400 to-orange-500" },
   ];
 
   return (
-    <div className="relative w-full overflow-hidden">
-      {/* 全宽背景图 */}
-      <div className="relative h-[480px] w-full md:h-[580px] lg:h-[640px]">
+    <section className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
+      <div className="absolute inset-x-0 top-0 z-20 h-1 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600" />
+
+      <div className="relative h-[440px] w-full md:h-[520px]">
         {base.cover ? (
           <Image
             src={assetPath(base.cover)}
@@ -39,80 +43,59 @@ function BlackOdorousHero({ base }: { base: IndustrialBase }) {
             loading="eager"
             fetchPriority="high"
             sizes="100vw"
-            className="object-cover brightness-[0.60] saturate-[0.8]"
+            className="object-cover brightness-[0.5]"
           />
         ) : null}
 
-        {/* 多层渐变遮罩 */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050d1a] via-[#050d1a]/55 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050d1a]/75 via-[#050d1a]/20 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#020817]/90 via-[#020817]/65 to-[#020817]/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/85 via-transparent to-transparent" />
 
-        {/* 顶部色条 */}
-        <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500" />
+        <div className="relative z-10 flex h-full flex-col justify-end gap-6 p-5 md:p-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl rounded-2xl border border-white/15 bg-black/30 p-4 backdrop-blur-md md:p-6">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-300/35 bg-cyan-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-cyan-200">
+              Industrialization · Black-Odorous Water Remediation
+            </div>
 
-        {/* Hero 文字区 */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 pb-10 md:px-10 md:pb-14 lg:px-14">
-          {/* 标签 */}
-          <div className="mb-4 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-black/30 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-cyan-300 backdrop-blur-md">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
-            </span>
-            Industrialization · Black-Odorous Water Remediation
+            <h1 className="text-3xl font-extrabold leading-[1.12] tracking-tight text-white md:text-5xl">
+              {base.titleZh}
+            </h1>
+
+            {base.titleEn ? (
+              <div className="mt-2 text-sm tracking-wide text-white/75 md:text-base">{base.titleEn}</div>
+            ) : null}
+
+            <p className="mt-4 text-sm leading-relaxed text-white/90 md:text-[15px]">{base.briefZh}</p>
+
+            {base.highlightsZh?.length ? (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {base.highlightsZh.map((h) => (
+                  <span
+                    key={h}
+                    className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white"
+                  >
+                    {h}
+                  </span>
+                ))}
+              </div>
+            ) : null}
           </div>
 
-          <h1 className="mt-2 max-w-3xl text-3xl font-extrabold leading-[1.1] tracking-tight text-white drop-shadow-lg md:text-4xl lg:text-[2.75rem]">
-            {base.titleZh}
-          </h1>
-          {base.titleEn ? (
-            <div className="mt-2 text-sm font-medium tracking-wide text-white/50 md:text-base">
-              {base.titleEn}
-            </div>
-          ) : null}
-
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/70 md:text-[15px]">
-            {base.briefZh}
-          </p>
-
-          {/* 亮点 badges */}
-          {base.highlightsZh?.length ? (
-            <div className="mt-5 flex flex-wrap gap-2">
-              {base.highlightsZh.map((h) => (
-                <span
-                  key={h}
-                  className="rounded-full border border-cyan-400/25 bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-200 backdrop-blur-sm"
-                >
-                  {h}
-                </span>
-              ))}
-            </div>
-          ) : null}
-        </div>
-
-        {/* 右侧数据浮窗 — 桌面端 */}
-        <div className="absolute right-8 top-1/2 hidden -translate-y-1/2 flex-col gap-3 lg:flex">
-          {stats.map((item) => (
-            <div
-              key={item.label}
-              className="rounded-2xl border border-white/10 bg-black/40 px-5 py-3.5 text-right backdrop-blur-xl"
-            >
-              <div
-                className={`text-2xl font-black tabular-nums bg-gradient-to-r ${item.color} bg-clip-text text-transparent`}
+          <div className="grid w-full gap-2 sm:grid-cols-2 lg:w-[280px] lg:grid-cols-1">
+            {stats.map((item) => (
+              <article
+                key={item.label}
+                className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 backdrop-blur-md"
               >
-                {item.value}
-              </div>
-              <div className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">
-                {item.label}
-              </div>
-            </div>
-          ))}
+                <div className={`text-2xl font-black tabular-nums bg-gradient-to-r ${item.color} bg-clip-text text-transparent`}>
+                  {item.value}
+                </div>
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-white/70">{item.label}</div>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
-
-      {/* 底部过渡到页面背景色 */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[var(--bg-surface)] to-transparent" />
-    </div>
+    </section>
   );
 }
 
@@ -294,7 +277,9 @@ export default async function IndustrialBaseDetailPage(props: Props) {
   const isAquaculture = slug === "aquaculture";
   const isBlackOdorous = slug === "black-odorous-water";
   const isReidDevice = slug === "reid-device-tianjin";
-  const aquacultureData = isAquaculture ? aquaculturePdfFullData : null;
+  const aquacultureData = isAquaculture
+    ? (await import("@/content/aquaculturePdfFullData")).aquaculturePdfFullData
+    : null;
 
   if (isReidDevice) {
     return (
@@ -354,99 +339,131 @@ export default async function IndustrialBaseDetailPage(props: Props) {
       ]
     : [];
 
-  const sectionThemes = [
-    {
-      card: "border-sky-400/35 bg-[var(--bg-card)]/95",
-      accent: "from-sky-500 to-blue-500",
-      title: "text-[var(--text)]",
-      body: "text-[var(--text-secondary)]",
-      bullet: "bg-sky-500",
-    },
-    {
-      card: "border-emerald-400/35 bg-[var(--bg-card)]/95",
-      accent: "from-emerald-500 to-teal-500",
-      title: "text-[var(--text)]",
-      body: "text-[var(--text-secondary)]",
-      bullet: "bg-emerald-500",
-    },
-    {
-      card: "border-violet-400/35 bg-[var(--bg-card)]/95",
-      accent: "from-violet-500 to-indigo-500",
-      title: "text-[var(--text)]",
-      body: "text-[var(--text-secondary)]",
-      bullet: "bg-violet-500",
-    },
-  ] as const;
+  const sectionThemes = industrialSectionThemes;
 
   const introPanel = (
     <div id="intro">
-      {!isBlackOdorous && base.highlightsZh?.length ? (
-        <div className="mt-5 overflow-hidden rounded-[var(--radius-lg)] border border-cyan-400/30 bg-[var(--bg-card)]/95 shadow-sm">
-          <div className="h-1 w-full bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500" />
-          <div className="p-5 sm:p-6">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-600 shadow-sm">✦</span>
-              <div className="text-lg font-semibold text-[var(--text)]">基地亮点</div>
-            </div>
-            <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
-              {base.highlightsZh.map((x) => (
-                <li
-                  key={x}
-                  className="flex items-start gap-2 rounded-xl border border-cyan-200/60 bg-[var(--bg-elevated)] p-3 text-sm text-[var(--text-secondary)] shadow-sm"
-                >
-                  <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-cyan-500" />
-                  <span>{x}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ) : null}
+      {isBlackOdorous ? (
+        base.sections?.length ? <IndustrialSectionTabs sections={base.sections} /> : null
+      ) : isAquaculture ? (
+        <section className="mt-6 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
+          <div className="h-1 w-full bg-gradient-to-r from-[var(--accent)] via-[var(--accent-secondary)] to-[#22c55e]" />
+          <div className="space-y-6 p-5 sm:p-6">
+            {base.highlightsZh?.length ? (
+              <div className="rounded-2xl border border-[var(--border)] bg-white/80 p-4">
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)]">✦</span>
+                  <h2 className="text-lg font-semibold text-[var(--text)]">基地亮点</h2>
+                </div>
+                <ul className="grid gap-2 md:grid-cols-2">
+                  {base.highlightsZh.map((x) => (
+                    <li key={x} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
+                      <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[var(--accent-secondary)]" />
+                      <span>{x}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
 
-      {base.sections?.length ? (
-        isBlackOdorous ? (
-          <IndustrialSectionTabs sections={base.sections} />
-        ) : (
-          <div className="mt-7 grid gap-4 md:grid-cols-2">
-            {base.sections.map((s, idx) => {
-              const theme = sectionThemes[idx % sectionThemes.length];
-              const lastOddSpan =
-                base.sections && base.sections.length % 2 === 1
-                  ? idx === base.sections.length - 1
-                  : false;
-              return (
-                <section
-                  key={s.titleZh}
-                  className={[
-                    "group relative overflow-hidden rounded-2xl border p-5 sm:p-6 shadow-sm transition duration-300",
-                    "hover:-translate-y-0.5 hover:shadow-md",
-                    theme.card,
-                    lastOddSpan ? "md:col-span-2" : "",
-                  ].join(" ")}
-                >
-                  <div className={["absolute inset-x-0 top-0 h-1 bg-gradient-to-r", theme.accent].join(" ")} />
-                  <h2 className={["text-[20px] font-semibold tracking-tight leading-[1.2]", theme.title].join(" ")}>
-                    {s.titleZh}
-                  </h2>
-                  <p className={["mt-2 text-sm leading-relaxed", theme.body].join(" ")}>
-                    {s.bodyZh}
-                  </p>
-                  {s.bulletsZh?.length ? (
-                    <ul className="mt-4 space-y-2">
-                      {s.bulletsZh.map((b) => (
-                        <li key={b} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
-                          <span className={["mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full", theme.bullet].join(" ")} />
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </section>
-              );
-            })}
+            {base.sections?.length ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {base.sections.map((s, idx) => {
+                  const theme = sectionThemes[idx % sectionThemes.length];
+                  const lastOddSpan = base.sections.length % 2 === 1 && idx === base.sections.length - 1;
+                  return (
+                    <section
+                      key={s.titleZh}
+                      className={[
+                        "rounded-2xl border bg-white/85 p-5",
+                        theme.card,
+                        lastOddSpan ? "md:col-span-2" : "",
+                      ].join(" ")}
+                    >
+                      <div className={["mb-3 h-1 w-full rounded-full bg-gradient-to-r", theme.accent].join(" ")} />
+                      <h3 className={["text-[1.95rem] leading-none font-semibold tracking-tight", theme.title].join(" ")}>{s.titleZh}</h3>
+                      <p className={["mt-3 text-sm leading-relaxed", theme.body].join(" ")}>{s.bodyZh}</p>
+                      {s.bulletsZh?.length ? (
+                        <ul className="mt-4 space-y-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)]/70 p-3">
+                          {s.bulletsZh.map((b) => (
+                            <li key={b} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
+                              <span className={["mt-1.5 h-2 w-2 shrink-0 rounded-full", theme.bullet].join(" ")} />
+                              <span>{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </section>
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
-        )
-      ) : null}
+        </section>
+      ) : (
+        <>
+          {base.highlightsZh?.length ? (
+            <div className="mt-5 overflow-hidden rounded-[var(--radius-lg)] border border-cyan-400/30 bg-[var(--bg-card)]/95 shadow-sm">
+              <div className="h-1 w-full bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500" />
+              <div className="p-5 sm:p-6">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-600 shadow-sm">✦</span>
+                  <div className="text-lg font-semibold text-[var(--text)]">基地亮点</div>
+                </div>
+                <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
+                  {base.highlightsZh.map((x) => (
+                    <li
+                      key={x}
+                      className="flex items-start gap-2 rounded-xl border border-cyan-200/60 bg-[var(--bg-elevated)] p-3 text-sm text-[var(--text-secondary)] shadow-sm"
+                    >
+                      <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-cyan-500" />
+                      <span>{x}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : null}
+
+          {base.sections?.length ? (
+            <div className="mt-7 grid gap-4 md:grid-cols-2">
+              {base.sections.map((s, idx) => {
+                const theme = sectionThemes[idx % sectionThemes.length];
+                const lastOddSpan = base.sections.length % 2 === 1 && idx === base.sections.length - 1;
+                return (
+                  <section
+                    key={s.titleZh}
+                    className={[
+                      "group relative overflow-hidden rounded-2xl border p-5 sm:p-6 shadow-sm transition duration-300",
+                      "hover:-translate-y-0.5 hover:shadow-md",
+                      theme.card,
+                      lastOddSpan ? "md:col-span-2" : "",
+                    ].join(" ")}
+                  >
+                    <div className={["absolute inset-x-0 top-0 h-1 bg-gradient-to-r", theme.accent].join(" ")} />
+                    <h2 className={["text-[20px] font-semibold tracking-tight leading-[1.2]", theme.title].join(" ")}>
+                      {s.titleZh}
+                    </h2>
+                    <p className={["mt-2 text-sm leading-relaxed", theme.body].join(" ")}>
+                      {s.bodyZh}
+                    </p>
+                    {s.bulletsZh?.length ? (
+                      <ul className="mt-4 space-y-2">
+                        {s.bulletsZh.map((b) => (
+                          <li key={b} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
+                            <span className={["mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full", theme.bullet].join(" ")} />
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </section>
+                );
+              })}
+            </div>
+          ) : null}
+        </>
+      )}
 
       {!isBlackOdorous && base.gallery?.length ? (
         <div className="mt-9">
@@ -566,27 +583,35 @@ export default async function IndustrialBaseDetailPage(props: Props) {
   // ── 黑臭水体专属布局 ──────────────────────────────────────────────
   if (isBlackOdorous) {
     return (
-      <main className="pb-20">
-        {/* 沉浸式全宽 Hero — 无 Container 限制 */}
-        <BlackOdorousHero base={base} />
-
+      <main className="py-10 pb-20">
         <Container>
-          {/* 返回按钮 */}
-          <div className="mt-6 flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Link
               href="/industrialization/"
               className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
             >
               ← 返回产业化列表
             </Link>
+            {base.locationUrl ? (
+              <a
+                href={base.locationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
+              >
+                高德地图导航
+              </a>
+            ) : null}
           </div>
 
-          {/* 移动端指标条 */}
+          <div className="mt-6">
+            <BlackOdorousHero base={base} />
+          </div>
+
           <div className="mt-6">
             <BlackOdorousMetricsBar />
           </div>
 
-          {/* 技术路线三步卡片 */}
           <div className="mt-8">
             <div className="mb-4 flex items-center gap-3">
               <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
@@ -596,12 +621,10 @@ export default async function IndustrialBaseDetailPage(props: Props) {
             <BlackOdorousTechCards />
           </div>
 
-          {/* 分节内容 Tabs */}
           <div className="mt-4">
             {introPanel}
           </div>
 
-          {/* 图片画廊 */}
           {base.gallery?.length ? (
             <div className="mt-10">
               <div className="mb-4 flex items-center gap-3">
@@ -662,33 +685,103 @@ export default async function IndustrialBaseDetailPage(props: Props) {
           ) : null}
         </div>
 
-        <div className="mt-6">
-          <CoverHero src={base.cover} alt={base.titleZh} />
-          <div className="mt-5">
-            <h1 className="text-3xl font-semibold tracking-tight">{base.titleZh}</h1>
-            {base.titleEn ? (
-              <div className="mt-1 text-sm text-[var(--muted)]">{base.titleEn}</div>
-            ) : null}
-            <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">{base.briefZh}</p>
-            {base.locationZh ? (
-              <div className="mt-3 text-sm text-[var(--text-secondary)]">
-                <span className="font-medium text-[var(--text)]">位置/说明：</span>
-                {base.locationUrl ? (
-                  <a
-                    href={base.locationUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline underline-offset-2 hover:text-[var(--text)]"
-                  >
-                    {base.locationZh}
-                  </a>
-                ) : (
-                  base.locationZh
-                )}
+        {isAquaculture ? (
+          <section className="relative mt-6 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[var(--accent)] via-[var(--accent-secondary)] to-[#f59e0b]" />
+            <div className="absolute -right-12 top-8 h-36 w-36 rounded-full bg-[var(--accent)]/15 blur-3xl" />
+            <div className="absolute -left-12 bottom-8 h-36 w-36 rounded-full bg-[var(--accent-secondary)]/15 blur-3xl" />
+
+            <div className="relative p-4 md:p-6">
+              <div className="relative h-52 w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] md:h-64">
+                {base.cover ? (
+                  <Image
+                    src={assetPath(base.cover)}
+                    alt={base.titleZh}
+                    fill
+                    loading="eager"
+                    fetchPriority="high"
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                ) : null}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/20 to-transparent" />
+                <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/35 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
+                  水产养殖 · 微纳米气泡应用
+                </div>
               </div>
-            ) : null}
+
+              <div className="mt-5 grid gap-4 lg:grid-cols-3">
+                <div className="lg:col-span-2">
+                  <h1 className="text-4xl font-semibold tracking-tight text-[var(--text)] md:text-5xl">{base.titleZh}</h1>
+                  {base.titleEn ? (
+                    <div className="mt-1 text-sm text-[var(--muted)] md:text-base">{base.titleEn}</div>
+                  ) : null}
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-base">{base.briefZh}</p>
+                  {base.locationZh ? (
+                    <div className="mt-3 text-sm text-[var(--text-secondary)]">
+                      <span className="font-medium text-[var(--text)]">位置/说明：</span>
+                      {base.locationUrl ? (
+                        <a
+                          href={base.locationUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline underline-offset-2 hover:text-[var(--text)]"
+                        >
+                          {base.locationZh}
+                        </a>
+                      ) : (
+                        base.locationZh
+                      )}
+                    </div>
+                  ) : null}
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                  <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
+                    <div className="text-xs text-[var(--muted)]">养殖密度</div>
+                    <div className="mt-1 text-2xl font-bold text-[var(--accent)]">150 kg/m³</div>
+                  </article>
+                  <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
+                    <div className="text-xs text-[var(--muted)]">谷氨酸提升</div>
+                    <div className="mt-1 text-2xl font-bold text-[var(--accent-secondary)]">74.5%</div>
+                  </article>
+                  <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
+                    <div className="text-xs text-[var(--muted)]">成本折算</div>
+                    <div className="mt-1 text-2xl font-bold text-[#f59e0b]">5.51元/斤鱼</div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </section>
+        ) : (
+          <div className="mt-6">
+            <CoverHero src={base.cover} alt={base.titleZh} />
+            <div className="mt-5">
+              <h1 className="text-3xl font-semibold tracking-tight">{base.titleZh}</h1>
+              {base.titleEn ? (
+                <div className="mt-1 text-sm text-[var(--muted)]">{base.titleEn}</div>
+              ) : null}
+              <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">{base.briefZh}</p>
+              {base.locationZh ? (
+                <div className="mt-3 text-sm text-[var(--text-secondary)]">
+                  <span className="font-medium text-[var(--text)]">位置/说明：</span>
+                  {base.locationUrl ? (
+                    <a
+                      href={base.locationUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-2 hover:text-[var(--text)]"
+                    >
+                      {base.locationZh}
+                    </a>
+                  ) : (
+                    base.locationZh
+                  )}
+                </div>
+              ) : null}
+            </div>
           </div>
-        </div>
+        )}
 
         {isAquaculture && resultsPanel ? (
           <AquacultureTabs introPanel={introPanel} resultsPanel={resultsPanel} />

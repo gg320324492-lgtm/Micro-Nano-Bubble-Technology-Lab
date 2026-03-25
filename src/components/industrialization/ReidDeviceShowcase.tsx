@@ -123,7 +123,7 @@ export default function ReidDeviceShowcase({ base }: Props) {
         initial={reduceMotion ? false : { opacity: 0, y: 18 }}
         animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: "easeOut" }}
-        className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)]"
+        className="panel-shell"
       >
         <div className="p-5 md:p-7">
           <div className="relative mb-5 h-56 w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] md:mb-6 md:h-72">

@@ -67,6 +67,15 @@ async function transform(srcAbs, destAbs, max, quality) {
     .toFile(destAbs);
 }
 
+async function isFresh(srcAbs, destAbs) {
+  try {
+    const [srcStat, destStat] = await Promise.all([fs.stat(srcAbs), fs.stat(destAbs)]);
+    return destStat.mtimeMs >= srcStat.mtimeMs;
+  } catch {
+    return false;
+  }
+}
+
 function toMB(bytes) {
   return (bytes / 1024 / 1024).toFixed(2);
 }
@@ -87,10 +96,15 @@ async function main() {
 
   let generated = 0;
   let skipped = 0;
+  let cached = 0;
   for (const srcAbs of sourceFiles) {
     const variants = isPeopleImage(srcAbs) ? AVATAR_VARIANTS : COMMON_VARIANTS;
     for (const v of variants) {
       const out = outputPath(srcAbs, v.suffix);
+      if (await isFresh(srcAbs, out)) {
+        cached += 1;
+        continue;
+      }
       try {
         await transform(srcAbs, out, v.max, v.quality);
         generated += 1;
@@ -135,6 +149,7 @@ async function main() {
 
   console.log(`optimized source images: ${sourceFiles.length}`);
   console.log(`generated variants: ${generated}`);
+  console.log(`cached variants: ${cached}`);
   console.log(`skipped variants: ${skipped}`);
   console.log(`optimized dirs image total: ${toMB(total)} MB`);
 }

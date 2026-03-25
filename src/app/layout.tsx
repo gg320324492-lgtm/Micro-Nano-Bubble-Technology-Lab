@@ -1,11 +1,10 @@
-﻿// src/app/layout.tsx
+// src/app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
 import { Noto_Serif_SC, JetBrains_Mono } from "next/font/google";
 
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import Container from "@/components/Container";
 
 const notoSerif = Noto_Serif_SC({
   weight: ["400", "600", "700"],

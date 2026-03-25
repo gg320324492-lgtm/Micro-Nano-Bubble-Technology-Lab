@@ -75,7 +75,7 @@ export default function AquacultureFigureStrip({
   return (
     <>
       <div className="mt-2 grid gap-4 sm:grid-cols-2">
-        {figures.map((fig) => {
+        {figures.map((fig, idx) => {
           const relatedPage = pages.find((p) => p.page === fig.source.page);
           const displayTitle =
             fig.source.page === 1
@@ -93,7 +93,10 @@ export default function AquacultureFigureStrip({
           return (
             <article
               key={fig.id}
-              className="group flex h-full flex-col gap-3 rounded-xl border border-amber-300/40 bg-[var(--bg-card)] p-3 shadow-sm"
+              className={[
+                "group flex h-full flex-col gap-3 rounded-xl border border-amber-300/40 bg-[var(--bg-card)] p-3 shadow-sm",
+                figures.length % 2 === 1 && idx === figures.length - 1 ? "sm:col-span-2" : "",
+              ].join(" ")}
             >
               <div className="flex items-center gap-2">
                 <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 text-amber-600">

@@ -3,9 +3,11 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import Container from "@/components/Container";
 import * as contactModule from "@/data/contact";
 import { navItems, site } from "@/data/site";
+import { pickObject } from "@/lib/data";
 
 type ContactLike = {
   email?: string;
@@ -15,18 +17,18 @@ type ContactLike = {
   website?: string;
 };
 
-function pickObject(mod: Record<string, unknown>, keys: string[]): ContactLike {
-  for (const k of ["default", ...keys]) {
-    const v = mod?.[k];
-    if (v && typeof v === "object" && !Array.isArray(v)) return v as ContactLike;
-  }
-  return {};
-}
-
 export default function SiteFooter() {
-  const contact = pickObject(contactModule as unknown as Record<string, unknown>, ["contact", "contacts"]);
+  const contact = pickObject<ContactLike>(contactModule, ["contact", "contacts"]);
   const footerNavItems = navItems.filter((item) => item.href !== "/contact");
   const year = new Date().getFullYear();
+  const [showTop, setShowTop] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 720);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <footer className="relative mt-auto border-t border-[var(--border)] bg-[var(--bg-surface)] backdrop-blur-xl overflow-hidden">
@@ -173,6 +175,20 @@ export default function SiteFooter() {
           )}
         </motion.div>
       </Container>
+
+      {showTop ? (
+        <motion.button
+          type="button"
+          initial={{ opacity: 0, y: 18, scale: 0.94 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-6 right-6 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--border)] bg-white/90 text-[var(--accent)] shadow-[var(--shadow-card)] backdrop-blur-xl transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-hover)]"
+          aria-label="回到顶部"
+        >
+          ↑
+        </motion.button>
+      ) : null}
     </footer>
   );
 }

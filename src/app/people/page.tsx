@@ -11,14 +11,7 @@ import Badge from "@/components/ui/Badge";
 import Chip from "@/components/ui/Chip";
 import Reveal from "@/components/motion/Reveal";
 import { DIRECTION_TAGS, getDirectionTone, getRoleTone } from "@/lib/peopleTheme";
-
-function pickArray(mod: any, keys: string[]) {
-  for (const k of ["default", ...keys]) {
-    const v = mod?.[k];
-    if (Array.isArray(v)) return v as Person[];
-  }
-  return [] as Person[];
-}
+import { pickArray } from "@/lib/data";
 
 function normalize(s: unknown) {
   return String(s ?? "")
@@ -49,7 +42,7 @@ function groupOrder(role: string) {
 
 export default function PeoplePage() {
   // ✅ 只展示学生/已毕业成员（避免与 Home PI 重复）
-  const all = pickArray(peopleModule, ["people"]).filter((p) =>
+  const all = pickArray<Person>(peopleModule, ["people"]).filter((p) =>
     ["PhD", "Master", "Undergrad", "Alumni"].includes(String(p.role))
   );
 

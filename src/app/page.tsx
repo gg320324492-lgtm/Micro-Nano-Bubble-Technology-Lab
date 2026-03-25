@@ -23,24 +23,9 @@ import PublicImage from "@/components/PublicImage";
 import { site } from "@/data/site";
 import { assetPath } from "@/lib/assetPath";
 import { toImageVariant } from "@/lib/imageVariant";
+import { pickArray, pickObject } from "@/lib/data";
 
 type AnyRecord = Record<string, unknown>;
-
-function pickArray(mod: unknown, keys: string[]) {
-  for (const k of ["default", ...keys]) {
-    const v = (mod as Record<string, unknown>)?.[k];
-    if (Array.isArray(v)) return v;
-  }
-  return [];
-}
-
-function pickObject(mod: unknown, keys: string[]) {
-  for (const k of ["default", ...keys]) {
-    const v = (mod as Record<string, unknown>)?.[k];
-    if (v && typeof v === "object" && !Array.isArray(v)) return v as Record<string, unknown>;
-  }
-  return {};
-}
 
 function extractTitleFromCitation(citation?: string) {
   if (!citation) return "";
@@ -92,9 +77,9 @@ function getHomeAvatarVariant(personId: string) {
 export default function HomePage() {
   const hoverSpring = { type: "spring" as const, stiffness: 420, damping: 32, mass: 0.6 };
 
-  const researchAreas = pickArray(researchModule, ["researchDirections", "researchAreas", "research"]);
-  const publications = pickArray(publicationsModule, ["publications"]) as AnyRecord[];
-  const contact = pickObject(contactModule, ["contact", "contacts"]) as {
+  const researchAreas = pickArray<AnyRecord>(researchModule, ["researchDirections", "researchAreas", "research"]);
+  const publications = pickArray<AnyRecord>(publicationsModule, ["publications"]);
+  const contact = pickObject<{
     email?: string;
     addressZh?: string;
     address?: string;
@@ -102,7 +87,7 @@ export default function HomePage() {
     website?: string;
     joinZh?: string;
     coopZh?: string;
-  };
+  }>(contactModule, ["contact", "contacts"]);
 
   const featuredPubs = [...publications]
     .sort((a, b) => getPubYear(b) - getPubYear(a))
@@ -303,16 +288,16 @@ export default function HomePage() {
 
       {/* Main Content - 全新布局设计 */}
       {/* 去掉纯白背景，改为轻微渐变，避免遮挡顶部背景图 */}
-      <div className="relative z-20 mt-[-120px] md:mt-[-180px] bg-gradient-to-b from-white/0 via-white/70 to-white">
+      <div className="relative z-20 bg-white">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="space-y-20 md:space-y-32 pt-44 md:pt-56 pb-20">
+          <div className="space-y-20 md:space-y-32 pt-10 md:pt-12 pb-20">
             {/* 课题组标题 + PI 介绍 - 重设计排版 */}
             <motion.section
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6 }}
-              className="pt-6 md:pt-8 mb-10 md:mb-16"
+              className="mb-10 md:mb-16"
             >
               {/* 课题组简介 + 导师介绍 - 融合为一块 */}
               <motion.div
@@ -320,22 +305,19 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="relative overflow-hidden rounded-[var(--radius-xl)] bg-white/80 p-8 md:p-12 pb-6 backdrop-blur-sm shadow-[var(--shadow-card)]"
+                className="relative rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--bg-card)]/95 px-6 py-6 md:px-10 md:py-7"
               >
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--accent)] via-[var(--accent-secondary)] to-[var(--accent)]" />
-                <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[var(--accent-soft)] blur-3xl opacity-60" />
-                <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-[var(--accent-secondary)]/20 blur-3xl opacity-50" />
                 <div className="relative">
                   <motion.h1
                     initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.05 }}
-                    className="text-center text-4xl md:text-5xl lg:text-6xl font-bold gradient-text mb-6 tracking-tight"
+                    className="text-center text-4xl md:text-5xl lg:text-6xl font-bold gradient-text mb-2 tracking-tight"
                   >
                     {site.nameZh}
                   </motion.h1>
-                  <div className="mx-auto mb-6 h-px w-16 bg-gradient-to-r from-transparent via-[var(--accent)] to-transparent opacity-60" />
                   <motion.p
                     initial={{ opacity: 0, y: 12 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -350,7 +332,7 @@ export default function HomePage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.15 }}
-                    className="mt-4 text-center text-sm md:text-base text-[var(--muted)] max-w-2xl mx-auto leading-relaxed"
+                    className="mt-2 text-center text-sm md:text-base text-[var(--muted)] max-w-2xl mx-auto leading-relaxed"
                   >
                     {site.taglineEn}
                   </motion.p>

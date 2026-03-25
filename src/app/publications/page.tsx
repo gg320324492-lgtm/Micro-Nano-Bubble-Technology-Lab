@@ -9,6 +9,7 @@ import { buttonClassName } from "@/components/ui/Button";
 import Reveal from "@/components/motion/Reveal";
 import PublicImage from "@/components/PublicImage";
 import assetPath from "@/lib/assetPath";
+import { pickList } from "@/lib/data";
 
 // ✅ 兼容导入：不要求 data 文件必须 default export
 import * as pubsMod from "@/data/publications";
@@ -17,18 +18,6 @@ import * as honorsMod from "@/data/honors";
 import * as projectsMod from "@/data/projects";
 
 type TabKey = "papers" | "patents" | "honors" | "projects";
-
-function pickList(mod: any) {
-  return (
-    mod?.publications ??
-    mod?.papers ??
-    mod?.patents ??
-    mod?.honors ??
-    mod?.items ??
-    mod?.default ??
-    []
-  );
-}
 
 function toStr(v: any) {
   return typeof v === "string" ? v : v == null ? "" : String(v);

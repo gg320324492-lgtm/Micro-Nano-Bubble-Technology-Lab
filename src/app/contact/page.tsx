@@ -1,48 +1,51 @@
-import Link from "next/link";
 import ContactMethods from "@/components/contact/ContactMethods";
 import JoinSteps from "@/components/contact/JoinSteps";
 import FaqSection from "@/components/contact/FaqSection";
+import Heading from "@/components/ui/Heading";
+import contact from "@/data/contact";
 
 export default function ContactPage() {
-  const email = "zhaohangjia@tju.edu.cn";
-  const addressLine1 = "天津市南开区卫津路92号（天津大学）";
-  const addressLine2 = "邮编：300072";
-  const address = `${addressLine1}，${addressLine2}`;
-  const website = "https://faculty.tju.edu.cn/226066/zh_CN/index.htm";
+  const email = contact.email;
+  const address = contact.addressZh;
+  const addressLine1 = address.split("，")[0] ?? address;
+  const addressLine2 = address.split("，")[1] ?? "";
+  const website = contact.websiteZh;
   const websiteText = "faculty.tju.edu.cn";
   const amapLink = `https://www.amap.com/search?query=${encodeURIComponent(addressLine1)}`;
 
-  const joinMailSubject = "【加入】姓名-学校/单位-意向方向";
-  const coopMailSubject = "【合作】姓名-单位-合作方向";
-
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-10 md:py-14">
-      <header className="mb-10 md:mb-12">
-        <h1 className="text-3xl font-semibold tracking-tight text-[var(--text)] md:text-4xl">
-          联系我们 / 加入我们&nbsp;
-          <span className="align-baseline text-xl font-normal text-[var(--muted)]">
-            Contact &amp; Join Us
-          </span>
-        </h1>
-        <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--text-secondary)] md:text-base">
-          欢迎联系科研合作与加入事宜，我们会尽快回复并提供清晰路径。
-        </p>
+    <main className="relative mx-auto w-full max-w-6xl px-4 py-10 md:py-14">
+      <div className="pointer-events-none absolute -left-24 top-20 h-56 w-56 rounded-full bg-[var(--accent)]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 top-28 h-64 w-64 rounded-full bg-[var(--accent-secondary)]/10 blur-3xl" />
+
+      <header className="relative mb-8 rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] p-6 shadow-[var(--shadow-card)] md:mb-10 md:p-8">
+        <Heading
+          as="h1"
+          title="联系我们 / 加入我们 Contact&JoinUs"
+          className="[&>h1]:text-[var(--text)]"
+          subtitleClassName="text-[var(--text-secondary)]"
+          subtitle="欢迎联系科研合作与加入事宜。你可以通过邮件、地图导航和教师主页快速建立沟通，我们会尽快回复并提供清晰路径。"
+        />
       </header>
 
-      <div className="space-y-10 md:space-y-12">
-        <ContactMethods
-          email={email}
-          amapLink={amapLink}
-          address={address}
-          addressLine1={addressLine1}
-          addressLine2={addressLine2}
-          website={website}
-          websiteText={websiteText}
-        />
+      <div className="grid gap-6 lg:grid-cols-5">
+        <div className="space-y-6 lg:col-span-3">
+          <ContactMethods
+            email={email}
+            amapLink={amapLink}
+            address={address}
+            addressLine1={addressLine1}
+            addressLine2={addressLine2}
+            website={website}
+            websiteText={websiteText}
+          />
 
-        <JoinSteps />
+          <FaqSection />
+        </div>
 
-        <FaqSection />
+        <div className="lg:col-span-2">
+          <JoinSteps />
+        </div>
       </div>
     </main>
   );

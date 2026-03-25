@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 type TabKey = "intro" | "results";
@@ -10,15 +10,14 @@ type Props = {
   resultsPanel: ReactNode;
 };
 
-export default function AquacultureTabs({ introPanel, resultsPanel }: Props) {
-  const [activeTab, setActiveTab] = useState<TabKey>("intro");
+function getInitialTab(): TabKey {
+  if (typeof window === "undefined") return "intro";
+  const params = new URLSearchParams(window.location.search);
+  return params.get("tab") === "results" ? "results" : "intro";
+}
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const params = new URLSearchParams(window.location.search);
-    const tab = params.get("tab");
-    setActiveTab(tab === "results" ? "results" : "intro");
-  }, []);
+export default function AquacultureTabs({ introPanel, resultsPanel }: Props) {
+  const [activeTab, setActiveTab] = useState<TabKey>(getInitialTab);
 
   const switchTab = (tab: TabKey) => {
     setActiveTab(tab);
@@ -31,50 +30,49 @@ export default function AquacultureTabs({ introPanel, resultsPanel }: Props) {
     } else {
       url.searchParams.set("tab", "results");
     }
-
     window.history.replaceState(null, "", url.toString());
   };
 
   return [
     <div
       key="aquaculture-tabs"
-      className="mt-6 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-2"
+      className="mt-6 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-2 shadow-[var(--shadow-card)]"
     >
       <div className="grid grid-cols-2 gap-2">
-        <button
-          type="button"
-          onClick={() => switchTab("intro")}
-          className={[
-            "inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium transition",
-            activeTab === "intro"
-              ? "bg-[var(--accent)] text-[var(--bg-deep)] shadow-md"
-              : "bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
-          ].join(" ")}
-          aria-pressed={activeTab === "intro"}
-        >
-          基地介绍
-        </button>
-        <button
-          type="button"
-          onClick={() => switchTab("results")}
-          className={[
-            "inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium transition",
-            activeTab === "results"
-              ? "bg-[var(--accent)] text-[var(--bg-deep)] shadow-md"
-              : "bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
-          ].join(" ")}
-          aria-pressed={activeTab === "results"}
-        >
-          成果展示
-        </button>
+        {[
+          { key: "intro" as const, label: "基地介绍" },
+          { key: "results" as const, label: "成果展示" },
+        ].map((tab) => {
+          const active = activeTab === tab.key;
+          return (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => switchTab(tab.key)}
+              className="relative inline-flex items-center justify-center rounded-xl px-3 py-2.5 text-sm font-semibold"
+              aria-pressed={active}
+            >
+              {active ? (
+                <motion.span
+                  layoutId="aquaculture-tab-active"
+                  className="absolute inset-0 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] shadow-md"
+                  transition={{ type: "spring", stiffness: 360, damping: 30 }}
+                />
+              ) : null}
+              <span className={`relative z-10 ${active ? "text-white" : "text-[var(--text-secondary)]"}`}>
+                {tab.label}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </div>,
     <AnimatePresence mode="wait" key="aquaculture-panels">
       <motion.div
         key={activeTab}
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -16 }}
+        exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.25 }}
       >
         {activeTab === "intro" ? introPanel : resultsPanel}
