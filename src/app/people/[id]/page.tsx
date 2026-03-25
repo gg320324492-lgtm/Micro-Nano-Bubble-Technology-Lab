@@ -35,8 +35,10 @@ export default async function PeopleDetailPage(props: PageProps) {
   if (!person) notFound();
 
   const displayName = person.nameZh || person.nameEn;
-  const photo = person.avatar ?? "";
-  const detailVariant = person.id === "zhaohangjia" ? "thumb" : undefined;
+  // 详情页优先用 detailPhoto，没有则 fallback 到 avatar
+  const photo = person.detailPhoto ?? person.avatar ?? "";
+  // detailPhoto 是独立大图，不需要 variant 转换；avatar fallback 时也不转换
+  const detailVariant = undefined;
   const gradeLine = [person.cohort ? `${person.cohort}级` : "", roleLabel(person.role)]
     .filter(Boolean)
     .join("");

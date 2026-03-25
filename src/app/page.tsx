@@ -789,7 +789,7 @@ export default function HomePage() {
                     </Link>
                   </div>
 
-                  <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-3">
                     {peopleDigest.featured.map((p, idx) => {
                       const avatarSrc = pickPersonPhoto(p as unknown as Record<string, unknown>);
 
@@ -800,13 +800,14 @@ export default function HomePage() {
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true }}
                           transition={{ duration: 0.5, delay: Math.min(idx * 0.08, 0.24) }}
+                          style={{ willChange: "transform" }}
                         >
                           <Link
                             href="/people"
-                            className="group flex items-center gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-white px-3.5 py-3 hover:bg-[var(--accent-soft)]/20 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01]"
+                            className="group flex flex-col items-center gap-2 rounded-[var(--radius-md)] border border-[var(--border)] bg-white px-3 py-3 text-center hover:bg-[var(--accent-soft)]/20 transition-all duration-300 sm:flex-row sm:text-left sm:px-3.5 sm:gap-3"
                           >
                             {avatarSrc && !avatarLoadFailed[p.id] ? (
-                              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[var(--bg-elevated)] ring-1 ring-[var(--border)]">
+                              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[var(--bg-elevated)] ring-1 ring-[var(--border)] sm:h-12 sm:w-12">
                                 <PublicImage
                                   src={avatarSrc}
                                   variant={getHomeAvatarVariant(String(p.id))}
@@ -820,22 +821,22 @@ export default function HomePage() {
                                 />
                               </div>
                             ) : (
-                              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--bg-elevated)] text-sm font-semibold text-[var(--muted)] ring-1 ring-[var(--border)]">
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--bg-elevated)] text-sm font-semibold text-[var(--muted)] ring-1 ring-[var(--border)] sm:h-12 sm:w-12">
                                 {(p.nameZh || p.nameEn || "?").slice(0, 1)}
                               </div>
                             )}
-                            <div className="min-w-0">
-                              <div className="flex items-center gap-2">
-                                <div className="font-semibold text-[var(--text)] truncate">
+                            <div className="min-w-0 w-full">
+                              <div className="flex flex-wrap items-center justify-center gap-1 sm:justify-start sm:gap-2">
+                                <div className="font-semibold text-sm text-[var(--text)] truncate">
                                   {p.nameZh}
                                 </div>
                                 {p.cohort ? (
-                                  <span className="text-[11px] font-semibold text-[var(--muted)]">
+                                  <span className="text-[11px] font-semibold text-[var(--muted)] shrink-0">
                                     {p.cohort}级
                                   </span>
                                 ) : null}
                               </div>
-                              <div className="text-xs text-[var(--text-secondary)] truncate">
+                              <div className="hidden text-xs text-[var(--text-secondary)] truncate sm:block">
                                 {p.introZh}
                               </div>
                             </div>

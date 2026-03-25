@@ -16,24 +16,9 @@ type Props = {
   activeTag?: string;
 };
 
-function pickPhoto(p: Person): string {
-  const x = p as Record<string, unknown>;
-  return (
-    (x.photo as string) ||
-    (x.avatar as string) ||
-    (x.image as string) ||
-    (x.img as string) ||
-    (x.photoUrl as string) ||
-    (x.avatarUrl as string) ||
-    (x.headshot as string) ||
-    ""
-  );
-}
-
-function getCardAvatarVariant(personId: string) {
-  // 赵航佳：成员列表卡片使用证件照原图
-  if (personId === "zhaohangjia") return undefined;
-  return "thumb" as const;
+function pickCardPhoto(p: Person): string {
+  // 卡片只取 avatar 字段（列表小图系统），不读 detailPhoto
+  return p.avatar ?? "";
 }
 
 export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
@@ -45,7 +30,7 @@ export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
 
   const hoverSpring = { type: "spring" as const, stiffness: 420, damping: 32, mass: 0.6 };
 
-  const photo = pickPhoto(person);
+  const photo = pickCardPhoto(person);
   const nameZh = (p.nameZh ?? "") as string;
   const nameEn = (p.nameEn ?? "") as string;
   const cohort = p.cohort ? `${p.cohort}级` : "";
@@ -87,7 +72,6 @@ export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
           {photo ? (
             <PublicImage
               src={photo}
-              variant={getCardAvatarVariant(person.id)}
               alt={nameZh || nameEn || "person"}
               fill
               sizes="56px"

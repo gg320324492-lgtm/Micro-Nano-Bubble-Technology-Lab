@@ -22,7 +22,8 @@ export type Person = {
   introZh: string;
   tags?: string[];
 
-  avatar?: string;
+  avatar?: string;        // 列表卡片用图（小头像）
+  detailPhoto?: string;   // 详情页用图（大图），不填则 fallback 到 avatar
 
   // ✅ 新增：入学年级（显示为 “2025级”）
   cohort?: number;
@@ -93,6 +94,7 @@ export const people: Person[] = [
       [TAG_CLEAN, "臭氧微纳米气泡", "底泥-水界面"],
       2025
     ),
+    detailPhoto: "/people/zhaohangjia-detail.jpg",
     hobbyZh: "阅读，旅游，美食",
     email: "zhaohangjia@tju.edu.cn",
   },

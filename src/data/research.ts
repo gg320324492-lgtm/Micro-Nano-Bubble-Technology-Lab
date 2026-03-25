@@ -163,7 +163,7 @@ export const researchDirections: ResearchDirection[] = [
     category: "Environment Remediation",
     positioningZh:
       "该方向是课题组“面向城市与流域场景的环境治理主线”：在无需大剂量化学药剂的前提下，通过微纳米气泡强化曝气与原位氧化，为黑臭水体修复提供一套以 DO、ORP 与恶臭控制为抓手的低能耗技术路线，并兼顾现有管网与水系的工程约束。",
-    cover: "/research/surface-cleaning-removal/cover.jpg",
+    cover: "/research/black-odorous-water-remediation/module1-fig3.png",
     coverFocusY: 32,
     gallery: [
       {
@@ -383,7 +383,7 @@ export const researchDirections: ResearchDirection[] = [
     category: "Aquaculture",
     positioningZh:
       "该方向是课题组“将微纳米气泡送入水产养殖池塘与循环水工厂”的主线：在不依赖高强度药物干预的前提下，通过增氧与水环境调控支撑高密度养殖，并以养殖性能与肉质品质为核心结果指标，为“绿色、无抗、高品质”水产生产提供技术选项。",
-    cover: "/research/agriculture-salt-alkali/cover.jpg",
+    cover: "/research/aquaculture-high-density/module1-fig1.png",
     coverFocusY: 34,
     gallery: [
       {
