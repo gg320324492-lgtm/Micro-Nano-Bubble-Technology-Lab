@@ -340,6 +340,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
     : [];
 
   const sectionThemes = industrialSectionThemes;
+  const baseSections = base.sections ?? [];
 
   const introPanel = (
     <div id="intro">
@@ -366,11 +367,11 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               </div>
             ) : null}
 
-            {base.sections?.length ? (
+            {baseSections.length ? (
               <div className="grid gap-4 md:grid-cols-2">
-                {base.sections.map((s, idx) => {
+                {baseSections.map((s, idx) => {
                   const theme = sectionThemes[idx % sectionThemes.length];
-                  const lastOddSpan = base.sections.length % 2 === 1 && idx === base.sections.length - 1;
+                  const lastOddSpan = baseSections.length % 2 === 1 && idx === baseSections.length - 1;
                   return (
                     <section
                       key={s.titleZh}
@@ -425,11 +426,11 @@ export default async function IndustrialBaseDetailPage(props: Props) {
             </div>
           ) : null}
 
-          {base.sections?.length ? (
+          {baseSections.length ? (
             <div className="mt-7 grid gap-4 md:grid-cols-2">
-              {base.sections.map((s, idx) => {
+              {baseSections.map((s, idx) => {
                 const theme = sectionThemes[idx % sectionThemes.length];
-                const lastOddSpan = base.sections.length % 2 === 1 && idx === base.sections.length - 1;
+                const lastOddSpan = baseSections.length % 2 === 1 && idx === baseSections.length - 1;
                 return (
                   <section
                     key={s.titleZh}
