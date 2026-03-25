@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Container from "@/components/Container";
 import { navItems as NAV } from "@/data/site";
@@ -21,14 +21,31 @@ export default function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollYRef = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const currentY = window.scrollY;
+      const lastY = lastScrollYRef.current;
+
+      setScrolled(currentY > 20);
+
+      if (open) {
+        setHidden(false);
+      } else if (currentY <= 40 || currentY < lastY) {
+        setHidden(false);
+      } else if (currentY > lastY + 4) {
+        setHidden(true);
+      }
+
+      lastScrollYRef.current = currentY;
     };
-    window.addEventListener("scroll", handleScroll);
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [open]);
 
   const navItems: NavItem[] = useMemo(() => {
     return NAV.filter((x) => x.href !== "/contact").map((x) => ({
@@ -41,8 +58,8 @@ export default function SiteHeader() {
   return (
     <motion.header
       initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      animate={{ y: hidden && !open ? -140 : 0 }}
+      transition={{ duration: 0.28, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-white/95 backdrop-blur-xl border-b border-[var(--border)] shadow-lg"
