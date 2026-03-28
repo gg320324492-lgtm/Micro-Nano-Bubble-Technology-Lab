@@ -161,7 +161,13 @@ export default function ReidDeviceShowcase({ base }: Props) {
                   className="rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-4 transition-shadow hover:shadow-md"
                 >
                   <div className="text-xs text-[var(--muted)]">{kpi.label}</div>
-                  <div className="mt-1 text-2xl font-semibold text-[var(--text)]">{kpi.value}</div>
+                  <div className={[
+                    "mt-1 text-2xl font-semibold",
+                    idx === 0 ? "bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent" :
+                    idx === 1 ? "bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent" :
+                    idx === 2 ? "bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent" :
+                    "bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent"
+                  ].join(" ")}>{kpi.value}</div>
                   <div className="mt-1 text-xs text-[var(--text-secondary)]">{kpi.note}</div>
                 </motion.article>
               ))}

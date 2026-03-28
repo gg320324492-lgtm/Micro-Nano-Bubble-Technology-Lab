@@ -438,3 +438,84 @@ section[className*="rounded-3xl"] div[className*="text-white/70"] {
 section[className*="rounded-3xl"] img[className*="brightness-\[0\.5\]"] {
   filter: brightness(0.6) !important;
 }
+
+/* ── 黑臭水体页面配色优化 ── */
+/* 使用 CSS 变量和属性选择器来覆盖深色配色 */
+
+/* Hero 背景 */
+section[class*="rounded-3xl"][class*="shadow-\[var\(--shadow-card\)\]"] {
+  background: linear-gradient(to bottom right, #f8fafc, #ffffff, #f0f9ff) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 顶部渐变线 */
+section[class*="rounded-3xl"] > div[class*="bg-gradient-to-r"][class*="from-cyan-500"] {
+  background: linear-gradient(to right, #3b82f6, #06b6d4, #10b981) !important;
+}
+
+/* 深色覆盖层改为浅色 */
+section[class*="rounded-3xl"] div[class*="from-\[#020817\]/90"] {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4)) !important;
+}
+
+section[class*="rounded-3xl"] div[class*="from-\[#020817\]/85"] {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.9), transparent) !important;
+}
+
+/* 内容框 */
+section[class*="rounded-3xl"] div[class*="bg-black/30"] {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #bfdbfe !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 标签 */
+section[class*="rounded-3xl"] div[class*="bg-cyan-500/10"] {
+  background-color: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1e40af !important;
+}
+
+/* 标题 */
+section[class*="rounded-3xl"] h1[class*="text-white"] {
+  color: #0f172a !important;
+}
+
+/* 副标题 */
+section[class*="rounded-3xl"] div[class*="text-white/75"] {
+  color: #475569 !important;
+}
+
+/* 描述 */
+section[class*="rounded-3xl"] p[class*="text-white/90"] {
+  color: #334155 !important;
+}
+
+/* 高亮 */
+section[class*="rounded-3xl"] span[class*="bg-white/10"] {
+  background-color: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1e40af !important;
+}
+
+/* 指标卡片 */
+section[class*="rounded-3xl"] article[class*="bg-black/40"] {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+section[class*="rounded-3xl"] article[class*="bg-black/40"]:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 指标标签 */
+section[class*="rounded-3xl"] div[class*="text-white/70"] {
+  color: #64748b !important;
+}
+
+/* 图片亮度 */
+section[class*="rounded-3xl"] img[class*="brightness-\[0\.5\]"] {
+  filter: brightness(0.6) !important;
+}
