@@ -24,15 +24,15 @@ export function generateStaticParams() {
 // ── 黑臭水体专属 Hero ──────────────────────────────────────────────
 function BlackOdorousHero({ base }: { base: IndustrialBase }) {
   const stats = [
-    { label: "COD 削减", value: "21–28%", color: "from-cyan-400 to-sky-500" },
-    { label: "氨氮削减", value: "≤93%", color: "from-emerald-400 to-teal-500" },
-    { label: "叶绿素去除", value: "71.5%", color: "from-violet-400 to-purple-500" },
+    { label: "COD 削减", value: "21�?8%", color: "from-cyan-400 to-sky-500" },
+    { label: "氨氮削减", value: "�?3%", color: "from-emerald-400 to-teal-500" },
+    { label: "叶绿素去�?, value: "71.5%", color: "from-violet-400 to-purple-500" },
     { label: "处理时长", value: "10 min", color: "from-amber-400 to-orange-500" },
   ];
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
-      <div className="absolute inset-x-0 top-0 z-20 h-1 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600" />
+    <section className="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-blue-50 shadow-lg">
+      <div className="absolute inset-x-0 top-0 z-20 h-1 bg-gradient-to-r from-blue-500 via-cyan-500 to-emerald-500" />
 
       <div className="relative h-[440px] w-full md:h-[520px]">
         {base.cover ? (
@@ -43,35 +43,35 @@ function BlackOdorousHero({ base }: { base: IndustrialBase }) {
             loading="eager"
             fetchPriority="high"
             sizes="100vw"
-            className="object-cover brightness-[0.5]"
+            className="object-cover brightness-[0.6]"
           />
         ) : null}
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#020817]/90 via-[#020817]/65 to-[#020817]/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/70 to-white/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/85 via-transparent to-transparent" />
 
         <div className="relative z-10 flex h-full flex-col justify-end gap-6 p-5 md:p-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl rounded-2xl border border-white/15 bg-black/30 p-4 backdrop-blur-md md:p-6">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-300/35 bg-cyan-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-cyan-200">
+          <div className="max-w-3xl rounded-2xl border border-blue-200 bg-white/95 shadow-md p-4 backdrop-blur-sm md:p-6">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-300 bg-blue-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-blue-700">
               Industrialization · Black-Odorous Water Remediation
             </div>
 
-            <h1 className="text-3xl font-extrabold leading-[1.12] tracking-tight text-white md:text-5xl">
+            <h1 className="text-3xl font-extrabold leading-[1.12] tracking-tight text-slate-900 md:text-5xl">
               {base.titleZh}
             </h1>
 
             {base.titleEn ? (
-              <div className="mt-2 text-sm tracking-wide text-white/75 md:text-base">{base.titleEn}</div>
+              <div className="mt-2 text-sm tracking-wide text-slate-600 md:text-base">{base.titleEn}</div>
             ) : null}
 
-            <p className="mt-4 text-sm leading-relaxed text-white/90 md:text-[15px]">{base.briefZh}</p>
+            <p className="mt-4 text-sm leading-relaxed text-slate-700 md:text-[15px]">{base.briefZh}</p>
 
             {base.highlightsZh?.length ? (
               <div className="mt-4 flex flex-wrap gap-2">
                 {base.highlightsZh.map((h) => (
                   <span
                     key={h}
-                    className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white"
+                    className="rounded-full border border-blue-300 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700"
                   >
                     {h}
                   </span>
@@ -84,12 +84,12 @@ function BlackOdorousHero({ base }: { base: IndustrialBase }) {
             {stats.map((item) => (
               <article
                 key={item.label}
-                className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 backdrop-blur-md"
+                className="rounded-xl border border-slate-200 bg-white/90 px-4 py-3 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className={`text-2xl font-black tabular-nums bg-gradient-to-r ${item.color} bg-clip-text text-transparent`}>
                   {item.value}
                 </div>
-                <div className="text-[11px] font-semibold uppercase tracking-wider text-white/70">{item.label}</div>
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-600">{item.label}</div>
               </article>
             ))}
           </div>
@@ -102,16 +102,16 @@ function BlackOdorousHero({ base }: { base: IndustrialBase }) {
 // ── 黑臭水体：移动端指标条（Hero 外，仅小屏显示）─────────────────
 function BlackOdorousMetricsBar() {
   const stats = [
-    { label: "COD 削减",  value: "21–28%", color: "text-cyan-600" },
-    { label: "氨氮削减",  value: "≤93%",   color: "text-emerald-600" },
-    { label: "叶绿素去除", value: "71.5%", color: "text-violet-600" },
+    { label: "COD 削减",  value: "21�?8%", color: "text-cyan-600" },
+    { label: "氨氮削减",  value: "�?3%",   color: "text-emerald-600" },
+    { label: "叶绿素去�?, value: "71.5%", color: "text-violet-600" },
     { label: "处理时长",  value: "10 min", color: "text-amber-600" },
-    { label: "总磷削减",  value: "17–37%", color: "text-sky-600" },
+    { label: "总磷削减",  value: "17�?7%", color: "text-sky-600" },
     { label: "浊度下降",  value: ">25%",   color: "text-teal-600" },
   ];
   return (
     <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] shadow-sm lg:hidden">
-      <div className="h-1 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600" />
+      <div className="h-1 bg-gradient-to-r from-blue-500 via-cyan-500 to-emerald-500" />
       <div className="grid grid-cols-3 divide-x divide-[var(--border)] sm:grid-cols-6">
         {stats.map((s) => (
           <div key={s.label} className="px-3 py-3 text-center">
@@ -124,35 +124,35 @@ function BlackOdorousMetricsBar() {
   );
 }
 
-// ── 黑臭水体：技术路线卡片 ────────────────────────────────────────
+// ── 黑臭水体：技术路线卡�?────────────────────────────────────────
 function BlackOdorousTechCards() {
   const cards = [
     {
       step: "01",
-      icon: "⚡",
-      title: "臭氧微纳米气泡",
-      subtitle: "前端快速降污",
+      icon: "�?,
+      title: "臭氧微纳米气�?,
+      subtitle: "前端快速降�?,
       color: "from-cyan-500 to-sky-500",
       border: "border-cyan-400/30",
       bg: "bg-cyan-500/6",
       points: [
-        "强化传质与氧化反应",
-        "快速削减 COD、氨氮",
+        "强化传质与氧化反�?,
+        "快速削�?COD、氨�?,
         "有效控藻除臭",
-        "10 min 内显著见效",
+        "10 min 内显著见�?,
       ],
     },
     {
       step: "02",
-      icon: "🌬️",
-      title: "长距离低能耗曝气",
+      icon: "🌬�?,
+      title: "长距离低能耗曝�?,
       subtitle: "后端持续稳水",
       color: "from-emerald-500 to-teal-500",
       border: "border-emerald-400/30",
       bg: "bg-emerald-500/6",
       points: [
-        "维持底层溶解氧",
-        "恢复好氧微生物活性",
+        "维持底层溶解�?,
+        "恢复好氧微生物活�?,
         "抑制底泥内源释放",
         "降低返黑返臭风险",
       ],
@@ -166,10 +166,10 @@ function BlackOdorousTechCards() {
       border: "border-violet-400/30",
       bg: "bg-violet-500/6",
       points: [
-        "上覆水净化 + 底层稳氧",
+        "上覆水净�?+ 底层稳氧",
         "内源控制闭环机制",
-        "巡航 / 定点 / 常态化可组合",
-        "兼顾考核效果与长期生态",
+        "巡航 / 定点 / 常态化可组�?,
+        "兼顾考核效果与长期生�?,
       ],
     },
   ];
@@ -246,7 +246,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
         <Container>
           <h1 className="text-2xl font-semibold text-[var(--text)]">未找到该基地</h1>
           <p className="mt-2 text-sm text-[var(--text-secondary)]">
-            当前 slug：{slug || "(空)"}
+            当前 slug：{slug || "(�?"}
           </p>
           <div className="mt-6 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-5">
             <div className="font-semibold text-[var(--text)]">可用 slug（点击直达）</div>
@@ -256,7 +256,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                   <Link className="underline" href={`/industrialization/${String(b.slug)}/`}>
                     {String(b.slug)}
                   </Link>{" "}
-                  —— {b.titleZh}
+                  —�?{b.titleZh}
                 </li>
               ))}
             </ul>
@@ -266,7 +266,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               href="/industrialization/"
               className="rounded-xl border border-[var(--border)] px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]"
             >
-              ← 返回产业化列表
+              �?返回产业化列�?
             </Link>
           </div>
         </Container>
@@ -290,7 +290,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               href="/industrialization/"
               className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
             >
-              ← 返回产业化列表
+              �?返回产业化列�?
             </Link>
             {base.locationUrl ? (
               <a
@@ -318,23 +318,23 @@ export default async function IndustrialBaseDetailPage(props: Props) {
     ? [
         {
           title: "鲈鱼品质提升",
-          value: findKeyNumber(1, "谷氨酸提升")?.valueText ?? "约74.5%",
-          detail: "鲜味核心指标对比市场鱼显著提升",
+          value: findKeyNumber(1, "谷氨酸提�?)?.valueText ?? "�?4.5%",
+          detail: "鲜味核心指标对比市场鱼显著提�?,
         },
         {
           title: "免疫与抗氧化",
-          value: findKeyNumber(1, "T-SOD提升")?.valueText ?? "约41.0%",
+          value: findKeyNumber(1, "T-SOD提升")?.valueText ?? "�?1.0%",
           detail: "溶菌酶、T-SOD同步提升",
         },
         {
           title: "辣椒产量提升",
-          value: findKeyNumber(2, "产量提升（养殖肥水）")?.valueText ?? "约112.2%",
+          value: findKeyNumber(2, "产量提升（养殖肥水）")?.valueText ?? "�?12.2%",
           detail: "相较清水组，增产效果明显",
         },
         {
           title: "养殖成本",
-          value: findKeyNumber(3, "折算成本")?.valueText ?? "5.51元/斤鱼",
-          detail: "较传统鲈鱼养殖成本降低45%~54%",
+          value: findKeyNumber(3, "折算成本")?.valueText ?? "5.51�?斤鱼",
+          detail: "较传统鲈鱼养殖成本降�?5%~54%",
         },
       ]
     : [];
@@ -347,13 +347,13 @@ export default async function IndustrialBaseDetailPage(props: Props) {
       {isBlackOdorous ? (
         base.sections?.length ? <IndustrialSectionTabs sections={base.sections} /> : null
       ) : isAquaculture ? (
-        <section className="mt-6 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
+        <section className="mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-blue-50 shadow-lg">
           <div className="h-1 w-full bg-gradient-to-r from-[var(--accent)] via-[var(--accent-secondary)] to-[#22c55e]" />
           <div className="space-y-6 p-5 sm:p-6">
             {base.highlightsZh?.length ? (
               <div className="rounded-2xl border border-[var(--border)] bg-white/80 p-4">
                 <div className="mb-3 flex items-center gap-2">
-                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)]">✦</span>
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)]">�?/span>
                   <h2 className="text-lg font-semibold text-[var(--text)]">基地亮点</h2>
                 </div>
                 <ul className="grid gap-2 md:grid-cols-2">
@@ -408,7 +408,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               <div className="h-1 w-full bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500" />
               <div className="p-5 sm:p-6">
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-600 shadow-sm">✦</span>
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-600 shadow-sm">�?/span>
                   <div className="text-lg font-semibold text-[var(--text)]">基地亮点</div>
                 </div>
                 <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
@@ -514,19 +514,19 @@ export default async function IndustrialBaseDetailPage(props: Props) {
       <section className="overflow-hidden rounded-[var(--radius-lg)] border border-amber-500/30 bg-amber-500/10">
         <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500" />
         <div className="p-5 sm:p-6">
-          <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">技术成果展示</h2>
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">技术成果展�?/h2>
           <p className="mt-1 text-sm text-[var(--text-secondary)]">
-            天津大学微纳米气泡技术在水产养殖场景的验证成果
+            天津大学微纳米气泡技术在水产养殖场景的验证成�?
           </p>
           <div className="mt-5 grid gap-4 rounded-2xl border border-amber-400/40 bg-[var(--bg-card)]/80 p-4 shadow-sm sm:grid-cols-2">
             <div className="group flex flex-col gap-3">
               <div className="flex items-center gap-2">
-                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 text-amber-600">①</span>
-                <h3 className="text-base font-semibold text-[var(--text)]">纯氧纳米气泡 · 高密度养殖</h3>
+                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 text-amber-600">�?/span>
+                <h3 className="text-base font-semibold text-[var(--text)]">纯氧纳米气泡 · 高密度养�?/h3>
               </div>
               <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
-                鲈鱼高密度养殖 <strong className="text-amber-600">150 kg/m³</strong>，比现有工厂化养殖提高{' '}
-                <strong className="text-amber-600">50%</strong>；基地外观、养殖池、智能平台一体化验证。
+                鲈鱼高密度养�?<strong className="text-amber-600">150 kg/m³</strong>，比现有工厂化养殖提高{' '}
+                <strong className="text-amber-600">50%</strong>；基地外观、养殖池、智能平台一体化验证�?
               </p>
               <a
                 href={assetPath("/industrialization/aquaculture/slide-high-density-nanobubble.png")}
@@ -545,13 +545,13 @@ export default async function IndustrialBaseDetailPage(props: Props) {
             </div>
             <div className="group flex flex-col gap-3">
               <div className="flex items-center gap-2">
-                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 text-amber-600">②</span>
-                <h3 className="text-base font-semibold text-[var(--text)]">微纳米气泡发生器 · 水质与品质</h3>
+                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 text-amber-600">�?/span>
+                <h3 className="text-base font-semibold text-[var(--text)]">微纳米气泡发生器 · 水质与品�?/h3>
               </div>
               <ul className="space-y-1.5 text-sm text-[var(--text-secondary)]">
-                <li className="flex gap-2"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" /><span>水质稳定：DO ~10 mg/L，氨氮 &lt;4 mg/L</span></li>
+                <li className="flex gap-2"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" /><span>水质稳定：DO ~10 mg/L，氨�?&lt;4 mg/L</span></li>
                 <li className="flex gap-2"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" /><span>免疫与抗氧化：溶菌酶 +30.3%，T-SOD +41.0%</span></li>
-                <li className="flex gap-2"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" /><span>营养与鲜味：蛋白质 +17.3%，谷氨酸 +74.5%</span></li>
+                <li className="flex gap-2"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" /><span>营养与鲜味：蛋白�?+17.3%，谷氨酸 +74.5%</span></li>
               </ul>
               <a
                 href={assetPath("/industrialization/aquaculture/slide-water-quality-fish-quality.png")}
@@ -561,7 +561,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               >
                 <Image
                   src={assetPath("/industrialization/aquaculture/slide-water-quality-fish-quality.png")}
-                  alt="微纳米气泡发生器：养殖水质稳定与水产品品质提升"
+                  alt="微纳米气泡发生器：养殖水质稳定与水产品品质提�?
                   fill
                   sizes="(max-width: 640px) 100vw, 50vw"
                   className="object-contain"
@@ -591,7 +591,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               href="/industrialization/"
               className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
             >
-              ← 返回产业化列表
+              �?返回产业化列�?
             </Link>
             {base.locationUrl ? (
               <a
@@ -616,7 +616,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
           <div className="mt-8">
             <div className="mb-4 flex items-center gap-3">
               <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
-              <span className="text-xs font-bold uppercase tracking-widest text-[var(--muted)]">技术路线</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-[var(--muted)]">技术路�?/span>
               <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
             </div>
             <BlackOdorousTechCards />
@@ -662,7 +662,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
             href="/industrialization/"
             className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
           >
-            ← 返回产业化列表
+            �?返回产业化列�?
           </Link>
           {base.locationUrl ? (
             <a
@@ -687,7 +687,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
         </div>
 
         {isAquaculture ? (
-          <section className="relative mt-6 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
+          <section className="relative mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-blue-50 shadow-lg">
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[var(--accent)] via-[var(--accent-secondary)] to-[#f59e0b]" />
             <div className="absolute -right-12 top-8 h-36 w-36 rounded-full bg-[var(--accent)]/15 blur-3xl" />
             <div className="absolute -left-12 bottom-8 h-36 w-36 rounded-full bg-[var(--accent-secondary)]/15 blur-3xl" />
@@ -706,8 +706,8 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                   />
                 ) : null}
                 <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/20 to-transparent" />
-                <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/35 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
-                  水产养殖 · 微纳米气泡应用
+                <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/35 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                  水产养殖 · 微纳米气泡应�?
                 </div>
               </div>
 
@@ -720,7 +720,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                   <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-base">{base.briefZh}</p>
                   {base.locationZh ? (
                     <div className="mt-3 text-sm text-[var(--text-secondary)]">
-                      <span className="font-medium text-[var(--text)]">位置/说明：</span>
+                      <span className="font-medium text-[var(--text)]">位置/说明�?/span>
                       {base.locationUrl ? (
                         <a
                           href={base.locationUrl}
@@ -743,12 +743,12 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                     <div className="mt-1 text-2xl font-bold text-[var(--accent)]">150 kg/m³</div>
                   </article>
                   <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
-                    <div className="text-xs text-[var(--muted)]">谷氨酸提升</div>
+                    <div className="text-xs text-[var(--muted)]">谷氨酸提�?/div>
                     <div className="mt-1 text-2xl font-bold text-[var(--accent-secondary)]">74.5%</div>
                   </article>
                   <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
                     <div className="text-xs text-[var(--muted)]">成本折算</div>
-                    <div className="mt-1 text-2xl font-bold text-[#f59e0b]">5.51元/斤鱼</div>
+                    <div className="mt-1 text-2xl font-bold text-[#f59e0b]">5.51�?斤鱼</div>
                   </article>
                 </div>
               </div>
@@ -765,7 +765,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">{base.briefZh}</p>
               {base.locationZh ? (
                 <div className="mt-3 text-sm text-[var(--text-secondary)]">
-                  <span className="font-medium text-[var(--text)]">位置/说明：</span>
+                  <span className="font-medium text-[var(--text)]">位置/说明�?/span>
                   {base.locationUrl ? (
                     <a
                       href={base.locationUrl}
