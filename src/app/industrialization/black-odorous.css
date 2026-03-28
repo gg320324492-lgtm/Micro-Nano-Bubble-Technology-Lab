@@ -1,0 +1,82 @@
+/* Black Odorous Water Page - Color Optimization */
+
+/* Hero Section Background */
+.black-odorous-hero {
+  background: linear-gradient(to bottom right, #f8fafc, #ffffff, #f0f9ff) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Hero Section Overlays */
+.black-odorous-hero .overlay-gradient-h {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4)) !important;
+}
+
+.black-odorous-hero .overlay-gradient-v {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.9), transparent) !important;
+}
+
+/* Hero Content Box */
+.black-odorous-hero-content {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #bfdbfe !important;
+  backdrop-filter: blur(4px) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Hero Label */
+.black-odorous-label {
+  background-color: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1e40af !important;
+}
+
+/* Hero Title */
+.black-odorous-title {
+  color: #0f172a !important;
+}
+
+/* Hero Subtitle */
+.black-odorous-subtitle {
+  color: #475569 !important;
+}
+
+/* Hero Description */
+.black-odorous-description {
+  color: #334155 !important;
+}
+
+/* Hero Highlights */
+.black-odorous-highlight {
+  background-color: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1e40af !important;
+}
+
+/* Stat Cards */
+.black-odorous-stat-card {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #e2e8f0 !important;
+  backdrop-filter: blur(4px) !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+  transition: box-shadow 0.3s ease !important;
+}
+
+.black-odorous-stat-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Stat Label */
+.black-odorous-stat-label {
+  color: #64748b !important;
+}
+
+/* Top Gradient Line */
+.black-odorous-top-line {
+  background: linear-gradient(to right, #3b82f6, #06b6d4, #10b981) !important;
+}
+
+/* Image Brightness */
+.black-odorous-image {
+  filter: brightness(0.6) !important;
+}

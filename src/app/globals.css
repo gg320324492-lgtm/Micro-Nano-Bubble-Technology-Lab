@@ -361,3 +361,80 @@ textarea:focus-visible {
   opacity: 1;
   animation: pulse-flow 1.6s ease-in-out infinite;
 }
+
+/* ── 黑臭水体页面配色优化 ── */
+/* Hero Section - 从深色改为浅色 */
+section[className*="rounded-3xl"][className*="border-\[var\(--border\)\]"][className*="bg-\[var\(--bg-card\)\]"] {
+  background: linear-gradient(to bottom right, #f8fafc, #ffffff, #f0f9ff) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Hero Overlay - 白色而不是深色 */
+section[className*="rounded-3xl"] .absolute[className*="inset-0"][className*="bg-gradient-to-r"] {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4)) !important;
+}
+
+section[className*="rounded-3xl"] .absolute[className*="inset-0"][className*="bg-gradient-to-t"] {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.9), transparent) !important;
+}
+
+/* Hero Content Box - 白色背景 */
+section[className*="rounded-3xl"] div[className*="max-w-3xl"][className*="rounded-2xl"][className*="border"] {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #bfdbfe !important;
+  backdrop-filter: blur(4px) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Hero Label - 蓝色而不是青色 */
+section[className*="rounded-3xl"] div[className*="inline-flex"][className*="rounded-full"][className*="border-cyan"] {
+  background-color: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1e40af !important;
+}
+
+/* Hero Title - 深灰色而不是白色 */
+section[className*="rounded-3xl"] h1[className*="text-white"] {
+  color: #0f172a !important;
+}
+
+/* Hero Subtitle - 灰色而不是白色 */
+section[className*="rounded-3xl"] div[className*="text-white/75"] {
+  color: #475569 !important;
+}
+
+/* Hero Description - 深灰色而不是白色 */
+section[className*="rounded-3xl"] p[className*="text-white/90"] {
+  color: #334155 !important;
+}
+
+/* Hero Highlights - 蓝色而不是白色 */
+section[className*="rounded-3xl"] span[className*="border-white/20"][className*="bg-white/10"] {
+  background-color: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1e40af !important;
+}
+
+/* Stat Cards - 白色背景而不是黑色 */
+section[className*="rounded-3xl"] article[className*="rounded-xl"][className*="border-white/15"] {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #e2e8f0 !important;
+  backdrop-filter: blur(4px) !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+  transition: box-shadow 0.3s ease !important;
+}
+
+section[className*="rounded-3xl"] article[className*="rounded-xl"][className*="border-white/15"]:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Stat Label - 灰色而不是白色 */
+section[className*="rounded-3xl"] div[className*="text-white/70"] {
+  color: #64748b !important;
+}
+
+/* Image Brightness */
+section[className*="rounded-3xl"] img[className*="brightness-\[0\.5\]"] {
+  filter: brightness(0.6) !important;
+}
