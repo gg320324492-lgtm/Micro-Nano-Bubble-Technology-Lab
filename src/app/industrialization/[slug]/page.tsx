@@ -1,4 +1,4 @@
-﻿// src/app/industrialization/[slug]/page.tsx
+// src/app/industrialization/[slug]/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -34,7 +34,7 @@ function BlackOdorousHero({ base }: { base: IndustrialBase }) {
     <section className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
       <div className="absolute inset-x-0 top-0 z-20 h-1 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600" />
 
-      <div className="relative h-[440px] w-full md:h-[520px]">
+      <div className="relative min-h-[400px] w-full md:min-h-[520px]">
         {base.cover ? (
           <Image
             src={assetPath(base.cover)}
@@ -43,35 +43,37 @@ function BlackOdorousHero({ base }: { base: IndustrialBase }) {
             loading="eager"
             fetchPriority="high"
             sizes="100vw"
-            className="object-cover brightness-[0.5]"
+            className="object-cover brightness-[0.58]"
           />
         ) : null}
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#020817]/90 via-[#020817]/65 to-[#020817]/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/85 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#020817]/84 via-[#020817]/56 to-[#020817]/20 md:from-[#020817]/90 md:via-[#020817]/65 md:to-[#020817]/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/82 via-transparent to-transparent md:from-[#020817]/85" />
 
-        <div className="relative z-10 flex h-full flex-col justify-end gap-6 p-5 md:p-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl rounded-2xl border border-white/15 bg-black/30 p-4 backdrop-blur-md md:p-6">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-300/35 bg-cyan-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-cyan-200">
+        <div className="relative z-10 flex h-full flex-col justify-end gap-3.5 p-3 sm:p-5 md:gap-6 md:p-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl rounded-[1.4rem] border border-white/12 bg-black/24 p-3 backdrop-blur-xl sm:p-4 md:p-6">
+            <div className="mb-2 inline-flex max-w-full items-center gap-2 rounded-full border border-cyan-300/35 bg-cyan-500/12 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-cyan-100 shadow-[0_8px_30px_rgba(14,165,233,0.12)] md:mb-3 md:px-3 md:text-[11px] md:tracking-[0.14em]">
               Industrialization · Black-Odorous Water Remediation
             </div>
 
-            <h1 className="text-3xl font-extrabold leading-[1.12] tracking-tight text-white md:text-5xl">
+            <h1 className="max-w-[11ch] text-[1.45rem] font-extrabold leading-[1.1] tracking-tight text-white sm:max-w-none sm:text-[1.85rem] md:text-5xl">
               {base.titleZh}
             </h1>
 
             {base.titleEn ? (
-              <div className="mt-2 text-sm tracking-wide text-white/75 md:text-base">{base.titleEn}</div>
+              <div className="mt-2 text-[12px] leading-[1.55] text-white/72 sm:text-sm md:text-base">{base.titleEn}</div>
             ) : null}
 
-            <p className="mt-4 text-sm leading-relaxed text-white/90 md:text-[15px]">{base.briefZh}</p>
+            <p className="mt-3 line-clamp-4 max-w-[32rem] text-[13px] leading-[1.78] text-white/88 sm:text-sm md:mt-4 md:line-clamp-none md:text-[15px]">
+              {base.briefZh}
+            </p>
 
             {base.highlightsZh?.length ? (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {base.highlightsZh.map((h) => (
+              <div className="mt-3 flex flex-wrap gap-1.5 md:mt-4 md:gap-2">
+                {base.highlightsZh.slice(0, 3).map((h) => (
                   <span
                     key={h}
-                    className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white"
+                    className="rounded-full border border-white/18 bg-white/12 px-2.5 py-1 text-[10px] font-medium text-white/92 sm:text-[11px] md:px-3 md:text-xs"
                   >
                     {h}
                   </span>
@@ -80,16 +82,18 @@ function BlackOdorousHero({ base }: { base: IndustrialBase }) {
             ) : null}
           </div>
 
-          <div className="grid w-full gap-2 sm:grid-cols-2 lg:w-[280px] lg:grid-cols-1">
+          <div className="grid w-full grid-cols-2 gap-2 lg:w-[280px] lg:grid-cols-1">
             {stats.map((item) => (
               <article
                 key={item.label}
-                className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 backdrop-blur-md"
+                className="rounded-[1.35rem] border border-white/12 bg-black/28 px-3 py-2.5 shadow-[0_10px_28px_rgba(15,23,42,0.16)] backdrop-blur-xl md:px-4 md:py-3"
               >
-                <div className={`text-2xl font-black tabular-nums bg-gradient-to-r ${item.color} bg-clip-text text-transparent`}>
+                <div className={`text-xl font-black tabular-nums bg-gradient-to-r ${item.color} bg-clip-text text-transparent sm:text-2xl`}>
                   {item.value}
                 </div>
-                <div className="text-[11px] font-semibold uppercase tracking-wider text-white/70">{item.label}</div>
+                <div className="text-[10px] font-semibold tracking-wide text-white/70 sm:text-[11px] md:uppercase md:tracking-wider">
+                  {item.label}
+                </div>
               </article>
             ))}
           </div>
@@ -112,7 +116,7 @@ function BlackOdorousMetricsBar() {
   return (
     <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] shadow-sm lg:hidden">
       <div className="h-1 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600" />
-      <div className="grid grid-cols-3 divide-x divide-[var(--border)] sm:grid-cols-6">
+      <div className="grid grid-cols-2 divide-x divide-y divide-[var(--border)] sm:grid-cols-3 sm:divide-y-0">
         {stats.map((s) => (
           <div key={s.label} className="px-3 py-3 text-center">
             <div className={`text-xl font-black tabular-nums ${s.color}`}>{s.value}</div>
@@ -175,11 +179,11 @@ function BlackOdorousTechCards() {
   ];
 
   return (
-    <div className="grid gap-4 sm:grid-cols-3">
+    <div className="grid gap-3 sm:grid-cols-3">
       {cards.map((c) => (
         <div
           key={c.step}
-          className={`relative overflow-hidden rounded-2xl border ${c.border} ${c.bg} p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md`}
+          className={`relative overflow-hidden rounded-2xl border ${c.border} ${c.bg} p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md sm:p-5`}
         >
           <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${c.color}`} />
           <div className="flex items-start justify-between">
@@ -188,17 +192,17 @@ function BlackOdorousTechCards() {
                 Step {c.step}
               </div>
               <div className="mt-1 flex items-center gap-2">
-                <span className="text-2xl">{c.icon}</span>
+                <span className="text-xl sm:text-2xl">{c.icon}</span>
                 <div>
-                  <div className="text-[15px] font-bold text-[var(--text)] leading-tight">{c.title}</div>
-                  <div className="text-xs text-[var(--muted)]">{c.subtitle}</div>
+                  <div className="text-sm font-bold text-[var(--text)] leading-tight sm:text-[15px]">{c.title}</div>
+                  <div className="text-[11px] text-[var(--muted)] sm:text-xs">{c.subtitle}</div>
                 </div>
               </div>
             </div>
           </div>
-          <ul className="mt-4 space-y-2">
+          <ul className="mt-3.5 space-y-2 sm:mt-4">
             {c.points.map((p) => (
-              <li key={p} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
+              <li key={p} className="flex items-start gap-2 text-[13px] text-[var(--text-secondary)] sm:text-sm">
                 <span className={`mt-[5px] h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-br ${c.color}`} />
                 {p}
               </li>
@@ -589,7 +593,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
           <div className="flex flex-wrap items-center gap-2">
             <Link
               href="/industrialization/"
-              className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
+              className={buttonClassName("primary", "rounded-full px-4 py-2 text-sm shadow-sm hover:shadow-md")}
             >
               ← 返回产业化列表
             </Link>
@@ -598,7 +602,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                 href={base.locationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
+                className={buttonClassName("primary", "rounded-full px-4 py-2 text-sm shadow-sm hover:shadow-md")}
               >
                 高德地图导航
               </a>
@@ -609,11 +613,11 @@ export default async function IndustrialBaseDetailPage(props: Props) {
             <BlackOdorousHero base={base} />
           </div>
 
-          <div className="mt-6">
+          <div className="mt-4 sm:mt-6">
             <BlackOdorousMetricsBar />
           </div>
 
-          <div className="mt-8">
+          <div className="mt-6 sm:mt-8">
             <div className="mb-4 flex items-center gap-3">
               <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
               <span className="text-xs font-bold uppercase tracking-widest text-[var(--muted)]">技术路线</span>
@@ -622,7 +626,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
             <BlackOdorousTechCards />
           </div>
 
-          <div className="mt-4">
+          <div className="mt-3 sm:mt-4">
             {introPanel}
           </div>
 
