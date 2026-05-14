@@ -1,0 +1,35 @@
+{
+    "name": "lab-site",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev --webpack",
+        "images:optimize": "node scripts/optimize-images.mjs",
+        "postbuild": "next-sitemap",
+        "build": "npm run images:optimize && next build",
+        "start": "next start",
+        "lint": "eslint",
+        "test": "node --test src/lib/__tests__/*.test.mjs",
+        "print:deploy-target": "node -e \"console.log('DEPLOY_TARGET=' + (process.env.DEPLOY_TARGET || ''))\""
+    },
+    "dependencies": {
+        "framer-motion": "^12.23.12",
+        "lucide-react": "^1.14.0",
+        "next": "16.1.6",
+        "react": "19.2.3",
+        "react-dom": "19.2.3"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "eslint": "^9",
+        "eslint-config-next": "16.1.6",
+        "ffmpeg-static": "^5.3.0",
+        "next-sitemap": "^4.2.3",
+        "sharp": "^0.34.4",
+        "tailwindcss": "^4",
+        "typescript": "^5"
+    }
+}

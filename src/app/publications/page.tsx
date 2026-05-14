@@ -1,0 +1,436 @@
+// src/app/publications/page.tsx
+"use client";
+
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import Section from "@/components/ui/Section";
+import Heading from "@/components/ui/Heading";
+import ListItem from "@/components/ui/ListItem";
+import { buttonClassName } from "@/components/ui/Button";
+import Reveal from "@/components/motion/Reveal";
+import PublicImage from "@/components/PublicImage";
+import assetPath from "@/lib/assetPath";
+import { pickList } from "@/lib/data";
+
+// ✅ 兼容导入：不要求 data 文件必须 default export
+import * as pubsMod from "@/data/publications";
+import * as patentsMod from "@/data/patents";
+import * as honorsMod from "@/data/honors";
+import * as projectsMod from "@/data/projects";
+
+import type { PublicationView, PatentView, HonorView, ProjectSectionView } from "@/types";
+
+type TabKey = "papers" | "patents" | "honors" | "projects";
+
+function toStr(v: unknown): string {
+  return typeof v === "string" ? v : v == null ? "" : String(v);
+}
+
+function pickYear(item: Record<string, unknown>): string {
+  const y = item?.year ?? item?.publishYear ?? item?.date ?? item?.time ?? "";
+  const s = toStr(y);
+  const m = s.match(/\b(19|20)\d{2}\b/);
+  return m ? m[0] : "";
+}
+
+function pickTitle(item: Record<string, unknown>): string {
+  return (
+    toStr(item?.title) ||
+    toStr(item?.titleEn) ||
+    toStr(item?.titleZh) ||
+    toStr(item?.name) ||
+    "Untitled"
+  );
+}
+
+function pickSubtitle(item: Record<string, unknown>): string {
+  return (
+    toStr(item?.venue) ||
+    toStr(item?.journal) ||
+    toStr(item?.conference) ||
+    toStr(item?.publisher) ||
+    toStr(item?.organization) ||
+    toStr(item?.issuer) ||
+    toStr(item?.source) ||
+    ""
+  );
+}
+
+function pickLink(item: Record<string, unknown>): string | undefined {
+  if (item?.doi)
+    return `https://doi.org/${toStr(item.doi).replace(
+      /^https?:\/\/doi\.org\//,
+      ""
+    )}`;
+  return (item?.link as string) ?? (item?.url as string) ?? (item?.href as string) ?? undefined;
+}
+
+function pickBadges(item: Record<string, unknown>): string[] {
+  const out: string[] = [];
+  if (item?.featured) out.push("Featured");
+  if (item?.type) out.push(toStr(item.type));
+  if (item?.category) out.push(toStr(item.category));
+  if (item?.status) out.push(toStr(item.status));
+  return out.slice(0, 3);
+}
+
+function normalize(s: string) {
+  return s.toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function pickProjectSections(mod: Record<string, unknown>): ProjectSectionView[] {
+  const v =
+    mod?.projectSections ??
+    mod?.sections ??
+    mod?.projects ??
+    mod?.items ??
+    mod?.default ??
+    [];
+  return Array.isArray(v) ? (v as ProjectSectionView[]) : [];
+}
+
+function formatPeriod(p: { start?: string; end?: string }) {
+  if (!p.start && !p.end) return "无";
+  if (p.start && p.end) return `${p.start} 至 ${p.end}`;
+  return p.start ? `${p.start} 至` : `至 ${p.end}`;
+}
+
+export default function PublicationsPage() {
+  const [tab, setTab] = useState<TabKey>("papers");
+  const [q, setQ] = useState("");
+  const deferredQ = useDeferredValue(q);
+  const [year, setYear] = useState<string>("all");
+  const [ready, setReady] = useState(false);
+
+  const publications = useMemo(() => pickList<PublicationView>(pubsMod), []);
+  const patents = useMemo(() => pickList<PatentView>(patentsMod), []);
+  const honors = useMemo(() => pickList<HonorView>(honorsMod), []);
+  const projectSections = useMemo(
+    () => pickProjectSections(projectsMod as Record<string, unknown>),
+    []
+  );
+
+  // ✅ 首次挂载：从 URL 读 tab（不用 useSearchParams，避免构建报错）
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    const t = sp.get("tab") as TabKey | null;
+    if (t === "papers" || t === "patents" || t === "honors" || t === "projects")
+      setTab(t);
+    setReady(true);
+  }, []);
+
+  // ✅ tab 变化时同步 URL（便于分享 /publications?tab=honors）
+  useEffect(() => {
+    if (!ready) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", tab);
+    window.history.replaceState(null, "", url.toString());
+
+    setQ("");
+    setYear("all");
+  }, [tab, ready]);
+
+  const activeList = useMemo(() => {
+    if (tab === "projects") return [];
+    if (tab === "patents") return patents;
+    if (tab === "honors") return honors;
+    return publications;
+  }, [tab, publications, patents, honors]);
+
+  const yearOptions = useMemo(() => {
+    const ys = Array.from(new Set(activeList.map(pickYear).filter(Boolean)));
+    ys.sort((a, b) => Number(b) - Number(a));
+    return ys;
+  }, [activeList]);
+
+  const filtered = useMemo(() => {
+    if (tab === "projects") return [];
+    const nq = normalize(deferredQ);
+    return activeList
+      .filter((it) => {
+        const y = pickYear(it);
+        if (year !== "all" && y !== year) return false;
+        if (!nq) return true;
+        const hay = normalize(
+          [
+            pickTitle(it),
+            pickSubtitle(it),
+            toStr(it?.authors),
+            toStr(it?.inventors),
+            toStr(it?.keywords),
+            toStr(it?.note),
+            toStr(it?.abstract),
+          ].join(" ")
+        );
+        return hay.includes(nq);
+      })
+      .sort((a, b) => {
+        const fa = a?.featured ? 1 : 0;
+        const fb = b?.featured ? 1 : 0;
+        if (fa !== fb) return fb - fa;
+        const ya = Number(pickYear(a) || 0);
+        const yb = Number(pickYear(b) || 0);
+        if (ya !== yb) return yb - ya;
+        return pickTitle(a).localeCompare(pickTitle(b));
+      });
+  }, [activeList, deferredQ, year]);
+
+  return (
+    <Section container="wide">
+      <Reveal className="flex flex-col gap-2">
+        <Heading
+          as="h1"
+          title={
+            <>
+              成果{" "}
+              <span className="text-[var(--accent)]">
+                Publications & Patents & Honors & Projects
+              </span>
+            </>
+          }
+          subtitle="支持搜索、按年份筛选、Featured 置顶，以及 DOI/链接直达。"
+          className="[&_h1]:text-[var(--text)]"
+          subtitleClassName="text-[var(--text-secondary)]"
+        />
+      </Reveal>
+
+      {/* Tabs */}
+      <div className="mt-6 flex flex-wrap gap-2">
+        {[
+          { key: "papers", label: "论文 Papers" },
+          { key: "patents", label: "专利 Patents" },
+          { key: "honors", label: "荣誉 Honors" },
+          { key: "projects", label: "项目 Projects" },
+        ].map((t) => {
+          const active = tab === (t.key as TabKey);
+          return (
+            <button
+              key={t.key}
+              type="button"
+              onClick={() => setTab(t.key as TabKey)}
+              className={[
+                "rounded-[var(--radius-md)] border px-5 py-2 text-sm font-medium transition-all",
+                active
+                  ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--bg-deep)]"
+                  : "border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
+              ].join(" ")}
+            >
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Filters */}
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex-1">
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder={
+              tab === "projects"
+                ? "搜索项目名称…"
+                : "搜索标题 / 作者 / 期刊 / 关键词…"
+            }
+            className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 text-sm text-[var(--text)] outline-none placeholder:text-[var(--muted)] focus:ring-2 focus:ring-[var(--accent)]/30"
+          />
+        </div>
+
+        {tab === "projects" ? null : (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-[var(--muted)]">年份</span>
+            <select
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text)]"
+            >
+              <option value="all">全部</option>
+              {yearOptions.map((y) => (
+                <option key={y} value={y}>
+                  {y}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
+
+      {/* List */}
+      <div className="mt-8 space-y-4">
+        {tab === "projects" ? (
+          <Reveal className="space-y-8">
+            {projectSections.map((sec, sIdx) => {
+              const nq = normalize(deferredQ);
+              const items = (sec.items ?? []).filter((it) =>
+                nq ? normalize(it.name).includes(nq) : true
+              );
+
+              if (nq && items.length === 0) return null;
+
+              const accentClass = sIdx % 2 === 0 ? "before:bg-emerald-500" : "before:bg-violet-500";
+
+              return (
+                <div key={sec.title} className="space-y-4">
+                  <div className="flex items-end justify-between gap-3">
+                    <div className="text-base font-semibold text-[var(--text)]">
+                      {sec.title}
+                    </div>
+                    <div className="text-sm text-[var(--muted)]">
+                      共 {items.length} 项
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {items.map((it, i) => {
+                      const period = formatPeriod({ start: it.start, end: it.end });
+                      const y = (it.start ?? it.end ?? "").match(/\b(19|20)\d{2}\b/)?.[0] ?? "";
+
+                      return (
+                        <ListItem
+                          key={`${sec.title}-${i}`}
+                          className={[
+                            "relative overflow-hidden",
+                            "before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:content-['']",
+                            accentClass,
+                          ].join(" ")}
+                          year={y}
+                          title={it.name}
+                          subtitle={period === "无" ? "" : period}
+                          description={
+                            period === "无" ? (
+                              <span className="text-sm text-[var(--muted)]">时间：无</span>
+                            ) : null
+                          }
+                          badges={[]}
+                          action={null}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+
+            {normalize(deferredQ) &&
+            projectSections.every(
+              (sec) =>
+                (sec.items ?? []).filter((it) =>
+                  normalize(it.name).includes(normalize(deferredQ))
+                ).length === 0
+            ) ? (
+              <div className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-8 text-sm text-[var(--muted)]">
+                未找到匹配项目。你可以更换关键词。
+              </div>
+            ) : null}
+          </Reveal>
+        ) : null}
+
+        {filtered.map((it, idx) => {
+          const y = pickYear(it);
+          const title = pickTitle(it);
+          const subtitle = pickSubtitle(it);
+          const link = pickLink(it);
+          const badges = pickBadges(it);
+          const accentClass =
+            tab === "papers"
+              ? "before:bg-[var(--accent)]"
+              : tab === "patents"
+                ? "before:bg-cyan-500"
+                : "before:bg-amber-500";
+          const featuredClass = it?.featured ? "bg-[var(--accent-soft)]/30" : "";
+
+          return (
+            <Reveal key={`${title}-${idx}`} delay={Math.min(idx * 0.02, 0.2)}>
+              <ListItem
+                className={[
+                  "relative overflow-hidden",
+                  "before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:content-['']",
+                  accentClass,
+                  featuredClass,
+                ].join(" ")}
+                year={y}
+                title={
+                  link ? (
+                    <a
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[var(--text)] hover:text-[var(--accent)] hover:underline"
+                    >
+                      {title}
+                    </a>
+                  ) : (
+                    title
+                  )
+                }
+                subtitle={subtitle}
+                description={
+                  <>
+                    {it?.briefZh || it?.note ? <>{toStr(it?.briefZh || it?.note)}</> : null}
+                    {tab === "honors" && it?.imageSrc ? (
+                      <a
+                        href={assetPath(toStr(it.imageSrc))}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 block"
+                        aria-label="打开证书原图"
+                      >
+                        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-deep)]">
+                          <PublicImage
+                            src={toStr(it.imageSrc)}
+                            alt={toStr(it.imageAlt) || title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 800px"
+                            style={{ objectFit: "contain" }}
+                          />
+                        </div>
+                        <div className="mt-2 text-xs text-[var(--muted)]">
+                          点击查看大图
+                        </div>
+                      </a>
+                    ) : null}
+                    {it?.doi ? (
+                      <div className="mt-3 text-sm text-[var(--muted)]">
+                        DOI：
+                        <a
+                          className="ml-1 text-[var(--accent)] underline underline-offset-2 hover:text-[var(--accent-hover)]"
+                          href={`https://doi.org/${toStr(it.doi).replace(/^https?:\/\/doi\.org\//, "")}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {toStr(it.doi).replace(/^https?:\/\/doi\.org\//, "")}
+                        </a>
+                      </div>
+                    ) : null}
+                  </>
+                }
+                badges={badges}
+                action={
+                  link ? (
+                    <a
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={buttonClassName(
+                        "secondary",
+                        "rounded-xl px-3 py-2 text-sm"
+                      )}
+                    >
+                      打开
+                    </a>
+                  ) : null
+                }
+              />
+            </Reveal>
+          );
+        })}
+
+        {tab !== "projects" && filtered.length === 0 ? (
+          <div className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-card)] p-8 text-sm text-[var(--muted)]">
+            未找到匹配内容。你可以更换关键词或切换年份/类别。
+          </div>
+        ) : null}
+      </div>
+
+    </Section>
+  );
+}

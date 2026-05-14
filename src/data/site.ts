@@ -1,0 +1,26 @@
+// src/data/site.ts
+
+export const site = {
+  nameZh: "微纳米气泡课题组",
+  nameEn: "Micro & Nano Bubble Technology Lab",
+  /** 工信部 ICP 备案号 */
+  icpNumber: "冀ICP备2026005479号-1",
+  /** 公安备案号 */
+  policeRecordNumber: "津公网安备12011202001060号",
+  taglineZh:
+    "聚焦微纳米气泡技术的机理研究、装备开发与多场景应用，面向饮用水安全、环境治理与智能化工程系统。",
+  taglineEn:
+    "Mechanisms, devices, and applications of micro/nano bubbles for drinking water safety, environmental remediation, and intelligent engineering systems.",
+};
+
+export const navItems = [
+  { href: "/", zh: "首页", en: "Home" },
+  { href: "/research", zh: "研究", en: "Research" },
+  { href: "/industrialization", zh: "产业化", en: "Industrialization" },
+  { href: "/publications", zh: "成果", en: "Publications" }, // ✅ 成果入口保留
+  { href: "/people", zh: "成员", en: "People" },
+
+  { href: "/news", zh: "媒体与风采", en: "Media & Showcase" },
+
+  { href: "/contact", zh: "联系/加入", en: "Contact & Join Us" },
+] as const;

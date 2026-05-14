@@ -1,0 +1,570 @@
+@import "tailwindcss";
+
+/* 🎨 明亮风格设计系统：清新现代美学 */
+:root {
+  /* 核心背景 - 明亮渐变 */
+  --bg-deep: #ffffff;
+  --bg-surface: #fafbfc;
+  --bg-elevated: #f5f7fa;
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  
+  /* 边框 - 柔和光效 */
+  --border: rgba(138, 43, 226, 0.15);
+  --border-strong: rgba(138, 43, 226, 0.3);
+  --border-glow: rgba(138, 43, 226, 0.4);
+  
+  /* 主色调 - 紫色到青色的渐变光谱（明亮版） */
+  --accent: #7c3aed;
+  --accent-secondary: #06b6d4;
+  --accent-hover: #8b5cf6;
+  --accent-dim: rgba(124, 58, 237, 0.7);
+  --accent-soft: rgba(124, 58, 237, 0.1);
+  --accent-glow: rgba(124, 58, 237, 0.2);
+  
+  /* 文字 */
+  --text: #1e293b;
+  --text-secondary: #475569;
+  --muted: #94a3b8;
+  
+  /* 圆角 - 更柔和的曲线 */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  
+  /* 阴影 - 柔和光效 */
+  --shadow-glow: 0 0 30px rgba(124, 58, 237, 0.15), 0 0 60px rgba(6, 182, 212, 0.08);
+  --shadow-glow-strong: 0 0 40px rgba(124, 58, 237, 0.25), 0 0 80px rgba(6, 182, 212, 0.15);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  /* 统一模块面板语义变量 */
+  --panel-bg: linear-gradient(150deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.92));
+  --panel-border: color-mix(in oklab, var(--accent) 24%, #ffffff 76%);
+  --panel-sheen: linear-gradient(120deg, color-mix(in oklab, var(--accent) 12%, transparent), color-mix(in oklab, var(--accent-secondary) 10%, transparent));
+
+  /* 语义化变量别名 */
+  --background: var(--bg-deep);
+  --foreground: var(--text);
+}
+
+@theme inline {
+  --color-bg: var(--bg-deep);
+  --color-surface: var(--bg-surface);
+  --color-surface-soft: var(--bg-elevated);
+  --color-text: var(--text);
+  --color-text-secondary: var(--text-secondary);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted);
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  /* 阻止 overscroll 传播，避免 iOS 滑动时触发下拉刷新/页面重载 */
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: contain;
+}
+
+html,
+body {
+  min-height: 100%;
+  min-height: 100dvh;
+  position: relative;
+}
+
+body {
+  background: var(--background);
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.04) 0%, transparent 50%);
+  /* 使用 scroll 避免 fixed 在 iOS 上的滚动重绘与内存压力 */
+  background-attachment: scroll;
+  color: var(--foreground);
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Noto Serif", serif;
+  font-size: 16px;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 动态背景粒子效果（明亮版） */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20% 30%, rgba(124, 58, 237, 0.15), transparent),
+    radial-gradient(2px 2px at 60% 70%, rgba(6, 182, 212, 0.12), transparent),
+    radial-gradient(1px 1px at 50% 50%, rgba(245, 158, 11, 0.1), transparent);
+  background-size: 200% 200%;
+  animation: particleMove 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* 移动端完全移除 body::before 装饰层，降低内存与合成层压力 */
+@media (max-width: 768px) {
+  body::before {
+    display: none;
+  }
+}
+
+/* prefers-reduced-motion 时关闭粒子动画 */
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+}
+
+@keyframes particleMove {
+  0%, 100% { background-position: 0% 0%, 100% 100%, 50% 50%; }
+  50% { background-position: 100% 100%, 0% 0%, 50% 50%; }
+}
+
+h1,
+h2,
+h3 {
+  color: var(--text);
+  letter-spacing: -0.03em;
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  background: linear-gradient(135deg, var(--text) 0%, var(--accent) 50%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1.2;
+  font-weight: 650;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 2vw, 1.875rem);
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+p {
+  color: var(--text-secondary);
+}
+
+a,
+button,
+[role="button"],
+input,
+select,
+textarea {
+  transition: all 180ms ease;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent),
+              0 0 20px color-mix(in oklab, var(--accent) 15%, transparent);
+}
+
+/* 全局动画工具类 */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* 顶部标题专用：中文书法/楷体风格 */
+.cn-calligraphy {
+  font-family:
+    "STKaiti",
+    "Kaiti SC",
+    "KaiTi",
+    "FZKai-Z03S",
+    "STXingkai",
+    "Hiragino Sans GB",
+    "LXGW WenKai",
+    "Noto Serif SC",
+    "Source Han Serif SC",
+    serif;
+  font-weight: 600;
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.glow-effect {
+  box-shadow: var(--shadow-glow);
+}
+
+.glow-effect-strong {
+  box-shadow: var(--shadow-glow-strong);
+}
+
+/* 单行中文：拉伸到与容器同宽（用于“中英标题等宽”视觉） */
+.cn-justify-line {
+  text-align: justify;
+  text-justify: inter-ideograph;
+  text-align-last: justify;
+}
+.cn-justify-line::after {
+  content: "";
+  display: inline-block;
+  width: 100%;
+  height: 0;
+  line-height: 0;
+}
+
+.site-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 72rem;
+  padding-inline: 1rem;
+}
+
+.site-container-wide {
+  max-width: 80rem;
+}
+
+@media (min-width: 640px) {
+  .site-container {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-container {
+    padding-inline: 2rem;
+  }
+}
+
+.section {
+  padding-block: clamp(4rem, 7vw, 6rem);
+}
+
+.section-compact {
+  padding-block: clamp(3rem, 5vw, 4rem);
+}
+
+/* 统一内容面板组件样式 */
+.panel-shell {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--panel-border);
+  background: var(--panel-bg);
+  box-shadow: var(--shadow-card);
+}
+
+.panel-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--panel-sheen);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.panel-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+.section-spacious {
+  padding-block: clamp(5rem, 8vw, 7rem);
+}
+
+@keyframes pulse-flow {
+  0%, 100% { opacity: 0.55; transform: translateX(-6%); }
+  50% { opacity: 1; transform: translateX(6%); }
+}
+
+.nav-aura {
+  position: relative;
+}
+
+.nav-aura::after {
+  content: "";
+  position: absolute;
+  inset: -6px -8px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--accent) 24%, transparent), transparent 70%);
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 240ms ease;
+  pointer-events: none;
+}
+
+.nav-aura:hover::after {
+  opacity: 1;
+  animation: pulse-flow 1.6s ease-in-out infinite;
+}
+
+/* ── 黑臭水体页面配色优化 ── */
+/* Hero Section - 从深色改为浅色 */
+section[className*="rounded-3xl"][className*="border-\[var\(--border\)\]"][className*="bg-\[var\(--bg-card\)\]"] {
+  background: linear-gradient(to bottom right, #f8fafc, #ffffff, #f0f9ff) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Hero Overlay - 白色而不是深色 */
+section[className*="rounded-3xl"] .absolute[className*="inset-0"][className*="bg-gradient-to-r"] {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4)) !important;
+}
+
+section[className*="rounded-3xl"] .absolute[className*="inset-0"][className*="bg-gradient-to-t"] {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.9), transparent) !important;
+}
+
+/* Hero Content Box - 白色背景 */
+section[className*="rounded-3xl"] div[className*="max-w-3xl"][className*="rounded-2xl"][className*="border"] {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #bfdbfe !important;
+  backdrop-filter: blur(4px) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Hero Label - 蓝色而不是青色 */
+section[className*="rounded-3xl"] div[className*="inline-flex"][className*="rounded-full"][className*="border-cyan"] {
+  background-color: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1e40af !important;
+}
+
+/* Hero Title - 深灰色而不是白色 */
+section[className*="rounded-3xl"] h1[className*="text-white"] {
+  color: #0f172a !important;
+}
+
+/* Hero Subtitle - 灰色而不是白色 */
+section[className*="rounded-3xl"] div[className*="text-white/75"] {
+  color: #475569 !important;
+}
+
+/* Hero Description - 深灰色而不是白色 */
+section[className*="rounded-3xl"] p[className*="text-white/90"] {
+  color: #334155 !important;
+}
+
+/* Hero Highlights - 蓝色而不是白色 */
+section[className*="rounded-3xl"] span[className*="border-white/20"][className*="bg-white/10"] {
+  background-color: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1e40af !important;
+}
+
+/* Stat Cards - 白色背景而不是黑色 */
+section[className*="rounded-3xl"] article[className*="rounded-xl"][className*="border-white/15"] {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #e2e8f0 !important;
+  backdrop-filter: blur(4px) !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+  transition: box-shadow 0.3s ease !important;
+}
+
+section[className*="rounded-3xl"] article[className*="rounded-xl"][className*="border-white/15"]:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Stat Label - 灰色而不是白色 */
+section[className*="rounded-3xl"] div[className*="text-white/70"] {
+  color: #64748b !important;
+}
+
+/* Image Brightness */
+section[className*="rounded-3xl"] img[className*="brightness-\[0\.5\]"] {
+  filter: brightness(0.6) !important;
+}
+
+/* ── 黑臭水体页面配色优化 ── */
+/* 使用 CSS 变量和属性选择器来覆盖深色配色 */
+
+/* Hero 背景 */
+section[class*="rounded-3xl"][class*="shadow-\[var\(--shadow-card\)\]"] {
+  background: linear-gradient(to bottom right, #f8fafc, #ffffff, #f0f9ff) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 顶部渐变线 */
+section[class*="rounded-3xl"] > div[class*="bg-gradient-to-r"][class*="from-cyan-500"] {
+  background: linear-gradient(to right, #3b82f6, #06b6d4, #10b981) !important;
+}
+
+/* 深色覆盖层改为浅色 */
+section[class*="rounded-3xl"] div[class*="from-\[#020817\]/90"] {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4)) !important;
+}
+
+section[class*="rounded-3xl"] div[class*="from-\[#020817\]/85"] {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.9), transparent) !important;
+}
+
+/* 内容框 */
+section[class*="rounded-3xl"] div[class*="bg-black/30"] {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #bfdbfe !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 标签 */
+section[class*="rounded-3xl"] div[class*="bg-cyan-500/10"] {
+  background-color: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1e40af !important;
+}
+
+/* 标题 */
+section[class*="rounded-3xl"] h1[class*="text-white"] {
+  color: #0f172a !important;
+}
+
+/* 副标题 */
+section[class*="rounded-3xl"] div[class*="text-white/75"] {
+  color: #475569 !important;
+}
+
+/* 描述 */
+section[class*="rounded-3xl"] p[class*="text-white/90"] {
+  color: #334155 !important;
+}
+
+/* 高亮 */
+section[class*="rounded-3xl"] span[class*="bg-white/10"] {
+  background-color: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1e40af !important;
+}
+
+/* 指标卡片 */
+section[class*="rounded-3xl"] article[class*="bg-black/40"] {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+section[class*="rounded-3xl"] article[class*="bg-black/40"]:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 指标标签 */
+section[class*="rounded-3xl"] div[class*="text-white/70"] {
+  color: #64748b !important;
+}
+
+/* 图片亮度 */
+section[class*="rounded-3xl"] img[class*="brightness-\[0\.5\]"] {
+  filter: brightness(0.6) !important;
+}
+
+/* ==================== 可访问性 ==================== */
+
+/* 跳转到主内容链接 */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 9999;
+  padding: 12px 24px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 0 0 8px 0;
+  text-decoration: none;
+}
+
+.skip-to-content:focus {
+  left: 0;
+  outline: 3px solid var(--accent-secondary);
+  outline-offset: 2px;
+}
+
+/* ==================== 无障碍动画 ==================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  body::before {
+    display: none !important;
+  }
+}
+
+/* 焦点可见性 */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 跳过 Tailwind 的默认 outline-none 在 focus-visible 时 */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
