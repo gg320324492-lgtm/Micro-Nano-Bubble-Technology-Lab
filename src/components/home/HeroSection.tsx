@@ -29,34 +29,23 @@ export default function HeroSection() {
       >
         <HomeHeroCarousel />
 
-        {/* 文字叠加层 — pointer-events-none 让点击穿透到下方轮播图控件 */}
-        <div
-          className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none"
-        >
-          {/* 渐变遮罩 */}
-          <AnimatePresence>
-            {!textDismissed && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 pointer-events-none"
-              />
-            )}
-          </AnimatePresence>
+        {/* 文字叠加层 */}
+        <AnimatePresence>
+          {!textDismissed && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0 z-10 flex flex-col items-center justify-center cursor-pointer"
+              onClick={handleOverlayClick}
+              onTouchEnd={handleOverlayClick}
+            >
+              {/* 渐变遮罩 */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 pointer-events-none" />
 
-          {/* 文字内容 — 仅此区域可点击触发隐藏 */}
-          <AnimatePresence>
-            {!textDismissed && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, y: -30 }}
-                transition={{ duration: 0.5 }}
-                className="relative z-10 text-center px-6 max-w-4xl mx-auto pointer-events-auto cursor-pointer"
-                onClick={handleOverlayClick}
-              >
+              {/* 文字内容 */}
+              <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -116,10 +105,10 @@ export default function HeroSection() {
                 >
                   点击任意位置查看完整图片
                 </motion.p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.section>
     </section>
   );
