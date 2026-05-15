@@ -31,6 +31,18 @@ export function sortExternalLinksByDate(links: ExternalLink[]): ExternalLink[] {
 
 export const externalLinks: ExternalLink[] = [
   {
+    id: "bilibili-rural-revitalization-aquaculture-20260515",
+    title: "教授“牵手”农户，养鱼产量翻倍！天津大学科研团队用新质生产力为水产养殖增效益",
+    date: "2026-05-15",
+    description:
+      "走进天津津南、河北石家庄，看天津大学科研团队用新质生产力为水产养殖增效益；《乡村振兴怎么干》，新闻频道，精彩呈现。",
+    url: "https://www.bilibili.com/video/BV11z5e6yECU/",
+    source: "B站 / 新闻频道",
+    tag: "媒体报道",
+    thumbnail: "/images/media/bilibili-rural-revitalization-aquaculture-20260515.png",
+    thumbnailFit: "cover",
+  },
+  {
     id: "tjyun-professor-bubble-valuation-50m-20260502",
     title: "这位天大教授研究的“气泡”，缘何估值5000万元？",
     date: "2026-05-02",
