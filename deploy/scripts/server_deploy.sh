@@ -29,4 +29,4 @@ echo "[5/5] Reload nginx..."
 sudo nginx -t
 sudo systemctl reload nginx
 
-echo "Done. Visit: http://www.mnb-lab.cn"
+echo "Done. Visit: https://www.mnb-lab.cn"
