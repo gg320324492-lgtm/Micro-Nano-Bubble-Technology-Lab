@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Micro-Nano-Bubble-Technology-Lab
 
-## Getting Started
+微纳米气泡课题组实验室官网 - 静态网站
 
-First, run the development server:
+技术栈：Next.js 16 + React 19 + TypeScript，静态导出模式。
+
+## 本地开发
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev    # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 部署
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 构建
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**必须在本地 Windows 构建，严禁在云服务器（2核2G）上运行 `npm run build`**——Next.js 构建耗内存，2026-05-26 实测云服务器 OOM 卡死。
 
-## Learn More
+```bash
+npm run build   # 产物输出到 out/ 目录
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 上传到云服务器
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**方式一：MinIO 中转（推荐，无需免密 SSH）**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# 本地打包
+tar -czf mnb-lab-build.tar.gz -C out .
 
-## Deploy on Vercel
+# 上传到 MinIO
+docker compose exec app python -c "
+from app.config import settings
+from minio import Minio
+Minio(...).put_object(settings.MINIO_BUCKET, 'deploy/mnb-lab-build.tar.gz', ...)
+"
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# 云服务器下载并部署
+wget http://127.0.0.1:9000/microbubble/deploy/mnb-lab-build.tar.gz -O /tmp/build.tar.gz
+rm -rf /var/www/mnb-lab/*
+tar -xzf /tmp/build.tar.gz -C /var/www/mnb-lab/
+chown -R www-data:www-data /var/www/mnb-lab/
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**方式二：SCP（需要配置免密 SSH）**
+
+```bash
+scp -r out/* root@60.205.93.8:/var/www/mnb-lab/
+```
+
+### 部署验证
+
+```bash
+curl -s -o /dev/null -w "HTTP %{http_code}" https://mnb-lab.cn/
+# 应返回 200
+```
+
+## 服务器架构
+
+- `mnb-lab.cn` 和 `agent.mnb-lab.cn` 共享同一台阿里云 2核2G 云服务器
+- Nginx 通过 `server_name` 区分两个站点，配置在 `/etc/nginx/conf.d/default.conf`
+- SSL 证书：Let's Encrypt，`certbot certonly --webroot` 管理
+- 修改 Nginx 配置时必须确保不影响另一个站点，修改后 `nginx -t && nginx -s reload`
+
+## 注意事项
+
+- 图片优化由 `scripts/optimize-images.mjs` 自动处理（201MB+ 图片资源）
+- 新增域名到 SSL 证书：`certbot certonly --webroot -w /var/www/certbot -d mnb-lab.cn -d www.mnb-lab.cn --expand`
+- 云服务器资源有限，构建、压缩等重操作全部在本地完成
