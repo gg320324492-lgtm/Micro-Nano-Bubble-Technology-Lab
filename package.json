@@ -6,7 +6,7 @@
         "dev": "next dev --webpack",
         "images:optimize": "node scripts/optimize-images.mjs",
         "postbuild": "next-sitemap",
-        "build": "npm run images:optimize && next build",
+        "build": "npm run images:optimize && next build --webpack",
         "start": "next start",
         "lint": "eslint",
         "test": "node --test src/lib/__tests__/*.test.mjs",

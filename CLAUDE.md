@@ -31,4 +31,4 @@ npm run test      # node --test src/lib/__tests__/*.test.mjs
 ## Deployment flow
 1. `npm run build` locally → `out/` directory
 2. Upload to server via MinIO transfer or SCP
-3. Nginx serves static files from `/opt/Micro-Nano-Bubble-Technology-Lab/out/`
+3. Nginx serves static files from `/var/www/mnb-lab/`
