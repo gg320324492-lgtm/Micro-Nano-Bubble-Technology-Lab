@@ -8,9 +8,10 @@
 - [x] SSL/HTTPS (Let's Encrypt + Nginx 443)
 - [x] GitHub Actions 自动部署 (deploy-aliyun.yml)
 - [x] sitemap.xml 自动生成
+- [x] B站乡村振兴视频报道
+- [x] Nginx 部署路径修复：/var/www/mnb-lab → /opt/Micro-Nano-Bubble-Technology-Lab/out
 
 ## In Progress
-- [ ] B站乡村振兴视频报道 (最近添加的媒体内容)
 
 ## Planned
 - [ ] S3/MinIO 中转上传脚本优化

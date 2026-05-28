@@ -38,15 +38,15 @@ Minio(...).put_object(settings.MINIO_BUCKET, 'deploy/mnb-lab-build.tar.gz', ...)
 
 # 云服务器下载并部署
 wget http://127.0.0.1:9000/microbubble/deploy/mnb-lab-build.tar.gz -O /tmp/build.tar.gz
-rm -rf /var/www/mnb-lab/*
-tar -xzf /tmp/build.tar.gz -C /var/www/mnb-lab/
-chown -R www-data:www-data /var/www/mnb-lab/
+rm -rf /opt/Micro-Nano-Bubble-Technology-Lab/out/*
+tar -xzf /tmp/build.tar.gz -C /opt/Micro-Nano-Bubble-Technology-Lab/out/
+chown -R www-data:www-data /opt/Micro-Nano-Bubble-Technology-Lab/out/
 ```
 
 **方式二：SCP（需要配置免密 SSH）**
 
 ```bash
-scp -r out/* root@60.205.93.8:/var/www/mnb-lab/
+scp -r out/* root@60.205.93.8:/opt/Micro-Nano-Bubble-Technology-Lab/out/
 ```
 
 ### 部署验证
