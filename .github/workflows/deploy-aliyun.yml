@@ -47,9 +47,8 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "$TARGET_PORT" "$TARGET_HOST" >> ~/.ssh/known_hosts
 
-          ssh -p "$TARGET_PORT" "$TARGET_USER@$TARGET_HOST" "mkdir -p '$REMOTE_DIR'"
-
-          rsync -az --delete \
+          # Use sudo rsync — deploy has NOPASSWD sudo for rsync
+          rsync -az --delete --rsync-path="sudo rsync" \
             -e "ssh -p $TARGET_PORT -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes" \
             out/ "$TARGET_USER@$TARGET_HOST:$REMOTE_DIR/"
 
