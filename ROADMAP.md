@@ -9,7 +9,9 @@
 - [x] GitHub Actions 自动部署 (deploy-aliyun.yml)
 - [x] sitemap.xml 自动生成
 - [x] B站乡村振兴视频报道
-- [x] Nginx 部署路径修复：/var/www/mnb-lab → /opt/Micro-Nano-Bubble-Technology-Lab/out
+- [x] Nginx 部署路径统一为 /var/www/mnb-lab，清理历史残留目录
+- [x] 轮播图模糊修复：main(1400px) → full(2200px)
+- [x] GitHub Actions sudo rsync 权限修复
 
 ## In Progress
 

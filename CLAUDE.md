@@ -30,5 +30,14 @@ npm run test      # node --test src/lib/__tests__/*.test.mjs
 
 ## Deployment flow
 1. `npm run build` locally → `out/` directory
-2. Upload to server via MinIO transfer or SCP
-3. Nginx serves static files from `/var/www/mnb-lab/`
+2. Package: `tar -czf deploy.tar.gz -C out .`
+3. Upload: `scp deploy.tar.gz deploy@60.205.93.8:/tmp/`
+4. Extract: `rm -rf /var/www/mnb-lab/* && tar -xzf /tmp/deploy.tar.gz -C /var/www/mnb-lab/`
+5. Reload: `sudo nginx -t && sudo systemctl reload nginx`
+6. Nginx serves from `/var/www/mnb-lab/` (single canonical path, no duplicates)
+
+## Image variants (critical)
+- `thumb` (max 640px) — list cards / thumbnails
+- `main` (max 1400px) — in-page content images
+- `full` (max 2200px) — **hero/carousel/full-screen images ONLY**
+- Using `main` on full-screen images causes blurriness at high resolutions
