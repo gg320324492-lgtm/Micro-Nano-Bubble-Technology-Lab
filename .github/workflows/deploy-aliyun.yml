@@ -40,7 +40,7 @@ jobs:
           TARGET_HOST="60.205.93.8"
           TARGET_USER="deploy"
           TARGET_PORT="22"
-          REMOTE_DIR="/var/www/html"
+          REMOTE_DIR="/var/www/mnb-lab"
 
           mkdir -p ~/.ssh
           printf '%s' "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
