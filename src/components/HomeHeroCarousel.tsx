@@ -125,7 +125,7 @@ export default function HomeHeroCarousel() {
                 className="absolute inset-0"
               >
                 <Image
-                  src={assetPath(toImageVariant(s.src, "main"))}
+                  src={assetPath(toImageVariant(s.src, "full"))}
                   alt={s.alt}
                   fill
                   priority={i === 0}
