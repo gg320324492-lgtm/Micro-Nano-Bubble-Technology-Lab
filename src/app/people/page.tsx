@@ -155,6 +155,8 @@ export default function PeoplePage() {
 
         <div className="w-full md:w-96">
           <input
+            id="people-search"
+            name="people-search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="搜索：姓名 / 方向 / 单位 / 标签…"

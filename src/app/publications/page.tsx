@@ -224,6 +224,8 @@ export default function PublicationsPage() {
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex-1">
           <input
+            id="publications-search"
+            name="publications-search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder={
@@ -239,6 +241,8 @@ export default function PublicationsPage() {
           <div className="flex items-center gap-2">
             <span className="text-sm text-[var(--muted)]">年份</span>
             <select
+              id="publications-year"
+              name="publications-year"
               value={year}
               onChange={(e) => setYear(e.target.value)}
               className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text)]"
