@@ -243,6 +243,7 @@ export default function PublicationsPage() {
             <select
               id="publications-year"
               name="publications-year"
+              aria-label="按年份筛选"
               value={year}
               onChange={(e) => setYear(e.target.value)}
               className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text)]"
