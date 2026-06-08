@@ -6,16 +6,19 @@
 - [x] 响应式适配 (桌面 + 移动端)
 - [x] 图片优化管线 (WebP 多尺寸 + 懒加载)
 - [x] SSL/HTTPS (Let's Encrypt + Nginx 443)
-- [x] GitHub Actions 自动部署 (deploy-aliyun.yml)
 - [x] sitemap.xml 自动生成
 - [x] B站乡村振兴视频报道
 - [x] Nginx 部署路径统一为 /var/www/mnb-lab，清理历史残留目录
 - [x] 轮播图模糊修复：main(1400px) → full(2200px)
-- [x] GitHub Actions sudo rsync 权限修复
+- [x] GitHub Actions 自动部署到阿里云 (deploy.yml)
+- [x] 移除 GitHub Pages 部署，仅保留阿里云
+- [x] webhint 修复：Content-Type charset、woff2 MIME 类型、表单 id/name
+- [x] webhint 修复：HTML no-cache、字体 Cache-Control、X-Content-Type-Options
+- [x] webhint 修复：RSC 文件 204 响应、select 无障碍 aria-label
+- [x] React #418 水合错误修复 (ClientOnly 包装 framer-motion)
 
 ## In Progress
 
 ## Planned
-- [ ] S3/MinIO 中转上传脚本优化
-- [ ] CI/CD 构建警告修复 (2核2G OOM 问题)
 - [ ] 图片进一步压缩 (>201MB 资源优化)
+- [ ] 剩余 webhint 警告处理（框架生成的前缀/fetchpriority，无法修复）
