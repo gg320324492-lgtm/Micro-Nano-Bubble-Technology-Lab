@@ -55,8 +55,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-CN" className={jetbrainsMono.variable}>
-      <body className={`min-h-dvh flex flex-col antialiased ${notoSerif.className}`}>
+    <html lang="zh-CN" className={jetbrainsMono.variable} suppressHydrationWarning>
+      <body className={`min-h-dvh flex flex-col antialiased ${notoSerif.className}`} suppressHydrationWarning>
         <a href="#main-content" className="skip-to-content">
           跳转到主内容
         </a>
