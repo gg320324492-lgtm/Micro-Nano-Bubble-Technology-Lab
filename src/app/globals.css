@@ -112,6 +112,7 @@ body::before {
     radial-gradient(1px 1px at 50% 50%, rgba(245, 158, 11, 0.1), transparent);
   background-size: 200% 200%;
   animation: particleMove 20s ease-in-out infinite;
+  will-change: background-position;
   pointer-events: none;
   z-index: 0;
   opacity: 0.4;
@@ -222,6 +223,7 @@ textarea:focus-visible {
   background-clip: text;
   background-size: 200% 200%;
   animation: gradient-shift 3s ease infinite;
+  will-change: background-position;
 }
 
 /* 顶部标题专用：中文书法/楷体风格 */
@@ -255,10 +257,9 @@ textarea:focus-visible {
   box-shadow: var(--shadow-glow-strong);
 }
 
-/* 单行中文：拉伸到与容器同宽（用于“中英标题等宽”视觉） */
+/* 单行中文：拉伸到与容器同宽（用于”中英标题等宽”视觉） */
 .cn-justify-line {
   text-align: justify;
-  text-justify: inter-ideograph;
   text-align-last: justify;
 }
 .cn-justify-line::after {
