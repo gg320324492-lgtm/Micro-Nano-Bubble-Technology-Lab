@@ -16,9 +16,13 @@
 - [x] webhint 修复：HTML no-cache、字体 Cache-Control、X-Content-Type-Options
 - [x] webhint 修复：RSC 文件 204 响应、select 无障碍 aria-label
 - [x] React #418 水合错误修复 (ClientOnly 包装 framer-motion)
+- [x] Nginx 静态资源 block 添加 try_files $uri =404; (防 404 回退到 index.html)
+- [x] 修复服务器 Nginx Cache-Control (public,max-age=180 → no-cache)
+- [x] 确认 GitHub Actions 构建不完整 (Ubuntu OOM 丢子页面)，改手动部署
 
 ## In Progress
 
 ## Planned
 - [ ] 图片进一步压缩 (>201MB 资源优化)
 - [ ] 剩余 webhint 警告处理（框架生成的前缀/fetchpriority，无法修复）
+- [ ] 在本地 CI 环境构建 + 自动 rsync（替代 GitHub Actions）

@@ -1,0 +1,227 @@
+# HTTPS 配置（SSL 证书申请后使用）
+# 部署路径: /etc/nginx/conf.d/default.conf
+# 2026-06-08: 修复 webhint 安全头/缓存/性能警告
+
+# HTTP → HTTPS 重定向
+server {
+    listen 80;
+    server_name agent.mnb-lab.cn;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    # 隐藏 nginx 版本号（webhint: server header should only contain server name）
+    server_tokens off;
+
+    listen 443 ssl http2;
+    server_name agent.mnb-lab.cn;
+
+    ssl_certificate     /etc/letsencrypt/live/agent.mnb-lab.cn/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/agent.mnb-lab.cn/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+
+    # 默认字符集（webhint: content-type charset should be utf-8）
+    charset utf-8;
+    charset_types text/css text/javascript application/javascript application/json;
+
+    root /opt/microbubble-agent/web/dist;
+    index index.html;
+
+    # ============================================
+    # 屏蔽恶意扫描器和机器人
+    # ============================================
+
+    # 屏蔽敏感文件探测
+    location ~* /\.(env|git|svn|htaccess|htpasswd|DS_Store|ssh|aws|azure|gcp) {
+        return 444;
+    }
+
+    # 屏蔽常见漏洞路径（web$ 避免误杀 /webhook，test$/db$ 同理避免误杀合法路径）
+    location ~* ^/(wp-admin|wp-content|wp-includes|wp-login|xmlrpc|wordpress|blog|web$|news|2018|2019|shop|wp1|wp2|test$|media|site|cms|sito|admin|phpmyadmin|pma|mysql|db$|database|backup|bak|old|temp|tmp|debug|console|shell|cmd|exec|system|eval|base64|decode|encode) {
+        return 444;
+    }
+
+    # 屏蔽云凭证探测
+    location ~* ^/(.azure|.aws|.gcp|credentials|service-account) {
+        return 444;
+    }
+
+    # 屏蔽开发文件探测
+    location ~* ^/(_next|__next|node_modules|vendor|bower_components) {
+        return 444;
+    }
+
+    # 屏蔽常见攻击路径
+    location ~* ^/(boaform|formLogin|servlet|nccloud|k3cloud|easweb|owa) {
+        return 444;
+    }
+
+    # 前端 SPA 路由 — HTML 页面不缓存，安全头
+    # 不把 add_header 放 server 块（会泄漏到所有 proxy location）
+    location / {
+        try_files $uri $uri/ /index.html;
+        add_header Cache-Control "max-age=0" always;
+        add_header Strict-Transport-Security "max-age=63072000" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    }
+
+    # Webhook 代理 → 本地 webhook 服务
+    location /webhook {
+        proxy_pass http://127.0.0.1:9001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 300s;
+    }
+
+    # API 代理 → FRP 隧道 → 本地 Docker app（含 WebSocket 支持）
+    location /api {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_connect_timeout 10s;
+        proxy_send_timeout 120s;
+        proxy_read_timeout 120s;
+        client_body_timeout 180s;
+        client_max_body_size 50m;
+        proxy_hide_header X-XSS-Protection;
+    }
+
+    # WebSocket 代理 → FRP 隧道 → 本地 Docker app
+    location /ws {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+    }
+
+    # MinIO 文件代理（通过 FRP 隧道）
+    # 不添加 X-Content-Type-Options — MinIO 自己已发送 nosniff，再加会重复
+    # proxy_hide_header 剥离 MinIO 自带的过时/无用头
+    location ^~ /minio/ {
+        proxy_pass http://127.0.0.1:9000/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_hide_header X-XSS-Protection;
+        proxy_hide_header X-Frame-Options;
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+    }
+
+    # 静态资源缓存（配合 Vite content-hash 文件名）
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    }
+}
+
+# ============================================
+# mnb-lab.cn — 课题组官网 (Next.js 静态导出)
+# ============================================
+
+server {
+    listen 80;
+    server_name mnb-lab.cn www.mnb-lab.cn;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name mnb-lab.cn www.mnb-lab.cn;
+
+    ssl_certificate     /etc/letsencrypt/live/mnb-lab.cn/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/mnb-lab.cn/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+
+    # 默认字符集
+    charset utf-8;
+    charset_types text/css text/javascript application/javascript application/json;
+
+    root /var/www/mnb-lab;
+    index index.html;
+
+    # ============================================
+    # 屏蔽恶意扫描器和机器人
+    # ============================================
+
+    # 屏蔽敏感文件探测
+    location ~* /\.(env|git|svn|htaccess|htpasswd|DS_Store|ssh|aws|azure|gcp) {
+        return 444;
+    }
+
+    # 屏蔽常见漏洞路径
+    # mnb-lab.cn 合法路径：/news/, /media/ (images/media/ 下), /showcase/
+    # news$、media$、site$ 加锚定避免误杀
+    location ~* ^/(wp-admin|wp-content|wp-includes|wp-login|xmlrpc|wordpress|blog|web$|news$|2018|2019|shop|wp1|wp2|test$|media$|site$|cms|sito|admin|phpmyadmin|pma|mysql|db$|database|backup|bak|old|temp|tmp|debug|console|shell|cmd|exec|system|eval|base64|decode|encode) {
+        return 444;
+    }
+
+    # 屏蔽云凭证探测
+    location ~* ^/(.azure|.aws|.gcp|credentials|service-account) {
+        return 444;
+    }
+
+    # mnb-lab.cn 是 Next.js 站点，不屏蔽 _next/__next
+    location ~* ^/(node_modules|vendor|bower_components) {
+        return 444;
+    }
+
+    # 屏蔽常见攻击路径
+    location ~* ^/(boaform|formLogin|servlet|nccloud|k3cloud|easweb|owa) {
+        return 444;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+        add_header Cache-Control "no-cache" always;
+        add_header Strict-Transport-Security "max-age=63072000" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    }
+
+    # RSC 文件 — 存在则返回，不存在返回 204（避免 Next.js 静态导出的 404 噪音）
+    location ~* /__next\..*\.txt$ {
+        charset utf-8;
+        default_type text/plain;
+        try_files $uri =204;
+    }
+
+    location ~* \.woff2?$ {
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        types { font/woff2 woff2; font/woff woff; }
+        default_type font/woff2;
+        try_files $uri =404;
+    }
+
+    # 静态资源缓存（缺失文件返回 404 而非回退到 index.html）
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|webp|ttf|eot)$ {
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        try_files $uri =404;
+    }
+}
