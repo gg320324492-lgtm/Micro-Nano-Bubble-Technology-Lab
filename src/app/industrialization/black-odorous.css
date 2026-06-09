@@ -20,6 +20,7 @@
 .black-odorous-hero-content {
   background-color: rgba(255, 255, 255, 0.95) !important;
   border-color: #bfdbfe !important;
+  -webkit-backdrop-filter: blur(4px) !important;
   backdrop-filter: blur(4px) !important;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
 }
@@ -57,6 +58,7 @@
 .black-odorous-stat-card {
   background-color: rgba(255, 255, 255, 0.9) !important;
   border-color: #e2e8f0 !important;
+  -webkit-backdrop-filter: blur(4px) !important;
   backdrop-filter: blur(4px) !important;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
   transition: box-shadow 0.3s ease !important;

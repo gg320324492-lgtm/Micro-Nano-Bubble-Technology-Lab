@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* 覆盖 Tailwind base 层的 vendor prefix（webhint 警告） */
+@layer base {
+  :host,
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
 /* 🎨 明亮风格设计系统：清新现代美学 */
 :root {
   /* 核心背景 - 明亮渐变 */
@@ -244,8 +253,8 @@ textarea:focus-visible {
 
 .glass-effect {
   background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
