@@ -31,6 +31,19 @@ export function sortExternalLinksByDate(links: ExternalLink[]): ExternalLink[] {
 
 export const externalLinks: ExternalLink[] = [
   {
+    id: "xuanhuai-kechuang-daoshi-wangtianzi-20260710",
+    title:
+      "科创导师 | 环境学院王天志：把看不见的“气泡”变成看得见的变化",
+    date: "2026-07-10",
+    description:
+      "《科创导师》专栏专访天津大学环境科学与工程学院副教授王天志，回顾其从农业水利跨界水处理、深耕微纳米气泡技术十年的科研与创业路径，详解“释压发射头”核心部件、“结构—压力—粒径”关联模型与黑臭水体治理 / 高密度水产养殖 / 商业清洗三大落地场景，以及瑞德智创新技术（天津）有限公司获海棠基金天使投资、估值约 5000 万元的产业化进展。",
+    url: "https://mp.weixin.qq.com/s/fIA3_iRen5Owkc3sVSeu9w",
+    source: "微信公众平台 / 天大宣怀学院",
+    tag: "媒体报道",
+    thumbnail: "/images/media/xuanhuai-kechuang-daoshi-wangtianzi-20260710.png",
+    thumbnailFit: "cover",
+  },
+  {
     id: "bilibili-rural-revitalization-aquaculture-20260515",
     title: "教授“牵手”农户，养鱼产量翻倍！天津大学科研团队用新质生产力为水产养殖增效益",
     date: "2026-05-15",
