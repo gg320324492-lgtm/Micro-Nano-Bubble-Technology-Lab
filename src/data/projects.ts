@@ -14,6 +14,11 @@ export const projectSections: ProjectSection[] = [
     title: "自主基金",
     items: [
       {
+        name: "高性能低能耗微纳气泡发生装备设计与产业基地（2026XS32-0028）",
+        start: "2026-01-01",
+        end: "2026-12-31",
+      },
+      {
         name: "纳米级可控与多气源转换的微纳米气泡发生器设计研发",
         start: "2025-06-01",
         end: "2025-12-15",
