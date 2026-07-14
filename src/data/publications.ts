@@ -14,6 +14,17 @@ export type Publication = {
 
 export const publications: Publication[] = [
   {
+    id: "pub-2026-00",
+    year: 2026,
+    title:
+      "Catalyst-free aqueous-phase oxidation of toluene by ozone micro-nanobubbles coupled with H2O2 via interfacial reactive oxygen species",
+    titleEn:
+      "Catalyst-free aqueous-phase oxidation of toluene by ozone micro-nanobubbles coupled with H2O2 via interfacial reactive oxygen species",
+    venue: "Journal of Hazardous Materials, 2026, 513, 142456",
+    doi: "10.1016/j.jhazmat.2026.142456",
+    url: "https://www.sciencedirect.com/science/article/pii/S0304389426003179",
+  },
+  {
     id: "pub-2026-01",
     year: 2026,
     title:
@@ -68,6 +79,17 @@ export const publications: Publication[] = [
     url: "https://www.sciencedirect.com/science/article/pii/S1385894726008843",
   },
   {
+    id: "pub-2026-06",
+    year: 2026,
+    title:
+      "Mechanisms of Enhancing Tetracycline Oxidation in Wastewater by Ozone Micro-Nano Bubbles",
+    titleEn:
+      "Mechanisms of Enhancing Tetracycline Oxidation in Wastewater by Ozone Micro-Nano Bubbles",
+    venue: "Processes, 2026, 14, 1093",
+    doi: "10.3390/pr14061093",
+    url: "https://www.mdpi.com/2227-9717/14/6/1093",
+  },
+  {
     id: "pub-2025-01",
     year: 2025,
     title:
@@ -85,9 +107,9 @@ export const publications: Publication[] = [
       "Disinfection mechanism of chlorine-resistant bacteria by micro-nano bubbles in drinking water: A case study of Bacillus cereus",
     titleEn:
       "Disinfection mechanism of chlorine-resistant bacteria by micro-nano bubbles in drinking water: A case study of Bacillus cereus",
-    venue: "Chemical Engineering Journal, 2025, 515, 153782",
-    doi: "10.1016/j.cej.2025.153782",
-    url: "https://doi.org/10.1016/j.cej.2025.153782",
+    venue: "Chemical Engineering Journal, 2025, 515, 163782",
+    doi: "10.1016/j.cej.2025.163782",
+    url: "https://doi.org/10.1016/j.cej.2025.163782",
   },
   {
     id: "pub-2025-03",
