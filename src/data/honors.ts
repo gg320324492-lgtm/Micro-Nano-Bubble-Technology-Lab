@@ -16,9 +16,9 @@ export const honors: Honor[] = [
   {
     id: "honor-03",
     year: 2025,
-    title: "首届天津大学青年科创奖（2025）",
+    title: "首届天津大学高水平自然科学类科技创新奖—青年科创奖（2025）",
     imageSrc: "/images/honors/honor-2025-tju-young-innovation-award.png",
-    imageAlt: "首届天津大学青年科创奖（2025）荣誉证书",
+    imageAlt: "首届天津大学高水平自然科学类科技创新奖—青年科创奖（2025）荣誉证书",
   },
   { id: "honor-04", title: "环境科学技术一等奖" },
   { id: "honor-05", title: "天津海棠金种子基金获得者" },
