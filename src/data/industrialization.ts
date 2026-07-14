@@ -89,7 +89,7 @@ export const industrialBases: IndustrialBase[] = [
     briefZh:
       "面向工程落地与产业化交付，开展微纳米气泡一体机与河道治理曝气系统的研发、生产、集成测试与应用验证，覆盖纯氧/臭氧/空气等多气源方案。",
 
-    cover: "/industrialization/reid-device-tianjin/cover.jpg",
+    cover: "/industrialization/reid-device-tianjin/g02.jpg",
 
     locationZh: "瑞德智创新技术（天津）有限公司（高德地图导航）",
     locationUrl: "https://www.amap.com/place/B0M6HZ9FXW",
