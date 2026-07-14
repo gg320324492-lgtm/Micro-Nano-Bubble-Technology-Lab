@@ -126,7 +126,7 @@ export default function ReidDeviceShowcase({ base }: Props) {
         className="panel-shell"
       >
         <div className="p-5 md:p-7">
-          <div className="relative mb-5 h-56 w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] md:mb-6 md:h-72">
+          <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] md:mb-6">
             {base.cover ? (
               <Image
                 src={assetPath(base.cover)}
