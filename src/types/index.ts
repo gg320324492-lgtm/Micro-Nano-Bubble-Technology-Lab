@@ -151,7 +151,6 @@ export type IndustrialBaseView = {
   titleEn?: string;
   briefZh?: string;
   cover?: string;
-  monitorUrl?: string;
   highlightsZh?: string[];
   [key: string]: unknown;
 };

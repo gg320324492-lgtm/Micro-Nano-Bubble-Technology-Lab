@@ -84,17 +84,6 @@ export default function IndustrialSection({ items }: { items: IndustrialBaseView
                   查看详情
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                 </Link>
-                {b.monitorUrl ? (
-                  <a
-                    href={b.monitorUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-[var(--radius-md)] bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] px-4 py-2 text-sm font-semibold text-white shadow-md hover:shadow-lg transition"
-                  >
-                    打开监测大屏
-                    <ExternalLink className="h-3.5 w-3.5" />
-                  </a>
-                ) : null}
               </div>
             </div>
           </motion.div>

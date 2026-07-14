@@ -678,16 +678,6 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               高德地图导航
             </a>
           ) : null}
-          {base.monitorUrl ? (
-            <a
-              href={base.monitorUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
-            >
-              打开监测大屏
-            </a>
-          ) : null}
         </div>
 
         {isAquaculture ? (

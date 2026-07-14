@@ -24,9 +24,6 @@ export type IndustrialBase = {
   locationZh?: string;
   locationUrl?: string;
 
-  // 监测大屏（外链按钮，不动）
-  monitorUrl?: string;
-
   highlightsZh?: string[];
   sections?: IndustrialSection[];
   gallery?: IndustrialImage[];
@@ -46,9 +43,6 @@ export const industrialBases: IndustrialBase[] = [
     locationZh: "天津金谷兴农农业科技有限公司（高德地图导航）",
     locationUrl:
       "https://www.amap.com/?p=B0JB575BEM,38.93457879439492,117.34941646456716,%E5%A4%A9%E6%B4%A5%E9%87%91%E8%B0%B7%E5%85%B4%E5%86%9C%E5%86%9C%E4%B8%9A%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8,%E5%9B%BD%E5%AE%B6%E5%86%9C%E4%B8%9A%E7%A7%91%E6%8A%80%E5%9B%AD%E5%8C%BA(%E7%A7%91%E6%8A%80%E5%A4%A7%E9%81%93)",
-
-    // ✅ 监测大屏（按钮不动）
-    monitorUrl: "http://1jj133ix41012.vicp.fun/#/screen",
 
     highlightsZh: [
       "在线监测：水温、溶氧（DO）、ORP、pH、电导率等",

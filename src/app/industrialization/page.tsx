@@ -67,17 +67,6 @@ export default function IndustrializationPage() {
                 </div>
 
                 <div className="flex shrink-0 items-center gap-2">
-                  {b.monitorUrl ? (
-                    <a
-                      href={b.monitorUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={buttonClassName("primary", "px-4 py-2 text-sm")}
-                    >
-                      打开监测大屏
-                    </a>
-                  ) : null}
-
                   {/* ✅ 强制带尾部 /，完全匹配 trailingSlash 导出的目录结构 */}
                   <Link
                     href={`/industrialization/${encodeURIComponent(String(b.slug))}/`}
