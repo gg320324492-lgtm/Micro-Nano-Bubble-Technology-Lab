@@ -87,7 +87,7 @@ export const people: Person[] = [
   // 博士生
   // ============================================
 
-  // 2026级（赵航佳，+1）
+  // 2025级（赵航佳，博二）
   {
     ...mk(
       "zhaohangjia",
@@ -96,14 +96,14 @@ export const people: Person[] = [
       "Hangjia Zhao",
       "围绕微纳米气泡在黑臭水体治理中的应用开展研究，重点关注微纳米气泡与底泥-水界面污染物之间的相互作用机制。现阶段主要围绕臭氧微纳米气泡在黑臭水体底泥及上覆水中污染物去除、底泥污染物释放抑制、界面氧化转化机制及多物理场耦合模拟等方面开展研究。",
       [TAG_CLEAN, "臭氧微纳米气泡", "底泥-水界面"],
-      2026
+      2025
     ),
     detailPhoto: "/people/zhaohangjia-detail.jpg",
     hobbyZh: "阅读，旅游，美食",
     email: "zhaohangjia@tju.edu.cn",
   },
 
-  // 2024级（韩重阳、张宏魁，原 2023 级研三升博，+1）
+  // 2026级（韩重阳、张宏魁，原 2023 级研三升博，博一）
   mk(
     "hanchongyang",
     "PhD",
@@ -111,7 +111,7 @@ export const people: Person[] = [
     "Chongyang Han",
     "面向设备开发，推进发生器与供气/供水单元的工程优化与验证。",
     [TAG_EQUIP, "装备研发", "工程验证"],
-    2024
+    2026
   ),
   mk(
     "zhanghongkui",
@@ -120,7 +120,7 @@ export const people: Person[] = [
     "Hongkui Zhang",
     "探索微纳米气泡在设施农业与盐碱土修复场景中的增效机制。",
     [TAG_AGRI, "设施农业", "盐碱土修复"],
-    2024
+    2026
   ),
 
   // ============================================
@@ -241,35 +241,35 @@ export const people: Person[] = [
   ),
 
   // ============================================
-  // 已毕业（2025级 — 原 2024级研三毕业）
+  // 硕士研究生（2024级 — 升研三）
   // ============================================
   mk(
     "chenjinxin",
-    "Alumni",
+    "Master",
     "陈金薪",
     "Jinxin Chen",
     "解析气泡溃灭过程的界面活化特征与·OH生成动力学。",
     [TAG_OH, "自由基", "界面反应"],
-    2025
+    2024
   ),
   mk(
     "donghaoyu",
-    "Alumni",
+    "Master",
     "董昊宇",
     "Haoyu Dong",
     "探索微纳米气泡在农业水-土环境中的增效应用与评价方法。",
     [TAG_AGRI, "农业应用", "水-土环境"],
-    2025
+    2024
   ),
   {
     ...mk(
       "guanxiaowei",
-      "Alumni",
+      "Master",
       "关小未",
       "Xiaowei Guan",
       "关注盐碱土改良与高效种养场景中的微纳米气泡应用路径。",
       [TAG_AGRI, "盐碱土修复", "种养系统"],
-      2025
+      2024
     ),
     birthZh: "2002年3月",
     nativePlaceZh: "福建省厦门市",
@@ -278,68 +278,68 @@ export const people: Person[] = [
   },
   mk(
     "huxiaoqi",
-    "Alumni",
+    "Master",
     "胡小琪",
     "Xiaoqi Hu",
     "臭氧微纳米气泡对黑臭水体泥/水界面微生境修复机理研究。",
     [TAG_WQ, "消毒/抑菌", "微生物控制"],
-    2025
+    2024
   ),
   {
     ...mk(
       "lishengjing",
-      "Alumni",
+      "Master",
       "李胜景",
       "Shengjing Li",
       "微纳米气泡应用于高密度无抗鱼养殖。",
       [TAG_AGRI, "高密度养殖", "无抗鱼养殖"],
-      2025
+      2024
     ),
     genderZh: "女",
     nativePlaceZh: "安徽省广德市",
     birthZh: "2002年8月29日",
-    gradeZh: "硕士研究生二年级",
+    gradeZh: "硕士研究生三年级",
   },
   mk(
     "liuziyi",
-    "Alumni",
+    "Master",
     "刘子毅",
     "Ziyi Liu",
     "构建水质提升工艺的评价体系与实验数据处理流程。",
     [TAG_WQ, "过程评价", "数据分析"],
-    2025
+    2024
   ),
   {
     ...mk(
       "songyang",
-      "Alumni",
+      "Master",
       "宋洋",
       "Yang Song",
       "微纳米气泡饮用水处理组，研究气泡与膜的耦合应用。",
       [TAG_WQ, "生物稳定性", "管网生物膜"],
-      2025
+      2024
     ),
     detailPhoto: "/people/songyang-detail.jpg",
     hobbyZh: "羽毛球",
   },
   mk(
     "wangshuxin",
-    "Alumni",
+    "Master",
     "王书馨",
     "Shuxin Wang",
     "探索微纳米气泡在农业灌溉与土壤修复中的工程化应用方法。",
     [TAG_AGRI, "农业应用", "土壤修复"],
-    2025
+    2024
   ),
   {
     ...mk(
       "wumengquan",
-      "Alumni",
+      "Master",
       "吴孟铨",
       "Mengquan Wu",
       "研究溃灭诱导自由基生成与传质强化的关键影响因素。",
       [TAG_OH, "气泡溃灭", "传质强化"],
-      2025
+      2024
     ),
     hobbyZh: "睡觉、刷视频、打球",
     bioZh:
