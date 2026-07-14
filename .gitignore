@@ -15,3 +15,9 @@ github_actions_deploy
 github_actions_deploy.pub
 *.pem
 *.key
+
+# Word 报告输出（同步到桌面，不入库）
+docs/*.docx
+
+# 本地部署产物（237MB，不入库）
+deploy.tar.gz
