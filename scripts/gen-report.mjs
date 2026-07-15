@@ -158,11 +158,10 @@ const sec1 = () => [
     [{ content: '6' }, { content: '基于微纳米气泡技术的水环境治理设备开发' }, { content: changeBadge + ' 重写' }],
   ], [600, 7200, 1560]),
 
-  h2('1.4 教育经历（4 项）'),
+  h2('1.4 教育经历（3 项）'),
   new Paragraph({ numbering: { reference: 'edu', level: 0 }, children: [new TextRun({ text: '2009.09–2013.07  中国农业大学 水利与土木工程学院 本科', font: FONT_HAN, size: 22 })] }),
   new Paragraph({ numbering: { reference: 'edu', level: 0 }, children: [new TextRun({ text: '2013.09–2018.07  中国农业大学 水利与土木工程学院 硕博连读 博士', font: FONT_HAN, size: 22 })] }),
   new Paragraph({ numbering: { reference: 'edu', level: 0 }, children: [new TextRun({ text: '2016.11–2017.11  美国伊利诺伊香槟分校 农业与生物工程学院 联合培养博士', font: FONT_HAN, size: 22 })] }),
-  new Paragraph({ numbering: { reference: 'edu', level: 0 }, children: [new TextRun({ text: '2017.08–2017.10  美国哥伦比亚大学 Earth Engineering Center 交流生', font: FONT_HAN, size: 22 })] }),
 
   h2('1.5 工作经历（补充至 5 段完整时间线）'),
   makeTable([
