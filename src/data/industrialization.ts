@@ -69,7 +69,7 @@ export const industrialBases: IndustrialBase[] = [
       },
     ],
 
-    // ✅ 7 张图集（加上封面一共 8 张）
+    // ✅ 19 张图集（加上封面一共 20 张）
     gallery: [
       { src: "/industrialization/aquaculture/g01.jpg", captionZh: "基地现场 / 池塘环境" },
       { src: "/industrialization/aquaculture/g02.jpg", captionZh: "设备布置 / 管路与曝气点" },
@@ -78,6 +78,18 @@ export const industrialBases: IndustrialBase[] = [
       { src: "/industrialization/aquaculture/g05.jpg", captionZh: "平台大屏 / 数据可视化界面" },
       { src: "/industrialization/aquaculture/g06.jpg", captionZh: "对比测试 / 不同工况效果" },
       { src: "/industrialization/aquaculture/g07.jpg", captionZh: "现场维护 / 运维与巡检" },
+      { src: "/industrialization/aquaculture/g08.jpg" },
+      { src: "/industrialization/aquaculture/g09.jpg" },
+      { src: "/industrialization/aquaculture/g10.jpg" },
+      { src: "/industrialization/aquaculture/g11.jpg" },
+      { src: "/industrialization/aquaculture/g12.jpg" },
+      { src: "/industrialization/aquaculture/g13.jpg" },
+      { src: "/industrialization/aquaculture/g14.jpg" },
+      { src: "/industrialization/aquaculture/g15.jpg" },
+      { src: "/industrialization/aquaculture/g16.jpg" },
+      { src: "/industrialization/aquaculture/g17.jpg" },
+      { src: "/industrialization/aquaculture/g18.jpg" },
+      { src: "/industrialization/aquaculture/g19.jpg" },
     ],
   },
 
