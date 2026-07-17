@@ -37,7 +37,7 @@ export const industrialBases: IndustrialBase[] = [
     briefZh:
       "面向水产养殖场景，开展水质在线监测、增氧与水体调控等应用验证，形成“监测—诊断—调控”的闭环方案。",
 
-    cover: "/industrialization/aquaculture/cover.jpg",
+    cover: "/industrialization/aquaculture/g18.full.webp",
 
     // ✅ 高德地图导航（用你给的链接，放在代码里）
     locationZh: "天津金谷兴农农业科技有限公司（高德地图导航）",
