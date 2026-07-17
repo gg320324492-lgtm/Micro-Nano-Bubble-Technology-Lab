@@ -166,6 +166,10 @@ export const industrialBases: IndustrialBase[] = [
   { src: "/industrialization/reid-device-tianjin/g20.png", captionZh: "多功能一体式微纳米气泡发生器性能测试结果" },
   { src: "/industrialization/reid-device-tianjin/g21.png", captionZh: "产业化证明材料（一）" },
   { src: "/industrialization/reid-device-tianjin/g22.png", captionZh: "产业化证明材料（二）" },
+
+  // ✅ 顶部 1+2 hero band 用的第二/第三张封面图
+  { src: "/industrialization/reid-device-tianjin/2.jpg", captionZh: "厂区/车间/办公场景 — 待补充" },
+  { src: "/industrialization/reid-device-tianjin/3.jpg", captionZh: "厂区/车间/办公场景 — 待补充" },
 ],
 
   },

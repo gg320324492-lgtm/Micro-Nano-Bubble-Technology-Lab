@@ -126,18 +126,54 @@ export default function ReidDeviceShowcase({ base }: Props) {
         className="panel-shell"
       >
         <div className="p-5 md:p-7">
-          <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] md:mb-6">
-            {base.cover ? (
-              <Image
-                src={assetPath(base.cover)}
-                alt={base.titleZh}
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover"
-              />
-            ) : null}
-          </div>
+          <motion.div
+            initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+            animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: "easeOut", delay: 0.05 }}
+            className="mb-5 grid grid-cols-1 gap-3 md:mb-6 md:grid-cols-3"
+          >
+            {/* "1" — large cover image */}
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.42, ease: "easeOut", delay: 0.08 }}
+              className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] shadow-sm md:col-span-2 md:aspect-[16/10]"
+            >
+              {base.cover ? (
+                <Image
+                  src={assetPath(base.cover)}
+                  alt={base.titleZh}
+                  fill
+                  priority
+                  sizes="(min-width: 768px) 66vw, 100vw"
+                  className="object-cover"
+                />
+              ) : null}
+            </motion.div>
+
+            {/* "2" — stacked scenic images (2.jpg / 3.jpg from gallery tail) */}
+            <div className="grid grid-cols-2 gap-3 md:col-span-1 md:grid-cols-1">
+              {[base.gallery?.[21], base.gallery?.[22]]
+                .filter((scene): scene is NonNullable<typeof scene> => Boolean(scene))
+                .map((scene, idx) => (
+                  <motion.div
+                    key={scene.src}
+                    initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+                    animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
+                    transition={{ duration: 0.42, ease: "easeOut", delay: 0.12 + idx * 0.06 }}
+                    className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] shadow-sm md:aspect-[8/5]"
+                  >
+                    <Image
+                      src={assetPath(scene.src)}
+                      alt={scene.captionZh ?? scene.alt ?? base.titleZh}
+                      fill
+                      sizes="(min-width: 768px) 33vw, 50vw"
+                      className="object-cover"
+                    />
+                  </motion.div>
+                ))}
+            </div>
+          </motion.div>
 
           <div className="space-y-4">
             <div>
