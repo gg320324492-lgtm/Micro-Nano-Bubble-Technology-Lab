@@ -21,3 +21,7 @@ docs/*.docx
 
 # 本地部署产物（237MB，不入库）
 deploy.tar.gz
+
+# verify-showcase.mjs 生成的测试截图（不入库）
+verify-output/
+verify-output/*.png
