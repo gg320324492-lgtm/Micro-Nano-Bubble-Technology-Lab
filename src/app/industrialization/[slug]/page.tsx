@@ -701,46 +701,44 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                 ) : null}
               </div>
 
-              <div className="mt-5 grid gap-4 lg:grid-cols-3">
-                <div className="lg:col-span-2">
-                  <h1 className="text-4xl font-semibold tracking-tight text-[var(--text)] md:text-5xl">{base.titleZh}</h1>
-                  {base.titleEn ? (
-                    <div className="mt-1 text-sm text-[var(--muted)] md:text-base">{base.titleEn}</div>
-                  ) : null}
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-base">{base.briefZh}</p>
-                  {base.locationZh ? (
-                    <div className="mt-3 text-sm text-[var(--text-secondary)]">
-                      <span className="font-medium text-[var(--text)]">位置/说明：</span>
-                      {base.locationUrl ? (
-                        <a
-                          href={base.locationUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="underline underline-offset-2 hover:text-[var(--text)]"
-                        >
-                          {base.locationZh}
-                        </a>
-                      ) : (
-                        base.locationZh
-                      )}
-                    </div>
-                  ) : null}
-                </div>
+              <div className="mt-5">
+                <h1 className="text-4xl font-semibold tracking-tight text-[var(--text)] md:text-5xl">{base.titleZh}</h1>
+                {base.titleEn ? (
+                  <div className="mt-1 text-sm text-[var(--muted)] md:text-base">{base.titleEn}</div>
+                ) : null}
+                <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-base">{base.briefZh}</p>
+                {base.locationZh ? (
+                  <div className="mt-3 text-sm text-[var(--text-secondary)]">
+                    <span className="font-medium text-[var(--text)]">位置/说明：</span>
+                    {base.locationUrl ? (
+                      <a
+                        href={base.locationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-2 hover:text-[var(--text)]"
+                      >
+                        {base.locationZh}
+                      </a>
+                    ) : (
+                      base.locationZh
+                    )}
+                  </div>
+                ) : null}
+              </div>
 
-                <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-                  <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
-                    <div className="text-xs text-[var(--muted)]">养殖密度</div>
-                    <div className="mt-1 text-2xl font-bold text-[var(--accent)]">150 kg/m³</div>
-                  </article>
-                  <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
-                    <div className="text-xs text-[var(--muted)]">谷氨酸提升</div>
-                    <div className="mt-1 text-2xl font-bold text-[var(--accent-secondary)]">74.5%</div>
-                  </article>
-                  <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
-                    <div className="text-xs text-[var(--muted)]">成本折算</div>
-                    <div className="mt-1 text-2xl font-bold text-[#f59e0b]">5.51元/斤鱼</div>
-                  </article>
-                </div>
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
+                  <div className="text-xs text-[var(--muted)]">养殖密度</div>
+                  <div className="mt-1 text-2xl font-bold text-[var(--accent)]">150 kg/m³</div>
+                </article>
+                <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
+                  <div className="text-xs text-[var(--muted)]">谷氨酸提升</div>
+                  <div className="mt-1 text-2xl font-bold text-[var(--accent-secondary)]">74.5%</div>
+                </article>
+                <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
+                  <div className="text-xs text-[var(--muted)]">成本折算</div>
+                  <div className="mt-1 text-2xl font-bold text-[#f59e0b]">5.51元/斤鱼</div>
+                </article>
               </div>
             </div>
           </section>
