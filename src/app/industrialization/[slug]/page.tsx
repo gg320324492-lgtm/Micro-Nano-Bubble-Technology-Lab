@@ -687,7 +687,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
             <div className="absolute -left-12 bottom-8 h-36 w-36 rounded-full bg-[var(--accent-secondary)]/15 blur-3xl" />
 
             <div className="relative p-4 md:p-6">
-              <div className="relative h-52 w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] md:h-64">
+              <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] md:h-96">
                 {base.cover ? (
                   <Image
                     src={assetPath(base.cover)}
@@ -696,13 +696,9 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                     loading="eager"
                     fetchPriority="high"
                     sizes="100vw"
-                    className="object-cover"
+                    className="object-contain"
                   />
                 ) : null}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/20 to-transparent" />
-                <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/35 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
-                  
-                </div>
               </div>
 
               <div className="mt-5 grid gap-4 lg:grid-cols-3">
