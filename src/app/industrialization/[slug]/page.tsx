@@ -14,6 +14,7 @@ import Container from "@/components/Container";
 import { buttonClassName } from "@/components/ui/Button";
 import industrialBases, { IndustrialBase } from "@/data/industrialization";
 import { assetPath } from "@/lib/assetPath";
+import { toImageVariant } from "@/lib/imageVariant";
 import { industrialSectionThemes } from "@/lib/themePresets";
 
 export const dynamicParams = false;
@@ -23,78 +24,66 @@ export function generateStaticParams() {
 
 // ── 黑臭水体专属 Hero ──────────────────────────────────────────────
 function BlackOdorousHero({ base }: { base: IndustrialBase }) {
+  return (
+    <section className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
+      <div className="absolute inset-x-0 top-0 z-20 h-1 bg-gradient-to-r from-cyan-400 via-sky-500 to-blue-600" />
+      <CoverHero src={base.cover} alt={base.titleZh} />
+    </section>
+  );
+}
+
+/* 黑臭水体专用：标题区 + KPI（与 NewsSectionContainer 风格一致） */
+function BlackOdorousHeaderBlock({ base }: { base: IndustrialBase }) {
   const stats = [
-    { label: "COD 削减", value: "21–28%", color: "from-cyan-400 to-sky-500" },
-    { label: "氨氮削减", value: "≤93%", color: "from-emerald-400 to-teal-500" },
-    { label: "叶绿素去除", value: "71.5%", color: "from-violet-400 to-purple-500" },
-    { label: "处理时长", value: "10 min", color: "from-amber-400 to-orange-500" },
+    { label: "COD 削减", value: "21–28%", color: "text-cyan-600" },
+    { label: "氨氮削减", value: "≤93%", color: "text-emerald-600" },
+    { label: "叶绿素去除", value: "71.5%", color: "text-violet-600" },
+    { label: "处理时长", value: "10 min", color: "text-amber-600" },
+    { label: "总磷削减", value: "17–37%", color: "text-sky-600" },
+    { label: "浊度下降", value: ">25%", color: "text-teal-600" },
   ];
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
-      <div className="absolute inset-x-0 top-0 z-20 h-1 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600" />
-
-      <div className="relative min-h-[400px] w-full md:min-h-[520px]">
-        {base.cover ? (
-          <Image
-            src={assetPath(base.cover)}
-            alt={base.titleZh}
-            fill
-            loading="eager"
-            fetchPriority="high"
-            sizes="100vw"
-            className="object-cover brightness-[0.58]"
-          />
-        ) : null}
-
-        <div className="absolute inset-0 bg-gradient-to-r from-[#020817]/84 via-[#020817]/56 to-[#020817]/20 md:from-[#020817]/90 md:via-[#020817]/65 md:to-[#020817]/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/82 via-transparent to-transparent md:from-[#020817]/85" />
-
-        <div className="relative z-10 flex h-full flex-col justify-end gap-3.5 p-3 sm:p-5 md:gap-6 md:p-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl rounded-[1.4rem] border border-white/12 bg-black/24 p-3 backdrop-blur-xl sm:p-4 md:p-6">
-            <div className="mb-2 inline-flex max-w-full items-center gap-2 rounded-full border border-cyan-300/35 bg-cyan-500/12 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-cyan-100 shadow-[0_8px_30px_rgba(14,165,233,0.12)] md:mb-3 md:px-3 md:text-[11px] md:tracking-[0.14em]">
-              Industrialization · Black-Odorous Water Remediation
-            </div>
-
-            <h1 className="max-w-[11ch] text-[1.45rem] font-extrabold leading-[1.1] tracking-tight text-white sm:max-w-none sm:text-[1.85rem] md:text-5xl">
-              {base.titleZh}
-            </h1>
-
-            {base.titleEn ? (
-              <div className="mt-2 text-[12px] leading-[1.55] text-white/72 sm:text-sm md:text-base">{base.titleEn}</div>
-            ) : null}
-
-            <p className="mt-3 line-clamp-4 max-w-[32rem] text-[13px] leading-[1.78] text-white/88 sm:text-sm md:mt-4 md:line-clamp-none md:text-[15px]">
-              {base.briefZh}
+    <section className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-white/80 px-6 py-8 shadow-[var(--shadow-card)] backdrop-blur-sm md:px-10 md:py-10">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--accent-soft)]/40 via-transparent to-[var(--accent-secondary)]/20 opacity-70" />
+      <div className="relative z-10 space-y-6">
+        {/* 标题区 */}
+        <div className="space-y-3">
+          <span className="inline-flex items-center rounded-full bg-[var(--accent-soft)] px-4 py-1 text-xs font-semibold tracking-widest text-[var(--accent)] uppercase">
+            Industrialization · Black-Odorous Water Remediation
+          </span>
+          <h1 className="text-2xl md:text-3xl font-bold gradient-text">{base.titleZh}</h1>
+          {base.titleEn ? (
+            <p className="text-xs md:text-sm font-semibold tracking-[0.18em] text-[var(--muted)] uppercase">
+              {base.titleEn}
             </p>
+          ) : null}
+          <p className="max-w-3xl text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
+            {base.briefZh}
+          </p>
+          {base.highlightsZh?.length ? (
+            <div className="flex flex-wrap gap-1.5 pt-1 md:gap-2">
+              {base.highlightsZh.slice(0, 4).map((h) => (
+                <span
+                  key={h}
+                  className="rounded-full border border-[var(--border)] bg-[var(--bg-card)] px-3 py-1 text-[11px] font-medium text-[var(--text-secondary)] md:px-3.5 md:text-xs"
+                >
+                  {h}
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </div>
 
-            {base.highlightsZh?.length ? (
-              <div className="mt-3 flex flex-wrap gap-1.5 md:mt-4 md:gap-2">
-                {base.highlightsZh.slice(0, 3).map((h) => (
-                  <span
-                    key={h}
-                    className="rounded-full border border-white/18 bg-white/12 px-2.5 py-1 text-[10px] font-medium text-white/92 sm:text-[11px] md:px-3 md:text-xs"
-                  >
-                    {h}
-                  </span>
-                ))}
+        {/* KPI 数据条 */}
+        <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] shadow-sm">
+          <div className="h-1 bg-gradient-to-r from-cyan-400 via-sky-500 to-blue-600" />
+          <div className="grid grid-cols-2 divide-x divide-y divide-[var(--border)] sm:grid-cols-3 lg:grid-cols-6 sm:divide-y-0">
+            {stats.map((s) => (
+              <div key={s.label} className="px-3 py-3 text-center md:px-4 md:py-4">
+                <div className={`text-xl font-black tabular-nums md:text-2xl ${s.color}`}>{s.value}</div>
+                <div className="mt-0.5 text-[10px] font-medium text-[var(--muted)] leading-tight md:text-[11px]">{s.label}</div>
               </div>
-            ) : null}
-          </div>
-
-          <div className="grid w-full grid-cols-2 gap-2 lg:w-[280px] lg:grid-cols-1">
-            {stats.map((item) => (
-              <article
-                key={item.label}
-                className="rounded-[1.35rem] border border-white/12 bg-black/28 px-3 py-2.5 shadow-[0_10px_28px_rgba(15,23,42,0.16)] backdrop-blur-xl md:px-4 md:py-3"
-              >
-                <div className={`text-xl font-black tabular-nums bg-gradient-to-r ${item.color} bg-clip-text text-transparent sm:text-2xl`}>
-                  {item.value}
-                </div>
-                <div className="text-[10px] font-semibold tracking-wide text-white/70 sm:text-[11px] md:uppercase md:tracking-wider">
-                  {item.label}
-                </div>
-              </article>
             ))}
           </div>
         </div>
@@ -104,30 +93,6 @@ function BlackOdorousHero({ base }: { base: IndustrialBase }) {
 }
 
 // ── 黑臭水体：移动端指标条（Hero 外，仅小屏显示）─────────────────
-function BlackOdorousMetricsBar() {
-  const stats = [
-    { label: "COD 削减",  value: "21–28%", color: "text-cyan-600" },
-    { label: "氨氮削减",  value: "≤93%",   color: "text-emerald-600" },
-    { label: "叶绿素去除", value: "71.5%", color: "text-violet-600" },
-    { label: "处理时长",  value: "10 min", color: "text-amber-600" },
-    { label: "总磷削减",  value: "17–37%", color: "text-sky-600" },
-    { label: "浊度下降",  value: ">25%",   color: "text-teal-600" },
-  ];
-  return (
-    <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] shadow-sm lg:hidden">
-      <div className="h-1 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600" />
-      <div className="grid grid-cols-2 divide-x divide-y divide-[var(--border)] sm:grid-cols-3 sm:divide-y-0">
-        {stats.map((s) => (
-          <div key={s.label} className="px-3 py-3 text-center">
-            <div className={`text-xl font-black tabular-nums ${s.color}`}>{s.value}</div>
-            <div className="mt-0.5 text-[10px] font-medium text-[var(--muted)] leading-tight">{s.label}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 // ── 黑臭水体：技术路线卡片 ────────────────────────────────────────
 function BlackOdorousTechCards() {
   const cards = [
@@ -222,16 +187,18 @@ function CoverHero({ src, alt }: { src?: string; alt: string }) {
     );
   }
   return (
-    <div className="relative h-56 w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-elevated)]">
-      <Image
-        src={assetPath(src)}
-        alt={alt}
-        fill
-        loading="eager"
-        fetchPriority="high"
-        className="object-cover"
-        sizes="100vw"
-      />
+    <div className="relative w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-deep)]">
+      <div className="relative aspect-[16/9] w-full">
+        <Image
+          src={assetPath(toImageVariant(src, "main"))}
+          alt={alt}
+          fill
+          loading="lazy"
+          fetchPriority="low"
+          className="object-contain"
+          sizes="100vw"
+        />
+      </div>
     </div>
   );
 }
@@ -613,8 +580,8 @@ export default async function IndustrialBaseDetailPage(props: Props) {
             <BlackOdorousHero base={base} />
           </div>
 
-          <div className="mt-4 sm:mt-6">
-            <BlackOdorousMetricsBar />
+          <div className="mt-6">
+            <BlackOdorousHeaderBlock base={base} />
           </div>
 
           <div className="mt-6 sm:mt-8">

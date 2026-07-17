@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import industrialBases from "@/data/industrialization";
 import { assetPath } from "@/lib/assetPath";
+import { toImageVariant } from "@/lib/imageVariant";
 import Section from "@/components/ui/Section";
 import Heading from "@/components/ui/Heading";
 import Card from "@/components/ui/Card";
@@ -25,7 +26,7 @@ function Cover({ src, alt }: { src?: string; alt: string }) {
   return (
     <div className="relative h-56 w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-elevated)]">
       <Image
-        src={assetPath(src)}
+        src={assetPath(toImageVariant(src, "main"))}
         alt={alt}
         fill
         loading="lazy"

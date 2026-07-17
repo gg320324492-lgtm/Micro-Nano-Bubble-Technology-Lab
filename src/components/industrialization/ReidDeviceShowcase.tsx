@@ -10,6 +10,7 @@ import { buttonClassName } from "@/components/ui/Button";
 import reidDeviceShowcaseContent from "@/content/reidDeviceShowcaseContent";
 import type { IndustrialBase } from "@/data/industrialization";
 import { assetPath } from "@/lib/assetPath";
+import { toImageVariant } from "@/lib/imageVariant";
 
 type Props = {
   base: IndustrialBase;
@@ -136,10 +137,9 @@ export default function ReidDeviceShowcase({ base }: Props) {
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] shadow-sm">
               {base.cover ? (
                 <Image
-                  src={assetPath(base.cover)}
+                  src={assetPath(toImageVariant(base.cover, "main"))}
                   alt={base.titleZh}
                   fill
-                  priority
                   sizes="100vw"
                   className="object-cover"
                 />
@@ -159,9 +159,10 @@ export default function ReidDeviceShowcase({ base }: Props) {
                     className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] shadow-sm md:aspect-[16/10]"
                   >
                     <Image
-                      src={assetPath(scene.src)}
+                      src={assetPath(toImageVariant(scene.src, "main"))}
                       alt={scene.captionZh ?? scene.alt ?? base.titleZh}
                       fill
+                      loading="lazy"
                       sizes="(min-width: 768px) 50vw, 50vw"
                       className="object-cover"
                     />
@@ -214,33 +215,50 @@ export default function ReidDeviceShowcase({ base }: Props) {
         transition={{ duration: 0.4, ease: "easeOut", delay: 0.05 }}
         className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4 md:p-5"
       >
-        <div className="grid grid-cols-2 gap-3 md:mx-auto md:max-w-4xl md:grid-cols-4 md:gap-4">
-          {[
-            { id: "overview", label: "概览" },
-            { id: "product", label: "产品与参数" },
-            { id: "delivery", label: "交付与证明" },
-            { id: "contact", label: "咨询合作" },
-          ].map((tab, idx) => (
-            <motion.button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id as "overview" | "product" | "delivery" | "contact")}
-              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-              whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.3, ease: "easeOut", delay: idx * 0.04 }}
-              whileHover={reduceMotion ? {} : { y: -2, scale: 1.02 }}
-              whileTap={reduceMotion ? {} : { scale: 0.98 }}
-              className={[
-                "rounded-full border px-5 py-2.5 text-base text-center transition md:px-6 md:py-3",
-                activeTab === tab.id
-                  ? "border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--accent)]"
-                  : "border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
-              ].join(" ")}
-            >
-              {tab.label}
-            </motion.button>
-          ))}
+        <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-2 shadow-[var(--shadow-card)]">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {[
+              { id: "overview", label: "概览", badge: "Overview" },
+              { id: "product", label: "产品与参数", badge: "Product" },
+              { id: "delivery", label: "交付与证明", badge: "Delivery" },
+              { id: "contact", label: "咨询合作", badge: "Contact" },
+            ].map((tab, idx) => (
+              <motion.button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id as "overview" | "product" | "delivery" | "contact")}
+                initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.7 }}
+                transition={{ duration: 0.3, ease: "easeOut", delay: idx * 0.04 }}
+                whileTap={reduceMotion ? {} : { scale: 0.98 }}
+                className="relative inline-flex items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold"
+                aria-pressed={activeTab === tab.id}
+              >
+                {activeTab === tab.id ? (
+                  <motion.span
+                    layoutId="reid-device-tab-active"
+                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] shadow-md"
+                    transition={{ type: "spring", stiffness: 360, damping: 30 }}
+                  />
+                ) : null}
+                <span
+                  className={`relative z-10 text-center leading-tight ${
+                    activeTab === tab.id ? "text-white" : "text-[var(--text-secondary)]"
+                  }`}
+                >
+                  <span className="block">{tab.label}</span>
+                  <span
+                    className={`mt-0.5 block text-[10px] font-bold uppercase tracking-widest ${
+                      activeTab === tab.id ? "text-white/80" : "text-[var(--muted)]"
+                    }`}
+                  >
+                    {tab.badge}
+                  </span>
+                </span>
+              </motion.button>
+            ))}
+          </div>
         </div>
 
         <AnimatePresence mode="wait" initial={false}>
