@@ -1,8 +1,18 @@
 # 微纳气泡实验室网站 - 开发流程指南
 
+> ⚠️ **本文档部分内容已过时**（2026-07 更新）
+>
+> 重大变更：
+> - 不再部署到 GitHub Pages，统一部署到阿里云 `mnb-lab.cn`
+> - GitHub Actions 已停用（Ubuntu runner 构建会丢子页面），改本地手动部署
+> - Node.js 要求：**20+**（原 18+）
+> - `lab-app/` 移动 App 目录已移除
+>
+> 最新的部署与项目说明见根目录 [README.md](../README.md) / [ROADMAP.md](../ROADMAP.md) / [CLAUDE.md](../CLAUDE.md)。
+
 ## 项目概述
 
-本项目是一个基于 **Next.js 16 + React 19 + TypeScript + Tailwind CSS v4** 的实验室官方网站，支持静态导出并部署到 GitHub Pages。
+本项目是一个基于 **Next.js 16 + React 19 + TypeScript + Tailwind CSS v4** 的实验室官方网站，支持静态导出并部署到阿里云 Nginx。
 
 ## 技术栈
 
@@ -23,7 +33,7 @@
 
 确保本地已安装以下环境：
 
-- **Node.js** (推荐 v18+)
+- **Node.js** **v20+**（推荐 LTS）
 - **npm** 或 **yarn**
 - **Git**
 
@@ -200,27 +210,20 @@ next build
 
 构建产物将生成在 `out/` 目录。
 
-### 4.2 部署到 GitHub Pages
+### 4.2 部署到阿里云（mnb-lab.cn）
 
-项目已配置 GitHub Actions，自动部署到 GitHub Pages。
+> ⚠️ 本节已迁移至根目录 [DEPLOY_ALIYUN.md](../DEPLOY_ALIYUN.md) 与 [README.md § 部署](../README.md#部署)。
 
-**手动部署步骤：**
+简要步骤：
 
-1. 在 GitHub 仓库设置中启用 GitHub Pages
-2. Source 选择 "GitHub Actions"
-3. 推送代码到 main 分支，Action 会自动构建并部署
+1. 本地 `npm run build`（产物在 `out/`）
+2. `tar -czf deploy.tar.gz -C out .`
+3. `scp deploy.tar.gz mnb-aliyun:/tmp/`
+4. SSH 到服务器：`rsync -a --delete` 到 `/var/www/mnb-lab/`
+5. `sudo nginx -t && sudo systemctl reload nginx`
+6. **必须验证**：所有子页面（`/contact/`、`/people/`、`/news/` 等）返回 200
 
-**手动构建部署：**
-
-```bash
-# 设置 GitHub Actions 环境变量
-set GITHUB_ACTIONS=1
-
-# 构建
-npm run build
-
-# 将 out 目录内容推送到 gh-pages 分支
-```
+> ~~不再部署到 GitHub Pages~~ — GitHub Actions Ubuntu runner OOM 会丢子页面，已停用。
 
 ---
 
@@ -292,54 +295,10 @@ npm install
 
 ---
 
-## 九、移动App开发
+## 九、移动 App（已下线）
 
-### 9.1 项目概述
-
-本实验室同时提供配套的移动App，支持 iOS、Android 和鸿蒙系统。
-
-**技术栈：**
-- **框架**: React Native + Expo SDK 52
-- **语言**: TypeScript
-- **导航**: React Navigation (Bottom Tabs)
-
-### 9.2 项目位置
-
-移动App源代码位于 `lab-app/` 目录。
-
-### 9.3 快速开始
-
-```bash
-# 进入App目录
-cd lab-app
-
-# 安装依赖
-npm install
-
-# 启动开发服务器
-npm start
-
-# 运行Android
-npm run android
-
-# 运行iOS
-npm run ios
-```
-
-### 9.4 App功能模块
-
-| 模块 | 功能说明 |
-|------|----------|
-| 首页 | 实验室简介、研究方向概览、新闻轮播 |
-| 团队成员 | PI、教师、学生列表，个人简介、联系方式 |
-| publications | 论文列表（按年份分类）、DOI链接 |
-| 研究方向 | 5大研究方向详情（图文展示） |
-| 新闻动态 | 实验室最新通知和活动 |
-
-### 9.5 数据同步
-
-App 数据文件位于 `lab-app/src/data/` 目录，与网站数据保持同步更新。
+> ⚠️ `lab-app/` 移动 App 已不再维护，本章节保留作为历史参考。
 
 ---
 
-*本文档由实验室维护，如有问题请联系网站管理员。*
+*本文档由实验室维护，最新动态请见根目录 [README.md](../README.md) / [ROADMAP.md](../ROADMAP.md) / [CLAUDE.md](../CLAUDE.md)。*
