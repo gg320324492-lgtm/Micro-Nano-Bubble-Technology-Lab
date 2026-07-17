@@ -32,8 +32,8 @@ export type IndustrialBase = {
 export const industrialBases: IndustrialBase[] = [
   {
     slug: "aquaculture",
-    titleZh: "水产养殖基地",
-    titleEn: "Aquaculture Base",
+    titleZh: "天津大学纳米农业实验站·天津--水产养殖基地",
+    titleEn: "Aquaculture Base (Tianjin Univ. Nano-Agri Experimental Station)",
     briefZh:
       "面向水产养殖场景，开展水质在线监测、增氧与水体调控等应用验证，形成“监测—诊断—调控”的闭环方案。",
 
