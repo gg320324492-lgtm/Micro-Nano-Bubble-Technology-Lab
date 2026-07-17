@@ -69,19 +69,37 @@ export const industrialBases: IndustrialBase[] = [
       },
     ],
 
-    // ✅ 9 张图集（加上封面一共 10 张）
+    // ✅ 18 张图集（按"外景→设施→设备→运行→数据→维护→养殖对象→配套→团队/荣誉"的叙事顺序排列）
     gallery: [
+      // —— 外景与全景（先建立基地印象）
+      { src: "/industrialization/aquaculture/g17.jpg", captionZh: "基地外景 / 标牌与建筑" },
+      { src: "/industrialization/aquaculture/g13.jpg", captionZh: "基地外景 / 标牌特写" },
+      { src: "/industrialization/aquaculture/g15.jpg", captionZh: "基地外景 / 实验站全景" },
+      { src: "/industrialization/aquaculture/g24.jpg", captionZh: "基地外景 / 大棚与种植区全景" },
+
+      // —— 进入基地：温室与设施
+      { src: "/industrialization/aquaculture/g06.jpg", captionZh: "基地内景 / 大棚种植与对比工况" },
+      { src: "/industrialization/aquaculture/g22.jpg", captionZh: "基地现场 / 温室养殖圆池" },
       { src: "/industrialization/aquaculture/g01.jpg", captionZh: "基地现场 / 池塘环境" },
+
+      // —— 设备、传感与运行
+      { src: "/industrialization/aquaculture/g23.jpg", captionZh: "设备布置 / 一体化机柜与管路" },
       { src: "/industrialization/aquaculture/g02.jpg", captionZh: "设备布置 / 管路与曝气点" },
       { src: "/industrialization/aquaculture/g03.jpg", captionZh: "传感器安装 / 在线监测节点" },
       { src: "/industrialization/aquaculture/g04.jpg", captionZh: "运行过程 / 气泡与水体状态" },
+
+      // —— 数据平台与运维
       { src: "/industrialization/aquaculture/g05.jpg", captionZh: "平台大屏 / 数据可视化界面" },
-      { src: "/industrialization/aquaculture/g06.jpg", captionZh: "对比测试 / 不同工况效果" },
       { src: "/industrialization/aquaculture/g07.jpg", captionZh: "现场维护 / 运维与巡检" },
+
+      // —— 养殖对象
       { src: "/industrialization/aquaculture/g08.jpg", captionZh: "养殖对象 / 加州鲈鱼" },
-      { src: "/industrialization/aquaculture/g13.jpg", captionZh: "基地外景 / 标牌特写" },
-      { src: "/industrialization/aquaculture/g15.jpg", captionZh: "基地外景 / 实验站全景" },
-      { src: "/industrialization/aquaculture/g17.jpg", captionZh: "基地外景 / 标牌与建筑" },
+
+      // —— 业务配套与团队
+      { src: "/industrialization/aquaculture/g19.jpg", captionZh: "基地配套 / 商业模式洽谈区" },
+      { src: "/industrialization/aquaculture/g21.jpg", captionZh: "团队简介 / 团队成员展示墙" },
+      { src: "/industrialization/aquaculture/g20.jpg", captionZh: "团队 / 会议室与综合展示" },
+      { src: "/industrialization/aquaculture/g18.jpg", captionZh: "团队 / 荣誉证书与专利墙" },
     ],
   },
 
