@@ -79,21 +79,19 @@ export const industrialBases: IndustrialBase[] = [
 
       // —— 进入基地：温室与设施
       { src: "/industrialization/aquaculture/g06.jpg", captionZh: "基地内景 / 大棚种植与对比工况" },
-      { src: "/industrialization/aquaculture/g22.jpg", captionZh: "基地现场 / 温室养殖圆池" },
-      { src: "/industrialization/aquaculture/g01.jpg", captionZh: "基地现场 / 池塘环境" },
+      { src: "/industrialization/aquaculture/g02.jpg", captionZh: "设备布置 / 管路与曝气点" },
 
       // —— 设备、传感与运行
       { src: "/industrialization/aquaculture/g23.jpg", captionZh: "设备布置 / 一体化机柜与管路" },
-      { src: "/industrialization/aquaculture/g02.jpg", captionZh: "设备布置 / 管路与曝气点" },
-      { src: "/industrialization/aquaculture/g03.jpg", captionZh: "传感器安装 / 在线监测节点" },
-      { src: "/industrialization/aquaculture/g04.jpg", captionZh: "运行过程 / 气泡与水体状态" },
+      { src: "/industrialization/aquaculture/g22.jpg", captionZh: "基地现场 / 温室养殖圆池" },
 
       // —— 数据平台与运维
-      { src: "/industrialization/aquaculture/g05.jpg", captionZh: "平台大屏 / 数据可视化界面" },
       { src: "/industrialization/aquaculture/g07.jpg", captionZh: "现场维护 / 运维与巡检" },
 
       // —— 养殖对象
       { src: "/industrialization/aquaculture/g08.jpg", captionZh: "养殖对象 / 加州鲈鱼" },
+      { src: "/industrialization/aquaculture/g25.png", captionZh: "养殖对象 / 高密度养殖池鱼群活体状态" },
+      { src: "/industrialization/aquaculture/g26.png", captionZh: "养殖对象 / 成品鱼打样展示" },
 
       // —— 业务配套与团队
       { src: "/industrialization/aquaculture/g19.jpg", captionZh: "基地配套 / 商业模式洽谈区" },

@@ -68,8 +68,14 @@ function pickBadges(item: Record<string, unknown>): string[] {
   const out: string[] = [];
   if (item?.featured) out.push("Featured");
   if (item?.type) out.push(toStr(item.type));
-  if (item?.category) out.push(toStr(item.category));
   if (item?.status) out.push(toStr(item.status));
+  // ✅ 专利 / 软著的分类映射为中文徽章
+  const cat = item?.category;
+  if (cat === "invention") out.push("发明专利");
+  else if (cat === "utility") out.push("实用新型");
+  else if (cat === "software") out.push("软件著作权");
+  else if (cat === "application") out.push("申请中");
+  else if (cat) out.push(toStr(cat));
   return out.slice(0, 3);
 }
 
@@ -92,6 +98,59 @@ function formatPeriod(p: { start?: string; end?: string }) {
   if (!p.start && !p.end) return "无";
   if (p.start && p.end) return `${p.start} 至 ${p.end}`;
   return p.start ? `${p.start} 至` : `至 ${p.end}`;
+}
+
+/** 专利 / 软著的详细信息折叠块（不含"来源页"） */
+function PatentDetailFields({ item }: { item: Record<string, unknown> }) {
+  const fields: { key: string; label: string; value: unknown }[] = [
+    { key: "inventors", label: item.category === "software" ? "著作权人" : "发明人", value: item.inventors },
+    { key: "assignee", label: item.category === "software" ? "著作权人单位" : "专利权人/申请人单位", value: item.assignee },
+    { key: "applicationDate", label: item.category === "software" ? "登记日期" : "专利申请日", value: item.applicationDate },
+    { key: "applicationNo", label: "申请号 / 条形码", value: item.applicationNo },
+    { key: "publicationNo", label: "授权公告号", value: item.publicationNo },
+    { key: "certificateNo", label: "证书号", value: item.certificateNo },
+    { key: "note", label: "备注", value: item.note },
+  ];
+  const present = fields.filter((f) => f.value != null && toStr(f.value).length > 0);
+  if (present.length === 0) return null;
+
+  return (
+    <div className="mt-3 space-y-1.5 rounded-xl border border-[var(--border)]/70 bg-[var(--bg-elevated)]/60 p-3 text-sm">
+      {present.map((f) => (
+        <div key={f.key} className="grid grid-cols-[7rem_1fr] gap-x-3 gap-y-0.5">
+          <div className="text-[var(--muted)]">{f.label}</div>
+          <div className="text-[var(--text-secondary)]">{toStr(f.value)}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** 专利 / 软著：可点击展开更多信息的 details/summary（与「更多信息」一致） */
+function PatentDetails({ item }: { item: Record<string, unknown> }) {
+  return (
+    <details className="group mt-3 select-none">
+      <summary
+        className={[
+          "inline-flex cursor-pointer list-none items-center gap-1.5",
+          "text-sm font-medium text-[var(--accent)] hover:text-[var(--accent-hover)]",
+          "[&::-webkit-details-marker]:hidden",
+        ].join(" ")}
+      >
+        <span
+          aria-hidden
+          className="inline-block transition-transform group-open:rotate-90 text-[var(--accent)]"
+        >
+          ▶
+        </span>
+        详细信息
+        <span className="text-[var(--muted)]">
+          （发明人 / 申请人 / 证书号 / 授权公告号 / 申请日 / 申请号）
+        </span>
+      </summary>
+      <PatentDetailFields item={item} />
+    </details>
+  );
 }
 
 export default function PublicationsPage() {
@@ -371,6 +430,7 @@ export default function PublicationsPage() {
                 description={
                   <>
                     {it?.briefZh || it?.note ? <>{toStr(it?.briefZh || it?.note)}</> : null}
+                    {tab === "patents" ? <PatentDetails item={it as Record<string, unknown>} /> : null}
                     {tab === "honors" && it?.imageSrc ? (
                       <a
                         href={assetPath(toStr(it.imageSrc))}

@@ -668,6 +668,28 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                 ) : null}
               </div>
 
+              {/* 1+2 hero band：封面下方并排两张基地场景图（参考设备基地排版） */}
+              <div className="mt-3 grid grid-cols-2 gap-3 md:mt-4">
+                {[
+                  { src: "/industrialization/aquaculture/g27.png", alt: "全国智慧渔场布局分布图（Smart Aquaculture Network）" },
+                  { src: "/industrialization/aquaculture/g26.png", alt: "成品鱼打样展示" },
+                ].map((scene) => (
+                  <div
+                    key={scene.src}
+                    className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] shadow-sm md:aspect-[16/10]"
+                  >
+                    <Image
+                      src={assetPath(toImageVariant(scene.src, "main"))}
+                      alt={scene.alt}
+                      fill
+                      loading="lazy"
+                      sizes="(min-width: 768px) 50vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
               <div className="mt-5">
                 <h1 className="text-4xl font-semibold tracking-tight text-[var(--text)] md:text-5xl">{base.titleZh}</h1>
                 {base.titleEn ? (

@@ -211,7 +211,7 @@ function LabDetailCard() {
           <div>
             <h4 className="text-lg font-semibold text-[var(--text)]">二、实验区 · Experiment Area</h4>
             <p className="mt-3 leading-7 text-[var(--text-secondary)]">
-              课题组日常开展机理研究与应用验证的「主阵地」，配备自主搭建的多套微纳米气泡生成与水处理实验装置，可同时支持 6–8 名同学并行实验。
+              课题组日常开展机理研究与应用验证的「主阵地」，配备自主搭建的多套微纳米气泡生成与水处理实验装置，可同时支持多名同学并行实验。
             </p>
             <div className="mt-4 space-y-2 text-[var(--text-secondary)] leading-7">
               <p>• 气泡生成与反应器：流道结构、喷射/旋流、空化与剪切协同</p>
@@ -233,15 +233,15 @@ function LabDetailCard() {
             <div className="mt-4 space-y-2 text-[var(--text-secondary)] leading-7">
               <p>• 气泡粒径与浓度：激光粒度仪、高速摄像与显微计数</p>
               <p>• ζ 电位与稳定性：纳米/微米气泡表面电荷与停留行为</p>
-              <p>• 反应活性物种：溶解臭氧、·OH 等自由基的定性与定量</p>
-              <p>• 理化与微生物指标：COD、氨氮、菌落总数等</p>
+              <p>• 反应活性物种：自由基与活性物质的定性与定量</p>
+              <p>• 理化与微生物指标：常规水质与微生物参数检测</p>
             </div>
           </div>
 
           <div>
             <h4 className="text-lg font-semibold text-[var(--text)]">四、中试区 · Pilot Area</h4>
             <p className="mt-3 leading-7 text-[var(--text-secondary)]">
-              从实验室走向工程现场的「桥接区」，建设了日处理量百升至吨级的中试连续流装置，用于验证实验室成果在不同真实水质下的稳定性与可放大性。
+              从实验室走向工程现场的「桥接区」，建设了中等及以上规模的中试连续流装置，用于验证实验室成果在不同真实水质下的稳定性与可放大性。
             </p>
             <div className="mt-4 space-y-2 text-[var(--text-secondary)] leading-7">
               <p>• 撬装式中试装置：模块化设计，便于搬运到现场</p>
@@ -259,8 +259,8 @@ function LabDetailCard() {
           </p>
           <div className="mt-4 grid gap-2 sm:grid-cols-2 md:grid-cols-4">
             {[
-              { title: "水样储存", desc: "4°C 冷藏，用于理化与微生物分析" },
-              { title: "土样与底泥", desc: "-20°C 冷冻，保留原始理化特性" },
+              { title: "水样储存", desc: "冷藏保存，用于理化与微生物分析" },
+              { title: "土样与底泥", desc: "冷冻保存，保留原始理化特性" },
               { title: "生物样品", desc: "固定/冷冻双模式，便于显微观察" },
               { title: "气泡耗材", desc: "专用气瓶与注射器，保证纯度" },
             ].map((it) => (
@@ -346,8 +346,7 @@ function DefenseDetailCard() {
               近年来，课题组硕博研究生均一次性通过学位论文答辩，多名同学获评「校级优秀硕士学位论文」「院级优秀博士学位论文」等荣誉。答辩委员会对课题组的机理性研究与工程化应用给予了一致肯定。
             </p>
             <div className="mt-4 space-y-2 text-[var(--text-secondary)] leading-7">
-              <p>• 一次性通过率：近三年保持 100%</p>
-              <p>• 优秀学位论文：累计获评校级 / 院级优秀论文 5+ 篇</p>
+              <p>• 一次性通过率：近三年通过情况稳定</p>
               <p>• 研究方向：覆盖饮用水安全、环境治理、水产养殖、智能化装备</p>
               <p>• 委员评价：「机理扎实、数据可靠、应用前景明确」</p>
             </div>
