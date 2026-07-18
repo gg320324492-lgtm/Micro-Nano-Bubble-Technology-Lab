@@ -409,7 +409,7 @@ function DefenseDetailCard() {
 function RuideCupDetailCard() {
   const reports = [
     { time: "08:35 – 08:50", speaker: "赵航佳", topic: "水界面污染物行为的多尺度计算模拟" },
-    { time: "08:50 – 09:05", speaker: "杨慧", topic: "微纳米气泡协同紫外对蜡样芽孢杆菌杀菌机制研究" },
+    { time: "08:50 – 09:05", speaker: "杨慈", topic: "微纳米气泡协同紫外对蜡样芽孢杆菌杀菌机制研究" },
     { time: "09:05 – 09:20", speaker: "余歆睿", topic: "微纳米气泡协同硫酸铜的除藻效能与作用机理研究" },
     { time: "09:20 – 09:35", speaker: "张宏魁", topic: "微纳米气泡对盐碱土壤源化利用的作用机制与循环农业潜力研究" },
     { time: "09:35 – 09:50", speaker: "陈金薪", topic: "臭氧微纳米气泡前沿研究综述：界面反应场、ROS 证据链与多场协同工程应用" },
@@ -425,7 +425,7 @@ function RuideCupDetailCard() {
     { time: "11:45 – 11:50", speaker: "胡小琪", topic: "臭氧微纳米气泡对油泥破乳实验进展及下学期计划" },
     { time: "11:50 – 11:55", speaker: "宋洋", topic: "基于臭氧微纳米气泡对膜污染的控制及饮用水处理的研究" },
     { time: "11:55 – 12:00", speaker: "耿嘉栋", topic: "臭氧发生器应用现状及前景分析" },
-    { time: "12:05 – 12:10", speaker: "蒋卢迪", topic: "磁絮凝在含油废水中的应用进展" },
+    { time: "12:05 – 12:10", speaker: "蒋芦笛", topic: "磁絮凝在含油废水中的应用进展" },
   ];
 
   return (
