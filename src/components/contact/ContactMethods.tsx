@@ -7,6 +7,7 @@ type ContactMethodsProps = {
   email: string;
   addressLine1: string;
   addressLine2: string;
+  addressLine3: string;
   address: string;
   amapLink: string;
   website: string;
@@ -20,6 +21,7 @@ export default function ContactMethods({
   email,
   addressLine1,
   addressLine2,
+  addressLine3,
   amapLink,
   website,
   websiteText,
@@ -51,9 +53,14 @@ export default function ContactMethods({
 
           <ContactRow label="地址 Address" icon="📍" delay={0.05}>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-              <div className="min-w-0 text-[var(--text-secondary)]">
+              <div className="min-w-0 leading-relaxed text-[var(--text-secondary)]">
                 <div className="font-medium text-[var(--text)]">{addressLine1}</div>
                 <div className="font-medium text-[var(--text)]">{addressLine2}</div>
+                {addressLine3 ? (
+                  <div className="mt-1 text-xs font-medium tracking-wide text-[var(--muted)]">
+                    {addressLine3}
+                  </div>
+                ) : null}
               </div>
               <a href={amapLink} target="_blank" rel="noreferrer" className={actionBtnClass}>
                 导航前往

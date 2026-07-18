@@ -13,8 +13,10 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   const email = contact.email;
   const address = contact.addressZh;
-  const addressLine1 = address.split("，")[0] ?? address;
-  const addressLine2 = address.split("，")[1] ?? "";
+  const addressParts = address.split("，");
+  const addressLine1 = addressParts[0] ?? address;
+  const addressLine2 = addressParts[1] ?? "";
+  const addressLine3 = addressParts[2] ?? "";
   const website = contact.websiteZh;
   const websiteText = "faculty.tju.edu.cn";
   const amapLink = `https://www.amap.com/search?query=${encodeURIComponent(addressLine1)}`;
@@ -42,6 +44,7 @@ export default function ContactPage() {
             address={address}
             addressLine1={addressLine1}
             addressLine2={addressLine2}
+            addressLine3={addressLine3}
             website={website}
             websiteText={websiteText}
           />

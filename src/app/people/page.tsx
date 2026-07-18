@@ -2,13 +2,13 @@
 "use client";
 
 import { useDeferredValue, useMemo, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import * as peopleModule from "@/data/people";
 import type { Person } from "@/data/people";
 import PeopleCard from "@/components/PeopleCard";
 import Section from "@/components/ui/Section";
 import Heading from "@/components/ui/Heading";
 import Badge from "@/components/ui/Badge";
-import Chip from "@/components/ui/Chip";
 import Reveal from "@/components/motion/Reveal";
 import { DIRECTION_TAGS, getDirectionTone, getRoleTone } from "@/lib/peopleTheme";
 import { pickArray } from "@/lib/data";
@@ -30,6 +30,22 @@ function roleLabel(role: Person["role"] | string) {
   return map[role] ?? role;
 }
 
+const ROLE_MAIN_LABEL: Record<string, string> = {
+  ALL: "全部",
+  PhD: "博士生",
+  Master: "硕士生",
+  Undergrad: "本科生",
+  Alumni: "已毕业",
+};
+
+const ROLE_BADGE_LABEL: Record<string, string> = {
+  ALL: "All",
+  PhD: "PhD",
+  Master: "Master",
+  Undergrad: "Undergrad",
+  Alumni: "Graduated",
+};
+
 function groupOrder(role: string) {
   const order: Record<string, number> = {
     PhD: 0,
@@ -41,6 +57,7 @@ function groupOrder(role: string) {
 }
 
 export default function PeoplePage() {
+  const reduceMotion = useReducedMotion();
   // ✅ 只展示学生/已毕业成员（避免与 Home PI 重复）
   const all = pickArray<Person>(peopleModule, ["people"]).filter((p) =>
     ["PhD", "Master", "Undergrad", "Alumni"].includes(String(p.role))
@@ -167,50 +184,102 @@ export default function PeoplePage() {
 
       {/* Filters */}
       <div className="mt-5 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-card)] p-3 md:p-4">
-        <div className="flex flex-wrap items-center gap-2">
-          {roleOptions.map((r) => {
-            const active = roleFilter === r;
-            const tone = getRoleTone(r);
-            return (
-              <button
-                key={r}
-                onClick={() => setRoleFilter(r)}
-                className={[
-                  "inline-flex items-center justify-center rounded-full border px-3 py-1.5 text-sm font-medium transition",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-200 focus-visible:ring-offset-1",
-                  active ? tone.filterActive : tone.filterIdle,
-                ].join(" ")}
-              >
-                {r === "ALL" ? "全部" : roleLabel(r)}
-              </button>
-            );
-          })}
+        <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-2 shadow-[var(--shadow-card)]">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5">
+            {roleOptions.map((r) => {
+              const active = roleFilter === r;
+              const mainLabel = ROLE_MAIN_LABEL[r] ?? r;
+              const badgeLabel = ROLE_BADGE_LABEL[r] ?? "";
+              return (
+                <motion.button
+                  key={r}
+                  type="button"
+                  onClick={() => setRoleFilter(r)}
+                  initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                  animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, ease: "easeOut", delay: 0.02 }}
+                  whileTap={reduceMotion ? {} : { scale: 0.98 }}
+                  className="relative inline-flex items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold"
+                  aria-pressed={active}
+                >
+                  {active ? (
+                    <motion.span
+                      layoutId="people-role-tab-active"
+                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] shadow-md"
+                      transition={{ type: "spring", stiffness: 360, damping: 30 }}
+                    />
+                  ) : null}
+                  <span
+                    className={`relative z-10 text-center leading-tight ${
+                      active ? "text-white" : "text-[var(--text-secondary)]"
+                    }`}
+                  >
+                    <span className="block">{mainLabel}</span>
+                    <span
+                      className={`mt-0.5 block text-[10px] font-bold uppercase tracking-widest ${
+                        active ? "text-white/80" : "text-[var(--muted)]"
+                      }`}
+                    >
+                      {badgeLabel}
+                    </span>
+                  </span>
+                </motion.button>
+              );
+            })}
+          </div>
+        </div>
 
-          <div className="ml-auto text-xs font-medium text-[var(--muted)]">共 {filtered.length} 人</div>
+        <div className="mt-2 px-1 text-xs font-medium text-[var(--muted)]">
+          共 {filtered.length} 人
         </div>
       </div>
 
-      {/* ✅ 方向快捷标签（五大方向一键筛） */}
+      {/* ✅ 方向快捷标签（四大方向一键筛） */}
       {directionChips.length ? (
         <div className="mt-3">
           <div className="mb-2 text-xs font-medium text-[var(--muted)]">方向快捷筛选：</div>
-          <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
-            {directionChips.map(({ tag, count }) => {
-              const active = tagFilter === tag;
-              const tone = getDirectionTone(tag);
-              return (
-                <Chip
-                  key={tag}
-                  onClick={() => handleTagClick(tag)}
-                  active={active}
-                  count={count}
-                  className={active ? tone.chipActive : tone.chip}
-                  title="点击按方向筛选（再点一次取消）"
-                >
-                  {tag}
-                </Chip>
-              );
-            })}
+          <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-2 shadow-[var(--shadow-card)]">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              {directionChips.map(({ tag, count }) => {
+                const active = tagFilter === tag;
+                return (
+                  <motion.button
+                    key={tag}
+                    type="button"
+                    onClick={() => handleTagClick(tag)}
+                    initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                    animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, ease: "easeOut", delay: 0.02 }}
+                    whileTap={reduceMotion ? {} : { scale: 0.98 }}
+                    className="relative inline-flex items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold"
+                    aria-pressed={active}
+                    title="点击按方向筛选（再点一次取消）"
+                  >
+                    {active ? (
+                      <motion.span
+                        layoutId="people-direction-tab-active"
+                        className="absolute inset-0 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] shadow-md"
+                        transition={{ type: "spring", stiffness: 360, damping: 30 }}
+                      />
+                    ) : null}
+                    <span
+                      className={`relative z-10 w-full text-center leading-tight ${
+                        active ? "text-white" : "text-[var(--text-secondary)]"
+                      }`}
+                    >
+                      <span className="block line-clamp-2 text-balance">{tag}</span>
+                      <span
+                        className={`mt-1 block text-[10px] font-bold uppercase tracking-widest ${
+                          active ? "text-white/80" : "text-[var(--muted)]"
+                        }`}
+                      >
+                        {count} 人
+                      </span>
+                    </span>
+                  </motion.button>
+                );
+              })}
+            </div>
           </div>
         </div>
       ) : null}

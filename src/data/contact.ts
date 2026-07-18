@@ -10,7 +10,7 @@ export type ContactInfo = {
 
 export const contact: ContactInfo = {
   email: "zhaohangjia@tju.edu.cn",
-  addressZh: "天津市南开区卫津路92号（天津大学），邮编：300072",
+  addressZh: "天津市津南区海河教育园区雅观路135号，天津大学北洋园校区，邮编：300354",
   websiteZh: "https://faculty.tju.edu.cn/226066/zh_CN/index.htm",
   joinZh:
     "常年招收硕士生（约3–4名/年）、博士生（约1–2名/年）及本科生科研助理。欢迎环境/化工/材料/机械/计算机等背景同学加入。",

@@ -46,10 +46,10 @@ export const reidDeviceShowcaseContent = {
       subtitle: "微纳米气泡发生器",
       products: [
         { model: "RD-NM-0.2", spec: "200L/h", scenes: ["水产", "农业"], summary: "小流量工况，适合试验段与精细化补氧。" },
-        { model: "RD-NM-1", spec: "1m3/h", scenes: ["污水", "饮用水"], summary: "通用型机组，适配中小规模处理节点。" },
-        { model: "RD-NM-2", spec: "2m3/h", scenes: ["水处理", "养殖"], summary: "兼顾处理效率与运行稳定性。" },
-        { model: "RD-NM-4", spec: "4m3/h", scenes: ["工业清洗", "灌溉"], summary: "中高负荷连续运行场景优选。" },
-        { model: "RD-NM-6", spec: "6m3/h", scenes: ["工程项目", "系统集成"], summary: "面向规模化交付的高通量型号。" },
+        { model: "RD-NM-1", spec: "1m^3/h", scenes: ["污水", "饮用水"], summary: "通用型机组，适配中小规模处理节点。" },
+        { model: "RD-NM-2", spec: "2m^3/h", scenes: ["水处理", "养殖"], summary: "兼顾处理效率与运行稳定性。" },
+        { model: "RD-NM-4", spec: "4m^3/h", scenes: ["工业清洗", "灌溉"], summary: "中高负荷连续运行场景优选。" },
+        { model: "RD-NM-6", spec: "6m^3/h", scenes: ["工程项目", "系统集成"], summary: "面向规模化交付的高通量型号。" },
       ],
     },
     {
@@ -58,10 +58,10 @@ export const reidDeviceShowcaseContent = {
       subtitle: "臭氧纳米气泡一体机",
       products: [
         { model: "RD-O3N-0.2", spec: "200L/h", scenes: ["医疗消毒", "实验验证"], summary: "小规模臭氧纳米气泡强化氧化/灭菌。" },
-        { model: "RD-O3N-1", spec: "1m3/h", scenes: ["饮用水", "食品"], summary: "兼顾臭氧传质效率与运行安全。" },
-        { model: "RD-O3N-2", spec: "2m3/h", scenes: ["污水处理", "工业"], summary: "应对中等污染负荷的强化处理需求。" },
-        { model: "RD-O3N-4", spec: "4m3/h", scenes: ["园区工程", "工艺改造"], summary: "适配连续工况与多单元协同运行。" },
-        { model: "RD-O3N-6", spec: "6m3/h", scenes: ["大型项目", "平台化交付"], summary: "面向工程化项目的大流量一体机。" },
+        { model: "RD-O3N-1", spec: "1m^3/h", scenes: ["饮用水", "食品"], summary: "兼顾臭氧传质效率与运行安全。" },
+        { model: "RD-O3N-2", spec: "2m^3/h", scenes: ["污水处理", "工业"], summary: "应对中等污染负荷的强化处理需求。" },
+        { model: "RD-O3N-4", spec: "4m^3/h", scenes: ["园区工程", "工艺改造"], summary: "适配连续工况与多单元协同运行。" },
+        { model: "RD-O3N-6", spec: "6m^3/h", scenes: ["大型项目", "平台化交付"], summary: "面向工程化项目的大流量一体机。" },
       ],
     },
     {

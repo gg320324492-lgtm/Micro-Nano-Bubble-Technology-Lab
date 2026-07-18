@@ -80,7 +80,6 @@ const TAG_OH = "气泡成核过程调控与设备研发";
 const TAG_WQ = "饮用水水质提升与安全保障";
 const TAG_CLEAN = "黑臭水体无药剂低能耗治理";
 const TAG_AGRI = "水产高密度无抗养殖与品质改善";
-const TAG_EQUIP = "水环境治理设备开发";
 
 export const people: Person[] = [
   // ============================================
@@ -110,7 +109,7 @@ export const people: Person[] = [
     "韩重阳",
     "Chongyang Han",
     "面向设备开发，推进发生器与供气/供水单元的工程优化与验证。",
-    [TAG_EQUIP, "装备研发", "工程验证"],
+    [TAG_OH, "装备研发", "工程验证"],
     2026
   ),
   mk(
@@ -173,7 +172,7 @@ export const people: Person[] = [
     "张懿",
     "Yi Zhang",
     "面向智能化运行，探索发生器参数优化与在线监测/控制思路。",
-    [TAG_EQUIP, "运行优化", "在线监测"],
+    [TAG_OH, "运行优化", "在线监测"],
     2025
   ),
   mk(
@@ -182,7 +181,7 @@ export const people: Person[] = [
     "耿嘉栋",
     "Jiadong Geng",
     "面向工程化落地，参与发生器结构优化与系统集成验证。",
-    [TAG_EQUIP, "装备开发", "系统集成"],
+    [TAG_OH, "装备开发", "系统集成"],
     2025,
     "png"
   ),
@@ -192,7 +191,7 @@ export const people: Person[] = [
     "蒋芦笛",
     "Ludi Jiang",
     "围绕微纳米气泡在水环境治理中的应用开展研究，研究方向持续探索中。",
-    [TAG_EQUIP, "装备研发", "工程验证"],
+    [TAG_CLEAN, "装备研发", "工程验证"],
     2025
   ),
   mk(

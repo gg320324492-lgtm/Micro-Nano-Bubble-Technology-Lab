@@ -2,6 +2,7 @@
 "use client";
 
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import Section from "@/components/ui/Section";
 import Heading from "@/components/ui/Heading";
 import ListItem from "@/components/ui/ListItem";
@@ -154,6 +155,7 @@ function PatentDetails({ item }: { item: Record<string, unknown> }) {
 }
 
 export default function PublicationsPage() {
+  const reduceMotion = useReducedMotion();
   const [tab, setTab] = useState<TabKey>("papers");
   const [q, setQ] = useState("");
   const deferredQ = useDeferredValue(q);
@@ -253,30 +255,52 @@ export default function PublicationsPage() {
       </Reveal>
 
       {/* Tabs */}
-      <div className="mt-6 flex flex-wrap gap-2">
-        {[
-          { key: "papers", label: "论文 Papers" },
-          { key: "patents", label: "专利 Patents" },
-          { key: "honors", label: "荣誉 Honors" },
-          { key: "projects", label: "项目 Projects" },
-        ].map((t) => {
-          const active = tab === (t.key as TabKey);
-          return (
-            <button
-              key={t.key}
-              type="button"
-              onClick={() => setTab(t.key as TabKey)}
-              className={[
-                "rounded-[var(--radius-md)] border px-5 py-2 text-sm font-medium transition-all",
-                active
-                  ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--bg-deep)]"
-                  : "border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
-              ].join(" ")}
-            >
-              {t.label}
-            </button>
-          );
-        })}
+      <div className="mt-6 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-2 shadow-[var(--shadow-card)]">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {[
+            { key: "papers", main: "论文", badge: "Papers" },
+            { key: "patents", main: "专利", badge: "Patents" },
+            { key: "honors", main: "荣誉", badge: "Honors" },
+            { key: "projects", main: "项目", badge: "Projects" },
+          ].map((t, idx) => {
+            const active = tab === (t.key as TabKey);
+            return (
+              <motion.button
+                key={t.key}
+                type="button"
+                onClick={() => setTab(t.key as TabKey)}
+                initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut", delay: idx * 0.04 }}
+                whileTap={reduceMotion ? {} : { scale: 0.98 }}
+                className="relative inline-flex items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold"
+                aria-pressed={active}
+              >
+                {active ? (
+                  <motion.span
+                    layoutId="publications-tab-active"
+                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] shadow-md"
+                    transition={{ type: "spring", stiffness: 360, damping: 30 }}
+                  />
+                ) : null}
+                <span
+                  className={`relative z-10 text-center leading-tight ${
+                    active ? "text-white" : "text-[var(--text-secondary)]"
+                  }`}
+                >
+                  <span className="block">{t.main}</span>
+                  <span
+                    className={`mt-0.5 block text-[10px] font-bold uppercase tracking-widest ${
+                      active ? "text-white/80" : "text-[var(--muted)]"
+                    }`}
+                  >
+                    {t.badge}
+                  </span>
+                </span>
+              </motion.button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Filters */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useMemo, useState } from "react";
 
 import LightboxViewer from "@/components/LightboxViewer";
@@ -72,16 +72,33 @@ type Props = {
 function renderSectionColumn(hideSections: boolean | undefined, sections: ResearchModuleSection[]) {
   if (hideSections || !sections.length) return null;
   return (
-    <div className="grid grid-cols-1 gap-3">
-      {sections.map((section) => (
-        <div
+    <div className="space-y-2.5">
+      {sections.map((section, idx) => (
+        <article
           key={section.id}
-          className="rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)]/75 p-3.5"
+          className="group relative rounded-lg border border-[var(--border)] bg-white/65 py-3.5 pl-4 pr-4 transition-colors hover:border-[var(--accent)]/35 hover:bg-white"
         >
-          <div className="text-sm font-semibold text-[var(--text)]">{section.label}</div>
+          {/* 左侧细色条 */}
+          <span
+            aria-hidden
+            className="absolute bottom-3 left-0 top-3 w-[2px] rounded-r-full bg-gradient-to-b from-[var(--accent)] to-[var(--accent-secondary)]"
+          />
+
+          <header className="flex items-baseline gap-2">
+            <span className="font-mono text-[11px] font-medium tabular-nums tracking-wider text-[var(--accent)]">
+              {String(idx + 1).padStart(2, "0")}
+            </span>
+            <h3 className="text-[14px] font-semibold tracking-tight text-[var(--text)]">
+              {section.label}
+            </h3>
+          </header>
+
           {section.content ? (
-            <p className="mt-1.5 text-[13px] leading-6 text-[var(--text-secondary)]">{section.content}</p>
+            <p className="mt-2 text-[13px] leading-6 text-[var(--text-secondary)]">
+              {section.content}
+            </p>
           ) : null}
+
           {section.images?.length ? (
             <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {section.images.map((img, idx) => (
@@ -99,7 +116,7 @@ function renderSectionColumn(hideSections: boolean | undefined, sections: Resear
               ))}
             </div>
           ) : null}
-        </div>
+        </article>
       ))}
     </div>
   );
@@ -114,8 +131,9 @@ function renderImageColumn(
   emptyPlaceholderSlots?: number,
 ) {
   if (images?.length) {
+    const isOdd = images.length % 2 === 1;
     return (
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {images.map((img, idx) => (
           <LightboxViewer
             key={`${moduleId}-image-${idx}`}
@@ -127,6 +145,7 @@ function renderImageColumn(
             }}
             aspect="4/3"
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) 24vw, 360px"
+            figureClassName={isOdd && idx === images.length - 1 ? "sm:col-span-2" : ""}
           />
         ))}
       </div>
@@ -172,6 +191,7 @@ function renderImageColumn(
 export default function ResearchModuleSwitcher({ modules }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const active = useMemo(() => modules[activeIndex] ?? modules[0], [modules, activeIndex]);
+  const reduceMotion = useReducedMotion();
 
   if (!modules.length || !active) return null;
 
@@ -183,21 +203,46 @@ export default function ResearchModuleSwitcher({ modules }: Props) {
         <div className="mb-3 text-xs font-semibold tracking-[0.2em] uppercase text-[var(--accent)]">
           板块导航
         </div>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {modules.map((m, idx) => (
-            <button
-              key={m.moduleId}
-              type="button"
-              onClick={() => setActiveIndex(idx)}
-              className={`rounded-xl border px-3 py-3 text-left text-sm font-semibold transition-colors ${
-                idx === activeIndex
-                  ? "border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--accent)]"
-                  : "border-[var(--border)] bg-white/90 text-[var(--text)] hover:bg-[var(--accent-soft)] hover:text-[var(--accent)]"
-              }`}
-            >
-              {`①②③④⑤⑥⑦⑧⑨⑩`.charAt(idx)} {m.moduleTitle}
-            </button>
-          ))}
+        <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-2 shadow-[var(--shadow-card)]">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            {modules.map((m, idx) => (
+              <motion.button
+                key={m.moduleId}
+                type="button"
+                onClick={() => setActiveIndex(idx)}
+                initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut", delay: idx * 0.04 }}
+                whileTap={reduceMotion ? {} : { scale: 0.98 }}
+                className="relative inline-flex items-start rounded-xl px-3 py-3 text-left text-sm font-semibold"
+                aria-pressed={idx === activeIndex}
+              >
+                {idx === activeIndex ? (
+                  <motion.span
+                    layoutId="research-module-tab-active"
+                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] shadow-md"
+                    transition={{ type: "spring", stiffness: 360, damping: 30 }}
+                  />
+                ) : null}
+                <span
+                  className={`relative z-10 w-full leading-snug ${
+                    idx === activeIndex ? "text-white" : "text-[var(--text-secondary)]"
+                  }`}
+                >
+                  <span className="block whitespace-normal">
+                    {`①②③④⑤⑥⑦⑧⑨⑩`.charAt(idx)} {m.moduleTitle}
+                  </span>
+                  <span
+                    className={`mt-1 block text-[10px] font-bold uppercase tracking-widest ${
+                      idx === activeIndex ? "text-white/80" : "text-[var(--muted)]"
+                    }`}
+                  >
+                    Module {String(idx + 1).padStart(2, "0")}
+                  </span>
+                </span>
+              </motion.button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -229,7 +274,7 @@ export default function ResearchModuleSwitcher({ modules }: Props) {
                         {stack.cardTitle || stack.stackLabel}
                       </h2>
                     </div>
-                    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] lg:items-start">
+                    <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-start lg:gap-12">
                       <div className="min-w-0 space-y-4">
                         {stack.stackSummary ? (
                           <p className="text-sm leading-7 text-[var(--text-secondary)] md:text-[15px]">
@@ -263,7 +308,7 @@ export default function ResearchModuleSwitcher({ modules }: Props) {
                 </h2>
               </div>
               {/* 图与下方简介/小节首行顶对齐 */}
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] lg:items-start">
+              <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-start lg:gap-12">
                 <div className="min-w-0 space-y-5">
                   <p className="text-sm leading-7 text-[var(--text-secondary)] md:text-[15px]">{active.summary}</p>
                   {renderSectionColumn(active.hideSections, active.sections)}

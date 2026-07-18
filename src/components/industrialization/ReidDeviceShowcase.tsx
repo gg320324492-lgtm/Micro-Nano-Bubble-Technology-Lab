@@ -21,6 +21,22 @@ type GalleryGroup = {
   items: GalleryItem[];
 };
 
+/**
+ * 把 "10^9" 之类的字面写法解析成 "10⁹"（真正的 <sup> 上角标）。
+ * 数据保持 "10^9" 可读，渲染时由该函数统一处理。
+ */
+function renderScientificNotation(text: string, keyPrefix = "sup"): React.ReactNode {
+  return text.split(/(\^[0-9]+)/g).map((part, i) =>
+    part.startsWith("^") ? (
+      <sup key={`${keyPrefix}-${i}`} className="text-[0.65em] font-semibold">
+        {part.slice(1)}
+      </sup>
+    ) : (
+      <span key={`${keyPrefix}-${i}`}>{part}</span>
+    ),
+  );
+}
+
 export default function ReidDeviceShowcase({ base }: Props) {
   const [activeGroup, setActiveGroup] = useState(
     reidDeviceShowcaseContent.productGroups[0]?.id ?? "rd-nm",
@@ -278,8 +294,7 @@ export default function ReidDeviceShowcase({ base }: Props) {
                   <motion.span
                     key={x}
                     initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-                    whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.65 }}
+                    animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, ease: "easeOut", delay: idx * 0.03 }}
                     whileHover={reduceMotion ? {} : { y: -2 }}
                     className="inline-flex rounded-full border border-[var(--border)] bg-[var(--bg-card)] px-3 py-1.5 text-xs text-[var(--text-secondary)]"
@@ -297,8 +312,7 @@ export default function ReidDeviceShowcase({ base }: Props) {
                   <motion.article
                     key={x.title}
                     initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                    whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.35 }}
+                    animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, ease: "easeOut", delay: idx * 0.04 }}
                     whileHover={reduceMotion ? {} : { y: -3 }}
                     className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition-shadow hover:shadow-md"
@@ -317,8 +331,7 @@ export default function ReidDeviceShowcase({ base }: Props) {
                   <motion.article
                     key={x.title}
                     initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-                    whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
+                    animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
                     transition={{ duration: 0.32, ease: "easeOut", delay: idx * 0.04 }}
                     whileHover={reduceMotion ? {} : { y: -4, scale: 1.01 }}
                     className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition-shadow hover:shadow-md"
@@ -337,7 +350,9 @@ export default function ReidDeviceShowcase({ base }: Props) {
                     >
                       {x.title}
                     </div>
-                    <div className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">{x.desc}</div>
+                    <div className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                      {renderScientificNotation(x.desc, `adv-${x.title}`)}
+                    </div>
                   </motion.article>
                 ))}
               </div>
@@ -350,8 +365,7 @@ export default function ReidDeviceShowcase({ base }: Props) {
                   <motion.article
                     key={scene.name}
                     initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-                    whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.28 }}
+                    animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, ease: "easeOut", delay: idx * 0.03 }}
                     whileHover={reduceMotion ? {} : { y: -4 }}
                     className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition-shadow hover:shadow-md"
@@ -420,27 +434,54 @@ export default function ReidDeviceShowcase({ base }: Props) {
                 <div className="text-xs text-[var(--muted)]">按系列查看型号与适配场景</div>
               </div>
 
-              <div className="mt-3 flex flex-wrap gap-2">
-                {reidDeviceShowcaseContent.productGroups.map((group) => (
-                  <motion.button
-                    key={group.id}
-                    type="button"
-                    onClick={() => {
-                      setActiveGroup(group.id);
-                      setExpandedModel(null);
-                    }}
-                    whileHover={reduceMotion ? {} : { y: -2, scale: 1.02 }}
-                    whileTap={reduceMotion ? {} : { scale: 0.97 }}
-                    className={[
-                      "rounded-full border px-3 py-1.5 text-sm transition",
-                      activeGroup === group.id
-                        ? "border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--accent)]"
-                        : "border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
-                    ].join(" ")}
-                  >
-                    {group.label}
-                  </motion.button>
-                ))}
+              <div className="mt-3 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-2 shadow-[var(--shadow-card)]">
+                <div className="grid grid-cols-3 gap-2">
+                  {reidDeviceShowcaseContent.productGroups.map((group, idx) => {
+                    const badgeMap: Record<string, string> = {
+                      "rd-nm": "Nano Bubble",
+                      "rd-o3n": "Ozone Nano",
+                      "rd-bq": "Long Range",
+                    };
+                    return (
+                      <motion.button
+                        key={group.id}
+                        type="button"
+                        onClick={() => {
+                          setActiveGroup(group.id);
+                          setExpandedModel(null);
+                        }}
+                        initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                        animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, ease: "easeOut", delay: idx * 0.04 }}
+                        whileTap={reduceMotion ? {} : { scale: 0.98 }}
+                        className="relative inline-flex items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold"
+                        aria-pressed={activeGroup === group.id}
+                      >
+                        {activeGroup === group.id ? (
+                          <motion.span
+                            layoutId="reid-device-product-tab-active"
+                            className="absolute inset-0 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] shadow-md"
+                            transition={{ type: "spring", stiffness: 360, damping: 30 }}
+                          />
+                        ) : null}
+                        <span
+                          className={`relative z-10 text-center leading-tight ${
+                            activeGroup === group.id ? "text-white" : "text-[var(--text-secondary)]"
+                          }`}
+                        >
+                          <span className="block">{group.label}</span>
+                          <span
+                            className={`mt-0.5 block text-[10px] font-bold uppercase tracking-widest ${
+                              activeGroup === group.id ? "text-white/80" : "text-[var(--muted)]"
+                            }`}
+                          >
+                            {badgeMap[group.id] ?? ""}
+                          </span>
+                        </span>
+                      </motion.button>
+                    );
+                  })}
+                </div>
               </div>
 
               <AnimatePresence mode="wait" initial={false}>
@@ -469,7 +510,9 @@ export default function ReidDeviceShowcase({ base }: Props) {
                             <div className="flex items-start justify-between gap-2">
                               <div>
                                 <h3 className="text-base font-semibold text-[var(--text)]">{p.model}</h3>
-                                <div className="text-sm text-[var(--muted)]">{p.spec}</div>
+                                <div className="text-sm text-[var(--muted)]">
+                                  {renderScientificNotation(p.spec, `spec-${p.model}`)}
+                                </div>
                               </div>
                               <button
                                 type="button"
@@ -512,14 +555,15 @@ export default function ReidDeviceShowcase({ base }: Props) {
                 <motion.article
                   key={x.label}
                   initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                  whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
+                  animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, ease: "easeOut", delay: idx * 0.04 }}
                   whileHover={reduceMotion ? {} : { y: -3 }}
                   className="rounded-xl border border-cyan-500/30 bg-cyan-500/10 p-4"
                 >
                   <div className="text-xs text-[var(--muted)]">{x.label}</div>
-                  <div className="mt-1 text-2xl font-semibold text-[var(--text)]">{x.value}</div>
+                  <div className="mt-1 text-2xl font-semibold text-[var(--text)]">
+                    {renderScientificNotation(x.value, `stat-${x.label}`)}
+                  </div>
                 </motion.article>
               ))}
             </section>
@@ -542,8 +586,7 @@ export default function ReidDeviceShowcase({ base }: Props) {
                   <motion.article
                     key={x.step}
                     initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                    whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
+                    animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, ease: "easeOut", delay: idx * 0.04 }}
                     whileHover={reduceMotion ? {} : { y: -3 }}
                     className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition-shadow hover:shadow-md"
@@ -562,37 +605,57 @@ export default function ReidDeviceShowcase({ base }: Props) {
                 <div className="text-xs text-[var(--muted)]">分类画廊 / 支持点击放大</div>
               </div>
 
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { id: "featured-products", label: "代表性产品" },
-                  { id: "onsite-usage", label: "产品现场使用" },
-                  { id: "performance-results", label: "性能测试结果" },
-                  { id: "industrial-proof", label: "产业化证明" },
-                ].map((tab) => (
-                  <motion.button
-                    key={tab.id}
-                    type="button"
-                    onClick={() =>
-                      setActiveGalleryTab(
-                        tab.id as
-                          | "featured-products"
-                          | "onsite-usage"
-                          | "performance-results"
-                          | "industrial-proof",
-                      )
-                    }
-                    whileHover={reduceMotion ? {} : { y: -2, scale: 1.02 }}
-                    whileTap={reduceMotion ? {} : { scale: 0.98 }}
-                    className={[
-                      "rounded-full border px-3 py-1.5 text-sm transition",
-                      activeGalleryTab === tab.id
-                        ? "border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--accent)]"
-                        : "border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--accent-soft)]",
-                    ].join(" ")}
-                  >
-                    {tab.label}
-                  </motion.button>
-                ))}
+              <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-2 shadow-[var(--shadow-card)]">
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {[
+                    { id: "featured-products", label: "代表性产品", badge: "Featured" },
+                    { id: "onsite-usage", label: "产品现场使用", badge: "Onsite" },
+                    { id: "performance-results", label: "性能测试结果", badge: "Performance" },
+                    { id: "industrial-proof", label: "产业化证明", badge: "Industrial" },
+                  ].map((tab, idx) => (
+                    <motion.button
+                      key={tab.id}
+                      type="button"
+                      onClick={() =>
+                        setActiveGalleryTab(
+                          tab.id as
+                            | "featured-products"
+                            | "onsite-usage"
+                            | "performance-results"
+                            | "industrial-proof",
+                        )
+                      }
+                      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                      animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, ease: "easeOut", delay: idx * 0.04 }}
+                      whileTap={reduceMotion ? {} : { scale: 0.98 }}
+                      className="relative inline-flex items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold"
+                      aria-pressed={activeGalleryTab === tab.id}
+                    >
+                      {activeGalleryTab === tab.id ? (
+                        <motion.span
+                          layoutId="reid-device-gallery-tab-active"
+                          className="absolute inset-0 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] shadow-md"
+                          transition={{ type: "spring", stiffness: 360, damping: 30 }}
+                        />
+                      ) : null}
+                      <span
+                        className={`relative z-10 text-center leading-tight ${
+                          activeGalleryTab === tab.id ? "text-white" : "text-[var(--text-secondary)]"
+                        }`}
+                      >
+                        <span className="block">{tab.label}</span>
+                        <span
+                          className={`mt-0.5 block text-[10px] font-bold uppercase tracking-widest ${
+                            activeGalleryTab === tab.id ? "text-white/80" : "text-[var(--muted)]"
+                          }`}
+                        >
+                          {tab.badge}
+                        </span>
+                      </span>
+                    </motion.button>
+                  ))}
+                </div>
               </div>
 
               <AnimatePresence mode="wait" initial={false}>
@@ -650,7 +713,7 @@ export default function ReidDeviceShowcase({ base }: Props) {
                 <a href="#product-matrix" className={buttonClassName("primary", "px-4 py-2 text-sm")} onClick={() => setActiveTab("product")}>
                   获取方案
                 </a>
-                <Link href="/#join" className={buttonClassName("secondary", "px-4 py-2 text-sm")}>
+                <Link href="/contact" className={buttonClassName("secondary", "px-4 py-2 text-sm")}>
                   联系我们
                 </Link>
                 {base.locationUrl ? (

@@ -6,11 +6,17 @@ import { Mail, MapPin, Globe, ArrowRight } from "lucide-react";
 import type { ContactView } from "@/types";
 
 export default function ContactCTA({ contact }: { contact: ContactView }) {
+  const rawAddress = contact.addressZh ?? contact.address ?? "";
+  const addressParts = rawAddress.split("，");
+  const addressLine1 = addressParts[0] ?? rawAddress;
+  const addressLine2 = addressParts[1] ?? "";
+  const addressLine3 = addressParts[2] ?? "";
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      viewport={{ once: true, amount: 0 }}
       transition={{ duration: 0.6 }}
       className="relative rounded-[var(--radius-xl)] overflow-hidden"
     >
@@ -38,7 +44,17 @@ export default function ContactCTA({ contact }: { contact: ContactView }) {
               <MapPin className="h-5 w-5 text-[var(--accent)]" />
             </div>
             <div className="text-xs text-[var(--muted)] uppercase tracking-wider">Address</div>
-            <div className="text-[var(--text-secondary)]">{contact.addressZh ?? contact.address ?? ""}</div>
+            <div className="text-[var(--text-secondary)] leading-relaxed">
+              <div className="text-[var(--text)] font-medium">{addressLine1}</div>
+              {addressLine2 ? (
+                <div className="text-[var(--text)] font-medium">{addressLine2}</div>
+              ) : null}
+              {addressLine3 ? (
+                <div className="mt-1 text-xs tracking-wide text-[var(--muted)]">
+                  {addressLine3}
+                </div>
+              ) : null}
+            </div>
           </div>
           <div className="flex flex-col items-center gap-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-soft)]">

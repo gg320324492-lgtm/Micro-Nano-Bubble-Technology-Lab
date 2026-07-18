@@ -33,8 +33,7 @@ export function ExternalLinksGrid({ links, initialVisibleCount = 6 }: Props) {
           <motion.div
             key={item.id}
             initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: idx * 0.05 }}
             whileHover={{ y: -6 }}
             className="group h-full"
