@@ -149,9 +149,9 @@ export const publications: Publication[] = [
     id: "pub-2024-02",
     year: 2024,
     title:
-      "Generation Mechanism of Hydroxyl Free Radicals in Micro–Nanobubbles Water and Its Prospect in Drinking Water",
+      "Generation Mechanism of Hydroxyl Radical in Micro Nano Bubbles Water and Its Prospect in Drinking Water",
     titleEn:
-      "Generation Mechanism of Hydroxyl Free Radicals in Micro–Nanobubbles Water and Its Prospect in Drinking Water",
+      "Generation Mechanism of Hydroxyl Radical in Micro Nano Bubbles Water and Its Prospect in Drinking Water",
     venue: "Processes, 2024, 12, 683",
     doi: "10.3390/pr12040683",
     url: "https://doi.org/10.3390/pr12040683",
@@ -196,9 +196,9 @@ export const publications: Publication[] = [
     id: "pub-2022-01",
     year: 2022,
     title:
-      "Novel control strategies for biofilm control in reclaimed water distribution systems from the perspective of microbial antagonism and electrochemistry",
+      "Control strategies for biofilm control in reclaimed water distribution systems from the perspective of microbial antagonism and electrochemistry",
     titleEn:
-      "Novel control strategies for biofilm control in reclaimed water distribution systems from the perspective of microbial antagonism and electrochemistry",
+      "Control strategies for biofilm control in reclaimed water distribution systems from the perspective of microbial antagonism and electrochemistry",
     venue: "Science of the Total Environment, 2022, 834, 155289",
     doi: "10.1016/j.scitotenv.2022.155289",
     url: "https://doi.org/10.1016/j.scitotenv.2022.155289",
@@ -219,8 +219,8 @@ export const publications: Publication[] = [
   {
     id: "pub-2022-02",
     year: 2022,
-    title: "Novel Quantitative Evaluation of Biotreatment Suitability of Wastewater",
-    titleEn: "Novel Quantitative Evaluation of Biotreatment Suitability of Wastewater",
+    title: "Quantitative Evaluation of Biotreatment Suitability of Wastewater",
+    titleEn: "Quantitative Evaluation of Biotreatment Suitability of Wastewater",
     venue: "Water, 2022, 14(7), 1038",
     doi: "10.3390/w14071038",
     url: "https://doi.org/10.3390/w14071038",
@@ -365,7 +365,7 @@ export const publications: Publication[] = [
     id: "pub-2024-cn-01",
     year: 2025,
     title:
-      "黄俊，贾琦，李志杰，王天志. 微纳米气泡灌溉对设施番茄种植的影响机制研究. 天津大学学报（自然科学与工程技术版）, 2025, 58(5): 531-540",
+      "微纳米气泡灌溉对设施番茄种植的影响机制研究. 天津大学学报（自然科学与工程技术版）, 2025, 58(5): 531-540",
     titleZh: "微纳米气泡灌溉对设施番茄种植的影响机制研究",
     venue: "天津大学学报（自然科学与工程技术版）, 2025, 58(5): 531-540",
     doi: "10.11784/tdxbz202406006",
@@ -375,7 +375,7 @@ export const publications: Publication[] = [
     id: "pub-2024-cn-02",
     year: 2024,
     title:
-      "邱顺添，张铭哲，王天志. 典型高耗能工业园区碳排放特征及影响因素研究. 天津大学学报（自然科学与工程技术版）, 2024, 57(11): 1111-1123",
+      "典型高耗能工业园区碳排放特征及影响因素研究. 天津大学学报（自然科学与工程技术版）, 2024, 57(11): 1111-1123",
     titleZh: "典型高耗能工业园区碳排放特征及影响因素研究",
     venue: "天津大学学报（自然科学与工程技术版）, 2024, 57(11): 1111-1123",
     doi: "10.11784/tdxbz202312013",
@@ -385,7 +385,7 @@ export const publications: Publication[] = [
     id: "pub-2020-cn-01",
     year: 2020,
     title:
-      "王天志，王伟楠，胡洪营，瞿连锁. 纳管印染废水生物处理特性评价及预处理策略筛选. 环境工程学报，2020，14(11):3021-3029",
+      "纳管印染废水生物处理特性评价及预处理策略筛选. 环境工程学报，2020，14(11):3021-3029",
     titleZh: "纳管印染废水生物处理特性评价及预处理策略筛选",
     venue: "环境工程学报，2020，14(11):3021-3029",
   },
@@ -393,23 +393,23 @@ export const publications: Publication[] = [
     id: "pub-2019-cn-01",
     year: 2019,
     title:
-      "李云开，曲磊，王天志，等. 引黄滴灌条件下灌水器生物堵塞特征与机理研究. 农业机械学报，2019，50(11):267-277",
-    titleZh: "引黄滴灌条件下灌水器生物堵塞特征与机理研究",
-    venue: "农业机械学报，2019，50(11):267-277",
+      "引黄滴灌条件下混配水对堵塞物质表面特征的影响，农业机械学报．2019, 50(11): 267-277.",
+    titleZh: "引黄滴灌条件下混配水对堵塞物质表面特征的影响",
+    venue: "农业机械学报，2019, 50(11): 267-277",
   },
   {
     id: "pub-2017-cn-01",
     year: 2017,
     title:
-      "李云开，王克远，王天志，等. 高钙镁离子地下水滴灌系统灌水器堵塞特征与机理研究. 排灌机械工程学报，2017，35(4):345-350",
-    titleZh: "高钙镁离子地下水滴灌系统灌水器堵塞特征与机理研究",
+      "高钙镁离子地下水滴灌施肥系统堵塞效应. 排灌机械工程学报. 2017, 35(4):345-350.",
+    titleZh: "高钙镁离子地下水滴灌施肥系统堵塞效应",
     venue: "排灌机械工程学报，2017，35(4):345-350",
   },
   {
     id: "pub-2019-conf-01",
     year: 2019,
     title:
-      "Wang Tianzhi, Wang Weijie, Hu Hongying. Assessing bio-treatability of textile printing and dyeing wastewater. IWA International Conference. 2019",
+      "Assessing bio-treatability of textile printing and dyeing wastewater. IWA International Conference. 2019",
     titleEn:
       "Assessing bio-treatability of textile printing and dyeing wastewater. IWA International Conference. 2019",
     venue: "IWA International Conference, 2019",
@@ -418,7 +418,7 @@ export const publications: Publication[] = [
     id: "pub-2021-review",
     year: 2021,
     title:
-      "Soon-Thiam Khu, Xin Changchun, Wang Tianzhi. MNBs in drinking water distribution systems: A review. IWA International Conference. 2021",
+      "MNBs in drinking water distribution systems: A review. IWA International Conference. 2021",
     titleEn:
       "MNBs in drinking water distribution systems: A review. IWA International Conference. 2021",
     venue: "IWA International Conference, 2021",
