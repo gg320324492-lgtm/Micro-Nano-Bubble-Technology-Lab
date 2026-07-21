@@ -77,7 +77,7 @@ public/
 ## Key constraints
 
 ### 构建 & 部署
-- **⚠️ 必须本地 Windows 构建** — 云服务器 (2C2G) 和 GitHub Actions Ubuntu runner 均会 OOM，Next.js 静默跳过子页面，只产首页和 404
+- **自动部署已恢复** — push 到 `main` 后由 `.github/workflows/deploy-aliyun.yml` 自动构建并 rsync 到阿里云
 - 服务器资源与 `agent.mnb-lab.cn` 共享，绝不能破坏它的 Nginx 配置
 - Nginx 配置位于 `/etc/nginx/conf.d/default.conf`（两个站点共用一个文件）
 - SSL 通过 Let's Encrypt certbot，自动续期（systemd timer）
@@ -99,7 +99,17 @@ public/
 
 源图放 `.jpg`，同名 `.webp` 三档由 `npm run images:optimize` 生成。
 
-## Deployment flow（手动部署 — GitHub Actions 构建不完整，已停用）
+## Deployment flow（自动部署 — push main 即触发）
+
+由 `.github/workflows/deploy-aliyun.yml` 在 `ubuntu-latest` runner 上执行：
+
+1. Checkout → `npm ci` → `npm run build` → `out/` + 写 `out/deploy.txt`（sha/time/target=aliyun）
+2. 用 `secrets.SSH_PRIVATE_KEY` 通过 `rsync -az --delete --rsync-path="sudo rsync"` 把 `out/` 同步到 `deploy@60.205.93.8:/var/www/mnb-lab/`
+3. SSH 执行 `sudo nginx -t && sudo systemctl reload nginx`
+
+### 手动部署（应急 / 旧流程，保留参考）
+
+> ⚠️ 平时不需要走这套。`.github/workflows/deploy.yml` 是旧的 `appleboy/scp-action` 流程，留作参考。
 
 1. 本地 `npm run build` → `out/`
 2. `tar -czf deploy.tar.gz -C out .`
@@ -110,7 +120,7 @@ public/
 7. SSH: `sudo nginx -t && sudo systemctl reload nginx`
 8. 验证：`curl -sI https://mnb-lab.cn/contact/` 等所有子页面均返回 200
 
-### 一键部署命令
+### 一键部署命令（手动应急）
 ```bash
 npm run build && tar -czf deploy.tar.gz -C out . && scp deploy.tar.gz mnb-aliyun:/tmp/ && ssh mnb-aliyun "rm -rf /tmp/mnb-deploy-out && mkdir -p /tmp/mnb-deploy-out && tar -xzf /tmp/deploy.tar.gz -C /tmp/mnb-deploy-out && rsync -a --delete /tmp/mnb-deploy-out/ /var/www/mnb-lab/ && sudo nginx -t && sudo systemctl reload nginx && echo 'DEPLOY OK'"
 ```
@@ -161,4 +171,3 @@ done
 - webhint: `fetchpriority` — Next.js Image 组件自动生成
 - webhint: CSS inline styles — framer-motion 动画库
 - React #418 hydration — 已用 `suppressHydrationWarning` + `ClientOnly` 缓解
-- GitHub Actions Ubuntu runner 构建会丢子页面（OOM） — 已改本地手动部署
