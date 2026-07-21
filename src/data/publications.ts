@@ -324,35 +324,6 @@ export const publications: Publication[] = [
     url: "https://doi.org/10.1016/j.agwat.2017.09.006",
   },
 
-  // —— 以下条目：暂未检索到“作者确含王天志”的 DOI（或检索结果不稳定/不一致），因此不添加 DOI —— //
-  {
-    id: "pub-2018-01",
-    year: 2018,
-    title:
-      "Evaluating chemical composition and relevant microbial communities in thermophilic and mesophilic anaerobic digestions of food waste",
-    titleEn:
-      "Evaluating chemical composition and relevant microbial communities in thermophilic and mesophilic anaerobic digestions of food waste",
-    venue: "Environmental Science and Pollution Research, 2018, 25(26): 26369-26377",
-  },
-  {
-    id: "pub-2019-03",
-    year: 2019,
-    title:
-      "Effect of organic matter on bio-clogging in reclaimed water drip irrigation systems",
-    titleEn:
-      "Effect of organic matter on bio-clogging in reclaimed water drip irrigation systems",
-    venue: "Environmental Science and Pollution Research, 2019, 26(10): 10413-10421",
-  },
-  {
-    id: "pub-2016-03",
-    year: 2016,
-    title:
-      "Bioclogging in porous media under anaerobic condition: characteristics of clogging development and relevant microbial activities",
-    titleEn:
-      "Bioclogging in porous media under anaerobic condition: characteristics of clogging development and relevant microbial activities",
-    venue: "Bioresource Technology, 2016, 221: 14-20",
-  },
-
   // —— 以下为老师主页列出的中文期刊/会议与综述（保持原条目文本） ——
   {
     id: "pub-2020-book",
@@ -404,24 +375,6 @@ export const publications: Publication[] = [
       "高钙镁离子地下水滴灌施肥系统堵塞效应. 排灌机械工程学报. 2017, 35(4):345-350.",
     titleZh: "高钙镁离子地下水滴灌施肥系统堵塞效应",
     venue: "排灌机械工程学报，2017，35(4):345-350",
-  },
-  {
-    id: "pub-2019-conf-01",
-    year: 2019,
-    title:
-      "Assessing bio-treatability of textile printing and dyeing wastewater. IWA International Conference. 2019",
-    titleEn:
-      "Assessing bio-treatability of textile printing and dyeing wastewater. IWA International Conference. 2019",
-    venue: "IWA International Conference, 2019",
-  },
-  {
-    id: "pub-2021-review",
-    year: 2021,
-    title:
-      "MNBs in drinking water distribution systems: A review. IWA International Conference. 2021",
-    titleEn:
-      "MNBs in drinking water distribution systems: A review. IWA International Conference. 2021",
-    venue: "IWA International Conference, 2021",
   },
 ];
 
