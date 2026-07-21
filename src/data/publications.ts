@@ -49,10 +49,10 @@ export const publications: Publication[] = [
     id: "pub-2026-03",
     year: 2026,
     title:
-      "Demulsification of Oily Sludge Using Ozone Micro–Nanobubbles in Aqueous Media",
+      "Demulsification of Oily Sludge Using Ozone Micro-Nanobubbles in Aqueous Media",
     titleEn:
-      "Demulsification of Oily Sludge Using Ozone Micro–Nanobubbles in Aqueous Media",
-    venue: "Recycling, 2026, 11(2), 24",
+      "Demulsification of Oily Sludge Using Ozone Micro-Nanobubbles in Aqueous Media",
+    venue: "Recycling, 2026, 11(2): 24",
     doi: "10.3390/recycling11020024",
     url: "https://www.mdpi.com/2313-4321/11/2/24",
   },
@@ -90,13 +90,13 @@ export const publications: Publication[] = [
     url: "https://www.mdpi.com/2227-9717/14/6/1093",
   },
   {
-    id: "pub-2025-01",
-    year: 2025,
+    id: "pub-2026-07",
+    year: 2026,
     title:
       "Disinfection mechanism of micro-nano bubbles on Bacillus cereus in drinking water under ultraviolet irradiation",
     titleEn:
       "Disinfection mechanism of micro-nano bubbles on Bacillus cereus in drinking water under ultraviolet irradiation",
-    venue: "Chemical Engineering Journal, 2025, 171737",
+    venue: "Chemical Engineering Journal, 2026, 527: 171737",
     doi: "10.1016/j.cej.2025.171737",
     url: "https://doi.org/10.1016/j.cej.2025.171737",
   },
@@ -149,9 +149,9 @@ export const publications: Publication[] = [
     id: "pub-2024-02",
     year: 2024,
     title:
-      "Generation Mechanism of Hydroxyl Radical in Micro Nano Bubbles Water and Its Prospect in Drinking Water",
+      "Generation Mechanism of Hydroxyl Free Radicals in Micro Nano Bubbles Water and Its Prospect in Drinking Water",
     titleEn:
-      "Generation Mechanism of Hydroxyl Radical in Micro Nano Bubbles Water and Its Prospect in Drinking Water",
+      "Generation Mechanism of Hydroxyl Free Radicals in Micro Nano Bubbles Water and Its Prospect in Drinking Water",
     venue: "Processes, 2024, 12, 683",
     doi: "10.3390/pr12040683",
     url: "https://doi.org/10.3390/pr12040683",
@@ -375,6 +375,80 @@ export const publications: Publication[] = [
       "高钙镁离子地下水滴灌施肥系统堵塞效应. 排灌机械工程学报. 2017, 35(4):345-350.",
     titleZh: "高钙镁离子地下水滴灌施肥系统堵塞效应",
     venue: "排灌机械工程学报，2017，35(4):345-350",
+  },
+
+  // —— 新增论文（源自科研成果_网站更新版_不含作者信息.docx，2026-07-21） ——
+  {
+    id: "pub-2025-05",
+    year: 2025,
+    title:
+      "Study on the Factors Affecting the Drainage Efficiency of New Integrated Irrigation and Drainage Networks and Network Optimization Based on Annual Cost System",
+    titleEn:
+      "Study on the Factors Affecting the Drainage Efficiency of New Integrated Irrigation and Drainage Networks and Network Optimization Based on Annual Cost System",
+    venue: "Water, 2025, 17(8): 1201",
+  },
+  {
+    id: "pub-2024-03",
+    year: 2024,
+    title:
+      "Effect of Flow Fluctuation on Water Pollution in Drinking Water Distribution Systems",
+    titleEn:
+      "Effect of Flow Fluctuation on Water Pollution in Drinking Water Distribution Systems",
+    venue: "Environmental Research, 2024, 246: 118142",
+  },
+  {
+    id: "pub-2021-cn-01",
+    year: 2021,
+    title:
+      "给水管网管壁生物膜对水质变化的影响. 第九届饮用水安全保障技术交流会论文集，杭州：中国给水排水杂志社，2021：103-113",
+    titleZh: "给水管网管壁生物膜对水质变化的影响",
+    venue:
+      "第九届饮用水安全保障技术交流会论文集，杭州：中国给水排水杂志社，2021：103-113",
+  },
+  {
+    id: "pub-2018-02",
+    year: 2018,
+    title:
+      "Chemical Clogging Behavior in Drip Irrigation Systems Using Reclaimed Water",
+    titleEn:
+      "Chemical Clogging Behavior in Drip Irrigation Systems Using Reclaimed Water",
+    venue: "Transactions of the ASABE, 2018, 61(5): 1667-1675",
+  },
+  {
+    id: "pub-2017-02",
+    year: 2017,
+    title:
+      "Effects of Riverbed and Lake Bottom Sediment Thickness on Infiltration and Purification of Reclaimed Water",
+    titleEn:
+      "Effects of Riverbed and Lake Bottom Sediment Thickness on Infiltration and Purification of Reclaimed Water",
+    venue: "Environmental Earth Sciences, 2017, 76(1): 37",
+  },
+  {
+    id: "pub-2016-04",
+    year: 2016,
+    title:
+      "Formulation of an Emitter Clogging Control Strategy for Drip Irrigation with Reclaimed Water",
+    titleEn:
+      "Formulation of an Emitter Clogging Control Strategy for Drip Irrigation with Reclaimed Water",
+    venue: "Irrigation and Drainage, 2016, 65(4): 451-460",
+  },
+  {
+    id: "pub-2015-01",
+    year: 2015,
+    title:
+      "Nitrogen and Phosphate Adsorption on Biofilms in Reclaimed Water",
+    titleEn:
+      "Nitrogen and Phosphate Adsorption on Biofilms in Reclaimed Water",
+    venue: "Environmental Earth Sciences, 2015, 74(1): 451-461",
+  },
+  {
+    id: "pub-2013-01",
+    year: 2013,
+    title:
+      "Structural and Fractal Characteristics of Biofilm Attached on the Surfaces of Aquatic Plants and Gravels in the Rivers and Lakes Reusing Reclaimed Wastewater",
+    titleEn:
+      "Structural and Fractal Characteristics of Biofilm Attached on the Surfaces of Aquatic Plants and Gravels in the Rivers and Lakes Reusing Reclaimed Wastewater",
+    venue: "Environmental Earth Sciences, 2013, 70(5): 2319-2333",
   },
 ];
 
