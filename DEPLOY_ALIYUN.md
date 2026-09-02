@@ -48,3 +48,18 @@ curl -s -o /dev/null -w "HTTP %{http_code} -> %{redirect_url}\n" http://mnb-lab.
 curl -s -o /dev/null -w "HTTP %{http_code}\n" https://mnb-lab.cn/
 # Expected: HTTP 200
 ```
+
+## Certificate renewal sanity check
+
+`mnb-lab.cn` 证书用 webroot 方式续期，要求 80 端口 server 块里有
+`location /.well-known/acme-challenge/ { root /var/www/certbot; }`，
+且该 location 必须先于 301 跳转命中。若配置被改动过，用 dry-run 验证：
+
+```bash
+certbot renew --dry-run --cert-name mnb-lab.cn
+# Expected: "all simulated renewals succeeded"
+
+# 2026-08 事故复盘：该 location 在多次 nginx 配置改动中丢失，
+# 80 端口全部 301 到 HTTPS → 验证返回 index.html → 续期静默失败 → 证书过期 10 天。
+# certbot.timer 只会每天重试并写日志，不会报警，续期改动后务必 dry-run。
+```
