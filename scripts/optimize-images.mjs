@@ -9,6 +9,7 @@ const TARGET_DIRS = [
   "public/research",
   "public/industrialization",
   "public/showcase",
+  "public/images",
 ];
 
 const SOURCE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
@@ -22,8 +23,16 @@ const COMMON_VARIANTS = [
 
 const AVATAR_VARIANTS = [{ suffix: "thumb", max: 256, quality: 72 }];
 
+// public/images（媒体报道缩略图等）只生成 thumb 一档；
+// 动图 GIF sharp 读不动（corrupt header），首次需手动 ffmpeg 生成，之后靠 mtime 缓存跳过
+const IMAGES_VARIANTS = [{ suffix: "thumb", max: 640, quality: 72 }];
+
 function isPeopleImage(absPath) {
   return absPath.includes(`${path.sep}public${path.sep}people${path.sep}`);
+}
+
+function isMiscImage(absPath) {
+  return absPath.includes(`${path.sep}public${path.sep}images${path.sep}`);
 }
 
 function isSourceImage(absPath) {
@@ -98,7 +107,11 @@ async function main() {
   let skipped = 0;
   let cached = 0;
   for (const srcAbs of sourceFiles) {
-    const variants = isPeopleImage(srcAbs) ? AVATAR_VARIANTS : COMMON_VARIANTS;
+    const variants = isPeopleImage(srcAbs)
+      ? AVATAR_VARIANTS
+      : isMiscImage(srcAbs)
+        ? IMAGES_VARIANTS
+        : COMMON_VARIANTS;
     for (const v of variants) {
       const out = outputPath(srcAbs, v.suffix);
       if (await isFresh(srcAbs, out)) {

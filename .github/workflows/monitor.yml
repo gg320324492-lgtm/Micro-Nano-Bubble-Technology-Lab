@@ -1,0 +1,50 @@
+name: 站点监控（证书 + 可用性）
+
+# 每天 3 个错峰时间点检查（UTC），失败时 GitHub 会给仓库所有者发邮件告警。
+# 背景：2026-08 证书过期 10 天无人发现（certbot webroot 续期静默失败），
+# 此 workflow 兜底监控证书剩余天数与关键页面可用性。
+
+on:
+  schedule:
+    - cron: "17 1,9,17 * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check certificates and pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          fail=0
+
+          for dom in mnb-lab.cn agent.mnb-lab.cn; do
+            end=$(echo | openssl s_client -servername "$dom" -connect "$dom:443" 2>/dev/null \
+              | openssl x509 -noout -enddate | cut -d= -f2)
+            days=$(( ( $(date -d "$end" +%s) - $(date +%s) ) / 86400 ))
+            echo "$dom cert expires in ${days} days ($end)"
+            if [ "$days" -le 14 ]; then
+              echo "::error::$dom certificate expires within 14 days"
+              fail=1
+            fi
+          done
+
+          for path in / /contact/ /people/ /news/ /research/ /publications/ /showcase/ /industrialization/ /honors/; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 "https://mnb-lab.cn$path")
+            echo "https://mnb-lab.cn$path -> $code"
+            if [ "$code" != "200" ]; then
+              echo "::error::https://mnb-lab.cn$path returned $code"
+              fail=1
+            fi
+          done
+
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 https://www.mnb-lab.cn/)
+          echo "https://www.mnb-lab.cn/ -> $code"
+          [ "$code" = "200" ] || { echo "::error::www returned $code"; fail=1; }
+
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 https://agent.mnb-lab.cn/)
+          echo "https://agent.mnb-lab.cn/ -> $code"
+          [ "$code" = "200" ] || { echo "::error::agent returned $code"; fail=1; }
+
+          exit $fail

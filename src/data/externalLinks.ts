@@ -40,7 +40,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/fIA3_iRen5Owkc3sVSeu9w",
     source: "微信公众平台 / 天大宣怀学院",
     tag: "媒体报道",
-    thumbnail: "/images/media/xuanhuai-kechuang-daoshi-wangtianzi-20260710.png",
+    thumbnail: "/images/media/xuanhuai-kechuang-daoshi-wangtianzi-20260710.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -52,7 +52,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://www.bilibili.com/video/BV11z5e6yECU/",
     source: "B站 / 新闻频道",
     tag: "媒体报道",
-    thumbnail: "/images/media/bilibili-rural-revitalization-aquaculture-20260515.png",
+    thumbnail: "/images/media/bilibili-rural-revitalization-aquaculture-20260515.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -64,7 +64,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://www.app2020.tjyun.com/cms_sys/cms_template/000/000/093/index.shtml?from_oid=oX6ro0cATBO_mMXqUmY3gpV14v6I&level=3&random=52b6d36d-96eb-463e-984d-b837170b9231&newsId=059368378&appId=1b8b3255-58d4-4ba7-b0f7-9d136547eb38&jsonUrl=https://static20.app2020.tjyun.com/jyapp/cms_mob/v200/cms_news/000/000/059/368/000000059368378_56490c44.json&jy_uid=309674604&categoryId=&resourcesUrl=https://static20.app2020.tjyun.com/jyappv300/cms_mob/v200/cms_oth/chan.json&showFunHead=1&scene=timeline",
     source: "津云",
     tag: "媒体报道",
-    thumbnail: "/images/media/tjyun-professor-bubble-valuation-50m-20260502.png",
+    thumbnail: "/images/media/tjyun-professor-bubble-valuation-50m-20260502.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -76,7 +76,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/6XZ_chAQMc_-LfKbXlLXbg",
     source: "微信公众平台 / 天大海棠创新创业生态",
     tag: "媒体报道",
-    thumbnail: "/images/media/carbon-bay-dialogue-no-additives-mnb-20260417.gif",
+    thumbnail: "/images/media/carbon-bay-dialogue-no-additives-mnb-20260417.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -88,7 +88,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/xkWRtpCIgoq6QX_lvWEMNg",
     source: "微信公众平台 / 天大海棠创新创业生态",
     tag: "媒体报道",
-    thumbnail: "/images/media/tju-haitang-hard-tech-startup-valuation-20260417.jpg",
+    thumbnail: "/images/media/tju-haitang-hard-tech-startup-valuation-20260417.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -100,7 +100,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://epaper.tianjinwe.com/tjrb/html/2026-03/18/content_143078_3234592.htm",
     source: "天津日报数字报",
     tag: "媒体报道",
-    thumbnail: "/images/media/tianjin-daily-logo.png",
+    thumbnail: "/images/media/tianjin-daily-logo.thumb.webp",
     thumbnailFit: "contain",
   },
   {
@@ -113,7 +113,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/2D2PWm3ynUrafGwpczNc5w",
     source: "微信公众平台（环境学院）",
     tag: "媒体报道",
-    thumbnail: "/images/media/tju-env-wangtianzi-concept-verification-fund-wechat.png",
+    thumbnail: "/images/media/tju-env-wangtianzi-concept-verification-fund-wechat.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -125,7 +125,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://www.app2020.tjyun.com/jyapp/system/2026/03/14/059224428.shtml",
     source: "津云APP / 天津广播电视台",
     tag: "媒体报道",
-    thumbnail: "/images/media/tjyun-concept-verification-fund.png",
+    thumbnail: "/images/media/tjyun-concept-verification-fund.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -137,7 +137,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s?__biz=MzI0ODM3NDI1OQ==&mid=2247504862&idx=1&sn=0d01afc6a8a0a3513966f0f950dfa712&chksm=e836b82f3ca9229bfa53018efc0787012df23fbfc59a65b952dd442b95db4d7d75a8c6e32d01&mpshare=1&scene=2&srcid=0401p1HU7NRGflkjPWMan8T8&sharer_shareinfo=5c9ca9fe4357e4fb462538f37ae6e6f6&sharer_shareinfo_first=5c9ca9fe4357e4fb462538f37ae6e6f6#rd",
     source: "微信公众平台",
     tag: "媒体报道",
-    thumbnail: "/images/external-haitang-gold-seed.gif",
+    thumbnail: "/images/external-haitang-gold-seed.thumb.webp",
   },
   {
     id: "tju-high-value-achievement-wechat",
@@ -148,7 +148,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/Dd5NzxyrpcnqTX-aV6fWrA",
     source: "微信公众平台",
     tag: "媒体报道",
-    thumbnail: "/images/tju-ost-banner.png",
+    thumbnail: "/images/tju-ost-banner.thumb.webp",
     thumbnailFit: "contain",
   },
   {
@@ -160,7 +160,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s?__biz=Mzk0NjA5Njc2OA==&mid=2247503937&idx=1&sn=42dc93ef46266db35a691f3d4075c86d&chksm=c28dacaeae8dec28ebd14f17979d0438f8c9b42efb55ffadee1d6a54f6bcb193bcb1a25350f0&mpshare=1&scene=2&srcid=0926u7I8PMdz8Qk4R2CuoAvI&sharer_shareinfo=8c3f69f58e6f7bce137c4f6ec267cf05&sharer_shareinfo_first=8c3f69f58e6f7bce137c4f6ec267cf05#rd",
     source: "微信公众平台",
     tag: "媒体报道",
-    thumbnail: "/images/tju-iee-2025-mnb-team.png",
+    thumbnail: "/images/tju-iee-2025-mnb-team.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -172,7 +172,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/TP7IFpLvdhrpQT4EXnhd6g",
     source: "微信公众平台",
     tag: "媒体报道",
-    thumbnail: "/images/media/dangchang-rural-revitalization-20250812.png",
+    thumbnail: "/images/media/dangchang-rural-revitalization-20250812.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -184,7 +184,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/wy2jJ7l4O1PRhIIAFZD7lw",
     source: "微信公众平台",
     tag: "媒体报道",
-    thumbnail: "/images/media/district-tech-bureau-tju-agri-exchange-20241202.png",
+    thumbnail: "/images/media/district-tech-bureau-tju-agri-exchange-20241202.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -196,7 +196,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://gansu.gscn.com.cn/system/2024/09/06/013198941.shtml",
     source: "中国甘肃网 / 宕昌县人民政府办公室",
     tag: "媒体报道",
-    thumbnail: "/images/media/dangchang-highland-vegetables-20240906.png",
+    thumbnail: "/images/media/dangchang-highland-vegetables-20240906.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -208,7 +208,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/umh5vqRVgcCPEYG_8fFBWw",
     source: "微信公众平台",
     tag: "媒体报道",
-    thumbnail: "/images/media/cej-mnbs-uv-bacillus-cereus-20251224.png",
+    thumbnail: "/images/media/cej-mnbs-uv-bacillus-cereus-20251224.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -220,7 +220,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/c9YPiXtHR68LKbiuJH3Jvg",
     source: "微信公众平台",
     tag: "媒体报道",
-    thumbnail: "/images/media/popular-science-lecture-zaojiacheng-20250409.png",
+    thumbnail: "/images/media/popular-science-lecture-zaojiacheng-20250409.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -232,7 +232,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/3WYSNcouHrY7cDdSjSo4qA",
     source: "微信公众平台",
     tag: "媒体报道",
-    thumbnail: "/images/media/nanhe-coldwater-fish-mnbs-20250629.png",
+    thumbnail: "/images/media/nanhe-coldwater-fish-mnbs-20250629.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -244,7 +244,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/k-nOVMUXxXccaJc3YbsaOA",
     source: "微信公众平台",
     tag: "媒体报道",
-    thumbnail: "/images/media/haitang-gold-seed-confirmed-20250401.png",
+    thumbnail: "/images/media/haitang-gold-seed-confirmed-20250401.thumb.webp",
     thumbnailFit: "cover",
   },
   {
@@ -256,7 +256,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/XDo8lYRav2CSje7IfcsyqA",
     source: "微信公众平台",
     tag: "媒体报道",
-    thumbnail: "/images/media/mnbs-biofilm-mechanism-20250312.png",
+    thumbnail: "/images/media/mnbs-biofilm-mechanism-20250312.thumb.webp",
     thumbnailFit: "contain",
   },
   {
@@ -268,7 +268,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/ZgKijbHw1ElSSj_lVkDM8A",
     source: "微信公众平台 / 净水技术",
     tag: "媒体报道",
-    thumbnail: "/images/media/jsjs-drinking-water-mnbs-20250708.png",
+    thumbnail: "/images/media/jsjs-drinking-water-mnbs-20250708.thumb.webp",
     thumbnailFit: "contain",
   },
   {
@@ -280,7 +280,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://mp.weixin.qq.com/s/bYmxeZ3RhQgCGWXJMBiJsQ",
     source: "微信公众平台",
     tag: "媒体报道",
-    thumbnail: "/images/media/h2-mnbs-microplastics-20260321.png",
+    thumbnail: "/images/media/h2-mnbs-microplastics-20260321.thumb.webp",
     thumbnailFit: "cover",
   },
 ];

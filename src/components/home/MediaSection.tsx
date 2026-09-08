@@ -138,7 +138,7 @@ export default function MediaSection({
             ))}
           </div>
           <div className="mt-4 text-xs text-[var(--muted)]">
-            更多活动照片与内容请见"媒体与风采"页面。
+            更多活动照片与内容请见“媒体与风采”页面。
           </div>
         </motion.div>
       </div>

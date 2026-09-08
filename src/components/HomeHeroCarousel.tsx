@@ -15,13 +15,13 @@ type Slide = {
 export default function HomeHeroCarousel() {
   const slides: Slide[] = useMemo(
     () => [
-      { src: "/home/slide-1.png", alt: "Slide 1" },
-      { src: "/home/slide-2.png", alt: "Slide 2" },
-      { src: "/home/slide-3.png", alt: "Slide 3" },
-      { src: "/home/slide-4.png", alt: "Slide 4" },
-      { src: "/home/slide-5.png", alt: "Slide 5" },
-      { src: "/home/slide-6.png", alt: "Slide 6" },
-      { src: "/home/slide-7.png", alt: "Slide 7" },
+      { src: "/home/slide-1.png", alt: "微纳米气泡技术实验室全景（轮播图 1/7）" },
+      { src: "/home/slide-2.png", alt: "微纳米气泡装备与现场测试（轮播图 2/7）" },
+      { src: "/home/slide-3.png", alt: "课题组水处理工程应用（轮播图 3/7）" },
+      { src: "/home/slide-4.png", alt: "微纳米气泡技术应用场景（轮播图 4/7）" },
+      { src: "/home/slide-5.png", alt: "课题组研究与应用现场（轮播图 5/7）" },
+      { src: "/home/slide-6.png", alt: "课题组研究与应用现场（轮播图 6/7）" },
+      { src: "/home/slide-7.png", alt: "课题组研究与应用现场（轮播图 7/7）" },
     ],
     [],
   );

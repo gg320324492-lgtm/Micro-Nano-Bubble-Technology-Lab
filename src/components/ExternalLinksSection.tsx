@@ -20,9 +20,10 @@ function getDisplayDate(item: ExternalLink): string | null {
 }
 
 export function ExternalLinksGrid({ links, initialVisibleCount = 6 }: Props) {
+  // hooks 必须在任何 early return 之前调用（react-hooks/rules-of-hooks）
+  const [expanded, setExpanded] = useState(false);
   if (!links?.length) return null;
 
-  const [expanded, setExpanded] = useState(false);
   const visibleLinks = expanded ? links : links.slice(0, initialVisibleCount);
   const hasMore = links.length > initialVisibleCount;
 

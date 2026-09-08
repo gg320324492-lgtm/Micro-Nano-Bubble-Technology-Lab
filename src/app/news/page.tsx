@@ -549,7 +549,7 @@ export default function NewsPage() {
               <strong className="font-semibold text-[var(--text)]">
                 传质强化、氧化反应增强、增氧与水质改善
               </strong>{" "}
-              等方向展现出独特优势。我们聚焦"从机理到装备，再到应用落地"的完整链路：既回答为什么有效，也持续把有效做成可复制、可工程化的系统。
+              等方向展现出独特优势。我们聚焦“从机理到装备，再到应用落地”的完整链路：既回答为什么有效，也持续把有效做成可复制、可工程化的系统。
             </p>
           </div>
 
@@ -575,7 +575,7 @@ export default function NewsPage() {
             <div>
               <h4 className="text-lg font-semibold text-[var(--text)]">我们如何做研究</h4>
               <p className="mt-3 leading-7 text-[var(--text-secondary)]">
-                我们强调"数据闭环"：从设计—实验—建模—验证—迭代，形成可解释、可复现的研究流程。在这里，你不仅能做实验，更能学会把结果讲清楚、把机理讲扎实、把系统做稳定。
+                我们强调“数据闭环”：从设计—实验—建模—验证—迭代，形成可解释、可复现的研究流程。在这里，你不仅能做实验，更能学会把结果讲清楚、把机理讲扎实、把系统做稳定。
               </p>
 
               <div className="mt-4 space-y-2 text-[var(--text-secondary)] leading-7">
@@ -596,7 +596,7 @@ export default function NewsPage() {
                 <p>• 完整的科研训练：问题拆解 → 实验设计 → 数据分析 → 论文表达</p>
                 <p>• 工程能力提升：设备搭建、传感器与控制、系统集成与调参</p>
                 <p>• 团队协作氛围：高频讨论、互相支持、共同打磨结果与表达</p>
-                <p>• 清晰的成长路径：从"会做"到"做对"，再到"讲得清、做得稳"</p>
+                <p>• 清晰的成长路径：从“会做”到“做对”，再到“讲得清、做得稳”</p>
               </div>
             </div>
 
