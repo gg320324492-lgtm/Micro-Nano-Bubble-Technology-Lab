@@ -122,7 +122,7 @@ export default function PeopleSection({ digest }: { digest: PeopleDigest }) {
                       <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[var(--bg-elevated)] ring-1 ring-[var(--border)] sm:h-12 sm:w-12">
                         <PublicImage
                           src={avatarSrc}
-                          variant={p.id === "zhaohangjia" ? undefined : "thumb"}
+                          variant="thumb"
                           alt={p.nameZh || p.nameEn || "成员头像"}
                           fill
                           sizes="48px"

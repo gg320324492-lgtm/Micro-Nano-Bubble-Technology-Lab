@@ -500,13 +500,13 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                 <strong className="text-amber-600">50%</strong>；基地外观、养殖池、智能平台一体化验证。
               </p>
               <a
-                href={assetPath("/industrialization/aquaculture/slide-high-density-nanobubble.png")}
+                href={assetPath(toImageVariant("/industrialization/aquaculture/slide-high-density-nanobubble", "full"))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative mt-auto block aspect-video overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] transition-opacity hover:opacity-90"
               >
                 <Image
-                  src={assetPath("/industrialization/aquaculture/slide-high-density-nanobubble.png")}
+                  src={assetPath(toImageVariant("/industrialization/aquaculture/slide-high-density-nanobubble", "main"))}
                   alt="纯氧纳米气泡技术用于高密度水产养殖"
                   fill
                   sizes="(max-width: 640px) 100vw, 50vw"
@@ -525,13 +525,13 @@ export default async function IndustrialBaseDetailPage(props: Props) {
                 <li className="flex gap-2"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" /><span>营养与鲜味：蛋白质 +17.3%，谷氨酸 +74.5%</span></li>
               </ul>
               <a
-                href={assetPath("/industrialization/aquaculture/slide-water-quality-fish-quality.png")}
+                href={assetPath(toImageVariant("/industrialization/aquaculture/slide-water-quality-fish-quality", "full"))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative mt-auto block aspect-video overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] transition-opacity hover:opacity-90"
               >
                 <Image
-                  src={assetPath("/industrialization/aquaculture/slide-water-quality-fish-quality.png")}
+                  src={assetPath(toImageVariant("/industrialization/aquaculture/slide-water-quality-fish-quality", "main"))}
                   alt="微纳米气泡发生器：养殖水质稳定与水产品品质提升"
                   fill
                   sizes="(max-width: 640px) 100vw, 50vw"
@@ -657,7 +657,7 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)]">
                 {base.cover ? (
                   <Image
-                    src={assetPath(base.cover)}
+                    src={assetPath(toImageVariant(base.cover, "main"))}
                     alt={base.titleZh}
                     fill
                     loading="eager"
@@ -671,8 +671,8 @@ export default async function IndustrialBaseDetailPage(props: Props) {
               {/* 1+2 hero band：封面下方并排两张基地场景图（参考设备基地排版） */}
               <div className="mt-3 grid grid-cols-2 gap-3 md:mt-4">
                 {[
-                  { src: "/industrialization/aquaculture/g27.png", alt: "全国智慧渔场布局分布图（Smart Aquaculture Network）" },
-                  { src: "/industrialization/aquaculture/g26.png", alt: "成品鱼打样展示" },
+                  { src: toImageVariant("/industrialization/aquaculture/g27", "main"), alt: "全国智慧渔场布局分布图（Smart Aquaculture Network）" },
+                  { src: toImageVariant("/industrialization/aquaculture/g26", "main"), alt: "成品鱼打样展示" },
                 ].map((scene) => (
                   <div
                     key={scene.src}

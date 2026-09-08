@@ -111,7 +111,7 @@ function ResearchHero({
       <div className="pointer-events-none absolute inset-0">
         {cover ? (
           <Image
-            src={assetPath(cover)}
+            src={assetPath(toImageVariant(cover, "main"))}
             alt={titleZh}
             fill
             priority
@@ -369,19 +369,19 @@ export default async function ResearchDetailPage(props: PageProps) {
                       ],
                       images: [
                         {
-                          src: "/research/water-quality-safety/module1-card-3.png",
+                          src: toImageVariant("/research/water-quality-safety/module1-card-3", "main"),
                           alt: "BDOC、AOC与总菌变化及动力学分析图",
                           caption: "图1 不同气源和超声波条件下微纳米气泡对水中生物稳定性指标的影响",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module1-card-2.png",
+                          src: toImageVariant("/research/water-quality-safety/module1-card-2", "main"),
                           alt: "微生物群落与共现网络分析图",
                           caption: "图2 微生物群落结构差异分析：（a）PCA；（b）门水平组成；（c）样本间物种分布差异。",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module1-card-1.png",
+                          src: toImageVariant("/research/water-quality-safety/module1-card-1", "main"),
                           alt: "微纳米气泡作用机制示意图",
                           caption: "图3 不同气源微纳米气泡处理后藻密度及抑藻率的变化",
                           focusY: 50,
@@ -407,19 +407,19 @@ export default async function ResearchDetailPage(props: PageProps) {
                       ],
                       images: [
                         {
-                          src: "/research/water-quality-safety/module1-card2-bacteria-ecoli.png",
+                          src: toImageVariant("/research/water-quality-safety/module1-card2-bacteria-ecoli", "main"),
                           alt: "大肠杆菌入侵后细菌数量、降解率及回归分析",
                           caption: "图1 不同气源条件下微纳米气泡处理对总菌和大肠杆菌的影响",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module1-card2-cog-abundance.png",
+                          src: toImageVariant("/research/water-quality-safety/module1-card2-cog-abundance", "main"),
                           alt: "微生物群落功能基因相对丰度",
                           caption: "图2 微生物群落COG功能统计",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module1-card2-mnb-mechanism.png",
+                          src: toImageVariant("/research/water-quality-safety/module1-card2-mnb-mechanism", "main"),
                           alt: "微纳米气泡对大肠杆菌入侵的调控机制示意",
                           caption: "图3 微纳米气泡对大肠杆菌入侵的调控机制示意图",
                           focusY: 48,
@@ -445,21 +445,21 @@ export default async function ResearchDetailPage(props: PageProps) {
                       ],
                       images: [
                         {
-                          src: "/research/water-quality-safety/module1-card3-water-quality-lines.png",
+                          src: toImageVariant("/research/water-quality-safety/module1-card3-water-quality-lines", "main"),
                           alt: "羟基自由基、粒径、Zeta 电位、浊度与 TOC 随时间变化",
                           caption:
                             "图1 微纳米气泡特性及水质指标变化：（a）·OH浓度；（b）MNBs粒径；（c）MNBs zeta电位（d）浊度；（e）TOC",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module1-card3-microbiome-panels.png",
+                          src: toImageVariant("/research/water-quality-safety/module1-card3-microbiome-panels", "main"),
                           alt: "生物膜微生物群落组成与多样性分析",
                           caption:
                             "图2 不同气源 MNBs 条件下生物膜微生物群落分析：（a）门水平组成；（b）PCA；（c）统计比较；（d）多样性指数。",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module1-card3-biofilm-mechanism.png",
+                          src: toImageVariant("/research/water-quality-safety/module1-card3-biofilm-mechanism", "main"),
                           alt: "生物膜生长三阶段与微纳米气泡作用机制示意",
                           caption:
                             "图3 SEM结构方程分析:（a）MNB发展对水质和生物膜调节的SEM结构方程;（b）MNB在不同阶段调节生物膜生长的机制示意图",
@@ -494,21 +494,21 @@ export default async function ResearchDetailPage(props: PageProps) {
                       ],
                       images: [
                         {
-                          src: "/research/water-quality-safety/module2-fig1.png",
+                          src: toImageVariant("/research/water-quality-safety/module2-fig1", "main"),
                           alt: "不同气源微纳米气泡处理蜡样芽孢杆菌菌液的效果",
                           caption:
                             "图1 不同气源微纳米气泡处理蜡样芽孢杆菌菌液的效果：（a）杀菌效率；（b）总有机碳含量；（c）氧化还原电位；（d）pH 变化。",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module2-fig2.png",
+                          src: toImageVariant("/research/water-quality-safety/module2-fig2", "main"),
                           alt: "不同气源微纳米气泡处理前后细菌形貌变化的电镜图像",
                           caption:
                             "图2 不同气源微纳米气泡处理前后细菌形貌变化的电镜图像，对比对照组与各气源处理组的细胞变形与破裂特征。",
                           focusY: 45,
                         },
                         {
-                          src: "/research/water-quality-safety/module2-fig3.png",
+                          src: toImageVariant("/research/water-quality-safety/module2-fig3", "main"),
                           alt: "微纳米气泡作用下细胞损伤与分子变化机理示意图",
                           caption:
                             "图3 微纳米气泡作用下细胞膜破裂、DNA 解旋及蛋白质结构改变等过程的机理示意图。",
@@ -531,28 +531,28 @@ export default async function ResearchDetailPage(props: PageProps) {
                       ],
                       images: [
                         {
-                          src: "/research/water-quality-safety/module2-uv-fig1.png",
+                          src: toImageVariant("/research/water-quality-safety/module2-uv-fig1", "main"),
                           alt: "不同条件下水中微纳米气泡特性随时间变化",
                           caption:
                             "图1 不同条件下水中微纳米气泡特性随时间变化：（a）气泡浓度；（b）气泡粒径；（c）Zeta 电位绝对值；（d）·OH 产量。",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module2-uv-fig2.png",
+                          src: toImageVariant("/research/water-quality-safety/module2-uv-fig2", "main"),
                           alt: "不同条件下蜡样芽孢杆菌处理效果及水质指标变化",
                           caption:
                             "图2 不同条件下对蜡样芽孢杆菌的处理效果及水质指标变化：杀菌效率、总有机碳、氧化还原电位、pH、电导率与溶解氧。",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module2-uv-fig3.png",
+                          src: toImageVariant("/research/water-quality-safety/module2-uv-fig3", "main"),
                           alt: "不同处理条件下细菌透射电镜图像对比",
                           caption:
                             "图3 不同处理条件下细菌透射电镜图像，对比对照组、单独 UV、单独 MNBs 与 MNBs/UV 协同体系的细胞损伤程度。",
                           focusY: 45,
                         },
                         {
-                          src: "/research/water-quality-safety/module2-uv-fig4.png",
+                          src: toImageVariant("/research/water-quality-safety/module2-uv-fig4", "main"),
                           alt: "微纳米气泡与紫外协同灭菌机理示意",
                           caption:
                             "图4 微纳米气泡/紫外协同灭菌的界面与光化学耦合机理示意图。",
@@ -587,20 +587,20 @@ export default async function ResearchDetailPage(props: PageProps) {
                       ],
                       images: [
                         {
-                          src: "/research/water-quality-safety/module3-fig1.png",
+                          src: toImageVariant("/research/water-quality-safety/module3-fig1", "main"),
                           alt: "MNBs与NaClO体系下的灭活与副产物指标变化",
                           caption:
                             "图1 （a）对数灭菌率；（b）NPOC 浓度；（c）TCM 浓度；（d）不同处理条件下 TCM 与 NPOC 对大肠杆菌的相关性。",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module3-fig2.png",
+                          src: toImageVariant("/research/water-quality-safety/module3-fig2", "main"),
                           alt: "不同处理条件下大肠杆菌TEM图像与胞内成分泄漏",
                           caption: "图2 不同处理条件下大肠杆菌 TEM 图像及胞内成分泄漏。",
                           focusY: 45,
                         },
                         {
-                          src: "/research/water-quality-safety/module3-fig3.png",
+                          src: toImageVariant("/research/water-quality-safety/module3-fig3", "main"),
                           alt: "MNBs与NaClO协同灭菌及相互作用机理示意图",
                           caption: "图3 MNBs/NaClO 灭菌和相互作用的机理图示意图。",
                           focusY: 45,
@@ -634,28 +634,28 @@ export default async function ResearchDetailPage(props: PageProps) {
                       ],
                       images: [
                         {
-                          src: "/research/water-quality-safety/module4-fig1.png",
+                          src: toImageVariant("/research/water-quality-safety/module4-fig1", "main"),
                           alt: "氢微纳米气泡水的稳定性与界面特征",
                           caption:
                             "图1 氢气在水中的稳定性及微纳米气泡性质：（a）不同发生方式的氢气浓度衰减曲线；（b）不同发生方式的平均气泡粒径；（c）不同发生方式的ζ电位。",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module4-fig2.png",
+                          src: toImageVariant("/research/water-quality-safety/module4-fig2", "main"),
                           alt: "体外Caco-2细胞模型下PS-MPs毒性与H2-MNBW缓解效果",
                           caption:
                             "图2 H₂-MNBW对PS-MPs处理Caco-2细胞的影响：（a）不同处理组Caco-2细胞活力；（b）不同处理组早期与晚期凋亡细胞凋亡率；（c）不同处理组Caco-2细胞毒性。",
                           focusY: 50,
                         },
                         {
-                          src: "/research/water-quality-safety/module4-fig3.png",
+                          src: toImageVariant("/research/water-quality-safety/module4-fig3", "main"),
                           alt: "小鼠口服暴露模型下组织学与生长指标变化",
                           caption:
                             "图3 不同处理组小鼠生长及器官状态：（a）不同处理组小鼠在17天内体重动态变化；（b）不同组小鼠心脏、肝脏、脾脏、肺、肾脏HE染色；（c）不同组小鼠小肠HE染色。",
                           focusY: 45,
                         },
                         {
-                          src: "/research/water-quality-safety/module4-fig4.png",
+                          src: toImageVariant("/research/water-quality-safety/module4-fig4", "main"),
                           alt: "H2-MNBW缓解PS-MPs毒性的机制示意图",
                           caption:
                             "图4 H₂-MNBW缓解PS-MPs中毒的协同解毒机制示意图。",
@@ -690,7 +690,7 @@ export default async function ResearchDetailPage(props: PageProps) {
                       ],
                       images: [
                         {
-                          src: "/research/water-quality-safety/module5-fig1.png",
+                          src: toImageVariant("/research/water-quality-safety/module5-fig1", "main"),
                           alt: "臭氧微纳米气泡在膜过滤中的污染层穿透与清洗机制示意",
                           caption:
                             "图1 臭氧微纳米气泡在膜过滤中的穿透与污染控制机制示意：通过气桥效应与界面冲刷强化膜面清洗并缓解膜污染。",
@@ -742,7 +742,7 @@ export default async function ResearchDetailPage(props: PageProps) {
               "研究识别了高效剪切破碎主发生区与关键结构控制因子，明确提升初始压力可同步提高气泡浓度并促进微米向纳米尺度转化，为发生器低能耗、高连续运行与工程化设计提供依据。",
           },
         ],
-        image: { src: "/research/bubble-nucleation-equipment/flow-channel-infographic.png", alt: "气液混合流道结构及气泡形成机理示意", caption: "图1 气液混合流道结构对水中微纳米气泡的形成与粒径分布特性影响机制示意图", focusY: 45 },
+        image: { src: toImageVariant("/research/bubble-nucleation-equipment/flow-channel-infographic", "main"), alt: "气液混合流道结构及气泡形成机理示意", caption: "图1 气液混合流道结构对水中微纳米气泡的形成与粒径分布特性影响机制示意图", focusY: 45 },
       },
       "纳米气泡稳定性机制研究": {
         summary:
@@ -762,7 +762,7 @@ export default async function ResearchDetailPage(props: PageProps) {
           },
         ],
         image: {
-          src: "/research/bubble-nucleation-equipment/nanobubble-stability-mechanism.png",
+          src: toImageVariant("/research/bubble-nucleation-equipment/nanobubble-stability-mechanism", "main"),
           alt: "纳米气泡稳定性机制示意图",
           caption: "图1 纳米气泡稳定性机理示意图",
           focusY: 50,
@@ -823,19 +823,19 @@ export default async function ResearchDetailPage(props: PageProps) {
         ],
         images: [
           {
-            src: "/research/black-odorous-water-remediation/module1-fig1.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module1-fig1", "main"),
             alt: "不同气源处理后藻密度与抑制率变化",
             caption: "图1 不同气源微纳米气泡处理后藻密度及抑藻率的变化",
             focusY: 50,
           },
           {
-            src: "/research/black-odorous-water-remediation/module1-fig2.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module1-fig2", "main"),
             alt: "不同处理前后藻细胞形态变化SEM图像",
             caption: "图2 不同气源微纳米气泡处理前后藻细胞形态变化的SEM图像",
             focusY: 50,
           },
           {
-            src: "/research/black-odorous-water-remediation/module1-fig3.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module1-fig3", "main"),
             alt: "微纳米气泡抑藻作用机理示意图",
             caption: "图3 微纳米气泡对藻细胞的抑制作用机理示意图",
             focusY: 50,
@@ -861,27 +861,27 @@ export default async function ResearchDetailPage(props: PageProps) {
         ],
         images: [
           {
-            src: "/research/black-odorous-water-remediation/module2-fig1.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module2-fig1", "main"),
             alt: "破乳后油分布特征与水质指标变化",
             caption:
               "图1 微纳米气泡破乳后油分布与水质指标变化：（a）除油率；（b）油分配；（c）COD；（d）TOC；（e）ORP；（f）pH。",
             focusY: 50,
           },
           {
-            src: "/research/black-odorous-water-remediation/module2-fig2.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module2-fig2", "main"),
             alt: "不同气源处理前后油泥SEM图像",
             caption: "图2 不同气源微纳米气泡处理前后油泥的SEM图像",
             focusY: 50,
           },
           {
-            src: "/research/black-odorous-water-remediation/module2-fig3.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module2-fig3", "main"),
             alt: "固相组成与热分析谱图",
             caption:
               "图3 不同气源微纳米气泡处理后含油污泥固相表征：（a）XRD；（b）FTIR；（c）原始样本；（d）CK；（e）O₃-MNBs；（f）N₂-MNBs 的 TG/DTG。",
             focusY: 50,
           },
           {
-            src: "/research/black-odorous-water-remediation/module2-fig4.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module2-fig4", "main"),
             alt: "臭氧微纳米气泡破乳机理示意图",
             caption: "图4 臭氧微纳米气泡对油泥的破乳作用机理示意图",
             focusY: 50,
@@ -907,21 +907,21 @@ export default async function ResearchDetailPage(props: PageProps) {
         ],
         images: [
           {
-            src: "/research/black-odorous-water-remediation/module3-fig1.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module3-fig1", "main"),
             alt: "不同加气频率下土壤理化与养分指标变化",
             caption:
               "图1 不同加气频率下正常土和盐碱土中pH、电导率、CEC、有机质、速效氮、速效磷和速效钾的含量",
             focusY: 50,
           },
           {
-            src: "/research/black-odorous-water-remediation/module3-fig2.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module3-fig2", "main"),
             alt: "不同加气频率下土壤酶活性变化",
             caption:
               "图2 不同加气频率下正常土和盐碱土中酶活性的含量:（a）酶活性总量;（b）土壤中的蛋白酶、蔗糖酶、过氧化氢酶、脲酶以及磷酸酶含量",
             focusY: 50,
           },
           {
-            src: "/research/black-odorous-water-remediation/module3-fig3.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module3-fig3", "main"),
             alt: "相关热图与微生物机制示意",
             caption:
               "图3 （a）Pearson相关热图评估了91天后不同MNBs通气频率下土壤理化性质与酶活性之间的关系;（b）MNBs提高盐碱土壤肥力的微生物机制示意图",
@@ -948,14 +948,14 @@ export default async function ResearchDetailPage(props: PageProps) {
         ],
         images: [
           {
-            src: "/research/black-odorous-water-remediation/module4-fig1.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module4-fig1", "main"),
             alt: "O₃-MNBs与H₂O₂共反应体系中复杂环境因素对甲苯转化反应的影响",
             caption:
               "图1. O₃-MNBs与H₂O₂共反应体系中复杂环境因素对甲苯转化反应的影响。(a)不同浓度过氧化氢对甲苯转化率的影响；(b)O₃-MNBs与过氧化氢相关性分析的热图；(c)不同pH条件对甲苯转化率的影响；(d)不同操作压力对甲苯转化率的影响；(e)不同水性底物对甲苯转化率的影响；(f)共存阳离子对甲苯转化率的影响；(g)共存阴离子对甲苯转化率的影响；(h)不同pH条件对甲苯矿化程度的影响；(i)活性物种淬灭对甲苯转化率的影响。",
             focusY: 50,
           },
           {
-            src: "/research/black-odorous-water-remediation/module4-fig2.png",
+            src: toImageVariant("/research/black-odorous-water-remediation/module4-fig2", "main"),
             alt: "臭氧微纳米气泡活化H₂O₂促进甲苯高效治理示意图",
             caption: "图2. 臭氧微纳米气泡活化H₂O₂促进甲苯高效治理示意图",
             focusY: 50,
@@ -981,7 +981,7 @@ export default async function ResearchDetailPage(props: PageProps) {
         ],
         images: [
           {
-            src: "/research/aquaculture-high-density/module1-fig1.png",
+            src: toImageVariant("/research/aquaculture-high-density/module1-fig1", "main"),
             alt: "基于微纳米气泡的循环水养殖-水培协同脱氮系统概念图",
             caption: "图1 基于微纳米气泡的循环水养殖系统概念图（Marcelino et al., 2023）",
             focusY: 50,
@@ -1025,7 +1025,7 @@ export default async function ResearchDetailPage(props: PageProps) {
         ],
         images: [
           {
-            src: "/research/aquaculture-high-density/module3-fig1.png",
+            src: toImageVariant("/research/aquaculture-high-density/module3-fig1", "main"),
             alt: "臭氧微纳米气泡降解四环素作用机理示意图",
             caption: "图1 臭氧微纳米气泡降解四环素的作用机理示意图",
             focusY: 50,
@@ -1051,19 +1051,19 @@ export default async function ResearchDetailPage(props: PageProps) {
         ],
         images: [
           {
-            src: "/research/aquaculture-high-density/module4-fig1.png",
+            src: toImageVariant("/research/aquaculture-high-density/module4-fig1", "main"),
             alt: "不同加气水平对设施番茄产量及品质的影响",
             caption: "图1 不同加气水平的微纳米气泡灌溉对设施番茄产量及品质的影响",
             focusY: 50,
           },
           {
-            src: "/research/aquaculture-high-density/module4-fig2.png",
+            src: toImageVariant("/research/aquaculture-high-density/module4-fig2", "main"),
             alt: "不同加气水平对设施番茄生长指标的影响",
             caption: "图2 不同加气水平的微纳米气泡水灌溉对设施番茄生长指标的影响",
             focusY: 50,
           },
           {
-            src: "/research/aquaculture-high-density/module4-fig3.png",
+            src: toImageVariant("/research/aquaculture-high-density/module4-fig3", "main"),
             alt: "不同加气水平对土壤理化性质的影响",
             caption: "图3 不同加气水平的微纳米气泡灌溉对土壤理化性质的影响",
             focusY: 50,
@@ -1089,37 +1089,37 @@ export default async function ResearchDetailPage(props: PageProps) {
         ],
         images: [
           {
-            src: "/research/aquaculture-high-density/module5-fig1.png",
+            src: toImageVariant("/research/aquaculture-high-density/module5-fig1", "main"),
             alt: "微纳米气泡芯片清洗实验装置与系统示意",
             caption: "图1 微纳米气泡芯片清洗实验装置与系统示意",
             focusY: 50,
           },
           {
-            src: "/research/aquaculture-high-density/module5-fig2.png",
+            src: toImageVariant("/research/aquaculture-high-density/module5-fig2", "main"),
             alt: "实验一步骤及不同介质清洗对比",
             caption: "图2 实验一流程及去油效果对比",
             focusY: 50,
           },
           {
-            src: "/research/aquaculture-high-density/module5-fig3.png",
+            src: toImageVariant("/research/aquaculture-high-density/module5-fig3", "main"),
             alt: "实验一步骤结果与去油率对比",
             caption: "图3 不同清洗组去油率对比与结果分析",
             focusY: 50,
           },
           {
-            src: "/research/aquaculture-high-density/module5-fig4.png",
+            src: toImageVariant("/research/aquaculture-high-density/module5-fig4", "main"),
             alt: "芯片清洗痛点与微纳米气泡优势",
             caption: "图4 芯片清洗痛点与微纳米气泡技术优势",
             focusY: 50,
           },
           {
-            src: "/research/aquaculture-high-density/module5-fig5.png",
+            src: toImageVariant("/research/aquaculture-high-density/module5-fig5", "main"),
             alt: "实验二步骤与清洗率统计",
             caption: "图5 实验二流程与不同样品清洗率结果",
             focusY: 50,
           },
           {
-            src: "/research/aquaculture-high-density/module5-fig6.png",
+            src: toImageVariant("/research/aquaculture-high-density/module5-fig6", "main"),
             alt: "显微图像与热像过程监测",
             caption: "图6 清洗前后显微图像及热像监测结果",
             focusY: 50,
@@ -1336,7 +1336,7 @@ export default async function ResearchDetailPage(props: PageProps) {
                         controls
                         playsInline
                         preload="metadata"
-                        poster={video.poster ? assetPath(video.poster) : undefined}
+                        poster={video.poster ? assetPath(toImageVariant(video.poster, "main")) : undefined}
                         className="h-auto w-full"
                       >
                         <source src={assetPath(video.src)} type="video/mp4" />

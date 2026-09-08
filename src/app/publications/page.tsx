@@ -10,6 +10,7 @@ import { buttonClassName } from "@/components/ui/Button";
 import Reveal from "@/components/motion/Reveal";
 import PublicImage from "@/components/PublicImage";
 import assetPath from "@/lib/assetPath";
+import { toImageVariant } from "@/lib/imageVariant";
 import { pickList } from "@/lib/data";
 
 // ✅ 兼容导入：不要求 data 文件必须 default export
@@ -457,15 +458,16 @@ export default function PublicationsPage() {
                     {tab === "patents" ? <PatentDetails item={it as Record<string, unknown>} /> : null}
                     {tab === "honors" && it?.imageSrc ? (
                       <a
-                        href={assetPath(toStr(it.imageSrc))}
+                        href={assetPath(toImageVariant(toStr(it.imageSrc), "main"))}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-3 block"
-                        aria-label="打开证书原图"
+                        aria-label="打开证书大图"
                       >
                         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-deep)]">
                           <PublicImage
                             src={toStr(it.imageSrc)}
+                            variant="main"
                             alt={toStr(it.imageAlt) || title}
                             fill
                             sizes="(max-width: 768px) 100vw, 800px"

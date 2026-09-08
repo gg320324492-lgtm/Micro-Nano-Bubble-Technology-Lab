@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Newspaper, Camera } from "lucide-react";
 import { assetPath } from "@/lib/assetPath";
+import { toImageVariant } from "@/lib/imageVariant";
 import type { MediaLinkView } from "@/types";
 import type { ShowcasePhoto } from "@/data/showcase";
 
@@ -128,7 +129,7 @@ export default function MediaSection({
                 className="relative aspect-square overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-elevated)] transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01]"
               >
                 <Image
-                  src={assetPath(p.src)}
+                  src={assetPath(toImageVariant(p.src, "thumb"))}
                   alt={p.alt}
                   fill
                   sizes="(max-width: 1024px) 33vw, 200px"

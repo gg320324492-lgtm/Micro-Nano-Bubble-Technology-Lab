@@ -72,6 +72,7 @@ export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
           {photo ? (
             <PublicImage
               src={photo}
+              variant="thumb"
               alt={nameZh || nameEn || "person"}
               fill
               sizes="56px"

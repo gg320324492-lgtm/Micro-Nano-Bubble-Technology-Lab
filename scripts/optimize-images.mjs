@@ -3,16 +3,10 @@ import path from "node:path";
 import sharp from "sharp";
 
 const ROOT = process.cwd();
-const TARGET_DIRS = [
-  "public/home",
-  "public/people",
-  "public/research",
-  "public/industrialization",
-  "public/showcase",
-  "public/images",
-];
+const SRC_DIR = "assets-src"; // 原图仓库目录（不部署、公网不可访问）
+const OUT_DIR = "public";     // 变体输出目录（进构建产物）
 
-const SOURCE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
+const SOURCE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"]);
 const VARIANT_RE = /\.(thumb|main|full)\.webp$/i;
 
 const COMMON_VARIANTS = [
@@ -21,18 +15,24 @@ const COMMON_VARIANTS = [
   { suffix: "full", max: 2200, quality: 82 },
 ];
 
-const AVATAR_VARIANTS = [{ suffix: "thumb", max: 256, quality: 72 }];
-
-// public/images（媒体报道缩略图等）只生成 thumb 一档；
-// 动图 GIF sharp 读不动（corrupt header），首次需手动 ffmpeg 生成，之后靠 mtime 缓存跳过
-const IMAGES_VARIANTS = [{ suffix: "thumb", max: 640, quality: 72 }];
-
-function isPeopleImage(absPath) {
-  return absPath.includes(`${path.sep}public${path.sep}people${path.sep}`);
-}
-
-function isMiscImage(absPath) {
-  return absPath.includes(`${path.sep}public${path.sep}images${path.sep}`);
+// people 头像：thumb；-detail 大图另出 main（成员详情页用）
+// images（荣誉证书等）：thumb（卡片）+ main（大图查看）
+function variantsFor(relFromPublic) {
+  if (relFromPublic.startsWith("people/")) {
+    return /-detail\./.test(relFromPublic)
+      ? [{ suffix: "main", max: 1400, quality: 78 }]
+      : [{ suffix: "thumb", max: 256, quality: 72 }];
+  }
+  if (relFromPublic.startsWith("images/honors/")) {
+    return [
+      { suffix: "thumb", max: 640, quality: 72 },
+      { suffix: "main", max: 1400, quality: 78 },
+    ];
+  }
+  if (relFromPublic.startsWith("images/")) {
+    return [{ suffix: "thumb", max: 640, quality: 72 }];
+  }
+  return COMMON_VARIANTS;
 }
 
 function isSourceImage(absPath) {
@@ -58,12 +58,14 @@ async function walk(dirAbs) {
   return files;
 }
 
-function outputPath(absPath, suffix) {
-  const ext = path.extname(absPath);
-  return absPath.slice(0, -ext.length) + `.${suffix}.webp`;
+function outputPath(absSrc, relFromSrc, suffix) {
+  const ext = path.extname(relFromSrc);
+  const rel = relFromSrc.slice(0, -ext.length) + `.${suffix}.webp`;
+  return path.join(ROOT, OUT_DIR, rel);
 }
 
 async function transform(srcAbs, destAbs, max, quality) {
+  await fs.mkdir(path.dirname(destAbs), { recursive: true });
   await sharp(srcAbs, { limitInputPixels: false })
     .rotate()
     .resize({
@@ -76,8 +78,13 @@ async function transform(srcAbs, destAbs, max, quality) {
     .toFile(destAbs);
 }
 
-async function isFresh(srcAbs, destAbs) {
+async function isFresh(srcAbs, destAbs, ext) {
   try {
+    // 动图 GIF 的源文件偶有损坏头（sharp 读不动），生成过就不再重做
+    if (ext === ".gif") {
+      await fs.stat(destAbs);
+      return true;
+    }
     const [srcStat, destStat] = await Promise.all([fs.stat(srcAbs), fs.stat(destAbs)]);
     return destStat.mtimeMs >= srcStat.mtimeMs;
   } catch {
@@ -90,31 +97,24 @@ function toMB(bytes) {
 }
 
 async function main() {
-  const sourceFiles = [];
-
-  for (const rel of TARGET_DIRS) {
-    const abs = path.join(ROOT, rel);
-    try {
-      const stat = await fs.stat(abs);
-      if (!stat.isDirectory()) continue;
-      sourceFiles.push(...(await walk(abs)));
-    } catch {
-      // 忽略不存在目录
-    }
+  const srcRoot = path.join(ROOT, SRC_DIR);
+  let sourceFiles = [];
+  try {
+    sourceFiles = await walk(srcRoot);
+  } catch {
+    console.error(`[images:optimize] ${SRC_DIR}/ 不存在，跳过（原图应放在 ${SRC_DIR}/ 下）`);
+    return;
   }
 
   let generated = 0;
   let skipped = 0;
   let cached = 0;
   for (const srcAbs of sourceFiles) {
-    const variants = isPeopleImage(srcAbs)
-      ? AVATAR_VARIANTS
-      : isMiscImage(srcAbs)
-        ? IMAGES_VARIANTS
-        : COMMON_VARIANTS;
-    for (const v of variants) {
-      const out = outputPath(srcAbs, v.suffix);
-      if (await isFresh(srcAbs, out)) {
+    const relFromSrc = path.relative(srcRoot, srcAbs).split(path.sep).join("/");
+    const ext = path.extname(srcAbs).toLowerCase();
+    for (const v of variantsFor(relFromSrc)) {
+      const out = outputPath(srcAbs, relFromSrc, v.suffix);
+      if (await isFresh(srcAbs, out, ext)) {
         cached += 1;
         continue;
       }
@@ -123,48 +123,32 @@ async function main() {
         generated += 1;
       } catch (err) {
         skipped += 1;
-        console.warn(`[skip] ${srcAbs} -> ${v.suffix}: ${err?.message || err}`);
+        console.warn(`[skip] ${relFromSrc} -> ${v.suffix}: ${err?.message || err}`);
       }
     }
   }
 
-  // 汇总大小
-  const allImageFiles = [];
-  for (const rel of TARGET_DIRS) {
-    const abs = path.join(ROOT, rel);
-    try {
-      const stat = await fs.stat(abs);
-      if (!stat.isDirectory()) continue;
-      const walked = await walk(abs);
-      allImageFiles.push(...walked);
-      // 额外收集衍生 webp
-      const stack = [abs];
-      while (stack.length) {
-        const cur = stack.pop();
-        const entries = await fs.readdir(cur, { withFileTypes: true });
-        for (const entry of entries) {
-          const p = path.join(cur, entry.name);
-          if (entry.isDirectory()) stack.push(p);
-          else if (entry.isFile() && VARIANT_RE.test(p)) allImageFiles.push(p);
-        }
-      }
-    } catch {
-      // ignore
-    }
-  }
-
-  const uniq = Array.from(new Set(allImageFiles));
+  // 汇总 public 里参与站点的图片体积
+  const stack = [path.join(ROOT, OUT_DIR)];
   let total = 0;
-  for (const f of uniq) {
-    const st = await fs.stat(f);
-    total += st.size;
+  while (stack.length) {
+    const cur = stack.pop();
+    const entries = await fs.readdir(cur, { withFileTypes: true });
+    for (const entry of entries) {
+      const p = path.join(cur, entry.name);
+      if (entry.isDirectory()) stack.push(p);
+      else if (entry.isFile() && /\.(webp|png|jpg|jpeg|gif|avif)$/i.test(entry.name)) {
+        const st = await fs.stat(p);
+        total += st.size;
+      }
+    }
   }
 
-  console.log(`optimized source images: ${sourceFiles.length}`);
+  console.log(`source images (${SRC_DIR}/): ${sourceFiles.length}`);
   console.log(`generated variants: ${generated}`);
   console.log(`cached variants: ${cached}`);
   console.log(`skipped variants: ${skipped}`);
-  console.log(`optimized dirs image total: ${toMB(total)} MB`);
+  console.log(`public/ image total: ${toMB(total)} MB`);
 }
 
 main().catch((err) => {

@@ -94,10 +94,13 @@ public/
 | 规格 | 最大宽度 | 用途 |
 |---|---|---|
 | `thumb` | 640px | 列表卡片 / 缩略图 |
-| `main` | 1400px | 页内正文插图 |
+| `main` | 1400px | 页内正文插图 / 「点击查看大图」 |
 | `full` | 2200px | **首页轮播 / Hero / 全屏图**（**用 main 会模糊**） |
 
-源图放 `.jpg`，同名 `.webp` 三档由 `npm run images:optimize` 生成。
+- **源图一律放 `assets-src/`（目录结构镜像 `public/`，随仓库跟踪但**不进部署产物**）；变体由 `npm run images:optimize` 生成到 `public/`。`public/` 下除 `logos/` 外不要直接放原图（原图部署后会公网可下载）。**
+- 页面代码引用图片一律通过 `toImageVariant(src, "thumb|main|full")`（或 `<PublicImage variant=…>`），**不要写死 `.png/.jpg` 原始路径** —— 那些文件部署后不存在，会 404。
+- people 头像自动出 `thumb`；`*-detail.jpg` 大图出 `main`；`images/honors` 出 `thumb+main`。
+- 动图 GIF 用 ffmpeg 转（sharp 读不了部分损坏头），首次生成 thumb 后靠 mtime 缓存。
 
 ## Deployment flow（自动部署 — push main 即触发）
 

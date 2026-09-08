@@ -98,11 +98,7 @@ export default function LightboxGallery({
               aria-label={`open-${i}`}
             >
               <Image
-                src={
-                  /\.png$/i.test(it.src)
-                    ? assetPath(it.src)
-                    : assetPath(toImageVariant(it.src, "thumb"))
-                }
+                src={assetPath(toImageVariant(it.src, "thumb"))}
                 alt={it.alt || `gallery-${i + 1}`}
                 fill
                 loading="lazy"
@@ -136,11 +132,7 @@ export default function LightboxGallery({
             <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black shadow-xl">
               <div className="relative aspect-[16/10]">
                 <Image
-                  src={
-                    /\.png$/i.test(cur.src)
-                      ? assetPath(cur.src)
-                      : assetPath(toImageVariant(cur.src, "full"))
-                  }
+                  src={assetPath(toImageVariant(cur.src, "full"))}
                   alt={cur.alt || "preview"}
                   fill
                   loading="eager"

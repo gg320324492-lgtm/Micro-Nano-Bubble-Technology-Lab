@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { assetPath } from "@/lib/assetPath";
+import { toImageVariant } from "@/lib/imageVariant";
 import { resolveAquacultureAssetPath } from "@/content/aquaculturePdfFullData";
 
 type Figure = {
@@ -121,7 +122,7 @@ export default function AquacultureFigureStrip({
               >
                 <div className="relative aspect-[16/9] overflow-hidden bg-[var(--bg-elevated)]">
                   <Image
-                    src={assetPath(resolveAquacultureAssetPath(fig.src))}
+                    src={assetPath(toImageVariant(resolveAquacultureAssetPath(fig.src), "main"))}
                     alt={fig.caption}
                     fill
                     loading="lazy"
@@ -147,7 +148,7 @@ export default function AquacultureFigureStrip({
             <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black shadow-xl">
               <div className="relative aspect-[16/9]">
                 <Image
-                  src={assetPath(resolveAquacultureAssetPath(current.src))}
+                  src={assetPath(toImageVariant(resolveAquacultureAssetPath(current.src), "full"))}
                   alt={current.caption}
                   fill
                   loading="eager"

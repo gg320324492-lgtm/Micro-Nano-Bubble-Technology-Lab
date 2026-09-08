@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { assetPath } from "@/lib/assetPath";
+import { toImageVariant } from "@/lib/imageVariant";
 
 type SectionItem = {
   titleZh: string;
@@ -60,15 +61,15 @@ const KEY_METRICS = [
 ];
 
 const GALLERY_IMGS = [
-  { src: "/industrialization/black-odorous-water/gallery01.png", caption: "监利项目点位 A" },
-  { src: "/industrialization/black-odorous-water/gallery04.png", caption: "曝气运行过程" },
-  { src: "/industrialization/black-odorous-water/gallery05.png", caption: "治理后水体状态" },
-  { src: "/industrialization/black-odorous-water/gallery08.png", caption: "典型点位对比（样点1）" },
-  { src: "/industrialization/black-odorous-water/gallery09.png", caption: "典型点位对比（样点2）" },
-  { src: "/industrialization/black-odorous-water/gallery06.png", caption: "静海独流镇现场" },
-  { src: "/industrialization/black-odorous-water/gallery03.png", caption: "治理前黑臭状态" },
-  { src: "/industrialization/black-odorous-water/gallery07.png", caption: "藻类富集阶段" },
-  { src: "/industrialization/black-odorous-water/gallery10.png", caption: "典型点位对比（样点3）" },
+  { src: toImageVariant("/industrialization/black-odorous-water/gallery01", "main"), caption: "监利项目点位 A" },
+  { src: toImageVariant("/industrialization/black-odorous-water/gallery04", "main"), caption: "曝气运行过程" },
+  { src: toImageVariant("/industrialization/black-odorous-water/gallery05", "main"), caption: "治理后水体状态" },
+  { src: toImageVariant("/industrialization/black-odorous-water/gallery08", "main"), caption: "典型点位对比（样点1）" },
+  { src: toImageVariant("/industrialization/black-odorous-water/gallery09", "main"), caption: "典型点位对比（样点2）" },
+  { src: toImageVariant("/industrialization/black-odorous-water/gallery06", "main"), caption: "静海独流镇现场" },
+  { src: toImageVariant("/industrialization/black-odorous-water/gallery03", "main"), caption: "治理前黑臭状态" },
+  { src: toImageVariant("/industrialization/black-odorous-water/gallery07", "main"), caption: "藻类富集阶段" },
+  { src: toImageVariant("/industrialization/black-odorous-water/gallery10", "main"), caption: "典型点位对比（样点3）" },
 ];
 
 export default function IndustrialSectionTabs({ sections }: { sections: SectionItem[] }) {
@@ -237,7 +238,7 @@ export default function IndustrialSectionTabs({ sections }: { sections: SectionI
                 >
                   <div className="relative aspect-[4/3] w-full">
                     <Image
-                      src={assetPath(img.src)}
+                      src={assetPath(toImageVariant(img.src, "thumb"))}
                       alt={img.caption}
                       fill
                       sizes="(max-width: 1024px) 50vw, 200px"
@@ -262,7 +263,7 @@ export default function IndustrialSectionTabs({ sections }: { sections: SectionI
               >
                 <div className="relative aspect-[16/8] w-full">
                   <Image
-                    src={assetPath(tabImgs[2].src)}
+                    src={assetPath(toImageVariant(tabImgs[2].src, "thumb"))}
                     alt={tabImgs[2].caption}
                     fill
                     sizes="(max-width: 1024px) 100vw, 380px"

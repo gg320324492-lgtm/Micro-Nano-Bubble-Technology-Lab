@@ -40,13 +40,10 @@ export default function LightboxViewer({
 }: LightboxViewerProps) {
   const [open, setOpen] = useState(false);
 
-  const src = /\.png$/i.test(item.src)
-    ? assetPath(item.src)
-    : assetPath(toImageVariant(item.src, "thumb"));
+  // 统一走 webp 变体（源图已迁出 public，不再公网可访问）
+  const src = assetPath(toImageVariant(item.src, "thumb"));
 
-  const fullSrc = /\.png$/i.test(item.src)
-    ? assetPath(item.src)
-    : assetPath(toImageVariant(item.src, "full"));
+  const fullSrc = assetPath(toImageVariant(item.src, "full"));
 
   const alt = item.alt || "research-figure";
   const rawCaption = item.caption || item.alt || "";
