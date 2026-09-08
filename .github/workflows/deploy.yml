@@ -1,8 +1,8 @@
 name: Deploy to Alibaba Cloud
 
+# 应急手动部署通道（旧流程）。自动部署由 deploy-aliyun.yml 负责；
+# 此工作流不再监听 push，避免与其并发 rsync --delete 同一目录。
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 concurrency:
