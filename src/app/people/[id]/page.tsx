@@ -37,12 +37,8 @@ export default async function PeopleDetailPage(props: PageProps) {
   const displayName = person.nameZh || person.nameEn;
   // 详情页优先用 detailPhoto，没有则 fallback 到 avatar
   const photo = person.detailPhoto ?? person.avatar ?? "";
-  // -detail 大图走 main 变体（源图已迁出 public）；无变体的文件（如 /images/）保持原样
-  const detailVariant = photo.startsWith("/images/")
-    ? undefined
-    : photo.endsWith("-detail.jpg") || photo.endsWith("-detail.png")
-      ? ("main" as const)
-      : ("thumb" as const);
+  // -detail 大图与普通头像统一走 main 高清变体（分别为 1400px / 960px）；/images/ 无变体保持原样
+  const detailVariant = photo.startsWith("/images/") ? undefined : ("main" as const);
   const gradeLine = [person.cohort ? `${person.cohort}级` : "", roleLabel(person.role)]
     .filter(Boolean)
     .join("");

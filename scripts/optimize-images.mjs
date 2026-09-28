@@ -21,7 +21,11 @@ function variantsFor(relFromPublic) {
   if (relFromPublic.startsWith("people/")) {
     return /-detail\./.test(relFromPublic)
       ? [{ suffix: "main", max: 1400, quality: 78 }]
-      : [{ suffix: "thumb", max: 256, quality: 72 }];
+      : [
+          { suffix: "thumb", max: 256, quality: 72 },
+          // 详情页展示列宽 320px（移动端全宽），留足 3x DPR 的清晰度
+          { suffix: "main", max: 960, quality: 80 },
+        ];
   }
   if (relFromPublic.startsWith("images/honors/")) {
     return [
