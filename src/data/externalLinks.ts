@@ -45,7 +45,7 @@ export const externalLinks: ExternalLink[] = [
   },
   {
     id: "bilibili-rural-revitalization-aquaculture-20260515",
-    title: "教授“牵手”农户，养鱼产量翻倍！天津大学科研团队用新质生产力为水产养殖增效益",
+    title: "天津大学科研团队以微纳米气泡技术助力水产养殖增效",
     date: "2026-05-15",
     description:
       "走进天津津南、河北石家庄，看天津大学科研团队用新质生产力为水产养殖增效益；《乡村振兴怎么干》，新闻频道，精彩呈现。",
