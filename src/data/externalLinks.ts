@@ -31,6 +31,19 @@ export function sortExternalLinksByDate(links: ExternalLink[]): ExternalLink[] {
 
 export const externalLinks: ExternalLink[] = [
   {
+    id: "xiqing-haigui-talent-wangtianzi-20261103",
+    title:
+      "海归英才在西青丨看不见的“气泡”，看得见的改变——这位天大教授做了什么？",
+    date: "2026-11-03",
+    description:
+      "“海归英才在西青”专栏专访天津大学环境科学与工程学院副教授王天志：从农业水利跨界水处理，用微纳米气泡技术让农村黑臭水体治理能耗降低90%以上、鱼塘产量提升3倍且尾水达灌溉标准；瑞德智创落地天开西青园，以“释压发射头”和“结构—压力—粒径”模型形成50余项授权专利、19种型号产品与年产2000台产能，完成海棠基金天使轮融资及天津大学知识产权作价入股增资，评估值达7000万元。",
+    url: "https://mp.weixin.qq.com/s/yZcB_vyRBHpSenkcJfrYdQ",
+    source: "微信公众平台 / 天津西青",
+    tag: "媒体报道",
+    thumbnail: "/images/media/xiqing-haigui-talent-wangtianzi-20261103.thumb.webp",
+    thumbnailFit: "cover",
+  },
+  {
     id: "xuanhuai-kechuang-daoshi-wangtianzi-20260710",
     title:
       "科创导师 | 环境学院王天志：把看不见的“气泡”变成看得见的变化",
