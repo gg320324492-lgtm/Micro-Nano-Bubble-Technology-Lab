@@ -31,6 +31,18 @@ export function sortExternalLinksByDate(links: ExternalLink[]): ExternalLink[] {
 
 export const externalLinks: ExternalLink[] = [
   {
+    id: "xiqing-rongmei-mnb-equipment-mass-production-20261111",
+    title: "从研发到量产 “西青造”微纳米气泡装备走向全国",
+    date: "2026-11-11",
+    description:
+      "西青融媒报道天开西青园瑞德智创新技术（天津）有限公司：聚焦微纳米气泡技术研发与产业化，把微纳米级“小气泡”做成解决水质净化与水产养殖痛点的“大产业”，打通从实验室到规模化量产的关键环节，推动“西青造”微纳米气泡装备走向全国。",
+    url: "https://mp.weixin.qq.com/s/MDAszl8Zzl3R6JuQFx5h7A",
+    source: "微信公众平台 / 西青融媒",
+    tag: "媒体报道",
+    thumbnail: "/images/media/xiqing-rongmei-mnb-equipment-mass-production-20261111.thumb.webp",
+    thumbnailFit: "cover",
+  },
+  {
     id: "xiqing-haigui-talent-wangtianzi-20261103",
     title:
       "海归英才在西青丨看不见的“气泡”，看得见的改变——这位天大教授做了什么？",
