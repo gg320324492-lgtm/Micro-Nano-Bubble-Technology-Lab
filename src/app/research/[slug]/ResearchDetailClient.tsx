@@ -207,8 +207,8 @@ function LayoutE({ modules }: { modules: RdpModule[] }) {
   return (
     <div className="rdpE-list">
       {modules.map((m, i) => (
-        <Reveal key={m.id} className="rdpE-module" delay={0}>
-        <section>
+        <Reveal key={m.id} delay={0}>
+        <section className="rdpE-module">
           <aside className="rdpE-module__aside" aria-hidden="true">
             <span className="rdpE-module__bignum">{String(i + 1).padStart(2, "0")}</span>
             <span className="rdpE-module__aside-rule" />
@@ -220,22 +220,20 @@ function LayoutE({ modules }: { modules: RdpModule[] }) {
             {m.stacks.map((st, j) => {
               const hasMedia = st.images.length > 0;
               return (
-                <Reveal
-                  key={`${m.id}-stack-${j}`}
-                  className={hasMedia ? "rdpE-stack" : "rdpE-stack rdpE-stack--textonly"}
-                  delay={Math.min(j, 3) * 0.06}
-                >
-                  {hasMedia ? (
-                    <div className="rdpE-stack__media">
-                      <ImageGrid images={st.images} />
-                    </div>
-                  ) : null}
-                  <div className="rdpE-stack__text">
-                    {m.stacks.length > 1 || st.title !== m.title ? (
-                      <h3 className="rdp-stack__title">{st.title}</h3>
+                <Reveal key={`${m.id}-stack-${j}`} delay={Math.min(j, 3) * 0.06}>
+                  <div className={hasMedia ? "rdpE-stack" : "rdpE-stack rdpE-stack--textonly"}>
+                    {hasMedia ? (
+                      <div className="rdpE-stack__media">
+                        <ImageGrid images={st.images} />
+                      </div>
                     ) : null}
-                    {st.summary ? <p className="rdp-stack__summary">{st.summary}</p> : null}
-                    <SectionList sections={st.sections} />
+                    <div className="rdpE-stack__text">
+                      {m.stacks.length > 1 || st.title !== m.title ? (
+                        <h3 className="rdp-stack__title">{st.title}</h3>
+                      ) : null}
+                      {st.summary ? <p className="rdp-stack__summary">{st.summary}</p> : null}
+                      <SectionList sections={st.sections} />
+                    </div>
                   </div>
                 </Reveal>
               );
