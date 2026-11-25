@@ -95,10 +95,11 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className={jetbrainsMono.variable} suppressHydrationWarning>
       <body className={`min-h-dvh flex flex-col antialiased ${notoSerif.className}`} suppressHydrationWarning>
-        {/* 主题防闪白：首帧前从 localStorage 读主题并设 data-theme（阻塞执行，避免闪错色） */}
+        {/* 主题防闪白：首帧前从 localStorage 读主题并设 data-theme（阻塞执行，避免闪错色）；
+            同时设 data-theme-transition="c"（圆形展开，固化），让切换动效首帧即生效 */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("mnb-theme")||(window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.dataset.theme=t;}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem("mnb-theme")||(window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");var d=document.documentElement;d.dataset.theme=t;d.dataset.themeTransition="c";}catch(e){}})();`,
           }}
         />
         <script

@@ -1,6 +1,6 @@
 "use client";
 
-// 成果页客户端外壳：Hero D 居中 + 4 种内容版式 × 3 种文字大小切换器
+// 成果页客户端外壳：Hero D 居中 + TAB D 通栏 + V3 紧凑列表（版式/大小切换器已移除）
 import { useEffect, useMemo, useState } from "react";
 import { useDeferredValue } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
@@ -20,8 +20,6 @@ import * as projectsMod from "@/data/projects";
 import type { PublicationView, PatentView, HonorView, ProjectSectionView } from "@/types";
 
 type TabKey = "papers" | "patents" | "honors" | "projects";
-type LayoutKey = "v1" | "v2" | "v3" | "v4";
-type SizeKey = "s" | "m" | "l";
 
 // ── 条目动效（与成员页卡片一致：滚动逐个浮起） ──
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -121,9 +119,6 @@ export default function PublicationsClient() {
   const [tab, setTab] = useState<TabKey>("papers");
   const [q, setQ] = useState("");
   const [year, setYear] = useState("all");
-  const [layout, setLayout] = useState<LayoutKey>("v3");
-  const [size, setSize] = useState<SizeKey>("m");
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
 
   const reduceMotion = useReducedMotion();
   const deferredQ = useDeferredValue(q);
@@ -192,21 +187,7 @@ export default function PublicationsClient() {
       });
   }, [activeList, deferredQ, year]);
 
-  // 按年份分组（V1 时间线 / V4 折叠）
-  const groupedByYear = useMemo(() => {
-    const groups = new Map<string, Record<string, unknown>[]>();
-    filtered.forEach((it) => {
-      const y = pickYear(it) || "未知";
-      if (!groups.has(y)) groups.set(y, []);
-      groups.get(y)!.push(it);
-    });
-    return Array.from(groups.entries()).sort(([a], [b]) => b.localeCompare(a));
-  }, [filtered]);
-
-  function toggleGroup(y: string) {
-    setOpenGroups((prev) => ({ ...prev, [y]: !prev[y] }));
-  }
-
+  // 按年份分组（已无版式切换；V1 时间线 / V4 折叠已随版式选择器移除）
   /* 荣誉证书图（可点击放大到新标签页看大图） */
   function HonorCertImage({ it, title }: { it: Record<string, unknown>; title: string }) {
     const src = toStr(it.imageSrc);
@@ -303,7 +284,7 @@ export default function PublicationsClient() {
         </header>
 
         {/* TAB 导航 — D 通栏（已固化；A/B/C 与切换器已移除） */}
-        <div className="pub-page" data-size={size}>
+        <div className="pub-page" data-size="m">
           <div className="ct-tabs ct-tabs--pub" data-style="d">
             {(
               [
@@ -421,91 +402,13 @@ export default function PublicationsClient() {
                   );
                 })}
               </Reveal>
-            ) : layout === "v1" ? (
-              /* V1 · 时间线 */
-              <div className="pub-v1">
-                {groupedByYear.map(([y, items]) => (
-                  <div key={y}>
-                    <div className="pub-v1__year">{y}</div>
-                    <div className="pub-v1__items">{renderItems(items)}</div>
-                  </div>
-                ))}
-              </div>
-            ) : layout === "v2" ? (
-              /* V2 · 卡片网格 */
-              <div className="pub-v2">{renderItems(filtered)}</div>
-            ) : layout === "v3" ? (
-              /* V3 · 紧凑列表 */
-              <div className="pub-v3">{renderItems(filtered, true)}</div>
             ) : (
-              /* V4 · 分组折叠 */
-              <div className="pub-v4">
-                {groupedByYear.map(([y, items]) => (
-                  <div key={y} className="pub-v4__group">
-                    <button
-                      type="button"
-                      className="pub-v4__head"
-                      onClick={() => toggleGroup(y)}
-                      aria-expanded={openGroups[y] ?? false}
-                    >
-                      <span>{y}</span>
-                      <span className="pub-v4__count">
-                        {items.length} 项 {openGroups[y] ? "▲" : "▼"}
-                      </span>
-                    </button>
-                    {(openGroups[y] ?? false) ? (
-                      <div className="pub-v4__body">{renderItems(items)}</div>
-                    ) : null}
-                  </div>
-                ))}
-              </div>
+              /* V3 · 紧凑列表（已固化；V1/V2/V4 与版式/大小切换器已移除） */
+              <div className="pub-v3">{renderItems(filtered, true)}</div>
             )}
           </div>
         </div>
       </Section>
-
-      {/* 切换器浮层 */}
-      <div className="pub-switcher">
-        <div className="pub-switcher__row">
-          <span className="pub-switcher__lab">版式</span>
-          <div className="pub-switcher__btns">
-            {(["v1", "v2", "v3", "v4"] as const).map((v) => (
-              <button
-                key={v}
-                type="button"
-                className={`pub-switcher__btn ${layout === v ? "is-on" : ""}`}
-                onClick={() => setLayout(v)}
-                title={
-                  v === "v1"
-                    ? "时间线"
-                    : v === "v2"
-                    ? "卡片网格"
-                    : v === "v3"
-                    ? "紧凑列表"
-                    : "分组折叠"
-                }
-              >
-                {v.toUpperCase()}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="pub-switcher__row">
-          <span className="pub-switcher__lab">大小</span>
-          <div className="pub-switcher__btns">
-            {(["s", "m", "l"] as const).map((s) => (
-              <button
-                key={s}
-                type="button"
-                className={`pub-switcher__btn ${size === s ? "is-on" : ""}`}
-                onClick={() => setSize(s)}
-              >
-                {s.toUpperCase()}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

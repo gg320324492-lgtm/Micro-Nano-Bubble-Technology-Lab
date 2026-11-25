@@ -112,6 +112,75 @@ html[data-theme="light"] {
   --navy-bg2-rgb: 255, 255, 255;
 }
 
+/* ==================== 主题切换动效（4 版式，data-theme-transition 区分） ====================
+   A 平滑渐变（CSS transition）
+   B 交叉淡化（View Transition API）
+   C 圆形展开（View Transition API + clip-path，从按钮位置）
+   D 模糊溶解（View Transition API + blur filter） */
+
+/* A · 平滑渐变：切换期间给 html 加 data-transitioning 属性，所有元素颜色平滑过渡 */
+html[data-theme-transition="a"][data-transitioning="1"] *,
+html[data-theme-transition="a"][data-transitioning="1"] *::before,
+html[data-theme-transition="a"][data-transitioning="1"] *::after {
+  transition:
+    background-color 0.45s ease,
+    color 0.45s ease,
+    border-color 0.45s ease,
+    fill 0.45s ease,
+    stroke 0.45s ease !important;
+}
+
+/* ── View Transition API 通用（B/C/D 共用） ── */
+@supports (view-transition-name: root) {
+  /* B · 交叉淡化 */
+  html[data-theme-transition="b"]::view-transition-old(root) {
+    animation: theme-fade-out 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  html[data-theme-transition="b"]::view-transition-new(root) {
+    animation: theme-fade-in 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  /* C · 圆形展开：JS 会把按钮位置写入 --vt-x/--vt-y */
+  html[data-theme-transition="c"]::view-transition-old(root) {
+    animation: none;
+  }
+  html[data-theme-transition="c"]::view-transition-new(root) {
+    animation: theme-circle-reveal 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    clip-path: circle(0px at var(--vt-x, 100%) var(--vt-y, 0%));
+  }
+  html[data-theme-transition="c"]::view-transition-group(root) {
+    animation: none;
+  }
+
+  /* D · 模糊溶解 */
+  html[data-theme-transition="d"]::view-transition-old(root) {
+    animation: theme-blur-out 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  html[data-theme-transition="d"]::view-transition-new(root) {
+    animation: theme-blur-in 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+}
+
+@keyframes theme-fade-out {
+  to { opacity: 0; }
+}
+@keyframes theme-fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes theme-circle-reveal {
+  from { clip-path: circle(0px at var(--vt-x, 100%) var(--vt-y, 0%)); }
+  to   { clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 100%) var(--vt-y, 0%)); }
+}
+
+@keyframes theme-blur-out {
+  to { opacity: 0; filter: blur(8px); }
+}
+@keyframes theme-blur-in {
+  from { opacity: 0; filter: blur(8px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+
 @theme inline {
   --color-bg: var(--bg-deep);
   --color-surface: var(--bg-surface);
@@ -4824,7 +4893,7 @@ html[data-theme="light"] .brand__subtitle {
 }
 
 .ftr-beian__sep {
-  color: rgba(143, 169, 194, 0.4);
+  color: var(--navy-line);
 }
 
 /* 回到顶部 */
@@ -5186,56 +5255,7 @@ html[data-theme="light"] .brand__subtitle {
   color: var(--navy-ink-dim);
 }
 
-/* V1 · 时间线 */
-.pub-v1 {
-  position: relative;
-  padding-left: 2rem;
-}
-
-.pub-v1::before {
-  content: "";
-  position: absolute;
-  left: 0.5rem;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(to bottom, var(--navy-accent-bright), transparent);
-}
-
-.pub-v1__year {
-  position: relative;
-  margin-bottom: 1rem;
-  padding-left: 1.5rem;
-  font-size: var(--pub-title-size);
-  font-weight: 800;
-  color: var(--navy-accent-bright);
-}
-
-.pub-v1__year::before {
-  content: "";
-  position: absolute;
-  left: -1.5rem;
-  top: 50%;
-  width: 1rem;
-  height: 2px;
-  background: var(--navy-accent-bright);
-}
-
-.pub-v1__items {
-  display: flex;
-  flex-direction: column;
-  gap: var(--pub-gap);
-  margin-bottom: 2rem;
-}
-
-/* V2 · 卡片网格 */
-.pub-v2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: var(--pub-gap);
-}
-
-/* V3 · 紧凑列表 */
+/* V3 · 紧凑列表（已固化；V1 时间线 / V2 卡片网格已随版式切换器移除） */
 .pub-v3 {
   display: flex;
   flex-direction: column;
@@ -5262,183 +5282,6 @@ html[data-theme="light"] .brand__subtitle {
   color: var(--navy-accent-bright);
 }
 
-/* V4 · 分组折叠 */
-.pub-v4 {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.pub-v4__group {
-  border: 1px solid var(--navy-line);
-  border-radius: 1rem;
-  overflow: hidden;
-}
-
-.pub-v4__head {
-  width: 100%;
-  padding: 1rem var(--pub-card-pad);
-  background: rgba(var(--navy-accent-rgb), 0.06);
-  border: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  font-size: var(--pub-title-size);
-  font-weight: 700;
-  color: var(--navy-ink);
-  transition: background 0.2s ease;
-}
-
-.pub-v4__head:hover {
-  background: rgba(var(--navy-accent-rgb), 0.10);
-}
-
-.pub-v4__count {
-  font-size: var(--pub-meta-size);
-  color: var(--navy-ink-dim);
-}
-
-.pub-v4__body {
-  padding: var(--pub-gap);
-  display: flex;
-  flex-direction: column;
-  gap: var(--pub-gap);
-}
-
-/* V5 · 侧边过滤 + 列表 */
-.pub-v5 {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: var(--pub-gap);
-}
-
-.pub-v5__filter {
-  position: sticky;
-  top: 6rem;
-  align-self: start;
-  padding: var(--pub-card-pad);
-  border: 1px solid var(--navy-line);
-  border-radius: 1rem;
-  background: var(--navy-bg2);
-}
-
-.pub-v5__filter-title {
-  font-size: var(--pub-meta-size);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--navy-ink-dim);
-  margin-bottom: 1rem;
-}
-
-.pub-v5__filter-group {
-  margin-bottom: 1.5rem;
-}
-
-.pub-v5__filter-label {
-  font-size: var(--pub-meta-size);
-  font-weight: 700;
-  color: var(--navy-ink);
-  margin-bottom: 0.5rem;
-}
-
-.pub-v5__filter-btn {
-  width: 100%;
-  padding: 0.375rem 0.75rem;
-  border: none;
-  border-radius: 0.375rem;
-  background: transparent;
-  color: var(--navy-ink-dim);
-  font-size: var(--pub-meta-size);
-  text-align: left;
-  cursor: pointer;
-  transition: color 0.2s ease, background 0.2s ease;
-}
-
-.pub-v5__filter-btn:hover {
-  color: var(--navy-ink);
-  background: rgba(var(--navy-accent-rgb), 0.10);
-}
-
-.pub-v5__filter-btn.is-on {
-  color: var(--navy-cta-ink);
-  background: var(--navy-cta-bg);
-  font-weight: 700;
-}
-
-.pub-v5__list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--pub-gap);
-}
-
-/* 切换器浮层（右下角固定） */
-.pub-switcher {
-  position: fixed;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 70;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  border-radius: 1rem;
-  border: 1px solid var(--navy-line);
-  background: rgba(var(--navy-scrim-rgb), 0.96);
-  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.40);
-}
-
-.pub-switcher__row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.pub-switcher__lab {
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: rgba(var(--navy-ink-dim-rgb), 0.7);
-  min-width: 2rem;
-}
-
-.pub-switcher__btns {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.pub-switcher__btn {
-  min-width: 2rem;
-  padding: 0.25rem 0.5rem;
-  border: 1px solid transparent;
-  border-radius: 0.375rem;
-  background: transparent;
-  color: var(--navy-ink-dim);
-  font-size: 0.75rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: color 0.2s ease, background 0.2s ease;
-}
-
-.pub-switcher__btn:hover {
-  color: var(--navy-ink);
-  background: rgba(var(--navy-accent-bright-rgb), 0.14);
-}
-
-.pub-switcher__btn.is-on {
-  color: var(--navy-cta-ink);
-  background: var(--navy-cta-bg);
-}
-
-/* 响应式 */
-@media (max-width: 1023px) {
-  .pub-v5 {
-    grid-template-columns: 1fr;
-  }
-  .pub-v5__filter {
-    position: static;
-  }
-}
 
 /* ═══════════════════════════════════════════════════════════════════
    成员页（people）排版 — ppl-*（已固化 V4 详情档案卡 · 文字 M · 宽档）
