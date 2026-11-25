@@ -95,6 +95,12 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className={jetbrainsMono.variable} suppressHydrationWarning>
       <body className={`min-h-dvh flex flex-col antialiased ${notoSerif.className}`} suppressHydrationWarning>
+        {/* 主题防闪白：首帧前从 localStorage 读主题并设 data-theme（阻塞执行，避免闪错色） */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("mnb-theme")||(window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.dataset.theme=t;}catch(e){}})();`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

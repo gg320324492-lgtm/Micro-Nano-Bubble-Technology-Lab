@@ -57,6 +57,61 @@
   --foreground: var(--text);
 }
 
+/* ==================== 全站双主题（亮色 / 暗色） ====================
+   navy 深蓝仪器手册色板收敛到 :root（暗色默认），亮色主题用 html[data-theme="light"] 覆盖。
+   body / header / brand / footer / drawer 等 .theme-navy 作用域外的 chrome 一律从这些变量取色，
+   切换 data-theme 时整站（含 header/footer）同步变色，无闪白。 */
+:root {
+  --navy-bg: #0a1b2e;
+  --navy-bg2: #0e2540;
+  --navy-ink: #f4f7fb;
+  --navy-ink-dim: #b8c6d6;
+  --navy-accent: #5ba8e8;
+  --navy-accent-bright: #8fc6f2;
+  --navy-cta-bg: #9ccbef;
+  --navy-cta-ink: #0a1b2e;
+  --navy-line: rgba(var(--navy-line-rgb), 0.28);
+  --navy-line-soft: rgba(var(--navy-line-rgb), 0.16);
+  --navy-accent-soft: rgba(var(--navy-accent-rgb), 0.16);
+  /* 次级文字 / 装饰色（原硬编码字面量，供 chrome 取用） */
+  --navy-mute: #8fa9c2;
+  --navy-body: #c9d6e4;
+  --navy-panel: #12294a;
+  /* scrim 遮罩基色（hero 渐变、遮罩层） */
+  --navy-scrim-rgb: 10, 27, 46;
+  --navy-shadow-rgb: 4, 12, 22;
+  /* 发丝线 / 强调 / 次级文字的 rgb 三元组（供 rgba() 带透明度场景） */
+  --navy-line-rgb: 122, 160, 199;
+  --navy-accent-rgb: 91, 168, 232;
+  --navy-accent-bright-rgb: 143, 198, 242;
+  --navy-ink-dim-rgb: 184, 198, 214;
+  --navy-bg2-rgb: 14, 37, 64;
+}
+
+html[data-theme="light"] {
+  --navy-bg: #f2f6fb;
+  --navy-bg2: #ffffff;
+  --navy-ink: #0f2540;
+  --navy-ink-dim: #3d5673;
+  --navy-accent: #1a6fb8;
+  --navy-accent-bright: #0d5ea6;
+  --navy-cta-bg: #0d5ea6;
+  --navy-cta-ink: #ffffff;
+  --navy-line: rgba(20, 60, 110, 0.18);
+  --navy-line-soft: rgba(20, 60, 110, 0.1);
+  --navy-accent-soft: rgba(26, 111, 184, 0.1);
+  --navy-mute: #5a7391;
+  --navy-body: #22374f;
+  --navy-panel: #e3ecf6;
+  --navy-scrim-rgb: 242, 246, 251;
+  --navy-shadow-rgb: 30, 60, 100;
+  --navy-line-rgb: 20, 60, 110;
+  --navy-accent-rgb: 26, 111, 184;
+  --navy-accent-bright-rgb: 13, 94, 166;
+  --navy-ink-dim-rgb: 61, 86, 115;
+  --navy-bg2-rgb: 255, 255, 255;
+}
+
 @theme inline {
   --color-bg: var(--bg-deep);
   --color-surface: var(--bg-surface);
@@ -91,7 +146,7 @@ body {
 }
 
 body {
-  background: #0a1b2e;
+  background: var(--navy-bg);
   color: var(--foreground);
   font-family: "Noto Serif SC", "Source Han Serif SC", "Noto Serif", serif;
   font-size: 16px;
@@ -585,17 +640,8 @@ textarea:focus-visible {
    5. 间距/尺寸一律 rem；禁止用固定高度约束文字内容（min-height + padding 让内容撑开）
    6. 视口补偿链（顶栏高度 4.5rem / hero 负 margin 5rem / 首屏高度）全部 rem，等比一致 */
 .theme-navy {
-  --navy-bg: #0a1b2e;
-  --navy-bg2: #0e2540;
-  --navy-ink: #f4f7fb;
-  --navy-ink-dim: #b8c6d6;
-  --navy-accent: #5ba8e8;
-  --navy-accent-bright: #8fc6f2;
-  --navy-cta-bg: #9ccbef;
-  --navy-cta-ink: #0a1b2e;
-  --navy-line: rgba(122, 160, 199, 0.28);
-  --navy-line-soft: rgba(122, 160, 199, 0.16);
-  --navy-accent-soft: rgba(91, 168, 232, 0.16);
+  /* 变量已在 :root / html[data-theme="light"] 全局定义，此处只挂底色与文字色，
+     不再重复定义变量（否则会覆盖亮色主题） */
   background: var(--navy-bg);
   color: var(--navy-ink);
 }
@@ -636,7 +682,7 @@ textarea:focus-visible {
    滚动前半透明：轮播图从顶栏下透出，图片顶部内容不被完全遮挡；滚动后加深保证导航可读 */
 /* 首屏几乎全透明：轮播图从顶栏下完整透出，仅文字带阴影保证可读；滚动后加深 */
 .site-header--navy {
-  background: rgba(10, 27, 46, 0.08);
+  background: rgba(var(--navy-scrim-rgb), 0.08);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   border-bottom: none;
@@ -645,40 +691,50 @@ textarea:focus-visible {
 /* 全站统一 navy 顶栏：白底内页（people/news 等）无深蓝内容垫底，
    滚动前若近乎全透明会露白底配白字 → 改为实底深蓝 */
 body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
-  background: #0a1b2e;
-  border-bottom: 1px solid rgba(122, 160, 199, 0.22);
+  background: var(--navy-bg);
+  border-bottom: 1px solid rgba(var(--navy-scrim-rgb), 0.22);
 }
 
 .site-header--navy > div > a .text-\[0\.9375rem\],
 .site-header--navy > div > nav a,
 .site-header--navy > div > a[href="/contact"],
 .site-header--navy > div > a[href="/contact"] + button {
-  text-shadow: 0 1px 8px rgba(4, 12, 22, 0.8);
+  text-shadow: 0 1px 8px rgba(var(--navy-shadow-rgb), 0.8);
+}
+
+/* 亮色主题：非 hero 内页 header 用实底亮色（避免半透明叠白底内容导致导航不可读），
+   并取消白字阴影（亮底深字无需阴影） */
+html[data-theme="light"] body:not(:has(.navy-hero)) .site-header--navy {
+  background: var(--navy-bg);
+  border-bottom: 1px solid var(--navy-line);
+}
+html[data-theme="light"] body:not(:has(.navy-hero)) .site-header--navy > div > a .text-\[0\.9375rem\],
+html[data-theme="light"] body:not(:has(.navy-hero)) .site-header--navy > div > nav a,
+html[data-theme="light"] body:not(:has(.navy-hero)) .site-header--navy > div > a[href="/contact"],
+html[data-theme="light"] body:not(:has(.navy-hero)) .site-header--navy > div > a[href="/contact"] + button,
+html[data-theme="light"] .brand__title,
+html[data-theme="light"] .brand__subtitle {
+  text-shadow: none;
 }
 
 .site-header--navy.site-header--scrolled {
   /* 苹果式毛玻璃：内容从顶栏后透出（模糊），导航文字保持可读 */
-  background: rgba(10, 27, 46, 0.55);
+  background: rgba(var(--navy-scrim-rgb), 0.55);
   -webkit-backdrop-filter: blur(18px) saturate(1.2);
   backdrop-filter: blur(18px) saturate(1.2);
-  border-bottom: 1px solid rgba(122, 160, 199, 0.22);
+  border-bottom: 1px solid rgba(var(--navy-scrim-rgb), 0.22);
 }
 
 .site-header--navy.site-header--scrolled > div > a .text-\[0\.9375rem\],
 .site-header--navy.site-header--scrolled > div > nav a,
 .site-header--navy.site-header--scrolled > div > a[href="/contact"],
 .site-header--navy.site-header--scrolled > div > a[href="/contact"] + button {
-  text-shadow: 0 1px 6px rgba(4, 12, 22, 0.6);
+  text-shadow: 0 1px 6px rgba(var(--navy-shadow-rgb), 0.6);
 }
 
 /* ── 品牌区（双 logo 白底方角 + 中英文两行标题，round 19 选定 R × XL 固化） ── */
-/* header 在 layout 中与 main 平级（.theme-navy 作用域外），navy 变量必须自带（同 .ftr-footer） */
+/* header 在 layout 中与 main 平级，navy 变量已全局定义，此处不再重复 */
 .brand {
-  --navy-ink: #f4f7fb;
-  --navy-ink-dim: #b8c6d6;
-  --navy-accent: #5ba8e8;
-  --navy-accent-bright: #8fc6f2;
-  --navy-line: rgba(122, 160, 199, 0.28);
   --brand-logo: 2.75rem;
   --brand-title: 1.375rem;
   --brand-sub: 0.6875rem;
@@ -705,14 +761,14 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   border-radius: max(0.3125rem, calc(var(--brand-logo) * 0.16));
   padding: calc(var(--brand-logo) * 0.07);
   box-sizing: content-box;
-  filter: drop-shadow(0 1px 6px rgba(4, 12, 22, 0.65));
+  filter: drop-shadow(0 1px 6px rgba(var(--navy-shadow-rgb), 0.65));
 }
 
 /* ── 文字区：中文标题 + 英文副题两行 ── */
 .brand__title {
   font-size: var(--brand-title);
   font-weight: 700;
-  color: #f4f7fb;
+  color: var(--navy-ink);
   line-height: 1.3;
   letter-spacing: 0.04em;
   white-space: nowrap;
@@ -732,12 +788,12 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 /* 旧 text-shadow 规则对 brand 内新结构失效，补充阴影保证滚动前可读 */
 .brand__title,
 .brand__subtitle {
-  text-shadow: 0 1px 8px rgba(4, 12, 22, 0.8);
+  text-shadow: 0 1px 8px rgba(var(--navy-shadow-rgb), 0.8);
 }
 
 .site-header--scrolled .brand__title,
 .site-header--scrolled .brand__subtitle {
-  text-shadow: 0 1px 6px rgba(4, 12, 22, 0.6);
+  text-shadow: 0 1px 6px rgba(var(--navy-shadow-rgb), 0.6);
 }
 
 
@@ -783,10 +839,10 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(10, 27, 46, 0.62) 0%,
-    rgba(10, 27, 46, 0.28) 34%,
-    rgba(10, 27, 46, 0.9) 72%,
-    #0a1b2e 100%
+    rgba(var(--navy-scrim-rgb), 0.62) 0%,
+    rgba(var(--navy-scrim-rgb), 0.28) 34%,
+    rgba(var(--navy-scrim-rgb), 0.9) 72%,
+    var(--navy-bg) 100%
   );
   pointer-events: none;
 }
@@ -803,7 +859,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   letter-spacing: 0.12em;
   color: var(--navy-ink-dim);
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 1px 6px rgba(10, 27, 46, 0.8);
+  text-shadow: 0 1px 6px rgba(var(--navy-scrim-rgb), 0.8);
 }
 
 .navy-hero__counter b {
@@ -885,22 +941,22 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .navy-btn--main {
-  color: #0a1b2e;
-  background: #eaf3fc;
+  color: var(--navy-cta-ink);
+  background: var(--navy-cta-bg);
 }
 
 .navy-btn--main:hover {
-  background: #ffffff;
+  background: var(--navy-accent-bright);
 }
 
 .navy-btn--ghost {
   color: var(--navy-ink);
-  border: 1px solid rgba(184, 198, 214, 0.55);
+  border: 1px solid rgba(var(--navy-scrim-rgb), 0.55);
   font-weight: 500;
 }
 
 .navy-btn--ghost:hover {
-  background: rgba(184, 198, 214, 0.12);
+  background: rgba(var(--navy-scrim-rgb), 0.12);
 }
 
 /* 数据栏 */
@@ -940,7 +996,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   z-index: 41; /* 高于下方白底区块的 z-40，避免交界处被白底覆盖 */
   border-top: 1px solid var(--navy-line);
   /* 半透明叠层：方向条背后也是轮播图 */
-  background: rgba(10, 27, 46, 0.55);
+  background: rgba(var(--navy-scrim-rgb), 0.55);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   padding: 1.375rem 3rem;
@@ -1023,10 +1079,10 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
     inset: 0;
     background: linear-gradient(
       180deg,
-      rgba(10, 27, 46, 0.52) 0%,
-      rgba(10, 27, 46, 0.4) 35%,
-      rgba(10, 27, 46, 0.75) 70%,
-      #0a1b2e 100%
+      rgba(var(--navy-scrim-rgb), 0.52) 0%,
+      rgba(var(--navy-scrim-rgb), 0.4) 35%,
+      rgba(var(--navy-scrim-rgb), 0.75) 70%,
+      var(--navy-bg) 100%
     );
   }
 
@@ -1121,12 +1177,12 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   }
 }
 
-/* ── 抽屉侧边栏（手机端，渲染在 header 内——位于 .theme-navy 作用域外，色值用字面量） ── */
+/* ── 抽屉侧边栏（手机端，渲染在 header 内——位于 .theme-navy 作用域外，色值用变量） ── */
 .drawer-mask {
   position: fixed;
   inset: 0;
   z-index: 90;
-  background: rgba(4, 12, 22, 0.62);
+  background: rgba(var(--navy-shadow-rgb), 0.62);
   transition: opacity 0.28s ease;
 }
 
@@ -1137,12 +1193,12 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   bottom: 0;
   z-index: 91;
   width: min(78vw, 20rem);
-  background: #0e2540;
-  border-left: 1px solid rgba(122, 160, 199, 0.28);
+  background: var(--navy-bg2);
+  border-left: 1px solid var(--navy-line);
   display: flex;
   flex-direction: column;
   padding: 1.125rem 1.25rem 1.5rem;
-  box-shadow: -1rem 0 2.5rem rgba(4, 12, 22, 0.45);
+  box-shadow: -1rem 0 2.5rem rgba(var(--navy-shadow-rgb), 0.45);
 }
 
 .drawer__head {
@@ -1150,7 +1206,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   align-items: center;
   gap: 0.625rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(122, 160, 199, 0.28);
+  border-bottom: 1px solid var(--navy-line);
 }
 
 .drawer__head img {
@@ -1165,17 +1221,17 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .drawer__head-zh {
   font-size: 0.875rem;
   font-weight: 700;
-  color: #f4f7fb;
+  color: var(--navy-ink);
 }
 
 .drawer__close {
   margin-left: auto;
   width: 2.25rem;
   height: 2.25rem;
-  border: 1px solid rgba(122, 160, 199, 0.28);
+  border: 1px solid var(--navy-line);
   border-radius: 0.5rem;
   background: transparent;
-  color: #f4f7fb;
+  color: var(--navy-ink);
   font-size: 1rem;
   line-height: 1;
   display: flex;
@@ -1191,7 +1247,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .drawer__nav a {
   font-size: 1rem;
-  color: #b8c6d6;
+  color: var(--navy-ink-dim);
   padding: 0.8125rem 0.875rem;
   border-radius: 0.5rem;
   font-weight: 500;
@@ -1201,26 +1257,26 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .drawer__nav a:hover {
-  background: rgba(91, 168, 232, 0.1);
-  color: #f4f7fb;
+  background: var(--navy-accent-soft);
+  color: var(--navy-ink);
 }
 
 .drawer__nav a[data-active="true"] {
-  color: #fff;
-  background: rgba(91, 168, 232, 0.16);
+  color: var(--navy-ink);
+  background: var(--navy-accent-soft);
   font-weight: 700;
 }
 
 .drawer__nav .en {
   font-size: 0.625rem;
   letter-spacing: 0.14em;
-  color: #8fa9c2;
+  color: var(--navy-mute);
   font-weight: 400;
 }
 
 .drawer__foot {
   margin-top: auto;
-  border-top: 1px solid rgba(122, 160, 199, 0.28);
+  border-top: 1px solid rgba(var(--navy-line-rgb), 0.28);
   padding-top: 1rem;
 }
 
@@ -1312,7 +1368,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .pi-left__en {
   font-size: 0.625rem;
   letter-spacing: 0.18em;
-  color: #8fa9c2;
+  color: var(--navy-mute);
   font-weight: 600;
 }
 
@@ -1323,7 +1379,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   border-radius: 0.75rem;
   border: 1px solid var(--navy-line);
   overflow: hidden;
-  background: #12294a;
+  background: var(--navy-panel);
 }
 
 .pi-nameblock__zh {
@@ -1366,7 +1422,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid rgba(122, 160, 199, 0.45);
+  border: 1px solid rgba(var(--navy-line-rgb), 0.45);
   border-radius: 0.5rem;
   padding: 0.75rem 1rem;
   font-size: 0.9375rem;
@@ -1376,11 +1432,11 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .pi-vlink:hover {
-  background: rgba(91, 168, 232, 0.14);
+  background: rgba(var(--navy-accent-rgb), 0.14);
 }
 
 .pi-vlink--off {
-  color: #8fa9c2;
+  color: var(--navy-mute);
   cursor: not-allowed;
 }
 
@@ -1394,7 +1450,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   margin-top: 0.25rem;
   font-size: 0.75rem;
   line-height: 1.8;
-  color: #8fa9c2;
+  color: var(--navy-mute);
   border-top: 1px solid var(--navy-line-soft);
   padding-top: 1rem;
 }
@@ -1438,7 +1494,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .pi-spec__body {
   font-size: 1.0625rem;
   line-height: 1.9;
-  color: #c9d6e4;
+  color: var(--navy-body);
 }
 
 /* 研究方向标签 */
@@ -1452,7 +1508,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   display: inline-flex;
   align-items: baseline;
   gap: 0.5rem;
-  border: 1px solid rgba(122, 160, 199, 0.35);
+  border: 1px solid rgba(var(--navy-line-rgb), 0.35);
   border-radius: 0.375rem;
   padding: 0.5rem 0.875rem;
   font-size: 0.8125rem;
@@ -1499,7 +1555,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-family: var(--font-mono), "SF Mono", Consolas, monospace;
   font-size: 0.625rem;
   letter-spacing: 0.18em;
-  color: #8fa9c2;
+  color: var(--navy-mute);
   font-weight: 600;
 }
 
@@ -1528,7 +1584,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .pi-tl-text {
   font-size: 0.875rem;
   line-height: 1.7;
-  color: #c9d6e4;
+  color: var(--navy-body);
 }
 
 /* 兼职两列条目容器 */
@@ -1577,7 +1633,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .pi-recruit__body {
   font-size: 0.9375rem;
   line-height: 1.8;
-  color: #c9d6e4;
+  color: var(--navy-body);
 }
 
 
@@ -1638,7 +1694,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .rs-tag {
-  border: 1px solid rgba(122, 160, 199, 0.35);
+  border: 1px solid rgba(var(--navy-line-rgb), 0.35);
   border-radius: 0.375rem;
   padding: 0.3125rem 0.6875rem;
   font-size: 0.75rem;
@@ -1667,7 +1723,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .rs-title__en {
   font-size: 0.6875rem;
-  color: #8fa9c2;
+  color: var(--navy-mute);
   letter-spacing: 0.04em;
 }
 
@@ -1759,7 +1815,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .section-head__en {
   font-size: 0.6875rem;
   letter-spacing: 0.2em;
-  color: #8fa9c2;
+  color: var(--navy-mute);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -1786,7 +1842,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .idz-brief {
   font-size: 0.9375rem;
   line-height: 1.8;
-  color: #c9d6e4;
+  color: var(--navy-body);
 }
 
 /* 要点列表（编号式） */
@@ -1844,7 +1900,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .idz-card:hover {
-  border-color: rgba(122, 160, 199, 0.55);
+  border-color: rgba(var(--navy-line-rgb), 0.55);
 }
 
 /* 链接结构：<a> 不嵌套——封面图与「查看详情」独立为 Link，位置链接独立 <a> */
@@ -1865,7 +1921,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   top: 0.75rem;
   z-index: 1;
   font-size: 0.8125rem;
-  background: rgba(10, 27, 46, 0.85);
+  background: rgba(var(--navy-scrim-rgb), 0.85);
   padding: 0.25rem 0.625rem;
   border-radius: 0.375rem;
   color: var(--navy-accent-bright);
@@ -1896,7 +1952,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .idz-title__en {
   font-size: 0.6875rem;
-  color: #8fa9c2;
+  color: var(--navy-mute);
 }
 
 .idz-card__foot {
@@ -1949,11 +2005,11 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .opt-stat:hover {
-  border-color: rgba(122, 160, 199, 0.55);
+  border-color: rgba(var(--navy-line-rgb), 0.55);
 }
 
 .opt-stat--on {
-  background: rgba(91, 168, 232, 0.14);
+  background: rgba(var(--navy-accent-rgb), 0.14);
   border-color: var(--navy-accent);
 }
 
@@ -1985,7 +2041,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 /* 类型徽章 */
 .opt-type {
   display: inline-flex;
-  border: 1px solid rgba(122, 160, 199, 0.45);
+  border: 1px solid rgba(var(--navy-line-rgb), 0.45);
   border-radius: 0.375rem;
   padding: 0.1875rem 0.625rem;
   font-size: 0.75rem;
@@ -2011,7 +2067,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .opt-meta__venue {
   font-size: 0.75rem;
-  color: #8fa9c2;
+  color: var(--navy-mute);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2032,7 +2088,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .opt-card:hover {
-  border-color: rgba(122, 160, 199, 0.55);
+  border-color: rgba(var(--navy-line-rgb), 0.55);
 }
 
 .opt-card__link {
@@ -2134,9 +2190,9 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .ppl-count--on {
-  background: rgba(91, 168, 232, 0.2);
+  background: rgba(var(--navy-accent-rgb), 0.2);
   border-color: var(--navy-accent);
-  box-shadow: inset 0 0 0 1px rgba(143, 198, 242, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(var(--navy-accent-bright-rgb), 0.35);
 }
 
 .ppl-count--on .ppl-count__n,
@@ -2162,7 +2218,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   border-radius: 0.5rem;
   border: 1px solid var(--navy-line);
   overflow: hidden;
-  background: #12294a;
+  background: var(--navy-panel);
   flex-shrink: 0;
 }
 
@@ -2231,7 +2287,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .ppl-tl-yeart {
   margin-left: 0.25rem;
   font-size: 0.75rem;
-  color: #8fa9c2;
+  color: var(--navy-mute);
 }
 
 .ppl-tl-year::before {
@@ -2243,7 +2299,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   height: 0.625rem;
   border-radius: 50%;
   background: var(--navy-accent);
-  box-shadow: 0 0 0 3px rgba(91, 168, 232, 0.2);
+  box-shadow: 0 0 0 3px rgba(var(--navy-accent-rgb), 0.2);
 }
 
 .ppl-tl-people {
@@ -2313,7 +2369,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .med-src {
   font-size: 0.75rem;
-  color: #8fa9c2;
+  color: var(--navy-mute);
   font-variant-numeric: tabular-nums;
 }
 
@@ -2323,7 +2379,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   aspect-ratio: 16 / 10;
   border-radius: 0.5rem;
   overflow: hidden;
-  background: #12294a;
+  background: var(--navy-panel);
   flex-shrink: 0;
 }
 
@@ -2388,7 +2444,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .med-row:hover {
-  background: rgba(14, 37, 64, 0.55);
+  background: rgba(var(--navy-bg2-rgb), 0.55);
 }
 
 .med-row__date {
@@ -2422,7 +2478,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .med-row__src {
   margin-top: 0.25rem;
   font-size: 0.75rem;
-  color: #8fa9c2;
+  color: var(--navy-mute);
 }
 
 .med-row .med-thumb {
@@ -2454,7 +2510,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   overflow-x: auto;
   padding-bottom: 0.5rem;
   scrollbar-width: thin;
-  scrollbar-color: rgba(122, 160, 199, 0.4) transparent;
+  scrollbar-color: rgba(var(--navy-line-rgb), 0.4) transparent;
 }
 
 .med-scroll__item {
@@ -2462,7 +2518,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   aspect-ratio: 4 / 3;
   border-radius: 0.625rem;
   overflow: hidden;
-  background: #12294a;
+  background: var(--navy-panel);
 }
 
 .med-scroll__item img {
@@ -2543,7 +2599,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .cta-panel__body {
   font-size: 0.9375rem;
   line-height: 1.85;
-  color: #c9d6e4;
+  color: var(--navy-body);
 }
 
 .cta-panel__links {
@@ -2575,7 +2631,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-family: var(--font-mono), "SF Mono", Consolas, monospace;
   font-size: 0.625rem;
   letter-spacing: 0.18em;
-  color: #8fa9c2;
+  color: var(--navy-mute);
   font-weight: 700;
 }
 
@@ -2669,7 +2725,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-family: var(--font-mono), "SF Mono", Consolas, monospace;
   font-size: clamp(1.75rem, 1.3rem + 1.2vw, 2.5rem);
   font-weight: 700;
-  color: rgba(143, 198, 242, 0.32);
+  color: rgba(var(--navy-accent-bright-rgb), 0.32);
   line-height: 1;
   letter-spacing: 0.02em;
 }
@@ -2705,7 +2761,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(184, 198, 214, 0.55);
+  color: rgba(var(--navy-ink-dim-rgb), 0.55);
 }
 
 .rspA-brief {
@@ -2852,7 +2908,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(184, 198, 214, 0.55);
+  color: rgba(var(--navy-ink-dim-rgb), 0.55);
 }
 
 .izp-brief {
@@ -2976,7 +3032,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-family: var(--font-mono), "SF Mono", Consolas, monospace;
   font-size: 2rem;
   font-weight: 700;
-  color: rgba(143, 198, 242, 0.35);
+  color: rgba(var(--navy-accent-bright-rgb), 0.35);
 }
 
 .izpA-body {
@@ -3070,14 +3126,14 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .idp-fig__cap {
   font-size: 0.8125rem;
   line-height: 1.7;
-  color: rgba(184, 198, 214, 0.75);
+  color: rgba(var(--navy-ink-dim-rgb), 0.75);
 }
 
 .idp-lightbox {
   position: fixed;
   inset: 0;
   z-index: 95;
-  background: rgba(4, 12, 22, 0.88);
+  background: rgba(var(--navy-shadow-rgb), 0.88);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
@@ -3091,7 +3147,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   max-width: 72rem;
   border-radius: 0.75rem;
   overflow: hidden;
-  border: 1px solid rgba(122, 160, 199, 0.35);
+  border: 1px solid rgba(var(--navy-line-rgb), 0.35);
   background: #04101c;
   box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.55);
 }
@@ -3102,11 +3158,11 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .idp-lightbox__cap {
-  border-top: 1px solid rgba(122, 160, 199, 0.25);
+  border-top: 1px solid rgba(var(--navy-line-rgb), 0.25);
   padding: 0.75rem 1rem;
   font-size: 0.8125rem;
   line-height: 1.7;
-  color: #b8c6d6;
+  color: var(--navy-ink-dim);
 }
 
 .idp-lightbox__close {
@@ -3116,7 +3172,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   border: none;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.14);
-  color: #f4f7fb;
+  color: var(--navy-ink);
   font-size: 0.875rem;
   padding: 0.5rem 0.875rem;
   cursor: pointer;
@@ -3130,7 +3186,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   border: 1px solid var(--navy-line);
   border-radius: 0.75rem;
   overflow: hidden;
-  background: rgba(14, 37, 64, 0.45);
+  background: rgba(var(--navy-bg2-rgb), 0.45);
 }
 
 .idp-video__head {
@@ -3143,7 +3199,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .idp-video__body {
   padding: 1.25rem;
-  background: rgba(4, 12, 22, 0.35);
+  background: rgba(var(--navy-shadow-rgb), 0.35);
   display: flex;
   justify-content: center;
 }
@@ -3161,7 +3217,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   padding: 0.625rem 1.25rem;
   font-size: 0.6875rem;
   line-height: 1.7;
-  color: rgba(184, 198, 214, 0.75);
+  color: rgba(var(--navy-ink-dim-rgb), 0.75);
 }
 
 /* ================================================================
@@ -3209,7 +3265,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   align-items: center;
   gap: 0.625rem;
   color: var(--navy-ink);
-  background: rgba(14, 37, 64, 0.7);
+  background: rgba(var(--navy-bg2-rgb), 0.7);
   border: 1px solid var(--navy-accent);
   border-radius: 999px;
   font-weight: 700;
@@ -3230,7 +3286,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-weight: 800;
 }
 .idp2-back[data-style="e"]:hover {
-  background: rgba(91, 168, 232, 0.16);
+  background: rgba(var(--navy-accent-rgb), 0.16);
 }
 
 .idp2-map {
@@ -3372,7 +3428,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .idp2-stat {
   border: 1px solid var(--navy-line);
   border-radius: 0.625rem;
-  background: rgba(14, 37, 64, 0.45);
+  background: rgba(var(--navy-bg2-rgb), 0.45);
   padding: 0.875rem 1rem;
   display: flex;
   flex-direction: column;
@@ -3383,7 +3439,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 0.08em;
-  color: rgba(184, 198, 214, 0.65);
+  color: rgba(var(--navy-ink-dim-rgb), 0.65);
 }
 
 .idp2-stat__value {
@@ -3445,9 +3501,9 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   bottom: 0.625rem;
   font-size: 0.6875rem;
   font-weight: 600;
-  color: #f4f7fb;
-  background: rgba(4, 12, 22, 0.62);
-  border: 1px solid rgba(143, 198, 242, 0.4);
+  color: var(--navy-ink);
+  background: rgba(var(--navy-shadow-rgb), 0.62);
+  border: 1px solid rgba(var(--navy-accent-bright-rgb), 0.4);
   border-radius: 999px;
   padding: 0.1875rem 0.625rem;
   opacity: 0;
@@ -3469,7 +3525,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(4, 12, 22, 0.92);
+  background: rgba(var(--navy-shadow-rgb), 0.92);
   overscroll-behavior: contain;
 }
 
@@ -3480,7 +3536,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   max-height: 92vh;
   border-radius: 0.75rem;
   overflow: hidden;
-  border: 1px solid rgba(122, 160, 199, 0.35);
+  border: 1px solid rgba(var(--navy-line-rgb), 0.35);
   background: #04101c;
   box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.55);
 }
@@ -3497,7 +3553,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   border: none;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.14);
-  color: #f4f7fb;
+  color: var(--navy-ink);
   font-size: 0.875rem;
   padding: 0.5rem 0.875rem;
   cursor: pointer;
@@ -3577,7 +3633,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .idp2bB-card {
   border: 1px solid var(--navy-line);
   border-radius: 0.875rem;
-  background: rgba(14, 37, 64, 0.45);
+  background: rgba(var(--navy-bg2-rgb), 0.45);
   padding: 1.75rem;
 }
 
@@ -3593,7 +3649,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-family: var(--font-mono), "SF Mono", Consolas, monospace;
   font-size: 1.5rem;
   font-weight: 700;
-  color: rgba(143, 198, 242, 0.4);
+  color: rgba(var(--navy-accent-bright-rgb), 0.4);
 }
 
 .idp2bB-card--full {
@@ -3659,7 +3715,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .idp2-fig__cap {
   font-size: 0.8125rem;
   line-height: 1.7;
-  color: rgba(184, 198, 214, 0.75);
+  color: rgba(var(--navy-ink-dim-rgb), 0.75);
 }
 
 /* ── 图集小主题卡（round 29 固化 B）：文字介绍 × 图片组 ── */
@@ -3667,7 +3723,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-family: var(--font-mono), "SF Mono", Consolas, monospace;
   font-size: 1.375rem;
   font-weight: 700;
-  color: rgba(143, 198, 242, 0.4);
+  color: rgba(var(--navy-accent-bright-rgb), 0.4);
   line-height: 1;
 }
 
@@ -3694,13 +3750,13 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .idp2bT-card {
   border: 1px solid var(--navy-line);
   border-radius: 0.875rem;
-  background: rgba(14, 37, 64, 0.45);
+  background: rgba(var(--navy-bg2-rgb), 0.45);
   padding: 1.5rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .idp2bT-card:hover {
-  border-color: rgba(143, 198, 242, 0.45);
+  border-color: rgba(var(--navy-accent-bright-rgb), 0.45);
   box-shadow: 0 0.875rem 2rem rgba(0, 0, 0, 0.35);
 }
 
@@ -3730,13 +3786,13 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .idp2bFuse-row {
   border: 1px solid var(--navy-line);
   border-radius: 0.875rem;
-  background: rgba(14, 37, 64, 0.45);
+  background: rgba(var(--navy-bg2-rgb), 0.45);
   padding: 1.5rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .idp2bFuse-row:hover {
-  border-color: rgba(143, 198, 242, 0.45);
+  border-color: rgba(var(--navy-accent-bright-rgb), 0.45);
   box-shadow: 0 0.875rem 2rem rgba(0, 0, 0, 0.35);
 }
 
@@ -3767,7 +3823,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   margin: 0 0 0.75rem;
   font-size: calc(var(--idp2b-body) - 0.0625rem);
   line-height: 1.75;
-  color: rgba(184, 198, 214, 0.85);
+  color: rgba(var(--navy-ink-dim-rgb), 0.85);
 }
 
 .idp2bFuse-imgs {
@@ -3784,23 +3840,23 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .theme-navy {
   --bg-deep: var(--navy-bg);
   --bg-surface: var(--navy-bg2);
-  --bg-elevated: rgba(14, 37, 64, 0.75);
-  --bg-card: rgba(14, 37, 64, 0.55);
-  --bg-glass: rgba(14, 37, 64, 0.4);
+  --bg-elevated: rgba(var(--navy-bg2-rgb), 0.75);
+  --bg-card: rgba(var(--navy-bg2-rgb), 0.55);
+  --bg-glass: rgba(var(--navy-bg2-rgb), 0.4);
   --border: var(--navy-line);
-  --border-strong: rgba(122, 160, 199, 0.42);
-  --border-glow: rgba(143, 198, 242, 0.5);
+  --border-strong: rgba(var(--navy-line-rgb), 0.42);
+  --border-glow: rgba(var(--navy-accent-bright-rgb), 0.5);
   --accent: var(--navy-accent-bright);
   --accent-secondary: #6bb8ef;
   --accent-hover: #a8d4f5;
-  --accent-dim: rgba(143, 198, 242, 0.7);
-  --accent-soft: rgba(91, 168, 232, 0.14);
-  --accent-glow: rgba(91, 168, 232, 0.25);
+  --accent-dim: rgba(var(--navy-accent-bright-rgb), 0.7);
+  --accent-soft: rgba(var(--navy-accent-rgb), 0.14);
+  --accent-glow: rgba(var(--navy-accent-rgb), 0.25);
   --text: var(--navy-ink);
   --text-secondary: var(--navy-ink-dim);
-  --muted: rgba(184, 198, 214, 0.7);
+  --muted: rgba(var(--navy-ink-dim-rgb), 0.7);
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.25);
-  --panel-border: rgba(122, 160, 199, 0.35);
+  --panel-border: rgba(var(--navy-line-rgb), 0.35);
 }
 
 /* 基地介绍 / 成果展示 大 TAB */
@@ -3814,10 +3870,10 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   display: flex;
   width: fit-content;
   margin: 0 auto 1.75rem;
-  border: 1px solid rgba(143, 198, 242, 0.45);
+  border: 1px solid rgba(var(--navy-accent-bright-rgb), 0.45);
   border-radius: 0.875rem;
   overflow: hidden;
-  background: rgba(10, 27, 46, 0.9);
+  background: rgba(var(--navy-scrim-rgb), 0.9);
   box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.4);
 }
 
@@ -3840,7 +3896,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .idp2b-tabs__btn:hover {
   color: var(--navy-ink);
-  background: rgba(143, 198, 242, 0.08);
+  background: rgba(var(--navy-accent-bright-rgb), 0.08);
 }
 
 .idp2b-tabs__btn.is-on {
@@ -4064,7 +4120,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   margin-top: 0.75rem;
   font-size: 0.875rem;
   line-height: 1.85;
-  color: rgba(184, 198, 214, 0.75);
+  color: rgba(var(--navy-ink-dim-rgb), 0.75);
 }
 
 .rdp-keywords {
@@ -4116,7 +4172,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .rdp-metric {
   border: 1px solid var(--navy-line);
   border-radius: 0.625rem;
-  background: rgba(14, 37, 64, 0.45);
+  background: rgba(var(--navy-bg2-rgb), 0.45);
   padding: 0.875rem 1rem;
   display: flex;
   flex-direction: column;
@@ -4127,7 +4183,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 0.08em;
-  color: rgba(184, 198, 214, 0.65);
+  color: rgba(var(--navy-ink-dim-rgb), 0.65);
 }
 
 .rdp-metric__value {
@@ -4256,14 +4312,14 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .rdp-fig__cap {
   font-size: 0.8125rem;
   line-height: 1.7;
-  color: rgba(184, 198, 214, 0.75);
+  color: rgba(var(--navy-ink-dim-rgb), 0.75);
 }
 
 .rdp-lightbox {
   position: fixed;
   inset: 0;
   z-index: 95;
-  background: rgba(4, 12, 22, 0.88);
+  background: rgba(var(--navy-shadow-rgb), 0.88);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
@@ -4277,7 +4333,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   max-width: 72rem;
   border-radius: 0.75rem;
   overflow: hidden;
-  border: 1px solid rgba(122, 160, 199, 0.35);
+  border: 1px solid rgba(var(--navy-line-rgb), 0.35);
   background: #04101c;
   box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.55);
 }
@@ -4288,11 +4344,11 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .rdp-lightbox__cap {
-  border-top: 1px solid rgba(122, 160, 199, 0.25);
+  border-top: 1px solid rgba(var(--navy-line-rgb), 0.25);
   padding: 0.75rem 1rem;
   font-size: 0.8125rem;
   line-height: 1.7;
-  color: #b8c6d6;
+  color: var(--navy-ink-dim);
 }
 
 .rdp-lightbox__close {
@@ -4302,7 +4358,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   border: none;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.14);
-  color: #f4f7fb;
+  color: var(--navy-ink);
   font-size: 0.875rem;
   padding: 0.5rem 0.875rem;
   cursor: pointer;
@@ -4323,7 +4379,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   border: 1px solid var(--navy-line);
   border-radius: 0.75rem;
   overflow: hidden;
-  background: rgba(14, 37, 64, 0.45);
+  background: rgba(var(--navy-bg2-rgb), 0.45);
 }
 
 .rdp-video__head {
@@ -4336,7 +4392,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .rdp-video__body {
   padding: 1.25rem;
-  background: rgba(4, 12, 22, 0.35);
+  background: rgba(var(--navy-shadow-rgb), 0.35);
   display: flex;
   justify-content: center;
 }
@@ -4354,7 +4410,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   padding: 0.625rem 1.25rem;
   font-size: 0.6875rem;
   line-height: 1.7;
-  color: rgba(184, 198, 214, 0.75);
+  color: rgba(var(--navy-ink-dim-rgb), 0.75);
 }
 
 .rdp-gallery {
@@ -4426,7 +4482,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-size: 3.5rem;
   font-weight: 700;
   line-height: 1;
-  color: rgba(143, 198, 242, 0.22);
+  color: rgba(var(--navy-accent-bright-rgb), 0.22);
 }
 
 .rdpE-module__aside-rule {
@@ -4622,14 +4678,8 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 /* ── 页脚（全站共享 · round 09 三版式本地对比：classic/manual/compact） ── */
 .ftr-footer {
-  /* 页脚是全站组件（layout 中位于 .theme-navy 作用域外），变量必须自带 */
-  --navy-ink: #f4f7fb;
-  --navy-ink-dim: #b8c6d6;
-  --navy-accent: #5ba8e8;
-  --navy-accent-bright: #8fc6f2;
-  --navy-line: rgba(122, 160, 199, 0.28);
-  --navy-line-soft: rgba(122, 160, 199, 0.16);
-  background: #0a1b2e;
+  /* 页脚是全站组件，navy 变量已全局定义，此处只挂底色 */
+  background: var(--navy-bg);
   color: var(--navy-ink);
   border-top: 1px solid var(--navy-line);
 }
@@ -4711,7 +4761,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-family: var(--font-mono), "SF Mono", Consolas, monospace;
   font-size: 0.625rem;
   letter-spacing: 0.18em;
-  color: #8fa9c2;
+  color: var(--navy-mute);
   font-weight: 700;
 }
 
@@ -4755,7 +4805,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .ftr-beian__copy {
   font-size: 0.75rem;
-  color: #8fa9c2;
+  color: var(--navy-mute);
 }
 
 .ftr-beian__links {
@@ -4766,7 +4816,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .ftr-beian__links a {
   font-size: 0.75rem;
-  color: #8fa9c2;
+  color: var(--navy-mute);
 }
 
 .ftr-beian__links a:hover {
@@ -4786,8 +4836,8 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 999px;
-  border: 1px solid rgba(122, 160, 199, 0.45);
-  background: rgba(14, 37, 64, 0.94);
+  border: 1px solid rgba(var(--navy-line-rgb), 0.45);
+  background: rgba(var(--navy-bg2-rgb), 0.94);
   color: var(--navy-ink);
   font-size: 1.125rem;
   cursor: pointer;
@@ -4798,7 +4848,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .ftr-top:hover {
-  background: rgba(91, 168, 232, 0.25);
+  background: rgba(var(--navy-accent-rgb), 0.25);
 }
 
 /* ── 版式 A：经典三栏 ── */
@@ -4844,7 +4894,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-family: var(--font-mono), "SF Mono", Consolas, monospace;
   font-size: 0.625rem;
   letter-spacing: 0.18em;
-  color: #8fa9c2;
+  color: var(--navy-mute);
   font-weight: 600;
 }
 
@@ -4927,7 +4977,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   padding: 0.5rem;
   border-radius: 999px;
   border: 1px solid var(--navy-line);
-  background: rgba(10, 27, 46, 0.6);
+  background: rgba(var(--navy-scrim-rgb), 0.6);
 }
 
 .ct-tabs__btn {
@@ -4941,7 +4991,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .ct-tabs__btn:hover {
   color: var(--navy-ink);
-  background: rgba(143, 198, 242, 0.1);
+  background: rgba(var(--navy-accent-bright-rgb), 0.1);
 }
 
 .ct-tabs__btn.is-on {
@@ -5067,7 +5117,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   padding: 0.625rem 1.25rem;
   border-radius: 999px;
   border: 1px solid var(--navy-line);
-  background: rgba(10, 27, 46, 0.6);
+  background: rgba(var(--navy-scrim-rgb), 0.6);
 }
 
 .ct-tabs--pub .ct-tabs__btn {
@@ -5107,7 +5157,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   display: inline-block;
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
-  background: rgba(91, 168, 232, 0.16);
+  background: rgba(var(--navy-accent-rgb), 0.16);
   color: var(--navy-accent-bright);
   font-size: var(--pub-meta-size);
   font-weight: 700;
@@ -5203,7 +5253,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .pub-v3 .pub-item:hover {
   transform: none;
   box-shadow: none;
-  background: rgba(91, 168, 232, 0.06);
+  background: rgba(var(--navy-accent-rgb), 0.06);
 }
 
 .pub-v3__year {
@@ -5228,7 +5278,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .pub-v4__head {
   width: 100%;
   padding: 1rem var(--pub-card-pad);
-  background: rgba(91, 168, 232, 0.06);
+  background: rgba(var(--navy-accent-rgb), 0.06);
   border: none;
   display: flex;
   justify-content: space-between;
@@ -5241,7 +5291,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .pub-v4__head:hover {
-  background: rgba(91, 168, 232, 0.10);
+  background: rgba(var(--navy-accent-rgb), 0.10);
 }
 
 .pub-v4__count {
@@ -5307,7 +5357,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .pub-v5__filter-btn:hover {
   color: var(--navy-ink);
-  background: rgba(91, 168, 232, 0.10);
+  background: rgba(var(--navy-accent-rgb), 0.10);
 }
 
 .pub-v5__filter-btn.is-on {
@@ -5334,7 +5384,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   padding: 0.75rem 1rem;
   border-radius: 1rem;
   border: 1px solid var(--navy-line);
-  background: rgba(10, 27, 46, 0.96);
+  background: rgba(var(--navy-scrim-rgb), 0.96);
   box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.40);
 }
 
@@ -5348,7 +5398,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: rgba(184, 198, 214, 0.7);
+  color: rgba(var(--navy-ink-dim-rgb), 0.7);
   min-width: 2rem;
 }
 
@@ -5372,7 +5422,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .pub-switcher__btn:hover {
   color: var(--navy-ink);
-  background: rgba(143, 198, 242, 0.14);
+  background: rgba(var(--navy-accent-bright-rgb), 0.14);
 }
 
 .pub-switcher__btn.is-on {
@@ -5430,7 +5480,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   position: absolute;
   inset: 0;
   border-radius: 1rem;
-  background: linear-gradient(135deg, rgba(91, 168, 232, 0.10) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(var(--navy-accent-rgb), 0.10) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -5569,7 +5619,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .ppl-v4__tag {
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
-  background: rgba(91, 168, 232, 0.16);
+  background: rgba(var(--navy-accent-rgb), 0.16);
   color: var(--navy-accent-bright);
   font-size: var(--ppl-meta-size);
   font-weight: 700;
@@ -5618,7 +5668,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   height: 1.75rem;
   flex: none;
   border-radius: 0.375rem;
-  background: rgba(91, 168, 232, 0.16);
+  background: rgba(var(--navy-accent-rgb), 0.16);
   color: var(--navy-accent-bright);
   font-size: 0.75rem;
   font-weight: 800;
@@ -5632,7 +5682,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 
 .ct-tabs--role[data-style="c"] .ct-tabs__btn.is-on {
   border-color: var(--navy-accent-bright);
-  background: rgba(91, 168, 232, 0.10);
+  background: rgba(var(--navy-accent-rgb), 0.10);
   color: var(--navy-ink);
 }
 
@@ -5698,7 +5748,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   padding: 0 0.3rem;
   height: 1.25rem;
   border-radius: 999px;
-  background: rgba(91, 168, 232, 0.16);
+  background: rgba(var(--navy-accent-rgb), 0.16);
   color: var(--navy-accent-bright);
   font-size: 0.6875rem;
   font-weight: 800;
@@ -5717,7 +5767,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 }
 
 .dir-filter[data-style="a"] .dir-chip.is-on .dir-chip__count {
-  background: rgba(10, 27, 46, 0.16);
+  background: rgba(var(--navy-scrim-rgb), 0.16);
   color: var(--navy-cta-ink);
 }
 
@@ -5828,7 +5878,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
-  background: rgba(91, 168, 232, 0.14);
+  background: rgba(var(--navy-accent-rgb), 0.14);
   padding: 0.3rem 0.9rem;
   font-family: var(--font-mono), monospace;
   font-size: 0.6875rem;
@@ -5928,7 +5978,7 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
   padding: 0.5rem;
   border-radius: 1rem;
   border: 1px solid var(--navy-line);
-  background: rgba(10, 27, 46, 0.6);
+  background: rgba(var(--navy-scrim-rgb), 0.6);
 }
 
 @media (min-width: 640px) {

@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Container from "@/components/Container";
 import { navItems as NAV } from "@/data/site";
 import { assetPath } from "@/lib/assetPath";
+import { useTheme } from "@/components/useTheme";
 
 type NavItem = { href: string; zh: string; en: string };
 
@@ -34,6 +35,8 @@ export default function SiteHeader({
   // navy 变体（方向 A 深海军蓝）：用户要求全站页眉统一——所有页面一律使用
   // navy 顶栏（品牌白字、深蓝导航、浅蓝 CTA）。variant 仍保留给个别页面强制指定。
   const isNavy = variant ? variant === "navy" : true;
+  // 亮/暗主题切换
+  const [theme, toggleTheme] = useTheme();
 
   // 抽屉打开时锁定 body 滚动
   useEffect(() => {
@@ -125,14 +128,14 @@ export default function SiteHeader({
                   key={item.href}
                   href={item.href}
                   className={`relative shrink-0 whitespace-nowrap px-3.5 py-2 rounded-md text-[0.875rem] font-medium transition-colors ${
-                    active ? "text-white" : "text-[#B8C6D6] hover:text-white"
+                    active ? "text-[var(--navy-ink)]" : "text-[var(--navy-ink-dim)] hover:text-[var(--navy-ink)]"
                   }`}
                 >
                   {/* 激活背景胶囊（morph 形变动效：胶囊从中心弹性展开） */}
                   {active ? (
                     <motion.span
                       aria-hidden
-                      className="absolute inset-0 rounded-md bg-[rgba(91,168,232,0.16)]"
+                      className="absolute inset-0 rounded-md bg-[rgba(var(--navy-accent-rgb),0.16)]"
                       initial={{ opacity: 0, scaleX: 0.35 }}
                       animate={{ opacity: 1, scaleX: 1 }}
                       transition={{ type: "spring", stiffness: 360, damping: 24 }}
@@ -147,7 +150,7 @@ export default function SiteHeader({
           {/* 桌面 CTA */}
           <Link
             href="/contact"
-            className="hidden md:inline-flex shrink-0 whitespace-nowrap ml-2 px-5 py-2 rounded-md text-[0.875rem] font-semibold bg-[#9CCBEF] text-[#0A1B2E] hover:bg-[#B9DBF5] transition-colors"
+            className="hidden md:inline-flex shrink-0 whitespace-nowrap ml-2 px-5 py-2 rounded-md text-[0.875rem] font-semibold bg-[var(--navy-cta-bg)] text-[var(--navy-cta-ink)] hover:bg-[var(--navy-accent-bright)] transition-colors"
           >
             联系我们
           </Link>
@@ -155,20 +158,41 @@ export default function SiteHeader({
           {/* 手机端：联系 + 汉堡 */}
           <Link
             href="/contact"
-            className="ml-auto md:hidden px-3.5 py-2 rounded-md text-[0.8125rem] font-semibold bg-[#9CCBEF] text-[#0A1B2E]"
+            className="ml-auto md:hidden px-3.5 py-2 rounded-md text-[0.8125rem] font-semibold bg-[var(--navy-cta-bg)] text-[var(--navy-cta-ink)]"
           >
             联系
           </Link>
+          {/* 主题切换按钮（亮/暗） */}
           <button
             type="button"
-            className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-[0.3125rem] border border-[rgba(122,160,199,0.28)] rounded-lg"
+            className="w-9 h-9 shrink-0 inline-flex items-center justify-center rounded-lg border border-[var(--navy-line)] text-[var(--navy-ink-dim)] hover:text-[var(--navy-ink)] transition-colors"
+            aria-label={theme === "dark" ? "切换到亮色主题" : "切换到暗色主题"}
+            aria-pressed={theme === "light"}
+            onClick={toggleTheme}
+          >
+            {theme === "dark" ? (
+              // 太阳（当前暗色，点击切亮）
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+              </svg>
+            ) : (
+              // 月亮（当前亮色，点击切暗）
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            )}
+          </button>
+          <button
+            type="button"
+            className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-[0.3125rem] border border-[var(--navy-line)] rounded-lg"
             aria-label="打开菜单"
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
-            <i className="block w-4 h-0.5 bg-[#F4F7FB] rounded-sm" />
-            <i className="block w-4 h-0.5 bg-[#F4F7FB] rounded-sm" />
-            <i className="block w-4 h-0.5 bg-[#F4F7FB] rounded-sm" />
+            <i className="block w-4 h-0.5 bg-[var(--navy-ink)] rounded-sm" />
+            <i className="block w-4 h-0.5 bg-[var(--navy-ink)] rounded-sm" />
+            <i className="block w-4 h-0.5 bg-[var(--navy-ink)] rounded-sm" />
           </button>
         </div>
 
