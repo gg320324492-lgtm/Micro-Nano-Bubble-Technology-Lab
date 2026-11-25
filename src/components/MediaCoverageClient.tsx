@@ -158,7 +158,7 @@ function renderFocus(items: ExternalLink[]) {
                       {getDisplayDate(item)}
                     </p>
                   ) : null}
-                  <h3 className="line-clamp-2 text-sm font-semibold text-[var(--text)] group-hover:text-[var(--accent)]">
+                  <h3 className="line-clamp-3 text-sm font-semibold leading-relaxed text-[var(--text)] group-hover:text-[var(--accent)]">
                     {item.title}
                   </h3>
                   {item.source ? (
