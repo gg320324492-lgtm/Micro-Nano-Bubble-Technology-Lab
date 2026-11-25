@@ -5917,3 +5917,63 @@ body:not(:has(.theme-navy)):not(:has(.navy-hero)) .site-header--navy {
 .nh--c .nh__bar-right .nh__desc {
   margin-top: 0;
 }
+
+/* ── 图集区块 · A 胶囊 TAB（已固化；B/C/D 与切换器已移除） ── */
+
+/* A · 胶囊 */
+.sw-tabs--a {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--navy-line);
+  background: rgba(10, 27, 46, 0.6);
+}
+
+@media (min-width: 640px) {
+  .sw-tabs--a { grid-template-columns: repeat(4, 1fr); }
+}
+
+.sw-a__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+.sw-a__bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem;
+  background: var(--navy-cta-bg);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+.sw-a__text {
+  position: relative;
+  z-index: 10;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--navy-ink-dim);
+}
+
+.sw-a__text.is-on {
+  color: var(--navy-cta-ink);
+}
+
+.sw-a__badge {
+  display: block;
+  margin-top: 0.125rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+

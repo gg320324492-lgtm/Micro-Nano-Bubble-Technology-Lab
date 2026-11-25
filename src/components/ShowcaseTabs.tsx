@@ -62,13 +62,13 @@ export default function ShowcaseTabs({
   };
 
   return [
-    /* 顶部 Tab 导航 */
+    /* 顶部 Tab 导航 — A 胶囊（已固化；B/C/D 与切换器已移除） */
     <div
       key="showcase-tabs"
       id="showcase-tabs"
-      className="scroll-mt-[120px] overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-2 shadow-[var(--shadow-card)]"
+      className="scroll-mt-[120px]"
     >
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="sw-tabs sw-tabs--a">
         {TABS.map((tab) => {
           const active = activeTab === tab.key;
           return (
@@ -76,29 +76,19 @@ export default function ShowcaseTabs({
               key={tab.key}
               type="button"
               onClick={() => switchTab(tab.key)}
-              className="relative inline-flex items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold"
+              className="sw-a__btn"
               aria-pressed={active}
             >
               {active ? (
                 <motion.span
-                  layoutId="showcase-tab-active"
-                  className="absolute inset-0 rounded-xl bg-[var(--navy-cta-bg)] shadow-md"
+                  layoutId="sw-a-active"
+                  className="sw-a__bg"
                   transition={{ type: "spring", stiffness: 360, damping: 30 }}
                 />
               ) : null}
-              <span
-                className={`relative z-10 text-center leading-tight ${
-                  active ? "text-[var(--navy-cta-ink)]" : "text-[var(--text-secondary)]"
-                }`}
-              >
+              <span className={`sw-a__text ${active ? "is-on" : ""}`}>
                 <span className="block">{tab.label}</span>
-                <span
-                  className={`mt-0.5 block text-[10px] font-bold uppercase tracking-widest ${
-                    active ? "text-[var(--navy-cta-ink)]/80" : "text-[var(--muted)]"
-                  }`}
-                >
-                  {tab.badge}
-                </span>
+                <span className="sw-a__badge">{tab.badge}</span>
               </span>
             </button>
           );
