@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import MediaCoverageClient from "@/components/MediaCoverageClient";
+import MediaHeroClient from "@/components/MediaHeroClient";
 import LabZoneTabs from "@/components/LabZoneTabs";
 import LightboxGallery, {
   type GalleryItem,
@@ -9,7 +10,6 @@ import LightboxGallery, {
 import ShowcaseTabs from "@/components/ShowcaseTabs";
 import SimpleCarousel from "@/components/SimpleCarousel";
 import Card from "@/components/ui/Card";
-import Heading from "@/components/ui/Heading";
 import Section from "@/components/ui/Section";
 import { buttonClassName } from "@/components/ui/Button";
 import Reveal from "@/components/motion/Reveal";
@@ -667,28 +667,17 @@ export default function NewsPage() {
   return (
     <div className="theme-navy">
     <Section container="wide">
-      <Reveal className="mb-8">
-        <Heading
-          as="h1"
-          title="媒体与风采 Media & Showcase"
-          className="[&_h1]:text-[var(--text)]"
-          subtitleClassName="text-[var(--text-secondary)]"
-          subtitle="汇总课题组媒体报道与团队风采。"
-        />
-      </Reveal>
-
-      {/* 媒体报道 */}
-      <section id="media" className="scroll-mt-[120px]">
-        <NewsSectionContainer>
-          <NewsSectionHeader
-            badge="Media"
-            titleZh="媒体报道"
-            titleEn="Media Coverage"
-            description="了解我们在外部平台上的更多故事、报道与合作机会。"
-          />
-          <MediaCoverageClient links={sortedExternalLinks} perPage={7} />
-        </NewsSectionContainer>
-      </section>
+      {/* 顶部标题区（页面 h1 + MEDIA 区块头一体化，4 版式） */}
+      <MediaHeroClient
+        pageTitle="媒体与风采 Media & Showcase"
+        pageSubtitle="汇总课题组媒体报道与团队风采。"
+        badge="Media"
+        titleZh="媒体报道"
+        titleEn="Media Coverage"
+        description="了解我们在外部平台上的更多故事、报道与合作机会。"
+      >
+        <MediaCoverageClient links={sortedExternalLinks} perPage={7} />
+      </MediaHeroClient>
 
       {/* 课题组图集：风采展示 / 实验室 / 瑞德杯 / 答辩会 —— Tab 切换 */}
       <section id="showcase" className="mt-14 scroll-mt-[120px]">
