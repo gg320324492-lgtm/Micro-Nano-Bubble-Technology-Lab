@@ -88,9 +88,9 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
 }
 
 /* ── 可点击放大的图片卡 ── */
-function ZoomFigure({ src, alt, sizes, priority = false }: { src: string; alt: string; sizes: string; priority?: boolean }) {
+function ZoomFigure({ src, alt, sizes, priority = false, variant = "thumb" }: { src: string; alt: string; sizes: string; priority?: boolean; variant?: "thumb" | "main" }) {
   const [open, setOpen] = useState(false);
-  const thumb = assetPath(toImageVariant(src, "thumb"));
+  const inline = assetPath(toImageVariant(src, variant));
   const full = assetPath(toImageVariant(src, "full"));
 
   return (
@@ -102,7 +102,7 @@ function ZoomFigure({ src, alt, sizes, priority = false }: { src: string; alt: s
         aria-label={`${alt}（点击放大）`}
       >
         <Image
-          src={thumb}
+          src={inline}
           alt={alt}
           fill
           priority={priority}
@@ -130,7 +130,7 @@ function Cover({ src, alt, sizes }: { src?: string; alt: string; sizes: string }
   }
   return (
     <div className="idp2-cover">
-      <ZoomFigure src={src} alt={alt} sizes={sizes} priority />
+      <ZoomFigure src={src} alt={alt} sizes={sizes} priority variant="main" />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export type ShowcaseTabKey = "showcase" | "lab" | "ruide-cup" | "defense";
@@ -25,20 +25,22 @@ type Props = {
   defensePanel: ReactNode;
 };
 
-function getInitialTab(): ShowcaseTabKey {
-  if (typeof window === "undefined") return "showcase";
-  const hash = window.location.hash.replace(/^#/, "");
-  if (hash === "lab" || hash === "ruide-cup" || hash === "defense") return hash;
-  return "showcase";
-}
-
 export default function ShowcaseTabs({
   showcasePanel,
   labPanel,
   ruideCupPanel,
   defensePanel,
 }: Props) {
-  const [activeTab, setActiveTab] = useState<ShowcaseTabKey>(getInitialTab);
+  // 初始恒定 "showcase"，保证 SSR/CSR 首帧一致（避免 aria-pressed hydration mismatch）
+  const [activeTab, setActiveTab] = useState<ShowcaseTabKey>("showcase");
+
+  // mount 后再读 URL hash 同步激活 tab（若直达 #lab / #ruide-cup / #defense）
+  useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, "");
+    if (hash === "lab" || hash === "ruide-cup" || hash === "defense") {
+      setActiveTab(hash);
+    }
+  }, []);
 
   const switchTab = (tab: ShowcaseTabKey) => {
     setActiveTab(tab);

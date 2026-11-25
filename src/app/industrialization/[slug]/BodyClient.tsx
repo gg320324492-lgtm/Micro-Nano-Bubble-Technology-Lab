@@ -98,7 +98,8 @@ function ZoomFigure({
   wide?: boolean;
 }) {
   const [open, setOpen] = useState(false);
-  const thumb = assetPath(toImageVariant(src, "thumb"));
+  // wide 占满整行（>1000px）用 main，否则小尺寸用 thumb；Lightbox 一律 full
+  const inline = assetPath(toImageVariant(src, wide ? "main" : "thumb"));
   const full = assetPath(toImageVariant(src, "full"));
 
   return (
@@ -111,7 +112,7 @@ function ZoomFigure({
           aria-label={`${alt}（点击放大）`}
         >
           <Image
-            src={thumb}
+            src={inline}
             alt={alt}
             fill
             sizes={sizes}
