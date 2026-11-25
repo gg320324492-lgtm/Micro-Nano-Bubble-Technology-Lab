@@ -54,17 +54,6 @@ function NewsSectionHeader({ badge, titleZh, titleEn, description }: NewsSection
   );
 }
 
-function NewsSectionContainer({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="relative rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--bg-card)] px-6 py-8 shadow-[var(--shadow-card)] backdrop-blur-sm md:px-10 md:py-10">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--accent-soft)]/40 via-transparent to-[var(--accent-secondary)]/20 opacity-70" />
-      <div className="relative z-10 space-y-6">
-        {children}
-      </div>
-    </div>
-  );
-}
-
 function buildGalleryPanel(categoryId: "lab" | "ruide-cup" | "defense") {
   const cat = galleryCategories.find((c) => c.id === categoryId);
   if (!cat) return null;
@@ -681,7 +670,7 @@ export default function NewsPage() {
 
       {/* 课题组图集：风采展示 / 实验室 / 瑞德杯 / 答辩会 —— Tab 切换 */}
       <section id="showcase" className="mt-14 scroll-mt-[120px]">
-        <NewsSectionContainer>
+        <div className="space-y-6">
           <NewsSectionHeader
             badge="Gallery"
             titleZh="课题组图集"
@@ -694,7 +683,7 @@ export default function NewsPage() {
             ruideCupPanel={ruideCupPanel}
             defensePanel={defensePanel}
           />
-        </NewsSectionContainer>
+        </div>
       </section>
     </Section>
     </div>
