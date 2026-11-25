@@ -94,11 +94,11 @@ export default function SimpleCarousel({
       <div className="relative w-full overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-deep)]">
         <div className="relative aspect-[16/9] w-full">
           <Image
-            src={assetPath(toImageVariant(images[index].src, "main"))}
+            src={assetPath(toImageVariant(images[index].src, "full"))}
             alt={images[index].alt ?? `photo-${index + 1}`}
             fill
             className="object-contain"
-            sizes="(max-width: 768px) 100vw, 1000px"
+            sizes="(max-width: 768px) 100vw, 1600px"
             priority={index === 0}
             loading={index === 0 ? "eager" : "lazy"}
             fetchPriority={index === 0 ? "high" : "low"}
