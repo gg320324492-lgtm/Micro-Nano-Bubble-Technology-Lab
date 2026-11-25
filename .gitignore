@@ -25,3 +25,14 @@ deploy.tar.gz
 # verify-showcase.mjs 生成的测试截图（不入库）
 verify-output/
 verify-output/*.png
+
+# 设计脚手架与本地工具配置（不入库）
+.oil-ui/
+.claude/
+design-drafts/
+
+# 编辑备份文件（不入库）
+*.bak
+
+# 未引用的杂项素材（不入库）
+docs/http-status-codes-cheatsheet.png

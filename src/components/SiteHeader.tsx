@@ -17,12 +17,32 @@ function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(href + "/");
 }
 
-export default function SiteHeader() {
+export default function SiteHeader({
+  variant,
+}: {
+  variant?: "light" | "navy";
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const lastScrollYRef = useRef(0);
+  // 品牌区版式与尺寸（round 19 已选定并固化：R 版式（双 logo 白底方角）× XL）
+  // 此前的 G/C/O 版式、切换器与 S/M/L 尺寸已移除
+  const brandLayout = "raw" as const;
+  const brandSize = "xl" as const;
+  // navy 变体（方向 A 深海军蓝）：用户要求全站页眉统一——所有页面一律使用
+  // navy 顶栏（品牌白字、深蓝导航、浅蓝 CTA）。variant 仍保留给个别页面强制指定。
+  const isNavy = variant ? variant === "navy" : true;
+
+  // 抽屉打开时锁定 body 滚动
+  useEffect(() => {
+    if (!isNavy) return;
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open, isNavy]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,6 +75,184 @@ export default function SiteHeader() {
     }));
   }, []);
 
+  /* ── navy 变体：深蓝顶栏 + 手机抽屉侧边栏（方向 A 已确认稿） ── */
+  if (isNavy) {
+    return (
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: hidden && !open ? -140 : 0 }}
+        transition={{ duration: 0.28, ease: "easeOut" }}
+        className={`site-header site-header--navy fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? "site-header--scrolled shadow-lg" : ""
+        }`}
+      >
+        <div className="flex items-center gap-3 px-4 md:px-12 h-[4.5rem]">
+          {/* 品牌（round 17：四版式 × 三尺寸切换，选定后固化） */}
+          <Link
+            href="/"
+            className={`brand brand--${brandLayout} brand--${brandSize} flex items-center min-w-0`}
+          >
+            <span className="brand__logos flex items-center shrink-0">
+              <Image
+                src={assetPath("/logos/tju.png")}
+                alt="Tianjin University"
+                width={40}
+                height={40}
+                className="brand__logo brand__logo--tju"
+                priority
+              />
+              <Image
+                src={assetPath("/logos/lab.png")}
+                alt="Micro & Nano Bubble Technology Lab"
+                width={40}
+                height={40}
+                className="brand__logo brand__logo--lab"
+                priority
+              />
+            </span>
+            <span className="brand__textblock flex flex-col min-w-0">
+              <span className="brand__title">天津大学 微纳米气泡课题组</span>
+              <span className="brand__subtitle">Micro &amp; Nano Bubble Technology Lab</span>
+            </span>
+          </Link>
+
+          {/* 桌面导航 */}
+          <nav className="ml-auto hidden md:flex items-center gap-1.5">
+            {navItems.map((item) => {
+              const active = isActive(pathname, item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`relative shrink-0 whitespace-nowrap px-3.5 py-2 rounded-md text-[0.875rem] font-medium transition-colors ${
+                    active ? "text-white" : "text-[#B8C6D6] hover:text-white"
+                  }`}
+                >
+                  {/* 激活背景胶囊（morph 形变动效：胶囊从中心弹性展开） */}
+                  {active ? (
+                    <motion.span
+                      aria-hidden
+                      className="absolute inset-0 rounded-md bg-[rgba(91,168,232,0.16)]"
+                      initial={{ opacity: 0, scaleX: 0.35 }}
+                      animate={{ opacity: 1, scaleX: 1 }}
+                      transition={{ type: "spring", stiffness: 360, damping: 24 }}
+                    />
+                  ) : null}
+                  <span className="relative z-10">{item.zh}</span>
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* 桌面 CTA */}
+          <Link
+            href="/contact"
+            className="hidden md:inline-flex shrink-0 whitespace-nowrap ml-2 px-5 py-2 rounded-md text-[0.875rem] font-semibold bg-[#9CCBEF] text-[#0A1B2E] hover:bg-[#B9DBF5] transition-colors"
+          >
+            联系我们
+          </Link>
+
+          {/* 手机端：联系 + 汉堡 */}
+          <Link
+            href="/contact"
+            className="ml-auto md:hidden px-3.5 py-2 rounded-md text-[0.8125rem] font-semibold bg-[#9CCBEF] text-[#0A1B2E]"
+          >
+            联系
+          </Link>
+          <button
+            type="button"
+            className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-[0.3125rem] border border-[rgba(122,160,199,0.28)] rounded-lg"
+            aria-label="打开菜单"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <i className="block w-4 h-0.5 bg-[#F4F7FB] rounded-sm" />
+            <i className="block w-4 h-0.5 bg-[#F4F7FB] rounded-sm" />
+            <i className="block w-4 h-0.5 bg-[#F4F7FB] rounded-sm" />
+          </button>
+        </div>
+
+        {/* 手机抽屉侧边栏 */}
+        <AnimatePresence>
+          {open && (
+            <>
+              <motion.div
+                key="drawer-mask"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.28 }}
+                className="drawer-mask md:hidden"
+                onClick={() => setOpen(false)}
+              />
+              <motion.aside
+                key="drawer"
+                initial={{ x: "102%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "102%" }}
+                transition={{ duration: 0.3, ease: [0.32, 0.72, 0.28, 1] }}
+                className="drawer md:hidden"
+                aria-label="站内导航"
+              >
+                <div className="drawer__head">
+                  <Image
+                    src={assetPath("/logos/tju.png")}
+                    alt="Tianjin University"
+                    width={28}
+                    height={28}
+                    className="h-[1.875rem] w-[1.875rem] rounded-[0.3125rem] bg-white p-px object-contain"
+                  />
+                  <Image
+                    src={assetPath("/logos/lab.png")}
+                    alt="Micro & Nano Bubble Technology Lab"
+                    width={28}
+                    height={28}
+                    className="h-[1.875rem] w-[1.875rem] rounded-[0.3125rem] bg-white p-px object-contain"
+                  />
+                  <span className="drawer__head-zh">微纳米气泡课题组</span>
+                  <button
+                    type="button"
+                    className="drawer__close"
+                    aria-label="关闭菜单"
+                    onClick={() => setOpen(false)}
+                  >
+                    ✕
+                  </button>
+                </div>
+                <nav className="drawer__nav">
+                  {NAV.map((item) => {
+                    const active = isActive(pathname, item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        data-active={active}
+                        onClick={() => setOpen(false)}
+                      >
+                        {item.zh}
+                        <em className="en not-italic">{item.en.toUpperCase()}</em>
+                      </Link>
+                    );
+                  })}
+                </nav>
+                <div className="drawer__foot">
+                  <Link
+                    href="/research"
+                    className="navy-btn navy-btn--main"
+                    onClick={() => setOpen(false)}
+                  >
+                    查看研究方向 →
+                  </Link>
+                </div>
+              </motion.aside>
+            </>
+          )}
+        </AnimatePresence>
+      </motion.header>
+    );
+  }
+
+  /* ── light 变体：原有白色玻璃顶栏（其他页面继续使用） ── */
   return (
     <motion.header
       initial={{ y: -100 }}

@@ -15,7 +15,7 @@ type ContactMethodsProps = {
 };
 
 const actionBtnClass =
-  "inline-flex h-9 min-w-[84px] items-center justify-center rounded-full border border-[var(--border-strong)] bg-white px-3 text-xs font-semibold text-[var(--text-secondary)] transition hover:-translate-y-0.5 hover:bg-[var(--accent-soft)]";
+  "inline-flex h-9 min-w-[84px] items-center justify-center rounded-full border border-[var(--border-strong)] bg-[var(--bg-card)] px-3 text-xs font-semibold text-[var(--text-secondary)] transition hover:-translate-y-0.5 hover:bg-[var(--accent-soft)]";
 
 export default function ContactMethods({
   email,
@@ -36,7 +36,7 @@ export default function ContactMethods({
             </h2>
             <p className="text-sm text-[var(--muted)] md:text-base">Contact</p>
           </div>
-          <div className="hidden rounded-full border border-[var(--border)] bg-white/70 px-3 py-1 text-xs text-[var(--text-secondary)] md:block">
+          <div className="hidden rounded-full border border-[var(--border)] bg-[var(--bg-card)] px-3 py-1 text-xs text-[var(--text-secondary)] md:block">
             响应时间：通常 24h 内
           </div>
         </div>
@@ -93,7 +93,7 @@ type ContactRowProps = {
 
 function ContactRow({ label, icon, children, delay = 0 }: ContactRowProps) {
   return (
-    <RevealCard className="rounded-2xl border border-[var(--border)] bg-white p-4" delay={delay}>
+    <RevealCard className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4" delay={delay}>
       <div className="mb-2 flex items-center gap-2">
         <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-soft)] text-xs">{icon}</span>
         <div className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">{label}</div>

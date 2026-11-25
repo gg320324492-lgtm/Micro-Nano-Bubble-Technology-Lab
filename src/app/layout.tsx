@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Noto_Serif_SC, JetBrains_Mono } from "next/font/google";
 
 import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
+import SiteFooterNavy from "@/components/SiteFooterNavy";
 
 const notoSerif = Noto_Serif_SC({
   weight: ["400", "600", "700"],
@@ -104,12 +104,12 @@ export default function RootLayout({
         </a>
         <SiteHeader />
 
-        {/* ✅ 让所有页面内容也统一居中 + 左右留白 */}
-        <div id="main-content" className="flex-1 pt-[80px]" role="main">
+        {/* ✅ 让所有页面内容也统一居中 + 左右留白（rem 基准，随缩放等比） */}
+        <div id="main-content" className="flex-1 pt-[5rem]" role="main">
           {children}
         </div>
 
-        <SiteFooter />
+        <SiteFooterNavy />
       </body>
     </html>
   );

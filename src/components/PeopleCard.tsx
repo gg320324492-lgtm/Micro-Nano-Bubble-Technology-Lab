@@ -50,7 +50,7 @@ export default function PeopleCard({ person, onTagClick, activeTag }: Props) {
     >
       <Card
         className={[
-          "relative flex h-full min-h-[220px] flex-col overflow-hidden rounded-[var(--radius-xl)] border-2 bg-white p-5 md:p-6",
+          "relative flex h-full min-h-[220px] flex-col overflow-hidden rounded-[var(--radius-xl)] border-2 bg-[var(--bg-card)] p-5 md:p-6",
           "transition-all duration-300 hover:border-[var(--accent)] hover:shadow-[var(--shadow-hover)]",
           isActive ? "border-[var(--accent)]/70 shadow-[var(--shadow-hover)]" : "",
         ].join(" ")}

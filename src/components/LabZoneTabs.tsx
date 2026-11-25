@@ -86,19 +86,19 @@ export default function LabZoneTabs({
                 {active ? (
                   <motion.span
                     layoutId="lab-zone-tab-active"
-                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] shadow-md"
+                    className="absolute inset-0 rounded-xl bg-[var(--navy-cta-bg)] shadow-md"
                     transition={{ type: "spring", stiffness: 360, damping: 30 }}
                   />
                 ) : null}
                 <span
                   className={`relative z-10 text-center leading-tight ${
-                    active ? "text-white" : "text-[var(--text-secondary)]"
+                    active ? "text-[var(--navy-cta-ink)]" : "text-[var(--text-secondary)]"
                   }`}
                 >
                   <span className="block">{tab.label}</span>
                   <span
                     className={`mt-0.5 block text-[10px] font-bold uppercase tracking-widest ${
-                      active ? "text-white/80" : "text-[var(--muted)]"
+                      active ? "text-[var(--navy-cta-ink)]/80" : "text-[var(--muted)]"
                     }`}
                   >
                     {tab.badge}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { ExternalLinksGrid } from "@/components/ExternalLinksSection";
+import MediaCoverageClient from "@/components/MediaCoverageClient";
 import LabZoneTabs from "@/components/LabZoneTabs";
 import LightboxGallery, {
   type GalleryItem,
@@ -56,7 +56,7 @@ function NewsSectionHeader({ badge, titleZh, titleEn, description }: NewsSection
 
 function NewsSectionContainer({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative rounded-[var(--radius-xl)] border border-[var(--border)] bg-white/80 px-6 py-8 shadow-[var(--shadow-card)] backdrop-blur-sm md:px-10 md:py-10">
+    <div className="relative rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--bg-card)] px-6 py-8 shadow-[var(--shadow-card)] backdrop-blur-sm md:px-10 md:py-10">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--accent-soft)]/40 via-transparent to-[var(--accent-secondary)]/20 opacity-70" />
       <div className="relative z-10 space-y-6">
         {children}
@@ -665,6 +665,7 @@ export default function NewsPage() {
   const defensePanel = buildGalleryPanel("defense");
 
   return (
+    <div className="theme-navy">
     <Section container="wide">
       <Reveal className="mb-8">
         <Heading
@@ -685,7 +686,7 @@ export default function NewsPage() {
             titleEn="Media Coverage"
             description="了解我们在外部平台上的更多故事、报道与合作机会。"
           />
-          <ExternalLinksGrid links={sortedExternalLinks} initialVisibleCount={6} />
+          <MediaCoverageClient links={sortedExternalLinks} perPage={6} />
         </NewsSectionContainer>
       </section>
 
@@ -707,5 +708,6 @@ export default function NewsPage() {
         </NewsSectionContainer>
       </section>
     </Section>
+    </div>
   );
 }

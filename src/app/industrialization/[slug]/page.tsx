@@ -1,206 +1,18 @@
 // src/app/industrialization/[slug]/page.tsx
-import Image from "next/image";
+// 顶部 = HeroClient（V2 已固化）；中下部 = BodyClient（A/B/C × 文字四档切换器）
+// 旧通用分支 hero / AquacultureTabs / introPanel / resultsPanel 已删除（与 V2 顶部重复）
 import Link from "next/link";
-import dynamic from "next/dynamic";
 
-const AquacultureTabs = dynamic(() => import("@/components/AquacultureTabs"));
-const AquacultureFigureStrip = dynamic(() => import("@/components/AquacultureFigureStrip"));
-const IndustrialSectionTabs = dynamic(() => import("@/components/industrialization/IndustrialSectionTabs"));
-const ReidDeviceShowcase = dynamic(() => import("@/components/industrialization/ReidDeviceShowcase"));
-const LightboxGallery = dynamic(() => import("@/components/LightboxGallery"));
-
-import type { GalleryItem } from "@/components/LightboxGallery";
 import Container from "@/components/Container";
-import { buttonClassName } from "@/components/ui/Button";
 import industrialBases, { IndustrialBase } from "@/data/industrialization";
-import { assetPath } from "@/lib/assetPath";
 import { toImageVariant } from "@/lib/imageVariant";
-import { industrialSectionThemes } from "@/lib/themePresets";
+import { resolveAquacultureAssetPath } from "@/content/aquaculturePdfFullData";
+import HeroClient, { type HeroStat, type HeroScene } from "./HeroClient";
+import BodyClient, { type GalleryTopic, type BodyFigure } from "./BodyClient";
 
 export const dynamicParams = false;
 export function generateStaticParams() {
   return industrialBases.map((b) => ({ slug: String(b.slug) }));
-}
-
-// ── 黑臭水体专属 Hero ──────────────────────────────────────────────
-function BlackOdorousHero({ base }: { base: IndustrialBase }) {
-  return (
-    <section className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
-      <div className="absolute inset-x-0 top-0 z-20 h-1 bg-gradient-to-r from-cyan-400 via-sky-500 to-blue-600" />
-      <CoverHero src={base.cover} alt={base.titleZh} />
-    </section>
-  );
-}
-
-/* 黑臭水体专用：标题区 + KPI（与 NewsSectionContainer 风格一致） */
-function BlackOdorousHeaderBlock({ base }: { base: IndustrialBase }) {
-  const stats = [
-    { label: "COD 削减", value: "21–28%", color: "text-cyan-600" },
-    { label: "氨氮削减", value: "≤93%", color: "text-emerald-600" },
-    { label: "叶绿素去除", value: "71.5%", color: "text-violet-600" },
-    { label: "处理时长", value: "10 min", color: "text-amber-600" },
-    { label: "总磷削减", value: "17–37%", color: "text-sky-600" },
-    { label: "浊度下降", value: ">25%", color: "text-teal-600" },
-  ];
-
-  return (
-    <section className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-white/80 px-6 py-8 shadow-[var(--shadow-card)] backdrop-blur-sm md:px-10 md:py-10">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--accent-soft)]/40 via-transparent to-[var(--accent-secondary)]/20 opacity-70" />
-      <div className="relative z-10 space-y-6">
-        {/* 标题区 */}
-        <div className="space-y-3">
-          <span className="inline-flex items-center rounded-full bg-[var(--accent-soft)] px-4 py-1 text-xs font-semibold tracking-widest text-[var(--accent)] uppercase">
-            Industrialization · Black-Odorous Water Remediation
-          </span>
-          <h1 className="text-2xl md:text-3xl font-bold gradient-text">{base.titleZh}</h1>
-          {base.titleEn ? (
-            <p className="text-xs md:text-sm font-semibold tracking-[0.18em] text-[var(--muted)] uppercase">
-              {base.titleEn}
-            </p>
-          ) : null}
-          <p className="max-w-3xl text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
-            {base.briefZh}
-          </p>
-          {base.highlightsZh?.length ? (
-            <div className="flex flex-wrap gap-1.5 pt-1 md:gap-2">
-              {base.highlightsZh.slice(0, 4).map((h) => (
-                <span
-                  key={h}
-                  className="rounded-full border border-[var(--border)] bg-[var(--bg-card)] px-3 py-1 text-[11px] font-medium text-[var(--text-secondary)] md:px-3.5 md:text-xs"
-                >
-                  {h}
-                </span>
-              ))}
-            </div>
-          ) : null}
-        </div>
-
-        {/* KPI 数据条 */}
-        <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] shadow-sm">
-          <div className="h-1 bg-gradient-to-r from-cyan-400 via-sky-500 to-blue-600" />
-          <div className="grid grid-cols-2 divide-x divide-y divide-[var(--border)] sm:grid-cols-3 lg:grid-cols-6 sm:divide-y-0">
-            {stats.map((s) => (
-              <div key={s.label} className="px-3 py-3 text-center md:px-4 md:py-4">
-                <div className={`text-xl font-black tabular-nums md:text-2xl ${s.color}`}>{s.value}</div>
-                <div className="mt-0.5 text-[10px] font-medium text-[var(--muted)] leading-tight md:text-[11px]">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ── 黑臭水体：移动端指标条（Hero 外，仅小屏显示）─────────────────
-// ── 黑臭水体：技术路线卡片 ────────────────────────────────────────
-function BlackOdorousTechCards() {
-  const cards = [
-    {
-      step: "01",
-      icon: "⚡",
-      title: "臭氧微纳米气泡",
-      subtitle: "前端快速降污",
-      color: "from-cyan-500 to-sky-500",
-      border: "border-cyan-400/30",
-      bg: "bg-cyan-500/6",
-      points: [
-        "强化传质与氧化反应",
-        "快速削减 COD、氨氮",
-        "有效控藻除臭",
-        "10 min 内显著见效",
-      ],
-    },
-    {
-      step: "02",
-      icon: "🌬️",
-      title: "长距离低能耗曝气",
-      subtitle: "后端持续稳水",
-      color: "from-emerald-500 to-teal-500",
-      border: "border-emerald-400/30",
-      bg: "bg-emerald-500/6",
-      points: [
-        "维持底层溶解氧",
-        "恢复好氧微生物活性",
-        "抑制底泥内源释放",
-        "降低返黑返臭风险",
-      ],
-    },
-    {
-      step: "03",
-      icon: "🔄",
-      title: "闭环协同治理",
-      subtitle: "快治 + 稳水体系",
-      color: "from-violet-500 to-indigo-500",
-      border: "border-violet-400/30",
-      bg: "bg-violet-500/6",
-      points: [
-        "上覆水净化 + 底层稳氧",
-        "内源控制闭环机制",
-        "巡航 / 定点 / 常态化可组合",
-        "兼顾考核效果与长期生态",
-      ],
-    },
-  ];
-
-  return (
-    <div className="grid gap-3 sm:grid-cols-3">
-      {cards.map((c) => (
-        <div
-          key={c.step}
-          className={`relative overflow-hidden rounded-2xl border ${c.border} ${c.bg} p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md sm:p-5`}
-        >
-          <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${c.color}`} />
-          <div className="flex items-start justify-between">
-            <div>
-              <div className={`text-[11px] font-black uppercase tracking-widest bg-gradient-to-r ${c.color} bg-clip-text text-transparent`}>
-                Step {c.step}
-              </div>
-              <div className="mt-1 flex items-center gap-2">
-                <span className="text-xl sm:text-2xl">{c.icon}</span>
-                <div>
-                  <div className="text-sm font-bold text-[var(--text)] leading-tight sm:text-[15px]">{c.title}</div>
-                  <div className="text-[11px] text-[var(--muted)] sm:text-xs">{c.subtitle}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <ul className="mt-3.5 space-y-2 sm:mt-4">
-            {c.points.map((p) => (
-              <li key={p} className="flex items-start gap-2 text-[13px] text-[var(--text-secondary)] sm:text-sm">
-                <span className={`mt-[5px] h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-br ${c.color}`} />
-                {p}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ── 通用封面 Hero ──────────────────────────────────────────────────
-function CoverHero({ src, alt }: { src?: string; alt: string }) {
-  if (!src) {
-    return (
-      <div className="h-56 w-full rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-elevated)]" />
-    );
-  }
-  return (
-    <div className="relative w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-deep)]">
-      <div className="relative aspect-[16/9] w-full">
-        <Image
-          src={assetPath(toImageVariant(src, "main"))}
-          alt={alt}
-          fill
-          loading="lazy"
-          fetchPriority="low"
-          className="object-contain"
-          sizes="100vw"
-        />
-      </div>
-    </div>
-  );
 }
 
 type Props = {
@@ -252,521 +64,345 @@ export default async function IndustrialBaseDetailPage(props: Props) {
     ? (await import("@/content/aquaculturePdfFullData")).aquaculturePdfFullData
     : null;
 
-  if (isReidDevice) {
-    return (
-      <main className="py-10">
-        <Container>
-          <div className="mb-6 flex flex-wrap items-center gap-2">
-            <Link
-              href="/industrialization/"
-              className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
-            >
-              ← 返回产业化列表
-            </Link>
-            {base.locationUrl ? (
-              <a
-                href={base.locationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
-              >
-                高德地图导航
-              </a>
-            ) : null}
-          </div>
-          <ReidDeviceShowcase base={base} />
-        </Container>
-      </main>
-    );
-  }
-
   const findKeyNumber = (page: number, name: string) => {
     const pageData = aquacultureData?.pages.find((p) => p.page === page);
     return pageData?.keyNumbers.find((k) => k.name === name);
   };
 
-  const kpiCards = aquacultureData
-    ? [
-        {
-          title: "鲈鱼品质提升",
-          value: findKeyNumber(1, "谷氨酸提升")?.valueText ?? "约74.5%",
-          detail: "鲜味核心指标对比市场鱼显著提升",
-        },
-        {
-          title: "免疫与抗氧化",
-          value: findKeyNumber(1, "T-SOD提升")?.valueText ?? "约41.0%",
-          detail: "溶菌酶、T-SOD同步提升",
-        },
-        {
-          title: "辣椒产量提升",
-          value: findKeyNumber(2, "产量提升（养殖肥水）")?.valueText ?? "约112.2%",
-          detail: "相较清水组，增产效果明显",
-        },
-        {
-          title: "养殖成本",
-          value: findKeyNumber(3, "折算成本")?.valueText ?? "5.51元/斤鱼",
-          detail: "较传统鲈鱼养殖成本降低45%~54%",
-        },
-      ]
-    : [];
+  // 图集取图：按 src 匹配 gallery caption
+  const galleryMap = new Map((base.gallery ?? []).map((g) => [g.src, g]));
+  const pick = (src: string, alt: string): { src: string; alt: string; caption: string } => {
+    const g = galleryMap.get(src);
+    return { src, alt, caption: g?.captionZh ?? alt };
+  };
 
-  const sectionThemes = industrialSectionThemes;
-  const baseSections = base.sections ?? [];
+  // ── 瑞德智设备基地 ────────────────────────────────────────────────
+  if (isReidDevice) {
+    const reidStats: HeroStat[] = [
+      { label: "合同订单额", value: "近200万+" },
+      { label: "标准交付周期", value: "15天" },
+      { label: "客户复购率", value: "80%+" },
+      { label: "产品型号", value: "14种" },
+    ];
+    // 成果展示：产品序列 / 性能测试 / 产业化证明 / 现场应用
+    const reidFigures: BodyFigure[] = [
+      {
+        src: "/industrialization/reid-device-tianjin/g07.png",
+        alt: "实验室微纳米气泡发生器",
+        title: "RD-NM · 实验室发生器",
+        caption: "小流量工况，适合试验段与精细化补氧，累计销售额约 15 万元。",
+      },
+      {
+        src: "/industrialization/reid-device-tianjin/g08.png",
+        alt: "工业微纳米气泡发生器",
+        title: "RD-NM · 工业发生器",
+        caption: "通用型机组，适配中小规模处理节点，累计销售额约 35 万元。",
+      },
+      {
+        src: "/industrialization/reid-device-tianjin/g09.png",
+        alt: "臭氧微纳米气泡一体机",
+        title: "RD-O3N · 臭氧一体机",
+        caption: "强化氧化/消毒，兼顾传质效率与运行安全，累计销售额约 80 万元。",
+      },
+      {
+        src: "/industrialization/reid-device-tianjin/g10.png",
+        alt: "长距离低能耗曝气机",
+        title: "RD-BQ · 长距离曝气机",
+        caption: "单段长距离均匀曝气，部署灵活，适用于黑臭水体与景观水体，累计销售额约 60 万元。",
+      },
+      {
+        src: "/industrialization/reid-device-tianjin/g20.png",
+        alt: "多功能一体式微纳米气泡发生器性能测试结果",
+        title: "性能测试结果",
+        caption: "多功能一体式微纳米气泡发生器出厂测试：覆盖流量、气泡密度、溶解氧提升等关键参数验证。",
+      },
+      {
+        src: "/industrialization/reid-device-tianjin/g21.png",
+        alt: "产业化证明材料（一）",
+        title: "产业化证明 · 订单与交付",
+        caption: "订单、交付与复购形成稳定转化闭环，合同金额累计 1000 万+。",
+      },
+      {
+        src: "/industrialization/reid-device-tianjin/g22.png",
+        alt: "产业化证明材料（二）",
+        title: "产业化证明 · 营收增长",
+        caption: "2025 年营收较 2024 年增长 20 倍以上，客户复购率 80%+。",
+      },
+    ];
+    const reidGalleryTopics: GalleryTopic[] = [
+      {
+        title: "生产与装配",
+        body: "基地拥有两条生产线，覆盖结构设计、加工装配到整机测试。焊接、管路、电控等关键工序在车间内完成，保证整机一致性与交付周期。",
+        images: [
+          pick("/industrialization/reid-device-tianjin/g01.jpg", "生产与装配现场"),
+          pick("/industrialization/reid-device-tianjin/g03.jpg", "设备集成/打包与交付准备"),
+        ],
+      },
+      {
+        title: "厂区与标识",
+        body: "厂区位于天津，门头与基地标识清晰可辨。海棠基金投资 350 万元支持产线建设与首批量产。",
+        images: [
+          pick("/industrialization/reid-device-tianjin/g02.jpg", "厂区/门头/基地标识"),
+          pick("/industrialization/reid-device-tianjin/2.jpg", "厂区/车间/办公场景"),
+          pick("/industrialization/reid-device-tianjin/3.jpg", "厂区/车间/办公场景"),
+        ],
+      },
+      {
+        title: "整机与关键部件",
+        body: "臭氧/纯氧微纳米气泡一体机外观与面板一体化设计；关键部件涵盖控制、气路、水路，出厂前完成整机测试与调试。",
+        images: [
+          pick("/industrialization/reid-device-tianjin/g04.jpg", "臭氧/纯氧微纳米气泡一体机（外观与面板）"),
+          pick("/industrialization/reid-device-tianjin/g05.jpg", "关键部件细节（控制/气路/水路）"),
+          pick("/industrialization/reid-device-tianjin/g06.jpg", "整机测试与调试（出厂前验证）"),
+        ],
+      },
+      {
+        title: "现场应用与交付",
+        body: "设备已交付污水处理、水产养殖、设施农业、河道治理等多类现场。从打包出厂到现场调试形成标准交付流程，平均 15 天完成落地准备。",
+        images: [
+          pick("/industrialization/reid-device-tianjin/g12.png", "治理项目应用点位"),
+          pick("/industrialization/reid-device-tianjin/g13.png", "项目现场合影与交付"),
+          pick("/industrialization/reid-device-tianjin/g14.png", "水体治理运行状态"),
+          pick("/industrialization/reid-device-tianjin/g15.png", "设备应用示范"),
+        ],
+      },
+      {
+        title: "工况演示与讲解",
+        body: "面向来访客户与合作伙伴开展工况演示与技术讲解，覆盖设备运行状态、气泡观测与典型场景应用效果。",
+        images: [
+          pick("/industrialization/reid-device-tianjin/g16.png", "工况演示与讲解"),
+          pick("/industrialization/reid-device-tianjin/g17.png", "温室场景应用"),
+          pick("/industrialization/reid-device-tianjin/g18.png", "设施农业点位"),
+          pick("/industrialization/reid-device-tianjin/g19.png", "装备运行实拍"),
+        ],
+      },
+    ];
 
-  const introPanel = (
-    <div id="intro">
-      {isBlackOdorous ? (
-        base.sections?.length ? <IndustrialSectionTabs sections={base.sections} /> : null
-      ) : isAquaculture ? (
-        <section className="mt-6 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
-          <div className="h-1 w-full bg-gradient-to-r from-[var(--accent)] via-[var(--accent-secondary)] to-[#22c55e]" />
-          <div className="space-y-6 p-5 sm:p-6">
-            {base.highlightsZh?.length ? (
-              <div className="rounded-2xl border border-[var(--border)] bg-white/80 p-4">
-                <div className="mb-3 flex items-center gap-2">
-                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)]">✦</span>
-                  <h2 className="text-lg font-semibold text-[var(--text)]">基地亮点</h2>
-                </div>
-                <ul className="grid gap-2 md:grid-cols-2">
-                  {base.highlightsZh.map((x) => (
-                    <li key={x} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
-                      <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[var(--accent-secondary)]" />
-                      <span>{x}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-
-            {baseSections.length ? (
-              <div className="grid gap-4 md:grid-cols-2">
-                {baseSections.map((s, idx) => {
-                  const theme = sectionThemes[idx % sectionThemes.length];
-                  const lastOddSpan = baseSections.length % 2 === 1 && idx === baseSections.length - 1;
-                  return (
-                    <section
-                      key={s.titleZh}
-                      className={[
-                        "rounded-2xl border bg-white/85 p-5",
-                        theme.card,
-                        lastOddSpan ? "md:col-span-2" : "",
-                      ].join(" ")}
-                    >
-                      <div className={["mb-3 h-1 w-full rounded-full bg-gradient-to-r", theme.accent].join(" ")} />
-                      <h3 className={["text-[1.95rem] leading-none font-semibold tracking-tight", theme.title].join(" ")}>{s.titleZh}</h3>
-                      <p className={["mt-3 text-sm leading-relaxed", theme.body].join(" ")}>{s.bodyZh}</p>
-                      {s.bulletsZh?.length ? (
-                        <ul className="mt-4 space-y-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)]/70 p-3">
-                          {s.bulletsZh.map((b) => (
-                            <li key={b} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
-                              <span className={["mt-1.5 h-2 w-2 shrink-0 rounded-full", theme.bullet].join(" ")} />
-                              <span>{b}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-                    </section>
-                  );
-                })}
-              </div>
-            ) : null}
-          </div>
-        </section>
-      ) : (
-        <>
-          {base.highlightsZh?.length ? (
-            <div className="mt-5 overflow-hidden rounded-[var(--radius-lg)] border border-cyan-400/30 bg-[var(--bg-card)]/95 shadow-sm">
-              <div className="h-1 w-full bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500" />
-              <div className="p-5 sm:p-6">
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-600 shadow-sm">✦</span>
-                  <div className="text-lg font-semibold text-[var(--text)]">基地亮点</div>
-                </div>
-                <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
-                  {base.highlightsZh.map((x) => (
-                    <li
-                      key={x}
-                      className="flex items-start gap-2 rounded-xl border border-cyan-200/60 bg-[var(--bg-elevated)] p-3 text-sm text-[var(--text-secondary)] shadow-sm"
-                    >
-                      <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-cyan-500" />
-                      <span>{x}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ) : null}
-
-          {baseSections.length ? (
-            <div className="mt-7 grid gap-4 md:grid-cols-2">
-              {baseSections.map((s, idx) => {
-                const theme = sectionThemes[idx % sectionThemes.length];
-                const lastOddSpan = baseSections.length % 2 === 1 && idx === baseSections.length - 1;
-                return (
-                  <section
-                    key={s.titleZh}
-                    className={[
-                      "group relative overflow-hidden rounded-2xl border p-5 sm:p-6 shadow-sm transition duration-300",
-                      "hover:-translate-y-0.5 hover:shadow-md",
-                      theme.card,
-                      lastOddSpan ? "md:col-span-2" : "",
-                    ].join(" ")}
-                  >
-                    <div className={["absolute inset-x-0 top-0 h-1 bg-gradient-to-r", theme.accent].join(" ")} />
-                    <h2 className={["text-[20px] font-semibold tracking-tight leading-[1.2]", theme.title].join(" ")}>
-                      {s.titleZh}
-                    </h2>
-                    <p className={["mt-2 text-sm leading-relaxed", theme.body].join(" ")}>
-                      {s.bodyZh}
-                    </p>
-                    {s.bulletsZh?.length ? (
-                      <ul className="mt-4 space-y-2">
-                        {s.bulletsZh.map((b) => (
-                          <li key={b} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
-                            <span className={["mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full", theme.bullet].join(" ")} />
-                            <span>{b}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </section>
-                );
-              })}
-            </div>
-          ) : null}
-        </>
-      )}
-
-      {!isBlackOdorous && base.gallery?.length ? (
-        <div className="mt-9">
-          <LightboxGallery
-            layout="grid-3"
-            items={
-              base.gallery.map(
-                (img) =>
-                  ({
-                    src: img.src,
-                    alt: img.alt ?? base.titleZh,
-                    caption: img.captionZh,
-                  } satisfies GalleryItem),
-              ) ?? []
-            }
-          />
-        </div>
-      ) : null}
-    </div>
-  );
-
-  const resultsPanel = aquacultureData ? (
-    <div id="results" className="mt-8 space-y-6">
-      <section className="overflow-hidden rounded-[var(--radius-lg)] border border-indigo-500/30 bg-indigo-500/10">
-        <div className="h-1 w-full bg-gradient-to-r from-indigo-500 via-sky-500 to-cyan-500" />
-        <div className="p-5 sm:p-6">
-          <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">
-            成果总览
-          </h2>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {kpiCards.map((kpi) => (
-              <article
-                key={kpi.title}
-                className="rounded-2xl border border-[var(--border)]/80 bg-[var(--bg-card)] p-4 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-[var(--accent)]/60"
-              >
-                <p className="text-sm font-medium text-[var(--text-secondary)]">{kpi.title}</p>
-                <p className="mt-2 text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)]">
-                  {kpi.value}
-                </p>
-                <p className="mt-1 text-xs leading-relaxed text-[var(--muted)]">{kpi.detail}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="overflow-hidden rounded-[var(--radius-lg)] border border-amber-500/30 bg-amber-500/10">
-        <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500" />
-        <div className="p-5 sm:p-6">
-          <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">技术成果展示</h2>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">
-            天津大学微纳米气泡技术在水产养殖场景的验证成果
-          </p>
-          <div className="mt-5 grid gap-4 rounded-2xl border border-amber-400/40 bg-[var(--bg-card)]/80 p-4 shadow-sm sm:grid-cols-2">
-            <div className="group flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 text-amber-600">①</span>
-                <h3 className="text-base font-semibold text-[var(--text)]">纯氧纳米气泡 · 高密度养殖</h3>
-              </div>
-              <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
-                鲈鱼高密度养殖 <strong className="text-amber-600">150 kg/m³</strong>，比现有工厂化养殖提高{' '}
-                <strong className="text-amber-600">50%</strong>；基地外观、养殖池、智能平台一体化验证。
-              </p>
-              <a
-                href={assetPath(toImageVariant("/industrialization/aquaculture/slide-high-density-nanobubble", "full"))}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative mt-auto block aspect-video overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] transition-opacity hover:opacity-90"
-              >
-                <Image
-                  src={assetPath(toImageVariant("/industrialization/aquaculture/slide-high-density-nanobubble", "main"))}
-                  alt="纯氧纳米气泡技术用于高密度水产养殖"
-                  fill
-                  sizes="(max-width: 640px) 100vw, 50vw"
-                  className="object-contain"
-                />
-              </a>
-            </div>
-            <div className="group flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 text-amber-600">②</span>
-                <h3 className="text-base font-semibold text-[var(--text)]">微纳米气泡发生器 · 水质与品质</h3>
-              </div>
-              <ul className="space-y-1.5 text-sm text-[var(--text-secondary)]">
-                <li className="flex gap-2"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" /><span>水质稳定：DO ~10 mg/L，氨氮 &lt;4 mg/L</span></li>
-                <li className="flex gap-2"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" /><span>免疫与抗氧化：溶菌酶 +30.3%，T-SOD +41.0%</span></li>
-                <li className="flex gap-2"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" /><span>营养与鲜味：蛋白质 +17.3%，谷氨酸 +74.5%</span></li>
-              </ul>
-              <a
-                href={assetPath(toImageVariant("/industrialization/aquaculture/slide-water-quality-fish-quality", "full"))}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative mt-auto block aspect-video overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] transition-opacity hover:opacity-90"
-              >
-                <Image
-                  src={assetPath(toImageVariant("/industrialization/aquaculture/slide-water-quality-fish-quality", "main"))}
-                  alt="微纳米气泡发生器：养殖水质稳定与水产品品质提升"
-                  fill
-                  sizes="(max-width: 640px) 100vw, 50vw"
-                  className="object-contain"
-                />
-              </a>
-            </div>
-          </div>
-          <div className="mt-4">
-            <AquacultureFigureStrip
-              figures={aquacultureData.figures}
-              chartMeta={aquacultureData.chartMeta}
-              pages={aquacultureData.pages}
-            />
-          </div>
-        </div>
-      </section>
-    </div>
-  ) : null;
-
-  // ── 黑臭水体专属布局 ──────────────────────────────────────────────
-  if (isBlackOdorous) {
     return (
       <main className="py-10 pb-20">
-        <Container>
-          <div className="flex flex-wrap items-center gap-2">
-            <Link
-              href="/industrialization/"
-              className={buttonClassName("primary", "rounded-full px-4 py-2 text-sm shadow-sm hover:shadow-md")}
-            >
-              ← 返回产业化列表
-            </Link>
-            {base.locationUrl ? (
-              <a
-                href={base.locationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonClassName("primary", "rounded-full px-4 py-2 text-sm shadow-sm hover:shadow-md")}
-              >
-                高德地图导航
-              </a>
-            ) : null}
-          </div>
-
-          <div className="mt-6">
-            <BlackOdorousHero base={base} />
-          </div>
-
-          <div className="mt-6">
-            <BlackOdorousHeaderBlock base={base} />
-          </div>
-
-          <div className="mt-6 sm:mt-8">
-            <div className="mb-4 flex items-center gap-3">
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
-              <span className="text-xs font-bold uppercase tracking-widest text-[var(--muted)]">技术路线</span>
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
-            </div>
-            <BlackOdorousTechCards />
-          </div>
-
-          <div className="mt-3 sm:mt-4">
-            {introPanel}
-          </div>
-
-          {base.gallery?.length ? (
-            <div className="mt-10">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
-                <span className="text-xs font-bold uppercase tracking-widest text-[var(--muted)]">现场图集</span>
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
-              </div>
-              <LightboxGallery
-                layout="grid-3"
-                items={
-                  base.gallery.map(
-                    (img) =>
-                      ({
-                        src: img.src,
-                        alt: img.alt ?? base.titleZh,
-                        caption: img.captionZh,
-                      } satisfies GalleryItem),
-                  )
-                }
-              />
-            </div>
-          ) : null}
-        </Container>
+        <HeroClient
+          d={{
+            index: industrialBases.findIndex((b) => String(b.slug) === slug) + 1,
+            titleZh: base.titleZh,
+            titleEn: base.titleEn ?? "",
+            brief: base.briefZh,
+            cover: base.cover,
+            locationZh: base.locationZh,
+            locationUrl: base.locationUrl,
+            highlights: base.highlightsZh ?? [],
+            stats: reidStats,
+          }}
+        />
+        <BodyClient
+          sections={(base.sections ?? []).map((s) => ({ title: s.titleZh, body: s.bodyZh, bullets: s.bulletsZh ?? [] }))}
+          figures={reidFigures}
+          gallery={(base.gallery ?? []).map((g) => ({ src: g.src, alt: g.captionZh ?? base.titleZh, caption: g.captionZh }))}
+          galleryTopics={reidGalleryTopics}
+          techRouteLabel="成果展示"
+        />
       </main>
     );
   }
 
-  // ── 通用布局 ─────────────────────────────────────────────────────
+  // ── 黑臭水体专属布局 ──────────────────────────────────────────────
+  if (isBlackOdorous) {
+    const boStats: HeroStat[] = [
+      { label: "COD 削减", value: "21–28%" },
+      { label: "氨氮削减", value: "≤93%" },
+      { label: "叶绿素去除", value: "71.5%" },
+      { label: "处理时长", value: "10 min" },
+      { label: "总磷削减", value: "17–37%" },
+      { label: "浊度下降", value: ">25%" },
+    ];
+    const boGalleryTopics: GalleryTopic[] = [
+      {
+        title: "现场巡检",
+        body: "监利项目点位 A/B 现场巡检记录，覆盖治理前后的水质取样与工况核对。",
+        images: [
+          pick("/industrialization/black-odorous-water/gallery01.png", "现场巡检记录（监利项目点位A）"),
+          pick("/industrialization/black-odorous-water/gallery02.png", "现场巡检记录（监利项目点位B）"),
+        ],
+      },
+      {
+        title: "治理前后对比",
+        body: "治理前典型黑臭与底泥扰动状态，治理后河道断面水体明显转清，沿岸近景可直观对比。",
+        images: [
+          pick("/industrialization/black-odorous-water/gallery03.png", "治理前典型黑臭与底泥扰动状态"),
+          pick("/industrialization/black-odorous-water/gallery04.png", "治理运行过程中的水面状态与曝气轨迹"),
+          pick("/industrialization/black-odorous-water/gallery05.png", "治理后河道断面水体状态（沿岸近景）"),
+        ],
+      },
+      {
+        title: "作业现场",
+        body: "静海独流镇项目现场作业照片，长距离低能耗曝气机在河道中持续运行。",
+        images: [
+          pick("/industrialization/black-odorous-water/gallery06.png", "静海独流镇项目现场作业照片"),
+          pick("/industrialization/black-odorous-water/gallery07.png", "藻类富集与表层污染阶段状态"),
+        ],
+      },
+      {
+        title: "典型点位前后对比",
+        body: "样点 1–3 前后对比：COD、氨氮、浊度、叶绿素等关键指标协同改善，观感与数据同步提升。",
+        images: [
+          pick("/industrialization/black-odorous-water/gallery08.png", "典型点位前后对比（样点1）"),
+          pick("/industrialization/black-odorous-water/gallery09.png", "典型点位前后对比（样点2）"),
+          pick("/industrialization/black-odorous-water/gallery10.png", "典型点位前后对比（样点3）"),
+        ],
+      },
+    ];
+    return (
+      <main className="theme-navy py-10 pb-20">
+        <HeroClient
+          d={{
+            index: industrialBases.findIndex((b) => String(b.slug) === slug) + 1,
+            titleZh: base.titleZh,
+            titleEn: base.titleEn ?? "",
+            brief: base.briefZh,
+            cover: base.cover,
+            locationZh: base.locationZh,
+            locationUrl: base.locationUrl,
+            highlights: base.highlightsZh ?? [],
+            stats: boStats,
+          }}
+        />
+        <BodyClient
+          sections={(base.sections ?? []).map((s) => ({ title: s.titleZh, body: s.bodyZh, bullets: s.bulletsZh ?? [] }))}
+          gallery={(base.gallery ?? []).map((g) => ({ src: g.src, alt: g.captionZh ?? base.titleZh, caption: g.captionZh }))}
+          galleryTopics={boGalleryTopics}
+          techRouteLabel="治理成果"
+        />
+      </main>
+    );
+  }
+
+  // ── 水产养殖基地（通用 → 仅 HeroClient + BodyClient，无旧 hero） ──
+  const aqStats: HeroStat[] = [
+    { label: "谷氨酸提升（鲜味）", value: findKeyNumber(1, "谷氨酸提升")?.valueText ?? "约74.5%" },
+    { label: "T-SOD 提升（免疫）", value: findKeyNumber(1, "T-SOD提升")?.valueText ?? "约41.0%" },
+    { label: "辣椒产量提升", value: findKeyNumber(2, "产量提升（养殖肥水）")?.valueText ?? "约112.2%" },
+    { label: "折算养殖成本", value: findKeyNumber(3, "折算成本")?.valueText ?? "5.51元/斤鱼" },
+  ];
+  const heroScenes: HeroScene[] = [
+    { src: toImageVariant("/industrialization/aquaculture/g22", "main"), alt: "基地现场 / 温室养殖圆池" },
+    { src: toImageVariant("/industrialization/aquaculture/g06", "main"), alt: "基地内景 / 大棚种植与对比工况" },
+    { src: toImageVariant("/industrialization/aquaculture/g26", "main"), alt: "养殖对象 / 成品鱼打样展示" },
+    { src: toImageVariant("/industrialization/aquaculture/g27", "main"), alt: "全国智慧渔场布局分布图（Smart Aquaculture Network）" },
+  ];
+
+  // 成果图：PDF 三图 + 两张技术 slide，主题卡形式（与基地实拍同语言）
+  const aqFigures = aquacultureData
+    ? [
+        {
+          src: resolveAquacultureAssetPath(aquacultureData.figures[0]!.src),
+          alt: aquacultureData.figures[0]!.caption,
+          title: "鲈鱼品质提升",
+          caption:
+            "较市场鱼：溶菌酶提升约 30.3%，T-SOD 提升约 41.0%，谷氨酸提升约 74.5%，蛋白质提升约 17.3%——免疫与鲜味双提升。",
+        },
+        {
+          src: resolveAquacultureAssetPath(aquacultureData.figures[1]!.src),
+          alt: aquacultureData.figures[1]!.caption,
+          title: "辣椒增产提质",
+          caption:
+            "养殖肥水与纳米气泡水灌溉：辣椒产量分别提升约 112.2% 与 104%，维生素 C 含量分别提升约 46.6% 与 20.6%。",
+        },
+        {
+          src: resolveAquacultureAssetPath(aquacultureData.figures[2]!.src),
+          alt: aquacultureData.figures[2]!.caption,
+          title: "养殖成本核算",
+          caption:
+            "苗种 / 饲料 / 电力 / 人工合计 6337 元，总重 1150 斤，折算 5.51 元/斤鱼，较传统鲈鱼养殖成本降低 45%–54%。",
+        },
+        {
+          src: "/industrialization/aquaculture/slide-high-density-nanobubble.png",
+          alt: "纯氧纳米气泡技术用于高密度水产养殖",
+          title: "纯氧纳米气泡 · 高密度养殖",
+          caption:
+            "养殖密度 150 kg/m³，较现有工厂化养殖提高约 50%；溶解氧长期稳定在 10 mg/L 左右，全程符合养殖水质标准。",
+        },
+        {
+          src: "/industrialization/aquaculture/slide-water-quality-fish-quality.png",
+          alt: "水质在线监测与鱼肉品质提升",
+          title: "水质在线监测与鱼肉品质",
+          caption:
+            "多参数在线监测（水温 / 溶氧 / pH 等）联动智慧渔场平台；大棚组鱼肉蛋白质与谷氨酸含量显著高于市场对照鱼。",
+        },
+      ]
+    : undefined;
+
+  // 图集小主题：文字介绍 × 对应图片（替代一整面图片墙）
+  const aqGalleryTopics: GalleryTopic[] = [
+    {
+      title: "基地外观",
+      body: "天津大学纳米农业实验站以集装箱式舱体为核心，外观标注清晰，坐落在国家农业科技园区内。白色箱体与周边大棚、农田形成鲜明对比，从远处即可识别实验站位置。",
+      images: [
+        pick("/industrialization/aquaculture/g17.jpg", "基地外景 / 标牌与建筑"),
+        pick("/industrialization/aquaculture/g13.jpg", "基地外景 / 标牌特写"),
+        pick("/industrialization/aquaculture/g15.jpg", "基地外景 / 实验站全景"),
+      ],
+    },
+    {
+      title: "种植与养殖协同",
+      body: "温室内一侧是鱼菜共生式种植槽与辣椒试种区，另一侧是高密度养殖圆池。养殖肥水经微纳米气泡处理后回用于种植，形成「一水两用」的种养闭环对比工况。",
+      images: [
+        pick("/industrialization/aquaculture/g24.jpg", "基地外景 / 大棚与种植区全景"),
+        pick("/industrialization/aquaculture/g06.jpg", "基地内景 / 大棚种植与对比工况"),
+        pick("/industrialization/aquaculture/g02.jpg", "设备布置 / 管路与曝气点"),
+      ],
+    },
+    {
+      title: "高密度养殖现场",
+      body: "温室内布置多个蓝色养殖圆池，搭配一体化机柜与管路，养殖密度可达 150 kg/m³，较现有工厂化养殖提高约 50%。池内为加州鲈鱼，水面翻腾反映增氧与水流工况。",
+      images: [
+        pick("/industrialization/aquaculture/g22.jpg", "基地现场 / 温室养殖圆池"),
+        pick("/industrialization/aquaculture/g23.jpg", "设备布置 / 一体化机柜与管路"),
+        pick("/industrialization/aquaculture/g07.jpg", "现场维护 / 运维与巡检"),
+        pick("/industrialization/aquaculture/g25.png", "养殖对象 / 高密度养殖池鱼群活体状态"),
+      ],
+    },
+    {
+      title: "养殖对象与品质",
+      body: "以加州鲈鱼为主要养殖对象，从鱼苗到成品鱼打样全程可追溯。溶菌酶、T-SOD 等免疫指标与谷氨酸等鲜味指标较市场鱼显著提升，养殖成本折算约 5.51 元/斤鱼。",
+      images: [
+        pick("/industrialization/aquaculture/g08.jpg", "养殖对象 / 加州鲈鱼"),
+        pick("/industrialization/aquaculture/g26.png", "养殖对象 / 成品鱼打样展示"),
+      ],
+    },
+    {
+      title: "配套与团队",
+      body: "实验站内设商业模式洽谈区、团队成员展示墙、会议室与荣誉证书墙，兼顾科研办公、来访接待与成果展示功能。",
+      images: [
+        pick("/industrialization/aquaculture/g19.jpg", "基地配套 / 商业模式洽谈区"),
+        pick("/industrialization/aquaculture/g21.jpg", "团队简介 / 团队成员展示墙"),
+        pick("/industrialization/aquaculture/g20.jpg", "团队 / 会议室与综合展示"),
+        pick("/industrialization/aquaculture/g18.jpg", "团队 / 荣誉证书与专利墙"),
+      ],
+    },
+  ];
+
   return (
     <main className="py-10">
-      <Container>
-        <div className="flex flex-wrap items-center gap-2">
-          <Link
-            href="/industrialization/"
-            className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
-          >
-            ← 返回产业化列表
-          </Link>
-          {base.locationUrl ? (
-            <a
-              href={base.locationUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonClassName("primary", "px-4 py-2 text-sm shadow-sm hover:shadow-md")}
-            >
-              高德地图导航
-            </a>
-          ) : null}
-        </div>
-
-        {isAquaculture ? (
-          <section className="relative mt-6 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)]">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[var(--accent)] via-[var(--accent-secondary)] to-[#f59e0b]" />
-            <div className="absolute -right-12 top-8 h-36 w-36 rounded-full bg-[var(--accent)]/15 blur-3xl" />
-            <div className="absolute -left-12 bottom-8 h-36 w-36 rounded-full bg-[var(--accent-secondary)]/15 blur-3xl" />
-
-            <div className="relative p-4 md:p-6">
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)]">
-                {base.cover ? (
-                  <Image
-                    src={assetPath(toImageVariant(base.cover, "main"))}
-                    alt={base.titleZh}
-                    fill
-                    loading="eager"
-                    fetchPriority="high"
-                    sizes="100vw"
-                    className="object-cover"
-                  />
-                ) : null}
-              </div>
-
-              {/* 1+2 hero band：封面下方并排两张基地场景图（参考设备基地排版） */}
-              <div className="mt-3 grid grid-cols-2 gap-3 md:mt-4">
-                {[
-                  { src: toImageVariant("/industrialization/aquaculture/g27", "main"), alt: "全国智慧渔场布局分布图（Smart Aquaculture Network）" },
-                  { src: toImageVariant("/industrialization/aquaculture/g26", "main"), alt: "成品鱼打样展示" },
-                ].map((scene) => (
-                  <div
-                    key={scene.src}
-                    className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] shadow-sm md:aspect-[16/10]"
-                  >
-                    <Image
-                      src={assetPath(toImageVariant(scene.src, "main"))}
-                      alt={scene.alt}
-                      fill
-                      loading="lazy"
-                      sizes="(min-width: 768px) 50vw, 50vw"
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-5">
-                <h1 className="text-4xl font-semibold tracking-tight text-[var(--text)] md:text-5xl">{base.titleZh}</h1>
-                {base.titleEn ? (
-                  <div className="mt-1 text-sm text-[var(--muted)] md:text-base">{base.titleEn}</div>
-                ) : null}
-                <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-base">{base.briefZh}</p>
-                {base.locationZh ? (
-                  <div className="mt-3 text-sm text-[var(--text-secondary)]">
-                    <span className="font-medium text-[var(--text)]">位置/说明：</span>
-                    {base.locationUrl ? (
-                      <a
-                        href={base.locationUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline underline-offset-2 hover:text-[var(--text)]"
-                      >
-                        {base.locationZh}
-                      </a>
-                    ) : (
-                      base.locationZh
-                    )}
-                  </div>
-                ) : null}
-              </div>
-
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
-                  <div className="text-xs text-[var(--muted)]">养殖密度</div>
-                  <div className="mt-1 text-2xl font-bold text-[var(--accent)]">150 kg/m³</div>
-                </article>
-                <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
-                  <div className="text-xs text-[var(--muted)]">谷氨酸提升</div>
-                  <div className="mt-1 text-2xl font-bold text-[var(--accent-secondary)]">74.5%</div>
-                </article>
-                <article className="rounded-2xl border border-[var(--border)] bg-white/80 p-3 shadow-sm">
-                  <div className="text-xs text-[var(--muted)]">成本折算</div>
-                  <div className="mt-1 text-2xl font-bold text-[#f59e0b]">5.51元/斤鱼</div>
-                </article>
-              </div>
-            </div>
-          </section>
-        ) : (
-          <div className="mt-6">
-            <CoverHero src={base.cover} alt={base.titleZh} />
-            <div className="mt-5">
-              <h1 className="text-3xl font-semibold tracking-tight">{base.titleZh}</h1>
-              {base.titleEn ? (
-                <div className="mt-1 text-sm text-[var(--muted)]">{base.titleEn}</div>
-              ) : null}
-              <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">{base.briefZh}</p>
-              {base.locationZh ? (
-                <div className="mt-3 text-sm text-[var(--text-secondary)]">
-                  <span className="font-medium text-[var(--text)]">位置/说明：</span>
-                  {base.locationUrl ? (
-                    <a
-                      href={base.locationUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline underline-offset-2 hover:text-[var(--text)]"
-                    >
-                      {base.locationZh}
-                    </a>
-                  ) : (
-                    base.locationZh
-                  )}
-                </div>
-              ) : null}
-            </div>
-          </div>
-        )}
-
-        {isAquaculture && resultsPanel ? (
-          <AquacultureTabs introPanel={introPanel} resultsPanel={resultsPanel} />
-        ) : (
-          introPanel
-        )}
-      </Container>
+      <HeroClient
+        d={{
+          index: industrialBases.findIndex((b) => String(b.slug) === slug) + 1,
+          titleZh: base.titleZh,
+          titleEn: base.titleEn ?? "",
+          brief: base.briefZh,
+          cover: base.cover,
+          locationZh: base.locationZh,
+          locationUrl: base.locationUrl,
+          highlights: base.highlightsZh ?? [],
+          stats: aqStats,
+        }}
+        scenes={heroScenes}
+      />
+      <BodyClient
+        sections={(base.sections ?? []).map((s) => ({ title: s.titleZh, body: s.bodyZh, bullets: s.bulletsZh ?? [] }))}
+        figures={aqFigures}
+        gallery={(base.gallery ?? []).map((g) => ({ src: g.src, alt: g.captionZh ?? base.titleZh, caption: g.captionZh }))}
+        galleryTopics={aqGalleryTopics}
+        techRouteLabel="成果展示"
+      />
     </main>
   );
-}  
+}

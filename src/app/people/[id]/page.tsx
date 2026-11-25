@@ -44,6 +44,7 @@ export default async function PeopleDetailPage(props: PageProps) {
     .join("");
 
   return (
+    <div className="theme-navy">
     <Section container="wide">
       <div className="mb-6">
         <Link
@@ -177,5 +178,6 @@ export default async function PeopleDetailPage(props: PageProps) {
         </div>
       </div>
     </Section>
+    </div>
   );
 }

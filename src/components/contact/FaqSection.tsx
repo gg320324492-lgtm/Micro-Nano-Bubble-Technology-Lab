@@ -47,7 +47,7 @@ function FaqItem({ q, a, delay }: { q: string; a: string; delay: number }) {
       <details
         open={open}
         onToggle={(e) => setOpen((e.currentTarget as HTMLDetailsElement).open)}
-        className="rounded-2xl border border-[var(--border)] bg-white p-4 transition hover:border-[var(--border-strong)]"
+        className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--border-strong)]"
       >
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-medium text-[var(--text)]">
           <span>{q}</span>

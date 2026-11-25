@@ -33,7 +33,7 @@ export default function JoinSteps() {
         <div className="mt-5 space-y-3 text-sm">
           {steps.map((step, idx) => (
             <RevealCard key={step.title} delay={idx * 0.05}>
-              <div className="rounded-2xl border border-[var(--border)] bg-white p-4">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4">
                 <div className="mb-2 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-soft)] text-xs font-semibold text-[var(--accent)]">

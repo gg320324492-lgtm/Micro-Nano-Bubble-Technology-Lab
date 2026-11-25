@@ -2,7 +2,7 @@
 "use client";
 
 import * as publicationsModule from "@/data/publications";
-import * as researchModule from "@/data/research";
+import { researchDirections } from "@/data/research";
 import * as contactModule from "@/data/contact";
 import { externalLinks, sortExternalLinksByDate } from "@/data/externalLinks";
 import industrialBases from "@/data/industrialization";
@@ -13,10 +13,15 @@ import { projectSections } from "@/data/projects";
 import { showcasePhotos } from "@/data/showcase";
 import { pickArray, pickObject } from "@/lib/data";
 
-import HeroSection from "@/components/home/HeroSection";
+import NavyHero from "@/components/home/NavyHero";
+import { Reveal } from "@/components/motion/MotionEngine";
 import LabIntroSection from "@/components/home/LabIntroSection";
-import ResearchSection from "@/components/home/ResearchSection";
-import IndustrialSection from "@/components/home/IndustrialSection";
+import ResearchSectionNavy from "@/components/ResearchSectionNavy";
+import IndustrialSectionNavy from "@/components/IndustrialSectionNavy";
+import OutputsSectionNavy from "@/components/OutputsSectionNavy";
+import PeopleSectionNavy from "@/components/PeopleSectionNavy";
+import MediaSectionNavy from "@/components/MediaSectionNavy";
+import ContactCTANavy from "@/components/ContactCTANavy";
 import OutputsSection from "@/components/home/OutputsSection";
 import PeopleSection from "@/components/home/PeopleSection";
 import MediaSection from "@/components/home/MediaSection";
@@ -147,7 +152,6 @@ function buildOutputCards(
 
 export default function HomePage() {
   // 数据加载
-  const researchAreas = pickArray<ResearchDirectionView>(researchModule, ["researchDirections", "researchAreas", "research"]);
   const publications = pickArray<PublicationView>(publicationsModule, ["publications"]);
   const contact = pickObject<ContactView>(contactModule, ["contact", "contacts"]);
   const industrialDigest = industrialBases.slice(0, 2);
@@ -165,31 +169,32 @@ export default function HomePage() {
   ];
 
   return (
-    <main className="relative">
-      <HeroSection />
-      <div className="relative z-40 bg-white">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="space-y-16 md:space-y-24 pt-8 md:pt-10 pb-20">
+    <main className="relative theme-navy">
+      <NavyHero />
+      {/* 内容区深蓝贯穿（方向 A）；宽度控制权下放到各区块；各章以 Reveal 滑入交错入场（round 10 选定 A） */}
+      <div className="relative z-40">
+        <div className="space-y-16 md:space-y-24 pt-16 md:pt-20 pb-20 px-4 sm:px-6 lg:px-8">
+          <Reveal side="left">
             <LabIntroSection />
-            {/* 装饰分隔线 */}
-            <div className="flex items-center gap-4">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--accent)]/20 to-transparent" />
-              <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]/30" />
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--accent)]/20 to-transparent" />
-            </div>
-            <ResearchSection items={researchAreas} />
-            <IndustrialSection items={industrialDigest} />
-            {/* 装饰分隔线 */}
-            <div className="flex items-center gap-4">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--accent)]/20 to-transparent" />
-              <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]/30" />
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--accent)]/20 to-transparent" />
-            </div>
-            <OutputsSection stats={outputStats} allCards={allCards} />
-            <PeopleSection digest={peopleDigest} />
-            <MediaSection mediaItems={mediaDigest} photos={showcasePhotos} />
-            <ContactCTA contact={contact} />
-          </div>
+          </Reveal>
+          <Reveal side="right">
+            <ResearchSectionNavy items={researchDirections} />
+          </Reveal>
+          <Reveal side="left">
+            <IndustrialSectionNavy items={industrialBases.slice(0, 2)} />
+          </Reveal>
+          <Reveal side="bottom">
+            <OutputsSectionNavy stats={outputStats} allCards={allCards} />
+          </Reveal>
+          <Reveal side="right">
+            <PeopleSectionNavy allPeople={people as PersonView[]} />
+          </Reveal>
+          <Reveal side="left">
+            <MediaSectionNavy mediaItems={mediaDigest} photos={showcasePhotos} />
+          </Reveal>
+          <Reveal side="bottom">
+            <ContactCTANavy contact={contact} />
+          </Reveal>
         </div>
       </div>
     </main>

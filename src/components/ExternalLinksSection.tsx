@@ -113,7 +113,7 @@ export default function ExternalLinksSection({ links }: Props) {
   return (
     <section
       aria-labelledby="external-links-heading"
-      className="relative rounded-[var(--radius-xl)] border border-[var(--border)] bg-white/80 backdrop-blur-sm shadow-[var(--shadow-card)] px-6 py-8 md:px-10 md:py-10"
+      className="relative rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--bg-card)] backdrop-blur-sm shadow-[var(--shadow-card)] px-6 py-8 md:px-10 md:py-10"
     >
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-[var(--accent-soft)]/40 via-transparent to-[var(--accent-secondary)]/20 opacity-70" />
       <div className="relative z-10 space-y-6">
