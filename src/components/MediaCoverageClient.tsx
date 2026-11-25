@@ -20,7 +20,7 @@ function getDisplayDate(item: ExternalLink): string | null {
   return match ? match[0] : null;
 }
 
-export default function MediaCoverageClient({ links, perPage = 6 }: Props) {
+export default function MediaCoverageClient({ links, perPage = 7 }: Props) {
   const [page, setPage] = useState(0);
 
   if (!links?.length) return null;

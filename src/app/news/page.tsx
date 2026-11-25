@@ -686,7 +686,7 @@ export default function NewsPage() {
             titleEn="Media Coverage"
             description="了解我们在外部平台上的更多故事、报道与合作机会。"
           />
-          <MediaCoverageClient links={sortedExternalLinks} perPage={6} />
+          <MediaCoverageClient links={sortedExternalLinks} perPage={7} />
         </NewsSectionContainer>
       </section>
 
