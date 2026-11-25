@@ -5663,6 +5663,30 @@ html[data-theme="light"] .brand__subtitle {
   gap: 1.5rem;
 }
 
+/* 焦点大图上的标题：位于 .theme-navy 内，会被 .theme-navy h3/p 的深色 var(--navy-ink) 覆盖，
+   导致深字压深色遮罩看不清。这里用更高特异性强制白字（图片上白字 + 遮罩 + 投影两主题都清晰），
+   并还原渐变文字 clip（背景文字填充） */
+.news-focus__hero h3,
+.news-focus__hero p {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: currentColor;
+}
+
+.news-focus__hero h3 {
+  color: #fff;
+}
+
+.news-focus__hero p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 日期压深色图片遮罩上，固定亮蓝（不随主题变深——深蓝压深遮罩会看不清） */
+.news-focus__hero .text-\[11px\]:first-of-type {
+  color: #8fc6f2;
+}
+
 .news-focus__hero {
   width: 100%;
 }

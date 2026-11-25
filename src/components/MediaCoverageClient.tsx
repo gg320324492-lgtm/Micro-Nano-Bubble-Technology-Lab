@@ -96,23 +96,24 @@ function renderFocus(items: ExternalLink[]) {
                 } transition-transform duration-500 group-hover:scale-105`}
               />
             ) : null}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+            {/* 遮罩：底部加深并向上过渡，保证白字在亮色图片上仍有足够深衬底（避免白压白看不清） */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-6">
               {getDisplayDate(first) ? (
-                <p className="text-[11px] font-semibold tracking-wide text-[var(--accent)]">
+                <p className="text-[11px] font-semibold tracking-wide text-[var(--accent)] [text-shadow:0_1px_4px_rgba(0,0,0,0.9)]">
                   {getDisplayDate(first)}
                 </p>
               ) : null}
-              <h3 className="mt-1 line-clamp-2 text-xl font-bold text-white md:text-2xl">
+              <h3 className="mt-1 line-clamp-2 text-xl font-bold text-white md:text-2xl [text-shadow:0_2px_8px_rgba(0,0,0,0.9)]">
                 {first.title}
               </h3>
               {first.description ? (
-                <p className="mt-2 line-clamp-2 text-sm text-white/80">
+                <p className="mt-2 line-clamp-2 text-sm text-white/80 [text-shadow:0_1px_5px_rgba(0,0,0,0.9)]">
                   {first.description}
                 </p>
               ) : null}
               {first.source ? (
-                <p className="mt-2 text-[11px] uppercase tracking-wide text-white/60">
+                <p className="mt-2 text-[11px] uppercase tracking-wide text-white/70 [text-shadow:0_1px_4px_rgba(0,0,0,0.9)]">
                   {first.source}
                 </p>
               ) : null}
