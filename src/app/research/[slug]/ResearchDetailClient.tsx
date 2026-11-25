@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import { assetPath } from "@/lib/assetPath";
 import { toImageVariant } from "@/lib/imageVariant";
+import Reveal from "@/components/motion/Reveal";
 
 export type RdpSection = { id: string; label: string; content?: string };
 export type RdpImage = { src: string; alt?: string; caption?: string; focusY?: number };
@@ -118,13 +119,15 @@ function SectionList({ sections }: { sections: RdpSection[] }) {
   return (
     <div className="rdp-sections">
       {sections.map((s, i) => (
-        <article key={s.id} className="rdp-section">
-          <header>
-            <span className="rdp-section__no">{String(i + 1).padStart(2, "0")}</span>
-            <h4 className="rdp-section__label">{s.label}</h4>
-          </header>
-          {s.content ? <p className="rdp-section__body">{s.content}</p> : null}
-        </article>
+        <Reveal key={s.id} className="rdp-section" delay={Math.min(i, 5) * 0.06}>
+          <article>
+            <header>
+              <span className="rdp-section__no">{String(i + 1).padStart(2, "0")}</span>
+              <h4 className="rdp-section__label">{s.label}</h4>
+            </header>
+            {s.content ? <p className="rdp-section__body">{s.content}</p> : null}
+          </article>
+        </Reveal>
       ))}
     </div>
   );
@@ -186,11 +189,11 @@ function Hero({
       </div>
 
       <div className="rdp-metrics">
-        {metrics.map((m) => (
-          <div key={m.label} className="rdp-metric">
+        {metrics.map((m, i) => (
+          <Reveal key={m.label} className="rdp-metric" delay={i * 0.08}>
             <span className="rdp-metric__label">{m.label}</span>
             <span className="rdp-metric__value">{m.value}</span>
-          </div>
+          </Reveal>
         ))}
       </div>
 
@@ -204,7 +207,8 @@ function LayoutE({ modules }: { modules: RdpModule[] }) {
   return (
     <div className="rdpE-list">
       {modules.map((m, i) => (
-        <section key={m.id} className="rdpE-module">
+        <Reveal key={m.id} className="rdpE-module" delay={0}>
+        <section>
           <aside className="rdpE-module__aside" aria-hidden="true">
             <span className="rdpE-module__bignum">{String(i + 1).padStart(2, "0")}</span>
             <span className="rdpE-module__aside-rule" />
@@ -216,9 +220,10 @@ function LayoutE({ modules }: { modules: RdpModule[] }) {
             {m.stacks.map((st, j) => {
               const hasMedia = st.images.length > 0;
               return (
-                <div
+                <Reveal
                   key={`${m.id}-stack-${j}`}
                   className={hasMedia ? "rdpE-stack" : "rdpE-stack rdpE-stack--textonly"}
+                  delay={Math.min(j, 3) * 0.06}
                 >
                   {hasMedia ? (
                     <div className="rdpE-stack__media">
@@ -232,11 +237,12 @@ function LayoutE({ modules }: { modules: RdpModule[] }) {
                     {st.summary ? <p className="rdp-stack__summary">{st.summary}</p> : null}
                     <SectionList sections={st.sections} />
                   </div>
-                </div>
+                </Reveal>
               );
             })}
           </div>
         </section>
+        </Reveal>
       ))}
     </div>
   );
@@ -278,15 +284,19 @@ export default function ResearchDetailClient(props: ResearchDetailProps) {
 
         {props.video?.src ? (
           <div className="rdp-extra">
-            <VideoBlock video={props.video} />
+            <Reveal>
+              <VideoBlock video={props.video} />
+            </Reveal>
           </div>
         ) : null}
 
         {props.gallery?.length ? (
-          <section className="rdp-gallery">
-            <h2 className="rdp-gallery__title">GALLERY · 研究图集</h2>
-            <ImageGrid images={props.gallery} />
-          </section>
+          <Reveal>
+            <section className="rdp-gallery">
+              <h2 className="rdp-gallery__title">GALLERY · 研究图集</h2>
+              <ImageGrid images={props.gallery} />
+            </section>
+          </Reveal>
         ) : null}
 
         <footer className="rdp-footer">
